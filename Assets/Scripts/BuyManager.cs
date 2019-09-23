@@ -18,14 +18,14 @@ public class BuyManager : MonoBehaviour
     private Button _leaveButton;
     private List<GameObject> _activeCardObjects;
     private List<Card> _activeCards;
-    [SerializeField] private List<Card> _catalog = new List<Card>();
-    private Stack<Card> _shopDeck;
+    [SerializeField] private List<String> _catalog = new List<String>();
+    private Stack<String> _shopDeck;
     private Transform _cardParent;
-    private Text _focusText;
+    private Text _steamText;
     
     //Freebies
     private Card _endlessAtk;
-    private Card _endlessFoc;
+    private Card _endlessSteam;
     private List<GameObject> _soldOutMarkers;
     
     private void Awake()
@@ -41,41 +41,41 @@ public class BuyManager : MonoBehaviour
     private void Init()
     {
         _endlessAtk = transform.Find("EndlessAtk").GetComponent<Card>();
-        _endlessFoc = transform.Find("EndlessFocus").GetComponent<Card>();
+        _endlessSteam = transform.Find("EndlessSteam").GetComponent<Card>();
         _activeCards = new List<Card>();
         _activeCardObjects = new List<GameObject>();
         _soldOutMarkers = new List<GameObject>();
-        _shopDeck = new Stack<Card>();
+        _shopDeck = new Stack<String>();
         ShuffleShopDeck();
         _cg = GetComponent<CanvasGroup>();
         _leaveButton = transform.Find("LeaveShop").GetComponent<Button>();
         _leaveButton.onClick.AddListener(LeaveShop);
         _cardParent = transform.Find("Cards").transform;
-        _focusText = transform.Find("FocusText").GetComponent<Text>();
+        _steamText = transform.Find("SteamText").GetComponent<Text>();
     }
 
     //Buy a card we click on
     public void BuyCard(Card c)
     {
-        if (BattleManager.Instance.CurrentFocus < c.BuyCost)
+        if (BattleManager.Instance.CurrentSteam < c.BuyCost)
             return;
-        BattleManager.Instance.CurrentFocus -= c.BuyCost;
+        BattleManager.Instance.CurrentSteam -= c.BuyCost;
         if (c == _endlessAtk)
         {
             _soldOutMarkers.Add(Instantiate(Resources.Load<GameObject>("Prefabs/SoldOutCard"), c.transform.position, Quaternion.identity, transform));
-            DeckManager.Instance.Discard(Instantiate(Resources.Load<GameObject>("Prefabs/Cards/Attack1").GetComponent<Card>()));
+            DeckManager.Instance.Discard(Instantiate(Resources.Load<GameObject>("Prefabs/Cards/Strike").GetComponent<Card>()));
         }
-        else if (c == _endlessFoc)
+        else if (c == _endlessSteam)
         {
             _soldOutMarkers.Add(Instantiate(Resources.Load<GameObject>("Prefabs/SoldOutCard"), c.transform.position, Quaternion.identity, transform));
-            DeckManager.Instance.Discard(Instantiate(Resources.Load<GameObject>("Prefabs/Cards/Focus1").GetComponent<Card>()));
+            DeckManager.Instance.Discard(Instantiate(Resources.Load<GameObject>("Prefabs/Cards/Boil").GetComponent<Card>()));
         }
         else
         {
             c.Purchasable = false;
             _activeCardObjects.Remove(c.gameObject);
-            _catalog.Remove(c);
-            StartCoroutine(DealNewCard(c.transform.position));
+            _catalog.Remove(c.CardName);
+            StartCoroutine(DealNewCard(c.transform.position.x));
             DeckManager.Instance.Discard(c);
         }
     }
@@ -101,16 +101,7 @@ public class BuyManager : MonoBehaviour
         {
             x -= XInterval;
 
-            Card activeCard = _shopDeck.Pop();
-            activeCard.Purchasable = true;
-            _activeCards.Add(activeCard);
-            
-            GameObject activeCardGO = Instantiate(activeCard.gameObject, DeckPos.position, Quaternion.identity, _cardParent);
-            _activeCardObjects.Add(activeCardGO);
-
-            Tween dealTween = activeCardGO.transform.DOMoveX(x, 0.2f, false);
-
-            yield return dealTween.WaitForCompletion();
+            StartCoroutine(DealNewCard(x));
         }
     }
 
@@ -124,8 +115,7 @@ public class BuyManager : MonoBehaviour
         //Fade in
         for (int i = _activeCards.Count - 1; i >= 0; i--)
         {
-            _activeCards[i].Purchasable = false;
-            _shopDeck.Push(_activeCards[i]);
+            _shopDeck.Push(_activeCards[i].CardName);
         }
         _activeCards.Clear();
         foreach (GameObject go in _activeCardObjects)
@@ -140,16 +130,16 @@ public class BuyManager : MonoBehaviour
         BattleManager.Instance.BattleState = BattleStates.ChoosingAction;
     }
 
-    private IEnumerator DealNewCard(Vector3 position)
+    private IEnumerator DealNewCard(float xPosition)
     {
-        Card activeCard = _shopDeck.Pop();
+        GameObject activeCardGO = Instantiate(Resources.Load<GameObject>("prefabs/cards/" + _shopDeck.Pop().Replace(" ", String.Empty)), DeckPos.position, Quaternion.identity, _cardParent);
+        Card activeCard = activeCardGO.GetComponent<Card>();
         activeCard.Purchasable = true;
         _activeCards.Add(activeCard);
             
-        GameObject activeCardGO = Instantiate(activeCard.gameObject, DeckPos.position, Quaternion.identity, _cardParent);
         _activeCardObjects.Add(activeCardGO);
 
-        Tween dealTween = activeCardGO.transform.DOMove(position, 0.2f, false);
+        Tween dealTween = activeCardGO.transform.DOMoveX(xPosition, 0.2f, false);
 
         yield return dealTween.WaitForCompletion();
     }
@@ -159,7 +149,7 @@ public class BuyManager : MonoBehaviour
         //Shuffle
         Random rng = new Random();
         //Convert inventory to array
-        Card[] deckArr = new Card[_catalog.Count];
+        String[] deckArr = new String[_catalog.Count];
         _catalog.CopyTo(deckArr, 0);
         //Shuffle up
         int i = deckArr.Length;
@@ -167,13 +157,13 @@ public class BuyManager : MonoBehaviour
         {
             i--;
             int k = rng.Next(i + 1);
-            Card tempC = deckArr[k];
+            String tempC = deckArr[k];
             deckArr[k] = deckArr[i];
             deckArr[i] = tempC;
         }
         
         _shopDeck.Clear();
-        foreach (Card c in deckArr)
+        foreach (String c in deckArr)
         {
             _shopDeck.Push(c);
         }
@@ -181,6 +171,6 @@ public class BuyManager : MonoBehaviour
 
     private void Update()
     {
-        _focusText.text = "Focus Remaining: " + BattleManager.Instance.CurrentFocus;
+        _steamText.text = "Steam Remaining: " + BattleManager.Instance.CurrentSteam;
     }
 }

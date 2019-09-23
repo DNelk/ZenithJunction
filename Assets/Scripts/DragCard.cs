@@ -18,7 +18,7 @@ public class DragCard : EventTrigger
 
     public override void OnPointerDown(PointerEventData eventData)
     {
-        if (_myCard.Manager != null && _myCard.Manager.StackState == StackState.Stacked)
+        if (_myCard.Manager != null && _myCard.Manager.EngineState == EngineState.Stacked)
             return;
         if (_myCard.Purchasable)
         {
@@ -43,7 +43,7 @@ public class DragCard : EventTrigger
 
     private void CalcPosOnMouseMove()
     {
-        if(_myCard.Manager != null && _myCard.Manager.StackState == StackState.Stacked)
+        if(_myCard.Manager != null && _myCard.Manager.EngineState == EngineState.Stacked)
             return;
         Vector3 currMousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0);
         transform.position = currMousePos + _offset;

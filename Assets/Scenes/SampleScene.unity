@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 49317694}
   - component: {fileID: 49317693}
   m_Layer: 5
-  m_Name: Stack1
+  m_Name: Engine1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -175,7 +175,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GlowColor: {r: 1, g: 0, b: 0, a: 1}
   _pending: []
-  StackState: 0
+  EngineState: 0
+  Executed: 0
 --- !u!114 &49317691
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -290,7 +291,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9795e9fcdbbd24c658ec5eb6d7c73471, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentFocus: 0
+  CurrentSteam: 0
   BattleState: 0
 --- !u!4 &184574609
 Transform:
@@ -331,16 +332,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 193266165}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.74954295, y: 0.74954295, z: 0.74954295}
   m_Children: []
-  m_Father: {fileID: 861664440}
-  m_RootOrder: 3
+  m_Father: {fileID: 334287390}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 268, y: 166}
+  m_AnchoredPosition: {x: 200.87749, y: 182}
   m_SizeDelta: {x: 249.5, y: 70.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &193266167
@@ -425,7 +426,7 @@ PrefabInstance:
     - target: {fileID: 4201685717112804048, guid: 6b64e6c6cadfa42a6b6b927cea558148,
         type: 3}
       propertyPath: m_Name
-      value: EndlessFocus
+      value: EndlessSteam
       objectReference: {fileID: 0}
     - target: {fileID: 4201685717112804046, guid: 6b64e6c6cadfa42a6b6b927cea558148,
         type: 3}
@@ -599,7 +600,10 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
-  m_Children: []
+  m_Children:
+  - {fileID: 980376064}
+  - {fileID: 369365988}
+  - {fileID: 193266166}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -640,7 +644,7 @@ RectTransform:
   m_Children:
   - {fileID: 373182759}
   m_Father: {fileID: 861664440}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -745,7 +749,7 @@ GameObject:
   - component: {fileID: 365619248}
   - component: {fileID: 365619247}
   m_Layer: 5
-  m_Name: Stack3
+  m_Name: Engine3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -832,7 +836,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GlowColor: {r: 0.9811193, g: 1, b: 0, a: 1}
   _pending: []
-  StackState: 0
+  EngineState: 0
+  Executed: 0
 --- !u!114 &365619250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -971,16 +976,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 369365987}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.74954295, y: 0.74954295, z: 0.74954295}
   m_Children: []
-  m_Father: {fileID: 861664440}
-  m_RootOrder: 5
+  m_Father: {fileID: 334287390}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -49, y: 166.00002}
+  m_AnchoredPosition: {x: -36.727604, y: 124.424164}
   m_SizeDelta: {x: 249.5, y: 70.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &369365989
@@ -1095,7 +1100,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Finish Piles
+  m_Text: Finish Engines
 --- !u!222 &373182761
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1296,7 +1301,7 @@ GameObject:
   - component: {fileID: 568939135}
   - component: {fileID: 568939134}
   m_Layer: 5
-  m_Name: Stack2
+  m_Name: Engine2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1383,7 +1388,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GlowColor: {r: 0, g: 0.07741547, b: 1, a: 1}
   _pending: []
-  StackState: 0
+  EngineState: 0
+  Executed: 0
 --- !u!114 &568939137
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1492,7 +1498,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Pile 3
+  m_Text: Engine 3
 --- !u!222 &671470612
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1514,7 +1520,7 @@ GameObject:
   - component: {fileID: 861664438}
   - component: {fileID: 861664437}
   m_Layer: 5
-  m_Name: StackCanvas
+  m_Name: EngineCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1553,7 +1559,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -1594,10 +1600,7 @@ RectTransform:
   - {fileID: 49317689}
   - {fileID: 568939133}
   - {fileID: 365619246}
-  - {fileID: 193266166}
   - {fileID: 347339615}
-  - {fileID: 369365988}
-  - {fileID: 980376064}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1753,16 +1756,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 980376063}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.74954295, y: 0.74954295, z: 0.74954295}
   m_Children: []
-  m_Father: {fileID: 861664440}
-  m_RootOrder: 6
+  m_Father: {fileID: 334287390}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -11, y: -39}
+  m_AnchoredPosition: {x: -8.245005, y: -29.23219}
   m_SizeDelta: {x: 249.5, y: 70.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &980376065
@@ -2169,7 +2172,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Pile 2
+  m_Text: Engine 2
 --- !u!222 &1479312430
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2301,14 +2304,14 @@ MonoBehaviour:
   DeckPos: {fileID: 1266097162}
   XInterval: 150
   _catalog:
-  - {fileID: 6468776323963629039, guid: b4ae994c38335474ab80c0e92ff1875e, type: 3}
-  - {fileID: 4201685717112804046, guid: 6b64e6c6cadfa42a6b6b927cea558148, type: 3}
-  - {fileID: 4201685717112804046, guid: 6b64e6c6cadfa42a6b6b927cea558148, type: 3}
-  - {fileID: 2301507382104973939, guid: 422b6e51d4996492d8f50b20a7c96a5b, type: 3}
-  - {fileID: 2301507382104973939, guid: 422b6e51d4996492d8f50b20a7c96a5b, type: 3}
-  - {fileID: 6468776323963629039, guid: b4ae994c38335474ab80c0e92ff1875e, type: 3}
-  - {fileID: 6468776323963629039, guid: b4ae994c38335474ab80c0e92ff1875e, type: 3}
-  - {fileID: 6468776323963629039, guid: b4ae994c38335474ab80c0e92ff1875e, type: 3}
+  - slam
+  - slam
+  - slam
+  - rail spark
+  - rail spark
+  - steam explosion
+  - steam explosion
+  - steam explosion
 --- !u!225 &1549412326
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -2470,7 +2473,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Pile 1
+  m_Text: Engine 1
 --- !u!222 &1748360517
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2607,13 +2610,13 @@ MonoBehaviour:
   - Strike
   - strike
   - strike
-  - leyline channel
-  - charge
-  - charge
-  - charge
+  - rail spark
+  - boil
+  - boil
+  - boil
   - strike
   - strike
-  Stacks: []
+  Engines: []
   DeckPos: {fileID: 1315099812}
   XInterval: 100
 --- !u!4 &1856678388
@@ -2681,8 +2684,8 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
+  m_ReferenceResolution: {x: 854, y: 480}
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -2741,7 +2744,7 @@ GameObject:
   - component: {fileID: 1936008281}
   - component: {fileID: 1936008280}
   m_Layer: 5
-  m_Name: FocusText
+  m_Name: SteamText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2799,7 +2802,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Focus Remaining:'
+  m_Text: 'Steam Remaining:'
 --- !u!222 &1936008281
 CanvasRenderer:
   m_ObjectHideFlags: 0

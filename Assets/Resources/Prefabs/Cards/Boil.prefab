@@ -10,12 +10,12 @@ PrefabInstance:
     - target: {fileID: 6468776323963629041, guid: b4ae994c38335474ab80c0e92ff1875e,
         type: 3}
       propertyPath: m_Name
-      value: Charge
+      value: Boil
       objectReference: {fileID: 0}
     - target: {fileID: 6468776323963629039, guid: b4ae994c38335474ab80c0e92ff1875e,
         type: 3}
       propertyPath: _cardName
-      value: Charge
+      value: Boil
       objectReference: {fileID: 0}
     - target: {fileID: 6468776323963629039, guid: b4ae994c38335474ab80c0e92ff1875e,
         type: 3}
@@ -25,7 +25,7 @@ PrefabInstance:
     - target: {fileID: 6468776323963629039, guid: b4ae994c38335474ab80c0e92ff1875e,
         type: 3}
       propertyPath: _cardText
-      value: 1 Focus
+      value: +1 Steam
       objectReference: {fileID: 0}
     - target: {fileID: 6468776323963629039, guid: b4ae994c38335474ab80c0e92ff1875e,
         type: 3}
@@ -40,12 +40,17 @@ PrefabInstance:
     - target: {fileID: 6468776323963629039, guid: b4ae994c38335474ab80c0e92ff1875e,
         type: 3}
       propertyPath: _priority
-      value: -1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6468776323963629039, guid: b4ae994c38335474ab80c0e92ff1875e,
         type: 3}
       propertyPath: Purchasable
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6468776323963629039, guid: b4ae994c38335474ab80c0e92ff1875e,
+        type: 3}
+      propertyPath: _steamValue
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6468776323963629040, guid: b4ae994c38335474ab80c0e92ff1875e,
         type: 3}

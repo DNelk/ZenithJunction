@@ -212,13 +212,14 @@ MonoBehaviour:
   _cardName: Test Card!
   _cardType: 0
   _buyCost: 1
-  _castCost: 0
+  _steamCost: 0
   _cardText: Does a boom. 2 Attack
-  _focusValue: 0
+  _steamValue: 0
   _atkValue: 2
   AtkMod: 0
-  FocusMod: 0
+  SteamMod: 0
   _priority: 0
+  Purchasable: 0
 --- !u!61 &6964687361830319079
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -278,6 +279,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afb30cdb0e1164e1385c9b3a9dd1e936, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Delegates: []
 --- !u!1 &1176058906951990944
 GameObject:
   m_ObjectHideFlags: 0
@@ -444,7 +446,7 @@ GameObject:
   - component: {fileID: 1176058907702063248}
   - component: {fileID: 1176058907702063251}
   m_Layer: 5
-  m_Name: CastCost
+  m_Name: SteamCost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

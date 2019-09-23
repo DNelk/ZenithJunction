@@ -9,10 +9,10 @@ using UnityEngine.Experimental.PlayerLoop;
 using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
 
-public class StackManager : MonoBehaviour
+public class EngineManager : MonoBehaviour
 {
     //Instance
-    //public static StackManager Instance = null;
+    //public static EngineManager Instance = null;
 
     public Stack<Card> Stack;
     public Color GlowColor;
@@ -27,16 +27,17 @@ public class StackManager : MonoBehaviour
         set => _atkTotal = value;
     }
     
-    //Total focus this round
-    private int _focTotal;
-    public int FocTotal
+    //Total steam this round
+    private int _steamTotal;
+    public int SteamTotal
     {
-        get => _focTotal;
-        set => _focTotal = value;
+        get => _steamTotal;
+        set => _steamTotal = value;
     }
 
-    public StackState StackState;
-    
+    public EngineState EngineState;
+
+    public bool Executed;
     private void Awake()
     {
        /*//Check if Instance already exists
@@ -56,8 +57,9 @@ public class StackManager : MonoBehaviour
     {
         Stack = new Stack<Card>();
         _pending = new List<Card>();
-        StackState = StackState.Stacking;
+        EngineState = EngineState.Stacking;
         _initialPosition = transform.position;
+        Executed = false;
     }
 
     //Adds a card to the pending card array
@@ -70,7 +72,7 @@ public class StackManager : MonoBehaviour
             c.Manager.RemoveCard(c);
         
         c.Manager = this;
-        c.SetStack(GlowColor, transform);
+        c.SetEngine(GlowColor, transform);
         _pending.Add(c);
     }
 
@@ -81,7 +83,7 @@ public class StackManager : MonoBehaviour
     
     public void StackCards()
     {
-        if (StackState != StackState.Stacked)
+        if (EngineState != EngineState.Stacked)
         {
             ToggleMode();
         }
@@ -113,30 +115,43 @@ public class StackManager : MonoBehaviour
             StackCards();
     }
 
-    public void ExecuteStack()
+    public IEnumerator ExecuteStack()
     {
         while (Stack.Count > 0)
         {
             Card c = Stack.Pop();
-            if(c.PayForCard())
+            if (c.IsXCost) //-1 is X
+            {
+                XDialog xd = Instantiate(Resources.Load<GameObject>("prefabs/xdialog"), GameObject.Find("Canvas").transform).GetComponent<XDialog>();
+                xd.SteamMax = _steamTotal;
+                //Wait until user assigns x value
+                yield return new WaitUntil(() => xd.XConfirmed);
+                _steamTotal -= xd.XValue;
+                c.XValue = xd.XValue;
+                Destroy(xd.gameObject);
+                c.Execute();
+            } 
+            else if(c.PayForCard())
                 c.Execute();
             else
             {
-                Debug.Log("not enough focus");
+                Debug.Log("not enough steam");
             }
             _atkTotal += c.AtkMod;
-            _focTotal += c.FocusMod;
+            _steamTotal += c.SteamMod;
             DeckManager.Instance.Discard(c);
         }
+
+        Executed = true;
     }
     
     //Collisions
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.CompareTag("Card") || StackState != StackState.Stacking)
+        if (!other.CompareTag("Card") || EngineState != EngineState.Stacking)
             return;
         Card c = other.gameObject.GetComponent<Card>();
-        if(c.Manager != null && c.Manager.StackState == StackState.Stacked || c.Purchasable)
+        if(c.Manager != null && c.Manager.EngineState == EngineState.Stacked || c.Purchasable)
             return;
         AddCard(c); 
     }
@@ -161,9 +176,9 @@ public class StackManager : MonoBehaviour
 
     public void ToggleMode()
     {
-        if (StackState == StackState.Stacking)
+        if (EngineState == EngineState.Stacking)
         {
-            StackState = StackState.Stacked;
+            EngineState = EngineState.Stacked;
             transform.GetComponent<Image>().enabled = false;
             transform.GetComponentInChildren<Text>().enabled = false;
             transform.GetComponent<BoxCollider2D>().offset = new Vector2(44.7f, -0.51f);
@@ -175,12 +190,13 @@ public class StackManager : MonoBehaviour
         }
         else
         {
-            StackState = StackState.Stacking;
+            EngineState = EngineState.Stacking;
             transform.GetComponent<Image>().enabled = true;
             transform.GetComponentInChildren<Text>().enabled = true;
             transform.GetComponent<BoxCollider2D>().offset = new Vector2(0.2134628f, 0.6905212f);
             transform.GetComponent<BoxCollider2D>().size = new Vector2(99.61905f, 98.34377f);
             transform.DOMove(_initialPosition, 0.5f);
+            Executed = false;
         }
     }
     
@@ -192,14 +208,14 @@ public class StackManager : MonoBehaviour
 
     public void OnMouseDown()
     {
-        if(StackState != StackState.Stacked)
+        if(EngineState != EngineState.Stacked)
             return;
         CalcOffset();
         if(BattleManager.Instance.PlayerAttack == this || Stack.Count == 0)
             return;
         foreach (Card c in Stack)
         {
-            c.SetStack(Color.white, transform);
+            c.SetEngine(Color.white, transform);
         }
 
         BattleManager.Instance.PushAttack(this);
@@ -222,7 +238,7 @@ public class StackManager : MonoBehaviour
 
     private void CalcPosOnMouseMove()
     {
-        if(StackState != StackState.Stacked)
+        if(EngineState != EngineState.Stacked)
             return;
         Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y,transform.position.z);
         Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + _offset;
@@ -234,13 +250,13 @@ public class StackManager : MonoBehaviour
     {
         foreach (Card c in Stack)
         {
-            c.SetStack(GlowColor, transform);
+            c.SetEngine(GlowColor, transform);
         }
     }
     #endregion
 }
 
-public enum StackState
+public enum EngineState
 {
     Stacking,
     Stacked

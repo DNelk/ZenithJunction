@@ -18,8 +18,8 @@ public class DeckManager : MonoBehaviour
     private Stack<String> _discard; //Discarded Cards
     private Stack<String> _deck; //Runtime version of the deck
     
-    //Stacks
-    public StackManager[] Stacks;
+    //Engines
+    public EngineManager[] Engines;
     
     //UI
     private Canvas _cardCanvas;
@@ -43,17 +43,17 @@ public class DeckManager : MonoBehaviour
         _activeCardObjects = new List<GameObject>();
         _discard = new Stack<String>();
         _deck = new Stack<String>();
-        foreach (String s in Deck)
+        foreach (String e in Deck)
         {
-            _deck.Push(s);
+            _deck.Push(e);
         }
 
         _cardCanvas = GameObject.Find("CardCanvas").GetComponent<Canvas>();
 
-        Stacks = new StackManager[3];
-        Stacks[0] = GameObject.Find("Stack1").GetComponent<StackManager>();
-        Stacks[1] = GameObject.Find("Stack2").GetComponent<StackManager>();
-        Stacks[2] = GameObject.Find("Stack3").GetComponent<StackManager>();
+        Engines = new EngineManager[3];
+        Engines[0] = GameObject.Find("Engine1").GetComponent<EngineManager>();
+        Engines[1] = GameObject.Find("Engine2").GetComponent<EngineManager>();
+        Engines[2] = GameObject.Find("Engine3").GetComponent<EngineManager>();
     }
 
 
@@ -127,9 +127,9 @@ public class DeckManager : MonoBehaviour
         }
     }
     
-    public void Discard(StackManager discardedStack)
+    public void Discard(EngineManager discardedEngine)
     {
-        Stack<Card> toDiscard = discardedStack.Stack;
+        Stack<Card> toDiscard = discardedEngine.Stack;
         while(toDiscard.Count > 0)
         {
             Card discarding = toDiscard.Pop();
@@ -155,12 +155,12 @@ public class DeckManager : MonoBehaviour
         }
     }
 
-    public int EmptyStacksCount()
+    public int EmptyEnginesCount()
     {
         int count = 0;
-        foreach (StackManager s in Stacks)
+        foreach (EngineManager e in Engines)
         {
-            if (s.Stack.Count == 0 && s.Count == 0)
+            if (e.Stack.Count == 0 && e.Count == 0)
                 count++;
         }
 
@@ -169,9 +169,9 @@ public class DeckManager : MonoBehaviour
 
     public void Reset()
     {
-        foreach (StackManager s in Stacks)
+        foreach (EngineManager e in Engines)
         {
-            s.ToggleMode();
+            e.ToggleMode();
         }
         ShuffleDeck();
         StartCoroutine(DealActive());

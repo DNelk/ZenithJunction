@@ -12,11 +12,11 @@ public class BattleManager : MonoBehaviour
 {
     public static BattleManager Instance;
 
-    private StackManager _playerAttack; public StackManager PlayerAttack => _playerAttack;
+    private EngineManager _playerAttack; public EngineManager PlayerAttack => _playerAttack;
     private Attack _enemyAttack;
     private Enemy _currentEnemy;
     private Player _player;
-    public int CurrentFocus;
+    public int CurrentSteam;
     public BattleStates BattleState;
 
     //UI
@@ -69,7 +69,7 @@ public class BattleManager : MonoBehaviour
 
     private void ChoosingActionUpdate()
     {
-        if (DeckManager.Instance.EmptyStacksCount() == 3)
+        if (DeckManager.Instance.EmptyEnginesCount() == 3)
         {
             DeckManager.Instance.Reset();
             BattleState = BattleStates.MakingPiles;
@@ -88,7 +88,7 @@ public class BattleManager : MonoBehaviour
         _enemyAttack = a;
     }
 
-    public void PushAttack(StackManager s)
+    public void PushAttack(EngineManager s)
     {
         if (_playerAttack != null && _playerAttack != s)
         {
@@ -100,10 +100,11 @@ public class BattleManager : MonoBehaviour
     public IEnumerator ProcessAttacks()
     {
         BattleState = BattleStates.Battle;
-        _playerAttack.ExecuteStack();
+        _playerAttack.StartCoroutine(_playerAttack.ExecuteStack());
+        yield return new WaitUntil(() =>_playerAttack.Executed);
         int playerDamage = _playerAttack.AtkTotal;
-        CurrentFocus = _playerAttack.FocTotal;
-        _playerText.text = "You attack for " + playerDamage + " damage. You have " + CurrentFocus + " focus to spend.";
+        CurrentSteam = _playerAttack.SteamTotal;
+        _playerText.text = "You attack for " + playerDamage + " damage. You have " + CurrentSteam + " steam to spend.";
         int enemyDamage = _currentEnemy.Attack();
         _enemyText.text = "The enemy attacks for " + enemyDamage + " damage.";
         
@@ -142,11 +143,11 @@ public class BattleManager : MonoBehaviour
 
     private void ConfirmPiles()
     {
-        foreach (StackManager stack in DeckManager.Instance.Stacks)
+        foreach (EngineManager stack in DeckManager.Instance.Engines)
         {
             if (stack.Count > 3 || stack.Count < 3)
             {
-                Utils.DisplayError("Stacks must be exactly 3 cards!", 3f);
+                Utils.DisplayError("Engines must be exactly 3 cards!", 3f);
                 return;
             }
         }
@@ -157,9 +158,9 @@ public class BattleManager : MonoBehaviour
 
     private IEnumerator OrganizePiles()
     {
-        for(int i = 0; i < DeckManager.Instance.Stacks.Length; i++)
+        for(int i = 0; i < DeckManager.Instance.Engines.Length; i++)
         {
-            StackManager stack = DeckManager.Instance.Stacks[i];
+            EngineManager stack = DeckManager.Instance.Engines[i];
             Vector3 targetPos = transform.position + (Vector3.down * i * 150);
             Tween moveStack = stack.transform.DOMove(targetPos, 0.5f, false);
             yield return moveStack.WaitForCompletion();

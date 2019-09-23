@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LeylineChannel : Card
+//Doubles the power of attack cards
+
+public class RailSpark : Card
 {
     public override void Execute()
     {

@@ -11,17 +11,19 @@ public class Card : MonoBehaviour
     [SerializeField] protected string _cardName; public String CardName => _cardName;
     [SerializeField] protected CardTypes _cardType; public CardTypes CardType => _cardType;
     [SerializeField] protected int _buyCost; public int BuyCost => _buyCost;
-    [SerializeField] protected int _castCost;
+    [SerializeField] protected int _steamCost;
     [SerializeField] protected string _cardText;
-    [SerializeField] protected int _focusValue;
+    [SerializeField] protected int _steamValue;
     [SerializeField] protected int _atkValue;
     [HideInInspector] public int AtkMod; //Modified attack value
-    [HideInInspector] public int FocusMod; //Modified attack value
+    [HideInInspector] public int SteamMod; //Modified attack value
     [SerializeField] protected int _priority; public int Priority => _priority;
     public bool Purchasable = false;
+    public int XValue = 0;
+    public bool IsXCost => _steamCost == -1;
     
-    protected StackManager _manager; 
-    public StackManager Manager
+    protected EngineManager _manager; 
+    public EngineManager Manager
     {
         get => _manager;
         set => _manager = value;
@@ -33,7 +35,7 @@ public class Card : MonoBehaviour
     protected Text u_cardName;
     protected Text u_type;
     protected Text u_buyCost;
-    protected Text u_castCost;
+    protected Text u_steamCost;
     protected Text u_bodyText;
     protected Image u_image;
     protected Image u_glow;
@@ -51,7 +53,7 @@ public class Card : MonoBehaviour
         u_cardName = transform.Find("CardName").GetComponent<Text>();
         u_type = transform.Find("TypeLine").GetComponent<Text>();
         u_buyCost = transform.Find("BuyCost").GetComponent<Text>();
-        u_castCost = transform.Find("CastCost").GetComponent<Text>();
+        u_steamCost = transform.Find("SteamCost").GetComponent<Text>();
         u_bodyText = transform.Find("BodyText").GetComponent<Text>();
         u_image = transform.Find("Image").GetComponent<Image>();
         u_glow = transform.Find("Glow").GetComponent<Image>();
@@ -69,7 +71,9 @@ public class Card : MonoBehaviour
         u_cardName.text = _cardName;
         u_type.text = Enum.GetName(typeof(CardTypes), _cardType);
         u_buyCost.text = _buyCost.ToString();
-        u_castCost.text = _castCost.ToString();
+        u_steamCost.text = _steamCost.ToString();
+        if (_steamCost == -1) //-1 is X
+            u_steamCost.text = "X";
         u_bodyText.text = _cardText;
     }
 
@@ -78,38 +82,37 @@ public class Card : MonoBehaviour
     public void ReadyCard()
     {
         AtkMod = _atkValue;
-        FocusMod = _focusValue;
+        SteamMod = _steamValue;
     }
 
-    public void SetStack(Color glowColor, Transform parent)
+    public void SetEngine(Color glowColor, Transform parent)
     {
         u_glow.color = glowColor;
         transform.SetParent(parent);
     }
 
-    //Pay focus cost for spells
+    //Pay steam cost for spells
     public bool PayForCard()
     {
-        int remainingCost = _castCost;
+        int remainingCost = _steamCost;
         
-        if (_castCost == 0)
+        if (_steamCost == 0)
             return true;
-        
         foreach (Card c in _manager.Stack)
         {
-            if (c.FocusMod > 0)
+            if (c.SteamMod > 0)
             {
                 //If we need to drain it completely
-                if (remainingCost >= c.FocusMod)
+                if (remainingCost >= c.SteamMod)
                 {
-                    remainingCost -= c.FocusMod;
-                    c.FocusMod = 0;
+                    remainingCost -= c.SteamMod;
+                    c.SteamMod = 0;
                 }
-                //It will have leftover focus after paying
-                else if (remainingCost < c.FocusMod)
+                //It will have leftover steam after paying
+                else if (remainingCost < c.SteamMod)
                 {
-                    remainingCost -= c.FocusMod;
-                    c.FocusMod -= remainingCost;
+                    remainingCost -= c.SteamMod;
+                    c.SteamMod -= remainingCost;
                 }
                 if (remainingCost <= 0)
                     return true;
@@ -125,6 +128,6 @@ public class Card : MonoBehaviour
 public enum CardTypes
 {
     Attack,
-    Focus,
-    Spell
+    Steam,
+    Special
 }
