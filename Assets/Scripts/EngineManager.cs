@@ -18,7 +18,9 @@ public class EngineManager : MonoBehaviour
     public Color GlowColor;
     [SerializeField] private List<Card> _pending;
     private Vector3 _initialPosition;
-    
+    private BoxCollider2D _collider;
+
+
     //Total attack this round
     private int _atkTotal;
     public int AtkTotal
@@ -36,6 +38,8 @@ public class EngineManager : MonoBehaviour
     }
 
     public EngineState EngineState;
+
+    public float XInterval = 50f;
 
     public bool Executed;
     private void Awake()
@@ -60,6 +64,7 @@ public class EngineManager : MonoBehaviour
         EngineState = EngineState.Stacking;
         _initialPosition = transform.position;
         Executed = false;
+        _collider = GetComponent<BoxCollider2D>();
     }
 
     //Adds a card to the pending card array
@@ -72,13 +77,17 @@ public class EngineManager : MonoBehaviour
             c.Manager.RemoveCard(c);
         
         c.Manager = this;
-        c.SetEngine(GlowColor, transform);
+        c.SetEngine(GlowColor, transform, CurrentCardPos(_pending.Count));
         _pending.Add(c);
     }
 
     public void RemoveCard(Card c)
     {
         _pending.Remove(c);
+        if(_pending.Count == 0)
+            return;
+        Card lastC = _pending[_pending.Count - 1];
+        lastC.SetEngine(GlowColor, transform, CurrentCardPos(_pending.Count-1));
     }
     
     public void StackCards()
@@ -104,10 +113,8 @@ public class EngineManager : MonoBehaviour
         Card currentCard = _pending[indexToStack];
         
         currentCard.ReadyCard();
-        currentCard.transform.SetSiblingIndex(indexToStack);
-        Vector3 targetPos = transform.position + (Vector3.right * Stack.Count * DeckManager.Instance.XInterval);
-        currentCard.transform.DOMove(targetPos, 1f, false);
-        //currentCard.transform.position = targetPos;
+        currentCard.transform.SetSiblingIndex(Stack.Count);
+        currentCard.transform.position = CurrentCardPos(Stack.Count);
         Stack.Push(currentCard);
         _pending.RemoveAt(indexToStack);
         
@@ -117,6 +124,7 @@ public class EngineManager : MonoBehaviour
 
     public IEnumerator ExecuteStack()
     {
+        EngineDelegateHandler.ApplyEngineEffects();
         while (Stack.Count > 0)
         {
             Card c = Stack.Pop();
@@ -131,11 +139,14 @@ public class EngineManager : MonoBehaviour
                 Destroy(xd.gameObject);
                 c.Execute();
             } 
-            else if(c.PayForCard())
+            else if (c.PayForCard())
+            {
                 c.Execute();
+            }
             else
             {
-                Debug.Log("not enough steam");
+                Utils.DisplayError("Not enough steam to power " + c.CardName + "!", 0.5f);
+                c.ExecuteFailed();
             }
             _atkTotal += c.AtkMod;
             _steamTotal += c.SteamMod;
@@ -151,11 +162,16 @@ public class EngineManager : MonoBehaviour
         if (!other.CompareTag("Card") || EngineState != EngineState.Stacking)
             return;
         Card c = other.gameObject.GetComponent<Card>();
-        if(c.Manager != null && c.Manager.EngineState == EngineState.Stacked || c.Purchasable)
+        if(c.Manager != null && c.Manager.EngineState == EngineState.Stacked || c.Purchasable || c.Dragging)
             return;
         AddCard(c); 
     }
 
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        OnTriggerEnter2D(other);
+    }
 
     public int Count
     {
@@ -179,30 +195,25 @@ public class EngineManager : MonoBehaviour
         if (EngineState == EngineState.Stacking)
         {
             EngineState = EngineState.Stacked;
-            transform.GetComponent<Image>().enabled = false;
-            transform.GetComponentInChildren<Text>().enabled = false;
-            transform.GetComponent<BoxCollider2D>().offset = new Vector2(44.7f, -0.51f);
-            transform.GetComponent<BoxCollider2D>().size = new Vector2(153.2f, 198.7f);
             foreach (Card c in Stack)
             {
                 c.GetComponent<Collider2D>().enabled = false;
             }
+            GetComponentInChildren<Text>().enabled = false;
         }
         else
         {
             EngineState = EngineState.Stacking;
-            transform.GetComponent<Image>().enabled = true;
-            transform.GetComponentInChildren<Text>().enabled = true;
-            transform.GetComponent<BoxCollider2D>().offset = new Vector2(0.2134628f, 0.6905212f);
-            transform.GetComponent<BoxCollider2D>().size = new Vector2(99.61905f, 98.34377f);
-            transform.DOMove(_initialPosition, 0.5f);
             Executed = false;
+            GetComponentInChildren<Text>().enabled = true;
+            _steamTotal = 0;
+            _atkTotal = 0;
         }
     }
     
     #region Card Dragging
     
-    //Drag Stuff
+    /*//Drag Stuff
     private Vector3 _screenPoint;
     private Vector3 _offset;
 
@@ -245,7 +256,7 @@ public class EngineManager : MonoBehaviour
         transform.position = curPosition;
     }
 
-    
+    */
     public void Deselect()
     {
         foreach (Card c in Stack)
@@ -253,7 +264,22 @@ public class EngineManager : MonoBehaviour
             c.SetEngine(GlowColor, transform);
         }
     }
+
+    public void Select()
+    {
+        foreach (Card c in Stack)
+        {
+            c.SetEngine(Color.white, transform);
+        }
+
+        BattleManager.Instance.PushAttack(this);
+    }
     #endregion
+
+    private Vector3 CurrentCardPos(int count)
+    {
+        return (transform.position + (Vector3.left*_collider.size.x/2)) + (Vector3.right * (count * (XInterval * (Screen.currentResolution.width/800f))));
+    }
 }
 
 public enum EngineState

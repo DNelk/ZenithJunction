@@ -75,7 +75,7 @@ public class BuyManager : MonoBehaviour
             c.Purchasable = false;
             _activeCardObjects.Remove(c.gameObject);
             _catalog.Remove(c.CardName);
-            StartCoroutine(DealNewCard(c.transform.position.x));
+            StartCoroutine(DealNewCard(c.transform.position.x, c.transform.GetSiblingIndex()));
             DeckManager.Instance.Discard(c);
         }
     }
@@ -99,9 +99,9 @@ public class BuyManager : MonoBehaviour
         float x = DeckPos.position.x;
         for (int i = 0; i < 5; i++)
         {
-            x -= XInterval;
+            x -= XInterval * (Screen.currentResolution.width/800f);
 
-            StartCoroutine(DealNewCard(x));
+            StartCoroutine(DealNewCard(x,i));
         }
     }
 
@@ -130,10 +130,11 @@ public class BuyManager : MonoBehaviour
         BattleManager.Instance.BattleState = BattleStates.ChoosingAction;
     }
 
-    private IEnumerator DealNewCard(float xPosition)
+    private IEnumerator DealNewCard(float xPosition, int siblingIndex)
     {
         GameObject activeCardGO = Instantiate(Resources.Load<GameObject>("prefabs/cards/" + _shopDeck.Pop().Replace(" ", String.Empty)), DeckPos.position, Quaternion.identity, _cardParent);
         Card activeCard = activeCardGO.GetComponent<Card>();
+        activeCardGO.transform.SetSiblingIndex(siblingIndex);
         activeCard.Purchasable = true;
         _activeCards.Add(activeCard);
             

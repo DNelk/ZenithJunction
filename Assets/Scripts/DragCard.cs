@@ -19,20 +19,30 @@ public class DragCard : EventTrigger
     public override void OnPointerDown(PointerEventData eventData)
     {
         if (_myCard.Manager != null && _myCard.Manager.EngineState == EngineState.Stacked)
-            return;
-        if (_myCard.Purchasable)
+        {
+            _myCard.Manager.Select();
+        }
+        else if (_myCard.Purchasable)
         {
             BuyManager.Instance.BuyCard(_myCard);
             return;
         }
-
-        CalcOffset();
-        transform.SetSiblingIndex(transform.GetSiblingIndex()+8);
+        else
+        {
+            CalcOffset();
+            transform.SetSiblingIndex(transform.GetSiblingIndex() + 8);
+            _myCard.Dragging = true;
+        }
     }
 
     public override void OnDrag(PointerEventData eventData)
     {
         CalcPosOnMouseMove();
+    }
+
+    public override void OnPointerUp(PointerEventData eventData)
+    {
+        _myCard.Dragging = false;
     }
 
     private void CalcOffset()

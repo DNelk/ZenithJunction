@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class Card : MonoBehaviour
 {
@@ -15,13 +16,16 @@ public class Card : MonoBehaviour
     [SerializeField] protected string _cardText;
     [SerializeField] protected int _steamValue;
     [SerializeField] protected int _atkValue;
-    [HideInInspector] public int AtkMod; //Modified attack value
+     public int AtkMod; //Modified attack value
     [HideInInspector] public int SteamMod; //Modified attack value
     [SerializeField] protected int _priority; public int Priority => _priority;
     public bool Purchasable = false;
-    public int XValue = 0;
+    [HideInInspector]public int XValue = 0;
     public bool IsXCost => _steamCost == -1;
     
+    
+    //UI
+    [HideInInspector] public bool Dragging = false;
     protected EngineManager _manager; 
     public EngineManager Manager
     {
@@ -66,6 +70,11 @@ public class Card : MonoBehaviour
 
     }
 
+    public virtual void ExecuteFailed()
+    {
+        
+    }
+
     protected void AssignUI()
     {
         u_cardName.text = _cardName;
@@ -90,6 +99,13 @@ public class Card : MonoBehaviour
         u_glow.color = glowColor;
         transform.SetParent(parent);
     }
+    
+    public void SetEngine(Color glowColor, Transform parent, Vector3 position)
+    {
+        u_glow.color = glowColor;
+        transform.SetParent(parent);
+        transform.DOMove(position, 0.5f);
+    }
 
     //Pay steam cost for spells
     public bool PayForCard()
@@ -98,25 +114,10 @@ public class Card : MonoBehaviour
         
         if (_steamCost == 0)
             return true;
-        foreach (Card c in _manager.Stack)
+        if (_manager.SteamTotal >= remainingCost)
         {
-            if (c.SteamMod > 0)
-            {
-                //If we need to drain it completely
-                if (remainingCost >= c.SteamMod)
-                {
-                    remainingCost -= c.SteamMod;
-                    c.SteamMod = 0;
-                }
-                //It will have leftover steam after paying
-                else if (remainingCost < c.SteamMod)
-                {
-                    remainingCost -= c.SteamMod;
-                    c.SteamMod -= remainingCost;
-                }
-                if (remainingCost <= 0)
-                    return true;
-            }
+            _manager.SteamTotal -= remainingCost;
+            return true;
         }
 
         return false;

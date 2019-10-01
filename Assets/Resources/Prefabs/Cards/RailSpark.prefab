@@ -21,8 +21,10 @@ MonoBehaviour:
   _atkValue: 0
   AtkMod: 0
   SteamMod: 0
-  _priority: 3
+  _priority: 4
   Purchasable: 0
+  XValue: 0
+  Dragging: 0
 --- !u!1001 &905400556614715193
 PrefabInstance:
   m_ObjectHideFlags: 0

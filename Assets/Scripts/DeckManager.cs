@@ -110,7 +110,7 @@ public class DeckManager : MonoBehaviour
             if(_deck.Count == 0)
                 ShuffleDeck();
 
-            x -= XInterval;
+            x -= XInterval * (Screen.currentResolution.width/800f);
 
             GameObject activeCardGO = Instantiate(Resources.Load<GameObject>("Prefabs/Cards/" + _deck.Pop().Replace(" ", String.Empty)), DeckPos.position, Quaternion.identity,
                 _cardCanvas.transform);
@@ -142,6 +142,7 @@ public class DeckManager : MonoBehaviour
     public void Discard(Card c)
     {
         _discard.Push(c.CardName);
+        Deck.Add(c.CardName);
         if(_activeCardObjects.Contains(c.gameObject))
             _activeCardObjects.Remove(c.gameObject);
         Destroy(c.gameObject);
