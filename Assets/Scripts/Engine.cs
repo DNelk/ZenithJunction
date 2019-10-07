@@ -9,10 +9,10 @@ using UnityEngine.Experimental.PlayerLoop;
 using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
 
-public class EngineManager : MonoBehaviour
+public class Engine : MonoBehaviour
 {
     //Instance
-    //public static EngineManager Instance = null;
+    //public static Engine Instance = null;
 
     public Stack<Card> Stack;
     public Color GlowColor;
@@ -29,12 +29,12 @@ public class EngineManager : MonoBehaviour
         set => _atkTotal = value;
     }
     
-    //Total steam this round
-    private int _steamTotal;
-    public int SteamTotal
+    //Total aether this round
+    private int _aetherTotal;
+    public int AetherTotal
     {
-        get => _steamTotal;
-        set => _steamTotal = value;
+        get => _aetherTotal;
+        set => _aetherTotal = value;
     }
 
     public EngineState EngineState;
@@ -70,13 +70,13 @@ public class EngineManager : MonoBehaviour
     //Adds a card to the pending card array
     public void AddCard(Card c)
     {
-        if(c.Manager == this)
+        if(c.Engine == this)
             return;
         
-        if (c.Manager != null)
-            c.Manager.RemoveCard(c);
+        if (c.Engine != null)
+            c.Engine.RemoveCard(c);
         
-        c.Manager = this;
+        c.Engine = this;
         c.SetEngine(GlowColor, transform, CurrentCardPos(_pending.Count));
         _pending.Add(c);
     }
@@ -131,10 +131,10 @@ public class EngineManager : MonoBehaviour
             if (c.IsXCost) //-1 is X
             {
                 XDialog xd = Instantiate(Resources.Load<GameObject>("prefabs/xdialog"), GameObject.Find("Canvas").transform).GetComponent<XDialog>();
-                xd.SteamMax = _steamTotal;
+                xd.AetherMax = _aetherTotal;
                 //Wait until user assigns x value
                 yield return new WaitUntil(() => xd.XConfirmed);
-                _steamTotal -= xd.XValue;
+                _aetherTotal -= xd.XValue;
                 c.XValue = xd.XValue;
                 Destroy(xd.gameObject);
                 c.Execute();
@@ -145,11 +145,11 @@ public class EngineManager : MonoBehaviour
             }
             else
             {
-                Utils.DisplayError("Not enough steam to power " + c.CardName + "!", 0.5f);
+                Utils.DisplayError("Not enough aether to power " + c.CardName + "!", 0.5f);
                 c.ExecuteFailed();
             }
             _atkTotal += c.AtkMod;
-            _steamTotal += c.SteamMod;
+            _aetherTotal += c.AetherMod;
             DeckManager.Instance.Discard(c);
         }
 
@@ -162,7 +162,7 @@ public class EngineManager : MonoBehaviour
         if (!other.CompareTag("Card") || EngineState != EngineState.Stacking)
             return;
         Card c = other.gameObject.GetComponent<Card>();
-        if(c.Manager != null && c.Manager.EngineState == EngineState.Stacked || c.Purchasable || c.Dragging)
+        if(c.Engine != null && c.Engine.EngineState == EngineState.Stacked || c.Purchasable || c.Dragging || c.Tweening || c.IsPreview)
             return;
         AddCard(c); 
     }
@@ -173,7 +173,16 @@ public class EngineManager : MonoBehaviour
         OnTriggerEnter2D(other);
     }
 
-    public int Count
+   /* private void OnTriggerExit2D(Collider2D other)
+    {
+        if (!other.CompareTag("Card"))
+            return;
+        Card c = other.gameObject.GetComponent<Card>();
+        RemoveCard(c);
+        c.SetEngine(Color.clear, transform.parent);
+    }*/
+
+    public int PendingCount
     {
         get => _pending.Count;
     }
@@ -206,7 +215,7 @@ public class EngineManager : MonoBehaviour
             EngineState = EngineState.Stacking;
             Executed = false;
             GetComponentInChildren<Text>().enabled = true;
-            _steamTotal = 0;
+            _aetherTotal = 0;
             _atkTotal = 0;
         }
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //Deals 2 + x damage
-public class SteamExplosion : Card
+public class AetherExplosion : Card
 {
     public override void Execute()
     {

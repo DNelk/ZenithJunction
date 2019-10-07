@@ -14,7 +14,7 @@ public class XDialog : MonoBehaviour
     public int XValue = 0;
     public bool XConfirmed = false;
 
-    public int SteamMax = 0;
+    public int AetherMax = 0;
     private void Start()
     {
         _decreaseButton = transform.Find("Decrease").GetComponent<Button>();
@@ -37,7 +37,7 @@ public class XDialog : MonoBehaviour
 
     private void ConfirmX()
     {
-        if(XValue > SteamMax)
+        if(XValue > AetherMax)
             Utils.DisplayError("Not Enough Focus to pay for X!", 1f);
         else
             XConfirmed = true;

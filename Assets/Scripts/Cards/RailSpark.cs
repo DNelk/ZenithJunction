@@ -10,7 +10,7 @@ public class RailSpark : Card
     {
         base.Execute();
         
-        foreach (Card c in _manager.Stack)
+        foreach (Card c in _myEngine.Stack)
         {
             if (c.CardType == CardTypes.Attack)
             {

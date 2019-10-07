@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Experimental.PlayerLoop;
 using Random = System.Random;
 using DG.Tweening;
+using UnityEngine.UIElements;
 
 public class DeckManager : MonoBehaviour
 {
@@ -18,12 +19,9 @@ public class DeckManager : MonoBehaviour
     private Stack<String> _discard; //Discarded Cards
     private Stack<String> _deck; //Runtime version of the deck
     
-    //Engines
-    public EngineManager[] Engines;
     
     //UI
-    private Canvas _cardCanvas;
-    public Transform DeckPos;
+    private Transform _cardPanel;
     public float XInterval;
 
     private void Awake()
@@ -48,12 +46,7 @@ public class DeckManager : MonoBehaviour
             _deck.Push(e);
         }
 
-        _cardCanvas = GameObject.Find("CardCanvas").GetComponent<Canvas>();
-
-        Engines = new EngineManager[3];
-        Engines[0] = GameObject.Find("Engine1").GetComponent<EngineManager>();
-        Engines[1] = GameObject.Find("Engine2").GetComponent<EngineManager>();
-        Engines[2] = GameObject.Find("Engine3").GetComponent<EngineManager>();
+        _cardPanel = transform.parent;
     }
 
 
@@ -104,7 +97,7 @@ public class DeckManager : MonoBehaviour
     //Deal 9 to player
     private IEnumerator DealActive()
     {
-        float x = DeckPos.position.x;
+        float x = transform.position.x;
         for (int i = 0; i < 9; i++)
         {
             if(_deck.Count == 0)
@@ -112,8 +105,8 @@ public class DeckManager : MonoBehaviour
 
             x -= XInterval * (Screen.currentResolution.width/800f);
 
-            GameObject activeCardGO = Instantiate(Resources.Load<GameObject>("Prefabs/Cards/" + _deck.Pop().Replace(" ", String.Empty)), DeckPos.position, Quaternion.identity,
-                _cardCanvas.transform);
+            GameObject activeCardGO = Instantiate(Resources.Load<GameObject>("Prefabs/Cards/" + _deck.Pop().Replace(" ", String.Empty)), transform.position, Quaternion.identity,
+                _cardPanel);
             _activeCardObjects.Add(activeCardGO);
 
             Card activeCard = activeCardGO.GetComponent<Card>();
@@ -127,7 +120,7 @@ public class DeckManager : MonoBehaviour
         }
     }
     
-    public void Discard(EngineManager discardedEngine)
+    public void Discard(Engine discardedEngine)
     {
         Stack<Card> toDiscard = discardedEngine.Stack;
         while(toDiscard.Count > 0)
@@ -156,25 +149,8 @@ public class DeckManager : MonoBehaviour
         }
     }
 
-    public int EmptyEnginesCount()
-    {
-        int count = 0;
-        foreach (EngineManager e in Engines)
-        {
-            if (e.Stack.Count == 0 && e.Count == 0)
-                count++;
-        }
-
-        return count;
-    }
-
     public void Reset()
     {
-        foreach (EngineManager e in Engines)
-        {
-            e.ToggleMode();
-        }
-        ShuffleDeck();
         StartCoroutine(DealActive());
     }
 }

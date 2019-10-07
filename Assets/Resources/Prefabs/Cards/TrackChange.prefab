@@ -15,15 +15,17 @@ MonoBehaviour:
   _cardName: Track Change
   _cardType: 1
   _buyCost: 3
-  _steamCost: 1
-  _cardText: +2 Steam. Your next engine gets +2 Steam.
-  _steamValue: 2
+  _aetherCost: 1
+  _cardText: +2 Aether. Your next engine gets +2 Aether.
+  _aetherValue: 0
   _atkValue: 0
   AtkMod: 0
-  SteamMod: 0
+  AetherMod: 0
   _priority: 0
   Purchasable: 0
   XValue: 0
+  Tweening: 0
+  IsPreview: 0
   Dragging: 0
 --- !u!1001 &8014554031131435948
 PrefabInstance:

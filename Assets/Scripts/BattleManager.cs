@@ -12,20 +12,23 @@ public class BattleManager : MonoBehaviour
 {
     public static BattleManager Instance;
 
-    private EngineManager _playerAttack; public EngineManager PlayerAttack => _playerAttack;
+    private Engine _playerAttack; public Engine PlayerAttack => _playerAttack;
     private Attack _enemyAttack;
     private Enemy _currentEnemy;
     public Player Player;
-    public int CurrentSteam;
+    public int CurrentAether;
     public BattleStates BattleState;
-
+    private int _clashingDamage;
     //UI
     private Button _finishEnginesButton;
     private Text _playerText;
     private Text _enemyText;
     private Text _resultText;
+    private Text _clashText;
     
     //Battle Variables
+    //Engines
+    public Engine[] Engines;
     
     private void Awake()
     {
@@ -45,8 +48,14 @@ public class BattleManager : MonoBehaviour
         _playerText = GameObject.Find("PlayerText").GetComponent<Text>();
         _enemyText = GameObject.Find("EnemyText").GetComponent<Text>();
         _resultText = GameObject.Find("ResultText").GetComponent<Text>();
+        _clashText = GameObject.Find("ClashText").GetComponent<Text>();
         BattleState = BattleStates.MakingEngines;
         _playerAttack = null;
+        
+        Engines = new Engine[3];
+        Engines[0] = GameObject.Find("Engine1").GetComponent<Engine>();
+        Engines[1] = GameObject.Find("Engine2").GetComponent<Engine>();
+        Engines[2] = GameObject.Find("Engine3").GetComponent<Engine>();
     }
     
     private void Start()
@@ -71,9 +80,15 @@ public class BattleManager : MonoBehaviour
 
     private void ChoosingActionUpdate()
     {
-        if (DeckManager.Instance.EmptyEnginesCount() == 3)
+        if (EmptyEnginesCount() == 3)
         {
+            foreach (Engine e in Engines)
+            {
+                e.ToggleMode();
+            }
             DeckManager.Instance.Reset();
+            _clashText.text = "";
+            _clashingDamage = 0;
             BattleState = BattleStates.MakingEngines;
             _finishEnginesButton.GetComponentInChildren<Text>().text = "Finish Engines";
             _finishEnginesButton.onClick.RemoveAllListeners();
@@ -95,7 +110,7 @@ public class BattleManager : MonoBehaviour
         _enemyAttack = a;
     }
 
-    public void PushAttack(EngineManager s)
+    public void PushAttack(Engine s)
     {
         if (_playerAttack != null && _playerAttack != s)
         {
@@ -112,9 +127,9 @@ public class BattleManager : MonoBehaviour
         yield return new WaitUntil(() =>_playerAttack.Executed);
         
         int playerDamage = _playerAttack.AtkTotal;
-        CurrentSteam = _playerAttack.SteamTotal;
+        CurrentAether = _playerAttack.AetherTotal;
         
-        _playerText.text = "You attack for " + playerDamage + " damage. You have " + CurrentSteam + " steam to spend.";
+        _playerText.text = "You attack for " + playerDamage + " damage. You have " + CurrentAether + " aether to spend.";
         Tween expandTextTween = _playerText.transform.DOScale(2f, 0.5f);
         yield return expandTextTween.WaitForCompletion();
         _playerText.transform.DOScale(1f, 0.5f);
@@ -142,6 +157,7 @@ public class BattleManager : MonoBehaviour
         BuyManager.Instance.StartCoroutine(BuyManager.Instance.LoadBuyMenu());
     }
 
+    /*With "trampling
     private void DisplayAttackResult(int playerDamage, int enemyDamage)
     {
         int damage = Math.Abs(playerDamage - enemyDamage);
@@ -163,12 +179,51 @@ public class BattleManager : MonoBehaviour
             _resultText.text = "It's a tie! The attacks bounce off!";
         }
     }
+    */
+    
+    /*Without "trampling*/
+    private void DisplayAttackResult(int playerDamage, int enemyDamage)
+    {
+        if (playerDamage > enemyDamage)
+        {
+            _resultText.text = "The enemy takes " + (playerDamage + _clashingDamage) + " damage!";
+            _resultText.color = Color.green;
+            _currentEnemy.TakeDamage(playerDamage + _clashingDamage);
+            _clashingDamage = 0;
+            _clashText.text = "";
 
+        }
+        else if (playerDamage < enemyDamage)
+        {
+            _resultText.text = "You take " + (enemyDamage + _clashingDamage) + " damage!";
+            _resultText.color = Color.red;
+            Player.TakeDamage(enemyDamage + _clashingDamage);
+            _clashingDamage = 0;
+            _clashText.text = "";
+
+        }
+        else
+        {
+            _resultText.color = Color.yellow;
+            if (Utils.FlipCoin())
+            {
+                _resultText.text = "It's a tie! The attacks clash! Clash damage +" + playerDamage;
+                _clashingDamage += playerDamage;
+                _clashText.text = "Clash Power: " + _clashingDamage + "!";
+            }
+            else
+            {
+                _resultText.text = "It's a tie! The attacks bounce off!";
+            }
+        }
+    }
+    
+    
     private void ConfirmEngines()
     {
-        foreach (EngineManager stack in DeckManager.Instance.Engines)
+        foreach (Engine e in Engines)
         {
-            if (stack.Count > 3 || stack.Count < 3)
+            if (e.PendingCount > 3 || e.PendingCount < 3)
             {
                 Utils.DisplayError("Engines must be exactly 3 cards!", 3f);
                 return;
@@ -181,14 +236,14 @@ public class BattleManager : MonoBehaviour
 
     private void OrganizeEngines()
     {
-        for(int i = 0; i < DeckManager.Instance.Engines.Length; i++)
+        for(int i = 0; i < Engines.Length; i++)
         {
-            EngineManager stack = DeckManager.Instance.Engines[i];
+            Engine e = Engines[i];
             /*Vector3 targetPos = transform.position + (Vector3.down * i * 150);
             Tween moveStack = stack.transform.DOMove(targetPos, 0.5f, false);
             yield return moveStack.WaitForCompletion();
             */
-            stack.StackCards();
+            e.StackCards();
         }
 
         _finishEnginesButton.GetComponentInChildren<Text>().text = "Confirm Action";
@@ -197,6 +252,31 @@ public class BattleManager : MonoBehaviour
         _finishEnginesButton.onClick.AddListener(ConfirmAction);
     }
 
+    private int EmptyEnginesCount()
+    {
+        int count = 0;
+        foreach (Engine e in Engines)
+        {
+            if (e.Stack.Count == 0 && e.PendingCount == 0)
+                count++;
+        }
+
+        return count;
+    }
+
+    public Engine GetNextOpenEngine()
+    {
+        for (int i = 0; i < Engines.Length; i++)
+        {
+            Engine currentEngine = Engines[i];
+            if (currentEngine.PendingCount < 3)
+            {
+                return currentEngine;
+            }
+        }
+        return null;
+    }
+    
     private void ConfirmAction()
     {
         if (_playerAttack == null)

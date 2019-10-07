@@ -12,18 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63d558341887541f2abdf59da63460be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cardName: Steam Explosion
+  _cardName: Aether Explosion
   _cardType: 2
   _buyCost: 3
-  _steamCost: -1
-  _cardText: Creates power equal to X plus 2
-  _steamValue: 0
+  _aetherCost: -1
+  _cardText: Creates power equal to X Aether plus 2
+  _aetherValue: 0
   _atkValue: 0
   AtkMod: 0
-  SteamMod: 0
+  AetherMod: 0
   _priority: 1
   Purchasable: 0
   XValue: 0
+  Tweening: 0
+  IsPreview: 0
   Dragging: 0
 --- !u!1001 &5961221742267486899
 PrefabInstance:
@@ -35,12 +37,7 @@ PrefabInstance:
     - target: {fileID: 1176058906799001468, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
       propertyPath: m_Name
-      value: SteamExplosion
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _cardName
-      value: Steam Explosion
+      value: AetherExplosion
       objectReference: {fileID: 0}
     - target: {fileID: 1176058906799001469, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
@@ -96,6 +93,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _cardName
+      value: Steam Explosion
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf, type: 3}

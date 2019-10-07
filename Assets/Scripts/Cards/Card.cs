@@ -12,25 +12,27 @@ public class Card : MonoBehaviour
     [SerializeField] protected string _cardName; public String CardName => _cardName;
     [SerializeField] protected CardTypes _cardType; public CardTypes CardType => _cardType;
     [SerializeField] protected int _buyCost; public int BuyCost => _buyCost;
-    [SerializeField] protected int _steamCost;
+    [SerializeField] protected int _aetherCost;
     [SerializeField] protected string _cardText;
-    [SerializeField] protected int _steamValue;
+    [SerializeField] protected int _aetherValue;
     [SerializeField] protected int _atkValue;
      public int AtkMod; //Modified attack value
-    [HideInInspector] public int SteamMod; //Modified attack value
+    [HideInInspector] public int AetherMod; //Modified attack value
     [SerializeField] protected int _priority; public int Priority => _priority;
     public bool Purchasable = false;
     [HideInInspector]public int XValue = 0;
-    public bool IsXCost => _steamCost == -1;
+    [HideInInspector] public bool Tweening = false;
+    [HideInInspector] public bool IsPreview = false;
+    public bool IsXCost => _aetherCost == -1;
     
     
     //UI
     [HideInInspector] public bool Dragging = false;
-    protected EngineManager _manager; 
-    public EngineManager Manager
+    protected Engine _myEngine; 
+    public Engine Engine
     {
-        get => _manager;
-        set => _manager = value;
+        get => _myEngine;
+        set => _myEngine = value;
     }
 
 
@@ -39,7 +41,7 @@ public class Card : MonoBehaviour
     protected Text u_cardName;
     protected Text u_type;
     protected Text u_buyCost;
-    protected Text u_steamCost;
+    protected Text u_aetherCost;
     protected Text u_bodyText;
     protected Image u_image;
     protected Image u_glow;
@@ -57,7 +59,7 @@ public class Card : MonoBehaviour
         u_cardName = transform.Find("CardName").GetComponent<Text>();
         u_type = transform.Find("TypeLine").GetComponent<Text>();
         u_buyCost = transform.Find("BuyCost").GetComponent<Text>();
-        u_steamCost = transform.Find("SteamCost").GetComponent<Text>();
+        u_aetherCost = transform.Find("AetherCost").GetComponent<Text>();
         u_bodyText = transform.Find("BodyText").GetComponent<Text>();
         u_image = transform.Find("Image").GetComponent<Image>();
         u_glow = transform.Find("Glow").GetComponent<Image>();
@@ -80,9 +82,9 @@ public class Card : MonoBehaviour
         u_cardName.text = _cardName;
         u_type.text = Enum.GetName(typeof(CardTypes), _cardType);
         u_buyCost.text = _buyCost.ToString();
-        u_steamCost.text = _steamCost.ToString();
-        if (_steamCost == -1) //-1 is X
-            u_steamCost.text = "X";
+        u_aetherCost.text = _aetherCost.ToString();
+        if (_aetherCost == -1) //-1 is X
+            u_aetherCost.text = "X";
         u_bodyText.text = _cardText;
     }
 
@@ -91,7 +93,7 @@ public class Card : MonoBehaviour
     public void ReadyCard()
     {
         AtkMod = _atkValue;
-        SteamMod = _steamValue;
+        AetherMod = _aetherValue;
     }
 
     public void SetEngine(Color glowColor, Transform parent)
@@ -104,19 +106,20 @@ public class Card : MonoBehaviour
     {
         u_glow.color = glowColor;
         transform.SetParent(parent);
-        transform.DOMove(position, 0.5f);
+        Tweening = true;
+        transform.DOMove(position, 0.5f).OnComplete(() => Tweening = false);
     }
 
-    //Pay steam cost for spells
+    //Pay aether cost for spells
     public bool PayForCard()
     {
-        int remainingCost = _steamCost;
+        int remainingCost = _aetherCost;
         
-        if (_steamCost == 0)
+        if (_aetherCost == 0)
             return true;
-        if (_manager.SteamTotal >= remainingCost)
+        if (_myEngine.AetherTotal >= remainingCost)
         {
-            _manager.SteamTotal -= remainingCost;
+            _myEngine.AetherTotal -= remainingCost;
             return true;
         }
 
@@ -129,6 +132,6 @@ public class Card : MonoBehaviour
 public enum CardTypes
 {
     Attack,
-    Steam,
+    Aether,
     Special
 }

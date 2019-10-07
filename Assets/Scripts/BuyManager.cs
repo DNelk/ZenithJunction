@@ -11,21 +11,25 @@ public class BuyManager : MonoBehaviour
     //Singleton
     public static BuyManager Instance;
 
-    //Vars
+    //UI
     private CanvasGroup _cg;
     public Transform DeckPos;
     public float XInterval;
     private Button _leaveButton;
+    private Transform _cardParent;
+    private Text _aetherText;
+    
+    //Vars
     private List<GameObject> _activeCardObjects;
     private List<Card> _activeCards;
     [SerializeField] private List<String> _catalog = new List<String>();
     private Stack<String> _shopDeck;
-    private Transform _cardParent;
-    private Text _steamText;
-    
+    //private Stack<Card> _pending;
+    ///private Stack<Vector3> _pendingPos;
+
     //Freebies
     private Card _endlessAtk;
-    private Card _endlessSteam;
+    private Card _endlessAether;
     private List<GameObject> _soldOutMarkers;
     
     private void Awake()
@@ -41,7 +45,7 @@ public class BuyManager : MonoBehaviour
     private void Init()
     {
         _endlessAtk = transform.Find("EndlessAtk").GetComponent<Card>();
-        _endlessSteam = transform.Find("EndlessSteam").GetComponent<Card>();
+        _endlessAether = transform.Find("EndlessAether").GetComponent<Card>();
         _activeCards = new List<Card>();
         _activeCardObjects = new List<GameObject>();
         _soldOutMarkers = new List<GameObject>();
@@ -49,23 +53,22 @@ public class BuyManager : MonoBehaviour
         ShuffleShopDeck();
         _cg = GetComponent<CanvasGroup>();
         _leaveButton = transform.Find("LeaveShop").GetComponent<Button>();
-        _leaveButton.onClick.AddListener(LeaveShop);
         _cardParent = transform.Find("Cards").transform;
-        _steamText = transform.Find("SteamText").GetComponent<Text>();
+        _aetherText = transform.Find("AetherText").GetComponent<Text>();
     }
 
     //Buy a card we click on
     public void BuyCard(Card c)
     {
-        if (BattleManager.Instance.CurrentSteam < c.BuyCost)
+        if (BattleManager.Instance.CurrentAether < c.BuyCost)
             return;
-        BattleManager.Instance.CurrentSteam -= c.BuyCost;
+        BattleManager.Instance.CurrentAether -= c.BuyCost;
         if (c == _endlessAtk)
         {
             _soldOutMarkers.Add(Instantiate(Resources.Load<GameObject>("Prefabs/SoldOutCard"), c.transform.position, Quaternion.identity, transform));
             DeckManager.Instance.Discard(Instantiate(Resources.Load<GameObject>("Prefabs/Cards/Strike").GetComponent<Card>()));
         }
-        else if (c == _endlessSteam)
+        else if (c == _endlessAether)
         {
             _soldOutMarkers.Add(Instantiate(Resources.Load<GameObject>("Prefabs/SoldOutCard"), c.transform.position, Quaternion.identity, transform));
             DeckManager.Instance.Discard(Instantiate(Resources.Load<GameObject>("Prefabs/Cards/Boil").GetComponent<Card>()));
@@ -75,7 +78,8 @@ public class BuyManager : MonoBehaviour
             c.Purchasable = false;
             _activeCardObjects.Remove(c.gameObject);
             _catalog.Remove(c.CardName);
-            StartCoroutine(DealNewCard(c.transform.position.x, c.transform.GetSiblingIndex()));
+            StartCoroutine(DealNewCard(c.transform.position.x, c.transform.GetSiblingIndex(), _activeCards.IndexOf(c)));
+            _activeCards.Remove(c);
             DeckManager.Instance.Discard(c);
         }
     }
@@ -101,8 +105,9 @@ public class BuyManager : MonoBehaviour
         {
             x -= XInterval * (Screen.currentResolution.width/800f);
 
-            StartCoroutine(DealNewCard(x,i));
+            StartCoroutine(DealNewCard(x,i,i));
         }
+        _leaveButton.onClick.AddListener(LeaveShop);
     }
 
     public void LeaveShop()
@@ -112,6 +117,7 @@ public class BuyManager : MonoBehaviour
 
     private IEnumerator LeaveBuyMenu()
     {
+        _leaveButton.onClick.RemoveListener(LeaveShop);
         //Fade in
         for (int i = _activeCards.Count - 1; i >= 0; i--)
         {
@@ -130,13 +136,13 @@ public class BuyManager : MonoBehaviour
         BattleManager.Instance.BattleState = BattleStates.ChoosingAction;
     }
 
-    private IEnumerator DealNewCard(float xPosition, int siblingIndex)
+    private IEnumerator DealNewCard(float xPosition, int siblingIndex, int activeIndex)
     {
         GameObject activeCardGO = Instantiate(Resources.Load<GameObject>("prefabs/cards/" + _shopDeck.Pop().Replace(" ", String.Empty)), DeckPos.position, Quaternion.identity, _cardParent);
         Card activeCard = activeCardGO.GetComponent<Card>();
         activeCardGO.transform.SetSiblingIndex(siblingIndex);
         activeCard.Purchasable = true;
-        _activeCards.Add(activeCard);
+        _activeCards.Insert(activeIndex, activeCard);
             
         _activeCardObjects.Add(activeCardGO);
 
@@ -172,6 +178,6 @@ public class BuyManager : MonoBehaviour
 
     private void Update()
     {
-        _steamText.text = "Steam Remaining: " + BattleManager.Instance.CurrentSteam;
+        _aetherText.text = "Aether Remaining: " + BattleManager.Instance.CurrentAether;
     }
 }
