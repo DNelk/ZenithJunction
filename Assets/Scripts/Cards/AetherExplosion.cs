@@ -9,6 +9,6 @@ public class AetherExplosion : Card
     {
         base.Execute();
 
-        AtkMod = XValue + 2;
+        AtkTotal = XValue + 2;
     }
 }

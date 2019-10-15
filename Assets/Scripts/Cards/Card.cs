@@ -16,10 +16,26 @@ public class Card : MonoBehaviour
     [SerializeField] protected string _cardText;
     [SerializeField] protected int _aetherValue;
     [SerializeField] protected int _atkValue;
-     public int AtkMod; //Modified attack value
-    [HideInInspector] public int AetherMod; //Modified attack value
+    [SerializeField] protected AttackRange _atkRange = AttackRange.Null;
+    [SerializeField] protected int _moveValue;
+    [HideInInspector] public int AtkTotal; //Modified attack value
+    [HideInInspector] public int AetherTotal; //Modified aether value
+    [HideInInspector] public int MoveTotal; //Totalified aether value
     [SerializeField] protected int _priority; public int Priority => _priority;
-    public bool Purchasable = false;
+    
+    [SerializeField] private bool _purchasable = false;
+    public bool Purchasable
+    {
+        get => _purchasable;
+        set
+        { 
+            _purchasable = value;
+            if (_purchasable)
+                u_buyCost.text = _buyCost.ToString();
+        }
+    }
+
+    
     [HideInInspector]public int XValue = 0;
     [HideInInspector] public bool Tweening = false;
     [HideInInspector] public bool IsPreview = false;
@@ -80,11 +96,22 @@ public class Card : MonoBehaviour
     protected void AssignUI()
     {
         u_cardName.text = _cardName;
+        
         u_type.text = Enum.GetName(typeof(CardTypes), _cardType);
-        u_buyCost.text = _buyCost.ToString();
+        
+        if (_atkRange != AttackRange.Null)
+            u_type.text += " - " + Enum.GetName(typeof(AttackRange), _atkRange) + " Range";
+
+        u_buyCost.text = "";
+        if (_purchasable)
+            u_buyCost.text = _buyCost.ToString();
+        
         u_aetherCost.text = _aetherCost.ToString();
         if (_aetherCost == -1) //-1 is X
             u_aetherCost.text = "X";
+        else if (_aetherCost == 0)
+            u_aetherCost.text = "";
+        
         u_bodyText.text = _cardText;
     }
 
@@ -92,8 +119,9 @@ public class Card : MonoBehaviour
 
     public void ReadyCard()
     {
-        AtkMod = _atkValue;
-        AetherMod = _aetherValue;
+        AtkTotal = _atkValue;
+        AetherTotal = _aetherValue;
+        MoveTotal = _moveValue;
     }
 
     public void SetEngine(Color glowColor, Transform parent)
@@ -125,6 +153,37 @@ public class Card : MonoBehaviour
 
         return false;
     }
+
+    public int CalculateAttackTotalWithPosition()
+    {
+        int distance = Mathf.Abs(BattleManager.Instance.Player.Position - BattleManager.Instance.CurrentEnemy.Position);
+        float damageMod = 1;
+        switch (_atkRange)
+        {
+            //Melee Range Attacks only work right next to target
+            case AttackRange.Melee:
+                if (distance > 0)
+                    damageMod = 0;
+                break;
+            //Short range attacks are weaker if not right next
+            case AttackRange.Short:
+                if (distance == 1)
+                    damageMod = 0.5f;
+                else if (distance >= 2)
+                    damageMod = 0;
+                break;
+            //Long range attacks are only good far away
+            case AttackRange.Long:
+                if (distance == 0)
+                    damageMod = 0;
+                break;
+            default:
+                damageMod = 1;
+                break;
+        }
+
+        return (int)(AtkTotal * damageMod);
+    }
     #endregion
     
 }
@@ -133,5 +192,8 @@ public enum CardTypes
 {
     Attack,
     Aether,
-    Special
+    Special,
+    Movement
 }
+
+

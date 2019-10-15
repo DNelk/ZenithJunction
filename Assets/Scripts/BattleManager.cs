@@ -13,8 +13,8 @@ public class BattleManager : MonoBehaviour
     public static BattleManager Instance;
 
     private Engine _playerAttack; public Engine PlayerAttack => _playerAttack;
-    private Attack _enemyAttack;
-    private Enemy _currentEnemy;
+    private EnemyAttack _enemyAttack;
+    public Enemy CurrentEnemy;
     public Player Player;
     public int CurrentAether;
     public BattleStates BattleState;
@@ -100,12 +100,12 @@ public class BattleManager : MonoBehaviour
 
     private void LoadEnemyAttack()
     {
-        if(_currentEnemy == null)
-            _currentEnemy = GameObject.FindWithTag("Enemy").GetComponent<Enemy>();
-        _currentEnemy.PrepareAttack();
+        if(CurrentEnemy == null)
+            CurrentEnemy = GameObject.FindWithTag("Enemy").GetComponent<Enemy>();
+        CurrentEnemy.PrepareAttack();
     }
     
-    public void PushAttack(Attack a)
+    public void PushAttack(EnemyAttack a)
     {
         _enemyAttack = a;
     }
@@ -130,20 +130,29 @@ public class BattleManager : MonoBehaviour
         CurrentAether = _playerAttack.AetherTotal;
         
         _playerText.text = "You attack for " + playerDamage + " damage. You have " + CurrentAether + " aether to spend.";
-        Tween expandTextTween = _playerText.transform.DOScale(2f, 0.5f);
+        Tween expandTextTween = _playerText.transform.parent.DOScale(1.5f, 0.5f);
         yield return expandTextTween.WaitForCompletion();
-        _playerText.transform.DOScale(1f, 0.5f);
+        _playerText.transform.parent.transform.DOScale(1f, 0.5f);
         
-        int enemyDamage = _currentEnemy.Attack();
+        int enemyDamage = CurrentEnemy.Attack();
         _enemyText.text = "The enemy attacks for " + enemyDamage + " damage.";
-        expandTextTween = _enemyText.transform.DOScale(2f, 0.5f);
+        expandTextTween = _enemyText.transform.parent.DOScale(1.5f, 0.5f);
         yield return expandTextTween.WaitForCompletion();
-        _enemyText.transform.DOScale(1f, 0.5f);
+        _enemyText.transform.parent.transform.DOScale(1f, 0.5f);
         
         DisplayAttackResult(playerDamage, enemyDamage);
-        expandTextTween = _resultText.transform.DOScale(2f, 0.5f);
+        expandTextTween = _resultText.transform.parent.DOScale(1.5f, 0.5f);
         yield return expandTextTween.WaitForCompletion();
-        _resultText.transform.DOScale(1f, 0.5f);
+        expandTextTween = _resultText.transform.parent.transform.DOScale(1f, 0.5f);
+        yield return expandTextTween.WaitForCompletion();
+        
+        if (_playerAttack.MoveTotal > 0)
+        {
+            MovePlayerDialog mpd = Instantiate(Resources.Load<GameObject>("prefabs/moveplayerdialog"), GameObject.Find("Canvas").transform).GetComponent<MovePlayerDialog>();
+            mpd.MoveTotal = _playerAttack.MoveTotal;
+            yield return new WaitUntil(() => mpd.Confirmed);
+            Destroy(mpd.gameObject);
+        }
         
         yield return new WaitForSeconds(1.0f);
         //Load next enemy attack
@@ -188,7 +197,7 @@ public class BattleManager : MonoBehaviour
         {
             _resultText.text = "The enemy takes " + (playerDamage + _clashingDamage) + " damage!";
             _resultText.color = Color.green;
-            _currentEnemy.TakeDamage(playerDamage + _clashingDamage);
+            CurrentEnemy.TakeDamage(playerDamage + _clashingDamage);
             _clashingDamage = 0;
             _clashText.text = "";
 
@@ -202,7 +211,7 @@ public class BattleManager : MonoBehaviour
             _clashText.text = "";
 
         }
-        else
+        else if(playerDamage != 0)
         {
             _resultText.color = Color.yellow;
             if (Utils.FlipCoin())
@@ -295,4 +304,14 @@ public enum BattleStates
     ChoosingAction,
     BuyingCards,
     Battle
+}
+
+//Used for both players and enemies
+public enum AttackRange
+{
+    Melee,
+    Short,
+    Long,
+    Null,
+    Inescapable
 }

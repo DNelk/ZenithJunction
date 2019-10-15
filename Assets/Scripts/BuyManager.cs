@@ -71,7 +71,7 @@ public class BuyManager : MonoBehaviour
         else if (c == _endlessAether)
         {
             _soldOutMarkers.Add(Instantiate(Resources.Load<GameObject>("Prefabs/SoldOutCard"), c.transform.position, Quaternion.identity, transform));
-            DeckManager.Instance.Discard(Instantiate(Resources.Load<GameObject>("Prefabs/Cards/Boil").GetComponent<Card>()));
+            DeckManager.Instance.Discard(Instantiate(Resources.Load<GameObject>("Prefabs/Cards/ManaBoil").GetComponent<Card>()));
         }
         else
         {
