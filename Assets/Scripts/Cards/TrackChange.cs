@@ -11,6 +11,6 @@ public class TrackChange : Card
 
     public override void ExecuteFailed()
     {
-        AetherMod = 0;
+        AetherTotal = 0;
     }
 }

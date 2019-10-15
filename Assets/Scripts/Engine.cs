@@ -37,6 +37,14 @@ public class Engine : MonoBehaviour
         set => _aetherTotal = value;
     }
 
+    //Total movement this round
+    private int _moveTotal;
+    public int MoveTotal
+    {
+        get => _moveTotal;
+        set => _moveTotal = value;
+    }
+    
     public EngineState EngineState;
 
     public float XInterval = 50f;
@@ -148,8 +156,9 @@ public class Engine : MonoBehaviour
                 Utils.DisplayError("Not enough aether to power " + c.CardName + "!", 0.5f);
                 c.ExecuteFailed();
             }
-            _atkTotal += c.AtkMod;
-            _aetherTotal += c.AetherMod;
+            _atkTotal += c.CalculateAttackTotalWithPosition();
+            _aetherTotal += c.AetherTotal;
+            _moveTotal += c.MoveTotal;
             DeckManager.Instance.Discard(c);
         }
 
@@ -217,6 +226,7 @@ public class Engine : MonoBehaviour
             GetComponentInChildren<Text>().enabled = true;
             _aetherTotal = 0;
             _atkTotal = 0;
+            _moveTotal = 0;
         }
     }
     

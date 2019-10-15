@@ -11,6 +11,6 @@ public class RecklessSmash : Card
 
     public override void ExecuteFailed()
     {
-        AtkMod = 0;
+        AtkTotal = 0;
     }
 }

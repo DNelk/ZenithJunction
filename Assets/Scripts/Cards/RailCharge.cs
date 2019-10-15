@@ -4,7 +4,7 @@ using UnityEngine;
 
 //Doubles the power of attack cards
 
-public class RailSpark : Card
+public class RailCharge : Card
 {
     public override void Execute()
     {
@@ -14,7 +14,7 @@ public class RailSpark : Card
         {
             if (c.CardType == CardTypes.Attack)
             {
-                c.AtkMod *= 2;
+                c.AtkTotal *= 2;
             }
                 
         }
