@@ -17,6 +17,7 @@ public class BattleManager : MonoBehaviour
     public Enemy CurrentEnemy;
     public Player Player;
     public int CurrentAether;
+    
     public BattleStates BattleState;
     private int _clashingDamage;
     //UI
@@ -123,29 +124,37 @@ public class BattleManager : MonoBehaviour
     {
         BattleState = BattleStates.Battle;
         
+        //Player go
         _playerAttack.StartCoroutine(_playerAttack.ExecuteStack());
         yield return new WaitUntil(() =>_playerAttack.Executed);
-        
+        //Apply any debuffs
+        BattleDelegateHandler.ApplyNegativeEnemyEffects();
         int playerDamage = _playerAttack.AtkTotal;
         CurrentAether = _playerAttack.AetherTotal;
         
+        //Display text
         _playerText.text = "You attack for " + playerDamage + " damage. You have " + CurrentAether + " aether to spend.";
         Tween expandTextTween = _playerText.transform.parent.DOScale(1.5f, 0.5f);
         yield return expandTextTween.WaitForCompletion();
         _playerText.transform.parent.transform.DOScale(1f, 0.5f);
         
+        //Enemy go
         int enemyDamage = CurrentEnemy.Attack();
+        
+        //Display text
         _enemyText.text = "The enemy attacks for " + enemyDamage + " damage.";
         expandTextTween = _enemyText.transform.parent.DOScale(1.5f, 0.5f);
         yield return expandTextTween.WaitForCompletion();
         _enemyText.transform.parent.transform.DOScale(1f, 0.5f);
         
+        //Resolve attacks
         DisplayAttackResult(playerDamage, enemyDamage);
         expandTextTween = _resultText.transform.parent.DOScale(1.5f, 0.5f);
         yield return expandTextTween.WaitForCompletion();
         expandTextTween = _resultText.transform.parent.transform.DOScale(1f, 0.5f);
         yield return expandTextTween.WaitForCompletion();
         
+        //Allow player movement
         if (_playerAttack.MoveTotal > 0)
         {
             MovePlayerDialog mpd = Instantiate(Resources.Load<GameObject>("prefabs/moveplayerdialog"), GameObject.Find("Canvas").transform).GetComponent<MovePlayerDialog>();

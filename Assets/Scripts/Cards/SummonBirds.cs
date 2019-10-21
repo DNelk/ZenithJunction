@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RecklessSmash : Card
+public class SummonBirds : Card
 {
     public override void Execute()
     {
-        BattleManager.Instance.Player.TakeDamage(2);
+       BattleDelegateHandler.EnemyEffect  += () => BattleManager.Instance.CurrentEnemy.AtkDebuff = 2;
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EngineDelegateHandler : MonoBehaviour
+public class BattleDelegateHandler : MonoBehaviour
 {
     public delegate void NextEngineDelegate();
 
@@ -16,6 +16,21 @@ public class EngineDelegateHandler : MonoBehaviour
         foreach (var d in NextEngineEffect.GetInvocationList())
         {
             NextEngineEffect -= (d as NextEngineDelegate);
+        }
+    }
+
+    public delegate void EnemyEffectDelegate();
+
+    public static EnemyEffectDelegate EnemyEffect;
+
+    public static void ApplyNegativeEnemyEffects()
+    {
+        if(EnemyEffect == null)
+            return;
+        EnemyEffect();
+        foreach (var d in EnemyEffect.GetInvocationList())
+        {
+            EnemyEffect -= (d as EnemyEffectDelegate);
         }
     }
 }

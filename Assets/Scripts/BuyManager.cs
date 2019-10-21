@@ -18,6 +18,9 @@ public class BuyManager : MonoBehaviour
     private Button _leaveButton;
     private Transform _cardParent;
     private Text _aetherText;
+    private Text _buyText;
+    private Text _freeBuyText;
+
     
     //Vars
     private List<GameObject> _activeCardObjects;
@@ -26,7 +29,9 @@ public class BuyManager : MonoBehaviour
     private Stack<String> _shopDeck;
     //private Stack<Card> _pending;
     ///private Stack<Vector3> _pendingPos;
-
+    public int BuysRemaining;
+    public int FreeBuysRemaining;
+    
     //Freebies
     private Card _endlessAtk;
     private Card _endlessAether;
@@ -55,14 +60,21 @@ public class BuyManager : MonoBehaviour
         _leaveButton = transform.Find("LeaveShop").GetComponent<Button>();
         _cardParent = transform.Find("Cards").transform;
         _aetherText = transform.Find("AetherText").GetComponent<Text>();
+        _buyText = transform.Find("BuyText").GetComponent<Text>();
+        _freeBuyText = transform.Find("FreeBuyText").GetComponent<Text>();
     }
 
     //Buy a card we click on
     public void BuyCard(Card c)
     {
-        if (BattleManager.Instance.CurrentAether < c.BuyCost)
+        if ((BattleManager.Instance.CurrentAether < c.BuyCost && FreeBuysRemaining == 0) || BuysRemaining == 0)
             return;
-        BattleManager.Instance.CurrentAether -= c.BuyCost;
+        
+        if (FreeBuysRemaining != 0)
+            FreeBuysRemaining--;
+        else 
+            BattleManager.Instance.CurrentAether -= c.BuyCost;
+        
         if (c == _endlessAtk)
         {
             _soldOutMarkers.Add(Instantiate(Resources.Load<GameObject>("Prefabs/SoldOutCard"), c.transform.position, Quaternion.identity, transform));
@@ -82,6 +94,9 @@ public class BuyManager : MonoBehaviour
             _activeCards.Remove(c);
             DeckManager.Instance.Discard(c);
         }
+
+        if (BuysRemaining != -1)
+            BuysRemaining--;
     }
 
     public IEnumerator LoadBuyMenu()
@@ -134,6 +149,9 @@ public class BuyManager : MonoBehaviour
         Tween fade = _cg.DOFade(0.0f, 1.0f);
         yield return fade.WaitForCompletion();
         BattleManager.Instance.BattleState = BattleStates.ChoosingAction;
+       
+        BuysRemaining = -1; //By default you have infinite buys
+        FreeBuysRemaining = 0;
     }
 
     private IEnumerator DealNewCard(float xPosition, int siblingIndex, int activeIndex)
@@ -179,5 +197,15 @@ public class BuyManager : MonoBehaviour
     private void Update()
     {
         _aetherText.text = "Aether Remaining: " + BattleManager.Instance.CurrentAether;
+        
+        if (BuysRemaining != -1)
+            _buyText.text = "Buys Remaining: " + BuysRemaining;
+        else
+            _buyText.text = "";
+
+        if (FreeBuysRemaining != 0)
+            _freeBuyText.text = "Free buys Remaining: " + FreeBuysRemaining;
+        else
+            _freeBuyText.text = "";
     }
 }

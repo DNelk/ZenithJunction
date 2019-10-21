@@ -18,7 +18,7 @@ public class DeckManager : MonoBehaviour
     private List<GameObject> _activeCardObjects; //GameObjects of cards in play
     private Stack<String> _discard; //Discarded Cards
     private Stack<String> _deck; //Runtime version of the deck
-    
+    private Stack<String> _trash; //Trashed cards (removed until end of battle)
     
     //UI
     private Transform _cardPanel;
@@ -41,6 +41,7 @@ public class DeckManager : MonoBehaviour
         _activeCardObjects = new List<GameObject>();
         _discard = new Stack<String>();
         _deck = new Stack<String>();
+        _trash = new Stack<String>();
         foreach (String e in Deck)
         {
             _deck.Push(e);
@@ -119,7 +120,7 @@ public class DeckManager : MonoBehaviour
             yield return dealTween.WaitForCompletion();
         }
     }
-    
+    /*
     public void Discard(Engine discardedEngine)
     {
         Stack<Card> toDiscard = discardedEngine.Stack;
@@ -131,16 +132,28 @@ public class DeckManager : MonoBehaviour
             Destroy(discarding.gameObject);
         }
     }
-
+*/
     public void Discard(Card c)
     {
         _discard.Push(c.CardName);
-        Deck.Add(c.CardName);
+        //Deck.Add(c.CardName);
         if(_activeCardObjects.Contains(c.gameObject))
             _activeCardObjects.Remove(c.gameObject);
         Destroy(c.gameObject);
     }
 
+    public void Trash(Card c)
+    {
+        _trash.Push(c.CardName);
+        if(_activeCardObjects.Contains(c.gameObject))
+            _activeCardObjects.Remove(c.gameObject);
+        Destroy(c.gameObject);
+    }
+
+    public int InDeckCount() { return _deck.Count; }
+    public int InDiscardCount() { return _discard.Count; }
+    public int InTrashCount() { return _trash.Count; }
+    
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Return) && _activeCards.Count > 0)

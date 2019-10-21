@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RecklessSmash : Card
+public class FeralRage : Card
 {
     public override void Execute()
     {
-        BattleManager.Instance.Player.TakeDamage(2);
+        BuyManager.Instance.BuysRemaining = 0; 
     }
 }

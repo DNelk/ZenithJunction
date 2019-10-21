@@ -6,11 +6,6 @@ public class TrackChange : Card
 {
     public override void Execute()
     {
-        EngineDelegateHandler.NextEngineEffect += () => BattleManager.Instance.PlayerAttack.AetherTotal += 2;
-    }
-
-    public override void ExecuteFailed()
-    {
-        AetherTotal = 0;
+        BattleDelegateHandler.NextEngineEffect += () => BattleManager.Instance.PlayerAttack.AetherTotal += 2;
     }
 }

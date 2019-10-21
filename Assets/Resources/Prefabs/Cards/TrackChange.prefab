@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cardName: Track Change
   _cardType: 1
-  _buyCost: 3
+  _buyCost: 2
   _aetherCost: 1
   _cardText: +2 Aether. Your next engine gets +2 Aether.
   _aetherValue: 0
@@ -25,7 +25,8 @@ MonoBehaviour:
   AetherTotal: 0
   MoveTotal: 0
   _priority: 0
-  Purchasable: 0
+  _purchasable: 0
+  TrashThis: 0
   XValue: 0
   Tweening: 0
   IsPreview: 0

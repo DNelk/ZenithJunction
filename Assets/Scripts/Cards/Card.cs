@@ -35,8 +35,9 @@ public class Card : MonoBehaviour
         }
     }
 
+    [HideInInspector] public bool TrashThis = false; //Cards that are to be trashed are instead removed from the deck until end of the battle
     
-    [HideInInspector]public int XValue = 0;
+    [HideInInspector] public int XValue = 0;
     [HideInInspector] public bool Tweening = false;
     [HideInInspector] public bool IsPreview = false;
     public bool IsXCost => _aetherCost == -1;
@@ -90,7 +91,9 @@ public class Card : MonoBehaviour
 
     public virtual void ExecuteFailed()
     {
-        
+        AtkTotal = 0;
+        AetherTotal = 0;
+        MoveTotal = 0;
     }
 
     protected void AssignUI()

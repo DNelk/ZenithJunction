@@ -18,6 +18,7 @@ public class Enemy : MonoBehaviour
     private Transform[] _positions;
     private int _currentPos; public int Position => _currentPos;
     [HideInInspector] public AttackRange DesiredRange = AttackRange.Null;
+    public int AtkDebuff = 0;
     
     //HP UI
     private Slider _healthBar;
@@ -62,7 +63,10 @@ public class Enemy : MonoBehaviour
     {
         //Deal damage and execute any other effects.
         _currentAttack.ExecuteOtherEffect();
-        return CalculateAttackTotalWithPosition(_currentAttack);
+        int dmg = CalculateAttackTotalWithPosition(_currentAttack);
+        dmg -= AtkDebuff;
+        AtkDebuff = 0;
+        return dmg;
     }
 
     public void TakeDamage(int damage)

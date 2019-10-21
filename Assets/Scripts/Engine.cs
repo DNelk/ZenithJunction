@@ -15,7 +15,16 @@ public class Engine : MonoBehaviour
     //public static Engine Instance = null;
 
     public Stack<Card> Stack;
+    
+    //UI
     public Color GlowColor;
+    private GameObject[] u_Circles;
+    private GameObject[] u_Wheels;
+    private GameObject u_EngineImg;
+    private GameObject u_HolesImg;
+    private Material[] u_WheelMat;
+    private bool _wheelTurning;
+
     [SerializeField] private List<Card> _pending;
     private Vector3 _initialPosition;
     private BoxCollider2D _collider;
@@ -73,6 +82,28 @@ public class Engine : MonoBehaviour
         _initialPosition = transform.position;
         Executed = false;
         _collider = GetComponent<BoxCollider2D>();
+        
+        u_Circles = new GameObject[2];
+        u_Circles[0] = transform.Find("CircleGlow").gameObject;
+        u_Circles[1] = u_Circles[0].transform.Find("CircleFlat").gameObject;
+        Material mat = Instantiate(u_Circles[0].GetComponent<Image>().material);
+        mat.SetColor("_MyColor", GlowColor);
+        //u_Circles[0].GetComponent<Image>().material.SetColor("_MyColor", GlowColor);
+        u_Circles[0].GetComponent<Image>().material = mat;
+        
+        u_Wheels = new GameObject[2];
+        u_Wheels[0] = u_Circles[0].transform.Find("WheelGlow").gameObject;
+        u_Wheels[1] = u_Wheels[0].transform.Find("Wheel").gameObject;
+        u_WheelMat = new Material[2];
+        u_WheelMat[0] = Instantiate(u_Wheels[0].GetComponent<Image>().material);
+        u_WheelMat[0].SetColor("_MyColor", GlowColor);
+        u_Wheels[0].GetComponent<Image>().material = u_WheelMat[0];
+        u_WheelMat[1] = Instantiate(u_Wheels[1].GetComponent<Image>().material);
+        u_Wheels[1].GetComponent<Image>().material = u_WheelMat[1];
+        _wheelTurning = false;
+
+        u_EngineImg = u_Circles[0].transform.Find("EngineImg").gameObject;
+        u_HolesImg = u_EngineImg.transform.Find("EngineHoles").gameObject;
     }
 
     //Adds a card to the pending card array
@@ -81,21 +112,38 @@ public class Engine : MonoBehaviour
         if(c.Engine == this)
             return;
         
+        if(PendingCount == 3)
+            return;
+        
         if (c.Engine != null)
             c.Engine.RemoveCard(c);
-        
+
         c.Engine = this;
-        c.SetEngine(GlowColor, transform, CurrentCardPos(_pending.Count));
+        c.SetEngine(GlowColor, u_Circles[1].transform, CurrentCardPos(_pending.Count));
         _pending.Add(c);
     }
 
     public void RemoveCard(Card c)
     {
+        int cInd = _pending.IndexOf(c);
+        Card nextC = null;
+        
+        if(_pending.Count > 1 && cInd != _pending.Count - 1)
+            nextC = _pending[cInd + 1];
+        
         _pending.Remove(c);
+        
+        if(cInd == _pending.Count)
+            return;
         if(_pending.Count == 0)
             return;
-        Card lastC = _pending[_pending.Count - 1];
-        lastC.SetEngine(GlowColor, transform, CurrentCardPos(_pending.Count-1));
+        nextC.transform.position = CurrentCardPos(cInd);
+        while (cInd < _pending.Count-1)
+        {
+            cInd++;
+            nextC = _pending[cInd];
+            nextC.transform.position = CurrentCardPos(cInd);
+        }
     }
     
     public void StackCards()
@@ -132,7 +180,7 @@ public class Engine : MonoBehaviour
 
     public IEnumerator ExecuteStack()
     {
-        EngineDelegateHandler.ApplyEngineEffects();
+        BattleDelegateHandler.ApplyEngineEffects();
         while (Stack.Count > 0)
         {
             Card c = Stack.Pop();
@@ -159,7 +207,10 @@ public class Engine : MonoBehaviour
             _atkTotal += c.CalculateAttackTotalWithPosition();
             _aetherTotal += c.AetherTotal;
             _moveTotal += c.MoveTotal;
-            DeckManager.Instance.Discard(c);
+            if (c.TrashThis)
+                DeckManager.Instance.Trash(c);
+            else
+                DeckManager.Instance.Discard(c);
         }
 
         Executed = true;
@@ -198,14 +249,26 @@ public class Engine : MonoBehaviour
     
     private void Update()
     {
-        /*if (Input.GetKeyDown(KeyCode.Return) && _pending.Count > 0)
+        if (PendingCount >= 3 || EngineState == EngineState.Stacked && !_wheelTurning)
         {
-            StackCards();
-            ExecuteStack();
-            Debug.Log("Total Attack: " + _atkTotal);
-            Debug.Log("Total Focus: " + _focTotal);
+            for (int i = 0; i < u_WheelMat.Length; i++)
+            {
+                u_WheelMat[i].SetFloat("_TimeScale", 100f);
+                u_Wheels[i].GetComponent<Image>().material = u_WheelMat[i];
+            }
 
-        }*/
+            _wheelTurning = true;
+        }
+        else if (PendingCount < 3 && _wheelTurning && EngineState != EngineState.Stacked)
+        {
+            for (int i = 0; i < u_WheelMat.Length; i++)
+            {
+                u_WheelMat[i].SetFloat("_TimeScale", 0);
+                u_Wheels[i].GetComponent<Image>().material = u_WheelMat[i];
+            }
+
+            _wheelTurning = false;
+        }
     }
 
     public void ToggleMode()
@@ -280,7 +343,7 @@ public class Engine : MonoBehaviour
     {
         foreach (Card c in Stack)
         {
-            c.SetEngine(GlowColor, transform);
+            c.SetEngine(GlowColor, u_Circles[1].transform);
         }
     }
 
@@ -288,7 +351,7 @@ public class Engine : MonoBehaviour
     {
         foreach (Card c in Stack)
         {
-            c.SetEngine(Color.white, transform);
+            c.SetEngine(Color.white, u_Circles[1].transform);
         }
 
         BattleManager.Instance.PushAttack(this);
@@ -297,7 +360,10 @@ public class Engine : MonoBehaviour
 
     private Vector3 CurrentCardPos(int count)
     {
-        return (transform.position + (Vector3.left*_collider.size.x/2)) + (Vector3.right * (count * (XInterval * (Screen.currentResolution.width/800f))));
+        Rect engineRect = u_EngineImg.GetComponent<RectTransform>().rect;
+        Vector3 enginePos = u_EngineImg.transform.position;
+        Vector3 posVec = new Vector3(enginePos.x + (count * (XInterval * (Screen.currentResolution.width/800f)) -engineRect.width/10), enginePos.y + engineRect.height/10, 0f);
+        return posVec;
     }
 }
 
