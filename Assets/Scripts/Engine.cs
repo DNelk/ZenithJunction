@@ -280,13 +280,11 @@ public class Engine : MonoBehaviour
             {
                 c.GetComponent<Collider2D>().enabled = false;
             }
-            GetComponentInChildren<Text>().enabled = false;
         }
         else
         {
             EngineState = EngineState.Stacking;
             Executed = false;
-            GetComponentInChildren<Text>().enabled = true;
             _aetherTotal = 0;
             _atkTotal = 0;
             _moveTotal = 0;
@@ -362,7 +360,7 @@ public class Engine : MonoBehaviour
     {
         Rect engineRect = u_EngineImg.GetComponent<RectTransform>().rect;
         Vector3 enginePos = u_EngineImg.transform.position;
-        Vector3 posVec = new Vector3(enginePos.x + (count * (XInterval * (Screen.currentResolution.width/800f)) -engineRect.width/10), enginePos.y + engineRect.height/10, 0f);
+        Vector3 posVec = new Vector3(enginePos.x + (count * (XInterval * (Screen.currentResolution.width/800f)) -(engineRect.width/10f * (Screen.currentResolution.width/800f))), enginePos.y + (engineRect.height/9.5f * (Screen.currentResolution.width/800f)) , 0f);
         return posVec;
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using DG.Tweening;
+using TMPro;
 
 public class Card : MonoBehaviour
 {
@@ -30,8 +31,7 @@ public class Card : MonoBehaviour
         set
         { 
             _purchasable = value;
-            if (_purchasable)
-                u_buyCost.text = _buyCost.ToString();
+            AssignUI();
         }
     }
 
@@ -55,11 +55,11 @@ public class Card : MonoBehaviour
 
     //Card UI
     protected Image u_cardBackground;
-    protected Text u_cardName;
-    protected Text u_type;
-    protected Text u_buyCost;
-    protected Text u_aetherCost;
-    protected Text u_bodyText;
+    protected TMP_Text u_cardName;
+    protected TMP_Text u_type;
+    protected TMP_Text u_buyCost;
+    protected TMP_Text u_aetherCost;
+    protected TMP_Text u_bodyText;
     protected Image u_image;
     protected Image u_glow;
 
@@ -73,14 +73,14 @@ public class Card : MonoBehaviour
     protected void Init()
     {
         u_cardBackground = transform.Find("Back").GetComponent<Image>();
-        u_cardName = transform.Find("CardName").GetComponent<Text>();
-        u_type = transform.Find("TypeLine").GetComponent<Text>();
-        u_buyCost = transform.Find("BuyCost").GetComponent<Text>();
-        u_aetherCost = transform.Find("AetherCost").GetComponent<Text>();
-        u_bodyText = transform.Find("BodyText").GetComponent<Text>();
+        u_cardName = transform.Find("NameBanner").transform.Find("CardName").GetComponent<TMP_Text>();
+        u_type = transform.Find("Type").transform.Find("TypeLine").GetComponent<TMP_Text>();
+        u_buyCost = transform.Find("Cost").transform.Find("BuyCost").GetComponent<TMP_Text>();
+        u_aetherCost = transform.Find("Aether").transform.Find("AetherCost").GetComponent<TMP_Text>();
+        u_bodyText = transform.Find("BodyText").GetComponent<TMP_Text>();
         u_image = transform.Find("Image").GetComponent<Image>();
-        u_glow = transform.Find("Glow").GetComponent<Image>();
-        u_glow.color = Color.clear;
+        //u_glow = transform.Find("Glow").GetComponent<Image>();
+        //u_glow.color = Color.clear;
     }
     
     //Execute a card's unique text
@@ -104,16 +104,18 @@ public class Card : MonoBehaviour
         
         if (_atkRange != AttackRange.Null)
             u_type.text += " - " + Enum.GetName(typeof(AttackRange), _atkRange) + " Range";
-
-        u_buyCost.text = "";
+        
+        u_buyCost.text = _buyCost.ToString();
         if (_purchasable)
-            u_buyCost.text = _buyCost.ToString();
+            u_buyCost.transform.parent.gameObject.SetActive(true);
+        else
+            u_buyCost.transform.parent.gameObject.SetActive(false);
         
         u_aetherCost.text = _aetherCost.ToString();
         if (_aetherCost == -1) //-1 is X
             u_aetherCost.text = "X";
         else if (_aetherCost == 0)
-            u_aetherCost.text = "";
+            u_aetherCost.transform.parent.gameObject.SetActive(false);
         
         u_bodyText.text = _cardText;
     }
@@ -129,13 +131,13 @@ public class Card : MonoBehaviour
 
     public void SetEngine(Color glowColor, Transform parent)
     {
-        u_glow.color = glowColor;
+       // u_glow.color = glowColor;
         transform.SetParent(parent);
     }
     
     public void SetEngine(Color glowColor, Transform parent, Vector3 position)
     {
-        u_glow.color = glowColor;
+        // u_glow.color = glowColor;
         transform.SetParent(parent);
         Tweening = true;
         transform.DOMove(position, 0.5f).OnComplete(() => Tweening = false);

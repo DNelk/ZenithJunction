@@ -142,6 +142,11 @@ public class DeckManager : MonoBehaviour
         Destroy(c.gameObject);
     }
 
+    public void Discard(string c)
+    {
+        _discard.Push(c);
+    }
+
     public void Trash(Card c)
     {
         _trash.Push(c.CardName);

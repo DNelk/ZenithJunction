@@ -62,6 +62,8 @@ public class BuyManager : MonoBehaviour
         _aetherText = transform.Find("AetherText").GetComponent<Text>();
         _buyText = transform.Find("BuyText").GetComponent<Text>();
         _freeBuyText = transform.Find("FreeBuyText").GetComponent<Text>();
+        BuysRemaining = -1;
+        FreeBuysRemaining = 0;
     }
 
     //Buy a card we click on
@@ -83,7 +85,7 @@ public class BuyManager : MonoBehaviour
         else if (c == _endlessAether)
         {
             _soldOutMarkers.Add(Instantiate(Resources.Load<GameObject>("Prefabs/SoldOutCard"), c.transform.position, Quaternion.identity, transform));
-            DeckManager.Instance.Discard(Instantiate(Resources.Load<GameObject>("Prefabs/Cards/ManaBoil").GetComponent<Card>()));
+            DeckManager.Instance.Discard(c.CardName);
         }
         else
         {
