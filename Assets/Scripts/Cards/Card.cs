@@ -13,18 +13,21 @@ public class Card : MonoBehaviour
     [SerializeField] protected string _cardName; public String CardName => _cardName;
     [SerializeField] protected CardTypes _cardType; public CardTypes CardType => _cardType;
     [SerializeField] protected int _buyCost; public int BuyCost => _buyCost;
-    [SerializeField] protected int _aetherCost;
+    [SerializeField] protected int _aetherCost; public int AetherCost => _aetherCost;
     [SerializeField] protected string _cardText;
     [SerializeField] protected int _aetherValue;
-    [SerializeField] protected int _atkValue;
-    [SerializeField] protected AttackRange _atkRange = AttackRange.Null;
+    [SerializeField] protected int _powerValue;
+    [SerializeField] protected AttackRange _range = AttackRange.Null;
     [SerializeField] protected int _moveValue;
-    [HideInInspector] public int AtkTotal; //Modified attack value
+    [HideInInspector] public int PowerTotal; //Modified attack value
     [HideInInspector] public int AetherTotal; //Modified aether value
     [HideInInspector] public int MoveTotal; //Totalified aether value
     [SerializeField] protected int _priority; public int Priority => _priority;
     
     [SerializeField] private bool _purchasable = false;
+    private Vector3 _initialScale;
+    private CardEventManager _eventManager;
+    
     public bool Purchasable
     {
         get => _purchasable;
@@ -81,6 +84,8 @@ public class Card : MonoBehaviour
         u_image = transform.Find("Image").GetComponent<Image>();
         //u_glow = transform.Find("Glow").GetComponent<Image>();
         //u_glow.color = Color.clear;
+        _initialScale = transform.localScale;
+        _eventManager = GetComponent<CardEventManager>();
     }
     
     //Execute a card's unique text
@@ -91,7 +96,7 @@ public class Card : MonoBehaviour
 
     public virtual void ExecuteFailed()
     {
-        AtkTotal = 0;
+        PowerTotal = 0;
         AetherTotal = 0;
         MoveTotal = 0;
     }
@@ -100,10 +105,41 @@ public class Card : MonoBehaviour
     {
         u_cardName.text = _cardName;
         
-        u_type.text = Enum.GetName(typeof(CardTypes), _cardType);
+        switch (CardType)
+        {
+            case CardTypes.Attack:
+                u_cardBackground.color = new Color(0.9f, 0.6f, 0.6f);
+                break;
+            case CardTypes.Aether:
+                u_cardBackground.color = new Color(0.7f, 1f, 1f);
+                break;
+            case CardTypes.Special:
+                u_cardBackground.color = new Color(0.8f,0.6f,1f);
+                break;
+            case CardTypes.Movement:
+                u_cardBackground.color = new Color(0.5f, 0.5f, 0f);
+                break;
+                
+        }
         
-        if (_atkRange != AttackRange.Null)
-            u_type.text += " - " + Enum.GetName(typeof(AttackRange), _atkRange) + " Range";
+        u_type.text = Enum.GetName(typeof(CardTypes), _cardType);
+
+        switch (_range)
+        {
+            case AttackRange.Melee:
+                u_type.text = "Melee " + u_type.text;
+                break;
+            case AttackRange.Short:
+                u_type.text = "Ranged " + u_type.text + " - Short";
+                u_cardBackground.color = new Color(0.8f, 0.3f, 0.1f);
+                break;
+            case AttackRange.Long:
+                u_type.text = "Ranged " + u_type.text + " - Long";
+                u_cardBackground.color = new Color(0.6f, 0.3f, 0.3f);
+                break;
+            default:
+                break;
+        }
         
         u_buyCost.text = _buyCost.ToString();
         if (_purchasable)
@@ -117,30 +153,35 @@ public class Card : MonoBehaviour
         else if (_aetherCost == 0)
             u_aetherCost.transform.parent.gameObject.SetActive(false);
         
-        u_bodyText.text = _cardText;
+        u_bodyText.text = Utils.ReplaceWithSymbols(_cardText);
     }
+    
 
     #region Combat and Effects
 
     public void ReadyCard()
     {
-        AtkTotal = _atkValue;
+        PowerTotal = _powerValue;
         AetherTotal = _aetherValue;
         MoveTotal = _moveValue;
     }
 
-    public void SetEngine(Color glowColor, Transform parent)
+    public void SetEngine(Transform parent)
     {
-       // u_glow.color = glowColor;
         transform.SetParent(parent);
+        if (_eventManager.BaseScale != Vector3.zero)
+            _eventManager.BaseScale = _initialScale;
+        else
+            transform.localScale = _initialScale;
     }
     
-    public void SetEngine(Color glowColor, Transform parent, Vector3 position)
+    public void SetEngine(Color glowColor, Transform parent, Vector3 position, Vector3 scale)
     {
         // u_glow.color = glowColor;
         transform.SetParent(parent);
         Tweening = true;
         transform.DOMove(position, 0.5f).OnComplete(() => Tweening = false);
+        transform.DOScale( scale.x * _initialScale, 0.5f);
     }
 
     //Pay aether cost for spells
@@ -163,19 +204,17 @@ public class Card : MonoBehaviour
     {
         int distance = Mathf.Abs(BattleManager.Instance.Player.Position - BattleManager.Instance.CurrentEnemy.Position);
         float damageMod = 1;
-        switch (_atkRange)
+        switch (_range)
         {
             //Melee Range Attacks only work right next to target
             case AttackRange.Melee:
                 if (distance > 0)
                     damageMod = 0;
                 break;
-            //Short range attacks are weaker if not right next
+            //Short ranged attacks are weaker further away
             case AttackRange.Short:
-                if (distance == 1)
+                if (distance >= 2) 
                     damageMod = 0.5f;
-                else if (distance >= 2)
-                    damageMod = 0;
                 break;
             //Long range attacks are only good far away
             case AttackRange.Long:
@@ -187,7 +226,7 @@ public class Card : MonoBehaviour
                 break;
         }
 
-        return (int)(AtkTotal * damageMod);
+        return (int)(PowerTotal * damageMod);
     }
     #endregion
     

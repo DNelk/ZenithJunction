@@ -17,14 +17,14 @@ MonoBehaviour:
   _buyCost: 2
   _aetherCost: 1
   _cardText: +2 Aether. Your next engine gets +2 Aether.
-  _aetherValue: 0
-  _atkValue: 0
-  _atkRange: 3
+  _aetherValue: 2
+  _powerValue: 0
+  _range: 3
   _moveValue: 0
-  AtkTotal: 0
+  PowerTotal: 0
   AetherTotal: 0
   MoveTotal: 0
-  _priority: 0
+  _priority: 2
   _purchasable: 0
   TrashThis: 0
   XValue: 0

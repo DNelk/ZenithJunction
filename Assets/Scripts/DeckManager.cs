@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Experimental.PlayerLoop;
 using Random = System.Random;
 using DG.Tweening;
+using TMPro;
 using UnityEngine.UIElements;
 
 public class DeckManager : MonoBehaviour
@@ -22,8 +23,9 @@ public class DeckManager : MonoBehaviour
     
     //UI
     private Transform _cardPanel;
-    public float XInterval;
-
+    private TMP_Text[] _counts;
+    private RectTransform[] _cardPositions;
+    
     private void Awake()
     {
         if (Instance == null)
@@ -48,6 +50,20 @@ public class DeckManager : MonoBehaviour
         }
 
         _cardPanel = transform.parent;
+        _counts = new TMP_Text[3];
+        _counts[0] = transform.Find("DeckCount").transform.Find("InDeck").GetChild(0).GetComponent<TMP_Text>();
+        _counts[1] = transform.Find("DeckCount").transform.Find("Discarded").GetChild(0).GetComponent<TMP_Text>();
+        _counts[2] = transform.Find("DeckCount").transform.Find("Trash").GetChild(0).GetComponent<TMP_Text>();
+
+        var positions = transform.Find("CardPositions").GetComponentsInChildren<RectTransform>();
+        _cardPositions = new RectTransform[positions.Length];
+        int j = 0;
+        for (int i = positions.Length - 1; i >= 0; i--)
+        {
+            _cardPositions[i] = positions[j];
+            j++;
+        }
+
     }
 
 
@@ -71,7 +87,7 @@ public class DeckManager : MonoBehaviour
                 _deck.Push(c);
             }
         }
-        
+        _discard.Clear();
         //Shuffle
         Random rng = new Random();
         //Convert to array
@@ -98,14 +114,11 @@ public class DeckManager : MonoBehaviour
     //Deal 9 to player
     private IEnumerator DealActive()
     {
-        float x = transform.position.x;
         for (int i = 0; i < 9; i++)
         {
             if(_deck.Count == 0)
                 ShuffleDeck();
-
-            x -= XInterval * (Screen.currentResolution.width/800f);
-
+            
             GameObject activeCardGO = Instantiate(Resources.Load<GameObject>("Prefabs/Cards/" + _deck.Pop().Replace(" ", String.Empty)), transform.position, Quaternion.identity,
                 _cardPanel);
             _activeCardObjects.Add(activeCardGO);
@@ -115,7 +128,7 @@ public class DeckManager : MonoBehaviour
             
             
 
-            Tween dealTween = activeCardGO.transform.DOMoveX(x, 0.2f, false);
+            Tween dealTween = activeCardGO.transform.DOMove(_cardPositions[i].position, 0.1f, false);
 
             yield return dealTween.WaitForCompletion();
         }
@@ -161,10 +174,10 @@ public class DeckManager : MonoBehaviour
     
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return) && _activeCards.Count > 0)
-        {
-            
-        }
+        _counts[0].text = InDeckCount().ToString();
+        _counts[1].text = InDiscardCount().ToString();
+        _counts[2].text = InTrashCount().ToString();
+
     }
 
     public void Reset()

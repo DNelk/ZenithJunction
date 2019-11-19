@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _baseDamage: 3
+  _range: 0
   _name: Slash
   _description: Hurts!
-  _warning: attack for at least 3 damage.
+  _warning: attack with 3 power.

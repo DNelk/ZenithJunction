@@ -18,14 +18,15 @@ MonoBehaviour:
   _aetherCost: 1
   _cardText: +1 Power. Your opponent has -2 power.
   _aetherValue: 0
-  _atkValue: 1
-  _atkRange: 4
+  _powerValue: 1
+  _range: 3
   _moveValue: 0
-  AtkTotal: 0
+  PowerTotal: 0
   AetherTotal: 0
   MoveTotal: 0
   _priority: 2
   _purchasable: 0
+  TrashThis: 0
   XValue: 0
   Tweening: 0
   IsPreview: 0

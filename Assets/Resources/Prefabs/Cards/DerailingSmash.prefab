@@ -1,0 +1,134 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &1828065955676597279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2720653467801630892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7e51e6e6fb0d49e580da06f6fd4a605, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cardName: Derailing Smash
+  _cardType: 0
+  _buyCost: 2
+  _aetherCost: 1
+  _cardText: +5 Power. You take 2 damage.
+  _aetherValue: 0
+  _powerValue: 5
+  _range: 0
+  _moveValue: 0
+  PowerTotal: 0
+  AetherTotal: 0
+  MoveTotal: 0
+  _priority: 1
+  _purchasable: 0
+  TrashThis: 0
+  XValue: 0
+  Tweening: 0
+  IsPreview: 0
+  Dragging: 0
+--- !u!1001 &3860570808383469520
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1176058906799001468, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: m_Name
+      value: DerailingSmash
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _cardName
+      value: Reckless Smash
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _priority
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _atkValue
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _buyCost
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _steamCost
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001469, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001469, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001469, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001469, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001469, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001469, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001469, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001469, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001469, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001469, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001469, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 0d479990a3bf94b66add313f61a36fdf, type: 3}
+--- !u!1 &2720653467801630892 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1176058906799001468, guid: 0d479990a3bf94b66add313f61a36fdf,
+    type: 3}
+  m_PrefabInstance: {fileID: 3860570808383469520}
+  m_PrefabAsset: {fileID: 0}

@@ -9,7 +9,7 @@ public class ConeOfGarbage : Card
     {
         base.Execute();
 
-        AtkTotal = GarbageNum();
+        PowerTotal = GarbageNum();
     }
 
     private void Start()
@@ -19,6 +19,6 @@ public class ConeOfGarbage : Card
 
     private int GarbageNum()
     {
-        return (int)Mathf.Pow(((DeckManager.Instance.InDeckCount() + DeckManager.Instance.InDiscardCount())/10),2);
+        return (int)Mathf.Pow((((DeckManager.Instance.InDeckCount() + DeckManager.Instance.InDiscardCount()) + 9)/10),2);
     }
 }

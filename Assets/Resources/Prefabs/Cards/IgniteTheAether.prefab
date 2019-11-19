@@ -16,8 +16,7 @@ MonoBehaviour:
   _cardType: 2
   _buyCost: 3
   _aetherCost: 0
-  _cardText: Your Aether cards produce 3x the amount in this engine. Remove them from
-    your deck.
+  _cardText: Your Aether cards produce 3x the amount in this engine. Trash them.
   _aetherValue: 0
   _atkValue: 0
   _atkRange: 3

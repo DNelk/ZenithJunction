@@ -11,7 +11,8 @@ public class IgniteTheAether : Card
             if (c.CardType == CardTypes.Aether)
             {
                 c.AetherTotal *= 3;
-                c.TrashThis = true;
+                if(BattleManager.Instance.BattleState == BattleStates.Battle)
+                    c.TrashThis = true;
             }
                 
         }    

@@ -18,10 +18,10 @@ MonoBehaviour:
   _aetherCost: 1
   _cardText: xxx
   _aetherValue: 0
-  _atkValue: 0
-  _atkRange: 1
+  _powerValue: 0
+  _range: 1
   _moveValue: 0
-  AtkTotal: 0
+  PowerTotal: 0
   AetherTotal: 0
   MoveTotal: 0
   _priority: 2

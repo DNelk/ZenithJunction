@@ -13,11 +13,16 @@ public class BattleDelegateHandler : MonoBehaviour
         if(NextEngineEffect == null)
             return;
         NextEngineEffect();
-        foreach (var d in NextEngineEffect.GetInvocationList())
+        if (NextEngineEffect != null)
         {
-            NextEngineEffect -= (d as NextEngineDelegate);
+            foreach (var d in NextEngineEffect.GetInvocationList())
+            {
+                NextEngineEffect -= (d as NextEngineDelegate);
+            }
         }
     }
+    
+    
 
     public delegate void EnemyEffectDelegate();
 
@@ -28,9 +33,31 @@ public class BattleDelegateHandler : MonoBehaviour
         if(EnemyEffect == null)
             return;
         EnemyEffect();
-        foreach (var d in EnemyEffect.GetInvocationList())
+        if (EnemyEffect != null)
         {
-            EnemyEffect -= (d as EnemyEffectDelegate);
+            foreach (var d in EnemyEffect.GetInvocationList())
+            {
+                EnemyEffect -= (d as EnemyEffectDelegate);
+            }
+        }
+    }
+
+    public static void ClearAllDelegates()
+    {
+        if (NextEngineEffect != null)
+        {
+            foreach (var d in NextEngineEffect.GetInvocationList())
+            {
+                NextEngineEffect -= (d as NextEngineDelegate);
+            }
+        }
+
+        if (EnemyEffect != null)
+        {
+            foreach (var d in EnemyEffect.GetInvocationList())
+            {
+                EnemyEffect -= (d as EnemyEffectDelegate);
+            }
         }
     }
 }

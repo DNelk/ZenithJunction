@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 
 
@@ -20,10 +21,20 @@ namespace TMPro.Examples
             m_TextComponent = gameObject.GetComponent<TMP_Text>();
         }
 
-
+        Resolution res;
         void Start()
         {
+            res = Screen.currentResolution;
             StartCoroutine(WarpText());
+        }
+
+        private void Update()
+        {
+            if (res.width !=  Screen.currentResolution.width || res.height !=  Screen.currentResolution.height )
+            {
+                m_TextComponent.havePropertiesChanged = true;
+                res = Screen.currentResolution;
+            }
         }
 
 

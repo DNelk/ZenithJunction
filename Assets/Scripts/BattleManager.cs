@@ -22,10 +22,11 @@ public class BattleManager : MonoBehaviour
     private int _clashingDamage;
     //UI
     private Button _finishEnginesButton;
-    private Text _playerText;
-    private Text _enemyText;
-    private Text _resultText;
-    private Text _clashText;
+    private TMP_Text _confirmButtonText;
+    private UIPopIn _playerText;
+    private UIPopIn _enemyText;
+    private UIPopIn _resultText;
+    private UIPopIn _clashText;
     
     //Battle Variables
     //Engines
@@ -44,12 +45,16 @@ public class BattleManager : MonoBehaviour
     private void Init()
     {
         Player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        
         _finishEnginesButton = GameObject.Find("ConfirmButton").GetComponent<Button>();
+        _confirmButtonText = _finishEnginesButton.GetComponentInChildren<TMP_Text>();
         _finishEnginesButton.onClick.AddListener(ConfirmEngines);
-        _playerText = GameObject.Find("PlayerText").GetComponent<Text>();
-        _enemyText = GameObject.Find("EnemyText").GetComponent<Text>();
-        _resultText = GameObject.Find("ResultText").GetComponent<Text>();
-        _clashText = GameObject.Find("ClashText").GetComponent<Text>();
+        _finishEnginesButton.gameObject.SetActive(false);
+        
+        _playerText = GameObject.Find("PlayerText").GetComponent<UIPopIn>();
+        _enemyText = GameObject.Find("EnemyText").GetComponent<UIPopIn>();
+        _resultText = GameObject.Find("ResultText").GetComponent<UIPopIn>();
+        _clashText = GameObject.Find("ClashText").GetComponent<UIPopIn>();
         BattleState = BattleStates.MakingEngines;
         _playerAttack = null;
         
@@ -61,7 +66,7 @@ public class BattleManager : MonoBehaviour
     
     private void Start()
     {
-        LoadEnemyAttack();
+        LoadAllEnemyAttacks();
     }
 
 
@@ -70,6 +75,7 @@ public class BattleManager : MonoBehaviour
         switch (BattleState)
         {
             case BattleStates.MakingEngines:
+                MakingEnginesUpdate();
                 break;
             case BattleStates.BuyingCards:
                 break;
@@ -79,6 +85,27 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    private void MakingEnginesUpdate()
+    {
+        bool enginesDone = true;
+        foreach (Engine e in Engines)
+        {
+            if (e.PendingCount > 3 || e.PendingCount < 3)
+            {
+                enginesDone = false;
+            }
+        }
+
+        if (enginesDone)
+        {
+            _finishEnginesButton.gameObject.SetActive(true);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            ConfirmEngines();
+        }
+    }
     private void ChoosingActionUpdate()
     {
         if (EmptyEnginesCount() == 3)
@@ -88,14 +115,20 @@ public class BattleManager : MonoBehaviour
                 e.ToggleMode();
             }
             DeckManager.Instance.Reset();
-            _clashText.text = "";
+            CurrentEnemy.PrintNext3();
+            _clashText.Alpha = 0;
             _clashingDamage = 0;
             BattleState = BattleStates.MakingEngines;
-            _finishEnginesButton.GetComponentInChildren<Text>().text = "Finish Engines";
+            _confirmButtonText.text = "Confirm Engines";
             _finishEnginesButton.onClick.RemoveAllListeners();
-            _finishEnginesButton.GetComponent<Image>().color = Color.white;
             _finishEnginesButton.onClick.AddListener(ConfirmEngines);
+            _finishEnginesButton.gameObject.SetActive(false);
             
+        }
+
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            ConfirmAction();
         }
     }
 
@@ -104,6 +137,13 @@ public class BattleManager : MonoBehaviour
         if(CurrentEnemy == null)
             CurrentEnemy = GameObject.FindWithTag("Enemy").GetComponent<Enemy>();
         CurrentEnemy.PrepareAttack();
+    }
+    
+    private void LoadAllEnemyAttacks()
+    {
+        if(CurrentEnemy == null)
+            CurrentEnemy = GameObject.FindWithTag("Enemy").GetComponent<Enemy>();
+        CurrentEnemy.PrintNext3();
     }
     
     public void PushAttack(EnemyAttack a)
@@ -123,36 +163,46 @@ public class BattleManager : MonoBehaviour
     public IEnumerator ProcessAttacks()
     {
         BattleState = BattleStates.Battle;
-        
+        CurrentEnemy.HideIntentions();
+        Utils.DestroyCardPreview();
+        _confirmButtonText.text = "";
         //Player go
         _playerAttack.StartCoroutine(_playerAttack.ExecuteStack());
         yield return new WaitUntil(() =>_playerAttack.Executed);
         //Apply any debuffs
         BattleDelegateHandler.ApplyNegativeEnemyEffects();
-        int playerDamage = _playerAttack.AtkTotal;
+        int playerDamage = _playerAttack.PowerTotal;
+        if (playerDamage < 0)
+            playerDamage = 0;
         CurrentAether = _playerAttack.AetherTotal;
         
-        //Display text
-        _playerText.text = "You attack for " + playerDamage + " damage. You have " + CurrentAether + " aether to spend.";
-        Tween expandTextTween = _playerText.transform.parent.DOScale(1.5f, 0.5f);
-        yield return expandTextTween.WaitForCompletion();
-        _playerText.transform.parent.transform.DOScale(1f, 0.5f);
-        
+        /*Display text
+        _playerText.Text = "You attack for " + playerDamage + " damage. You have " + CurrentAether + " aether to spend.";
+        _playerText.PopIn();
+        yield return new WaitUntil(() => _playerText.AnimationComplete);
+        */
         //Enemy go
         int enemyDamage = CurrentEnemy.Attack();
-        
+        if (enemyDamage < 0)
+            enemyDamage = 0;
+        /*
         //Display text
-        _enemyText.text = "The enemy attacks for " + enemyDamage + " damage.";
-        expandTextTween = _enemyText.transform.parent.DOScale(1.5f, 0.5f);
-        yield return expandTextTween.WaitForCompletion();
-        _enemyText.transform.parent.transform.DOScale(1f, 0.5f);
+        _enemyText.Text = "The enemy attacks for " + enemyDamage + " damage.";
+        _enemyText.PopIn();
+        yield return new WaitUntil(() => _enemyText.AnimationComplete);
+        */
         
         //Resolve attacks
+        if (playerDamage != 0 || enemyDamage != 0)
+        {
+            ClashUIManager.Instance.TriggerClash(playerDamage, enemyDamage);
+            yield return new WaitUntil(() => ClashUIManager.Instance.AnimDone);
+            ClashUIManager.Instance.AnimDone = false;
+        }
+
         DisplayAttackResult(playerDamage, enemyDamage);
-        expandTextTween = _resultText.transform.parent.DOScale(1.5f, 0.5f);
-        yield return expandTextTween.WaitForCompletion();
-        expandTextTween = _resultText.transform.parent.transform.DOScale(1f, 0.5f);
-        yield return expandTextTween.WaitForCompletion();
+        //yield return new WaitUntil(() => _resultText.AnimationComplete);
+
         
         //Allow player movement
         if (_playerAttack.MoveTotal > 0)
@@ -163,16 +213,31 @@ public class BattleManager : MonoBehaviour
             Destroy(mpd.gameObject);
         }
         
-        yield return new WaitForSeconds(1.0f);
+        //yield return new WaitForSeconds(2.0f);
         //Load next enemy attack
         LoadEnemyAttack();
-        _playerText.text = "";
-        _resultText.text = "";
+        _playerText.FadeOut();
+        _enemyText.FadeOut();
+        _resultText.FadeOut();
         _playerAttack = null;
+        
+        _confirmButtonText.text = "Select an Engine";
+        
+        //Load Buy Manager
+        if ((CurrentAether > 0 ||
+            BuyManager.Instance.FreeBuysRemaining > 0) && BuyManager.Instance.BuysRemaining != 0)
+        {
+            BuyManager.Instance.LoadShop();
+        }
+        else
+        {
+            BattleState = BattleStates.ChoosingAction;
+            BuyManager.Instance.RotateRow();
+            BuyManager.Instance.BuysRemaining = -1;
+            BuyManager.Instance.FreeBuysRemaining = 0;
 
-        BattleState = BattleStates.BuyingCards;
-            //Load Buy Manager
-        BuyManager.Instance.StartCoroutine(BuyManager.Instance.LoadBuyMenu());
+        }
+    
     }
 
     /*With "trampling
@@ -204,36 +269,38 @@ public class BattleManager : MonoBehaviour
     {
         if (playerDamage > enemyDamage)
         {
-            _resultText.text = "The enemy takes " + (playerDamage + _clashingDamage) + " damage!";
-            _resultText.color = Color.green;
+            _resultText.Text = "The enemy takes " + (playerDamage + _clashingDamage) + " damage!";
+            _resultText.Color = Color.green;
             CurrentEnemy.TakeDamage(playerDamage + _clashingDamage);
             _clashingDamage = 0;
-            _clashText.text = "";
+            _clashText.Alpha = 0;
 
         }
         else if (playerDamage < enemyDamage)
         {
-            _resultText.text = "You take " + (enemyDamage + _clashingDamage) + " damage!";
-            _resultText.color = Color.red;
+            _resultText.Text = "You take " + (enemyDamage +  _clashingDamage) + " damage!";
+            _resultText.Color = Color.red;
             Player.TakeDamage(enemyDamage + _clashingDamage);
             _clashingDamage = 0;
-            _clashText.text = "";
-
+            _clashText.Alpha = 0;
         }
-        else if(playerDamage != 0)
+        else
         {
-            _resultText.color = Color.yellow;
-            if (Utils.FlipCoin())
+            _resultText.Color = Color.yellow;
+            if(playerDamage != 0 && false)
             {
-                _resultText.text = "It's a tie! The attacks clash! Clash damage +" + playerDamage;
+                _resultText.PopIn();
+                _resultText.Text = "It's a tie! The attacks clash! Clash damage +" + playerDamage;
                 _clashingDamage += playerDamage;
-                _clashText.text = "Clash Power: " + _clashingDamage + "!";
+                _clashText.Alpha = 1;
+                _clashText.Text = "Clash Power: " + _clashingDamage + "!";
             }
             else
             {
-                _resultText.text = "It's a tie! The attacks bounce off!";
+                _resultText.Text = "It's a tie! The attacks bounce off!";
             }
         }
+        //_resultText.PopIn();
     }
     
     
@@ -250,6 +317,7 @@ public class BattleManager : MonoBehaviour
 
         BattleState = BattleStates.ChoosingAction;
         OrganizeEngines();
+        LoadEnemyAttack();
     }
 
     private void OrganizeEngines()
@@ -264,10 +332,8 @@ public class BattleManager : MonoBehaviour
             e.StackCards();
         }
 
-        _finishEnginesButton.GetComponentInChildren<Text>().text = "Confirm Action";
-        _finishEnginesButton.GetComponent<Image>().color = Color.yellow;
+        _confirmButtonText.text = "Select an Engine";
         _finishEnginesButton.onClick.RemoveAllListeners();
-        _finishEnginesButton.onClick.AddListener(ConfirmAction);
     }
 
     private int EmptyEnginesCount()
@@ -294,15 +360,24 @@ public class BattleManager : MonoBehaviour
         }
         return null;
     }
+
+    public void EngineSelected()
+    {
+        _confirmButtonText.text = "Confirm Engine";
+        _finishEnginesButton.onClick.AddListener(ConfirmAction);
+    }
     
     private void ConfirmAction()
     {
+        if(BattleState != BattleStates.ChoosingAction)
+            return;
+        
         if (_playerAttack == null)
         {
             Utils.DisplayError("No Action Selected", 3f);
             return;
         }
-        
+        _finishEnginesButton.onClick.RemoveAllListeners();
         StartCoroutine(ProcessAttacks());
     }
 }

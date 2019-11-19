@@ -6,6 +6,8 @@ public class TrackChange : Card
 {
     public override void Execute()
     {
+        if(BattleManager.Instance.BattleState != BattleStates.Battle)
+            return;
         BattleDelegateHandler.NextEngineEffect += () => BattleManager.Instance.PlayerAttack.AetherTotal += 2;
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = System.Random;
@@ -16,21 +17,22 @@ public class BuyManager : MonoBehaviour
     public Transform DeckPos;
     public float XInterval;
     private Button _leaveButton;
+    private TMP_Text _aetherText;
     private Transform _cardParent;
-    private Text _aetherText;
-    private Text _buyText;
-    private Text _freeBuyText;
-
+    private RectTransform[] _positions;
+    public bool Previewing;
     
     //Vars
     private List<GameObject> _activeCardObjects;
     private List<Card> _activeCards;
     [SerializeField] private List<String> _catalog = new List<String>();
     private Stack<String> _shopDeck;
+    private Stack<String> _discarded;
     //private Stack<Card> _pending;
     ///private Stack<Vector3> _pendingPos;
     public int BuysRemaining;
     public int FreeBuysRemaining;
+    private BattleStates _lastState;
     
     //Freebies
     private Card _endlessAtk;
@@ -47,25 +49,38 @@ public class BuyManager : MonoBehaviour
     }
 
 
+    private void Start()
+    {
+        //StartCoroutine(LoadBuyMenu());
+    }
+
     private void Init()
     {
         _endlessAtk = transform.Find("EndlessAtk").GetComponent<Card>();
-        _endlessAether = transform.Find("EndlessAether").GetComponent<Card>();
+        _endlessAether = transform.Find("Free").Find("EndlessAether").GetComponent<Card>();
         _activeCards = new List<Card>();
         _activeCardObjects = new List<GameObject>();
         _soldOutMarkers = new List<GameObject>();
         _shopDeck = new Stack<String>();
+        _discarded = new Stack<String>();
         ShuffleShopDeck();
         _cg = GetComponent<CanvasGroup>();
         _leaveButton = transform.Find("LeaveShop").GetComponent<Button>();
-        _cardParent = transform.Find("Cards").transform;
-        _aetherText = transform.Find("AetherText").GetComponent<Text>();
-        _buyText = transform.Find("BuyText").GetComponent<Text>();
-        _freeBuyText = transform.Find("FreeBuyText").GetComponent<Text>();
+        _aetherText = transform.Find("Text").transform.Find("AetherText").GetComponent<TMP_Text>();
+        _cardParent = transform.Find("CardPositions");
+        var positions = _cardParent.GetComponentsInChildren<RectTransform>();
+        _positions = new RectTransform[positions.Length];
+        int j = 0;
+        for (int i = _positions.Length - 1; i >= 0; i--)
+        {
+            _positions[i] = positions[j];
+            j++;
+        }
         BuysRemaining = -1;
         FreeBuysRemaining = 0;
+        Previewing = false;
     }
-
+    
     //Buy a card we click on
     public void BuyCard(Card c)
     {
@@ -92,8 +107,8 @@ public class BuyManager : MonoBehaviour
             c.Purchasable = false;
             _activeCardObjects.Remove(c.gameObject);
             _catalog.Remove(c.CardName);
-            StartCoroutine(DealNewCard(c.transform.position.x, c.transform.GetSiblingIndex(), _activeCards.IndexOf(c)));
-            _activeCards.Remove(c);
+            RemoveCard(c);
+            StartCoroutine(DealNewCard());
             DeckManager.Instance.Discard(c);
         }
 
@@ -101,8 +116,21 @@ public class BuyManager : MonoBehaviour
             BuysRemaining--;
     }
 
+    public void LoadShop()
+    {
+        StartCoroutine(LoadBuyMenu());
+    }
+
+    public void Preview()
+    {
+        Previewing = true;
+        LoadShop();
+    }
+    
     public IEnumerator LoadBuyMenu()
     {
+        _lastState = BattleManager.Instance.BattleState;
+        BattleManager.Instance.BattleState = BattleStates.BuyingCards;
         foreach (GameObject go in _soldOutMarkers)
         {
             Destroy(go);
@@ -117,12 +145,11 @@ public class BuyManager : MonoBehaviour
 
         //Deal Cards
         _activeCards.Clear();
-        float x = DeckPos.position.x;
+        _activeCardObjects.Clear();
+        
         for (int i = 0; i < 5; i++)
         {
-            x -= XInterval * (Screen.currentResolution.width/800f);
-
-            StartCoroutine(DealNewCard(x,i,i));
+            StartCoroutine(DealNewCard());
         }
         _leaveButton.onClick.AddListener(LeaveShop);
     }
@@ -135,38 +162,59 @@ public class BuyManager : MonoBehaviour
     private IEnumerator LeaveBuyMenu()
     {
         _leaveButton.onClick.RemoveListener(LeaveShop);
-        //Fade in
+
         for (int i = _activeCards.Count - 1; i >= 0; i--)
         {
             _shopDeck.Push(_activeCards[i].CardName);
         }
+        
+        if (_lastState == BattleStates.Battle && !Previewing)
+        {
+            _lastState = BattleStates.ChoosingAction;
+            Tween rotate = _activeCards[0].transform.DOMoveX(-200, 0.5f);
+            yield return rotate.WaitForCompletion();
+            RotateRow();
+        }
+        
         _activeCards.Clear();
+
         foreach (GameObject go in _activeCardObjects)
         {
             Destroy(go);
         }
+
         _activeCardObjects.Clear();
         _cg.interactable = false;
         _cg.blocksRaycasts = false;
         Tween fade = _cg.DOFade(0.0f, 1.0f);
         yield return fade.WaitForCompletion();
-        BattleManager.Instance.BattleState = BattleStates.ChoosingAction;
+        
+        
+        BattleManager.Instance.BattleState = _lastState;
        
         BuysRemaining = -1; //By default you have infinite buys
         FreeBuysRemaining = 0;
+        Previewing = false;
+
+        Utils.DestroyCardPreview();
     }
 
-    private IEnumerator DealNewCard(float xPosition, int siblingIndex, int activeIndex)
+    private IEnumerator DealNewCard()
     {
         GameObject activeCardGO = Instantiate(Resources.Load<GameObject>("prefabs/cards/" + _shopDeck.Pop().Replace(" ", String.Empty)), DeckPos.position, Quaternion.identity, _cardParent);
         Card activeCard = activeCardGO.GetComponent<Card>();
-        activeCardGO.transform.SetSiblingIndex(siblingIndex);
         activeCard.Purchasable = true;
-        _activeCards.Insert(activeIndex, activeCard);
+        _activeCards.Add(activeCard);
             
         _activeCardObjects.Add(activeCardGO);
+        
+        if(_activeCardObjects.Count > 1)
+            activeCardGO.transform.SetSiblingIndex(_activeCardObjects[_activeCardObjects.Count-2].transform.GetSiblingIndex());
 
-        Tween dealTween = activeCardGO.transform.DOMoveX(xPosition, 0.2f, false);
+        Sequence dealTween = DOTween.Sequence();
+        dealTween.Append(activeCardGO.transform.DOMove(CurrentCardPos(_activeCardObjects.Count-1).position, 0.5f, false));
+        dealTween.Join(activeCardGO.transform.DORotate(CurrentCardPos(_activeCardObjects.Count-1).rotation.eulerAngles, 0.5f));
+        dealTween.Join(activeCardGO.transform.DOScale(CurrentCardPos(_activeCardObjects.Count-1).localScale, 0.5f));
 
         yield return dealTween.WaitForCompletion();
     }
@@ -196,18 +244,49 @@ public class BuyManager : MonoBehaviour
         }
     }
 
+    public void RotateRow()
+    {
+        _discarded.Push(_shopDeck.Pop());
+    }
+    
+    private RectTransform CurrentCardPos(int i)
+    {
+        return _positions[i];
+    }
     private void Update()
     {
         _aetherText.text = "Aether Remaining: " + BattleManager.Instance.CurrentAether;
         
         if (BuysRemaining != -1)
-            _buyText.text = "Buys Remaining: " + BuysRemaining;
-        else
-            _buyText.text = "";
+            _aetherText.text += "\nBuys Remaining: " + BuysRemaining;
 
         if (FreeBuysRemaining != 0)
-            _freeBuyText.text = "Free buys Remaining: " + FreeBuysRemaining;
-        else
-            _freeBuyText.text = "";
+            _aetherText.text += "\nFree buys Remaining: " + FreeBuysRemaining;
+    }
+
+    public void RemoveCard(Card c)
+    {
+        int cInd = _activeCards.IndexOf(c);
+        Card nextC = null;
+
+        if (_activeCards.Count > 1 && cInd != _activeCards.Count - 1)
+            nextC = _activeCards[cInd + 1];
+
+        if (cInd == _activeCards.Count)
+            return;
+        if (_activeCards.Count == 0)
+            return;
+        //nextC.transform.position = CurrentCardPos(cInd);
+        Sequence dealTween = DOTween.Sequence();
+        while (cInd < _activeCards.Count - 1)
+        {
+            cInd++;
+            nextC = _activeCards[cInd];
+            dealTween.Append(nextC.transform.DOMove(CurrentCardPos(cInd-1).position, 0.2f, false));
+            dealTween.Join(nextC.transform.DORotate(CurrentCardPos(cInd-1).rotation.eulerAngles, 0.2f));
+            dealTween.Join(nextC.transform.DOScale(CurrentCardPos(cInd-1).localScale, 0.2f));
+        }
+        
+        _activeCards.Remove(c);
     }
 }

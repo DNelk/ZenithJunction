@@ -6,6 +6,8 @@ public class InhaleAether : Card
 {
     public override void Execute()
     {
+        if(BattleManager.Instance.BattleState != BattleStates.Battle)
+            return;
         BuyManager.Instance.FreeBuysRemaining++;
     }
 }

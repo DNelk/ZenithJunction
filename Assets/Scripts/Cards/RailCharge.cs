@@ -14,7 +14,7 @@ public class RailCharge : Card
         {
             if (c.CardType == CardTypes.Attack)
             {
-                c.AtkTotal *= 2;
+                c.PowerTotal *= 2;
             }
                 
         }

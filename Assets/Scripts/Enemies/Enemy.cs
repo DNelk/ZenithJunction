@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,10 +20,11 @@ public class Enemy : MonoBehaviour
     private int _currentPos; public int Position => _currentPos;
     [HideInInspector] public AttackRange DesiredRange = AttackRange.Null;
     public int AtkDebuff = 0;
+    private EnemyIntentionUI _enemyIntention;
     
     //HP UI
     private Slider _healthBar;
-    private Text _hpText;
+    private TMP_Text _hpText;
     
     private void Awake()
     {
@@ -31,15 +33,17 @@ public class Enemy : MonoBehaviour
         _mr = GetComponent<MeshRenderer>();
         _healthBar = GameObject.Find("EnemyHealth").GetComponent<Slider>();
         _healthBar.maxValue = _maxHP;
-        _hpText = _healthBar.GetComponentInChildren<Text>();
+        _hpText = _healthBar.transform.Find("Numbers").GetComponent<TMP_Text>();
         UpdateHealth();
         _positions = new []{GameObject.Find("EnemyPos1").transform, GameObject.Find("EnemyPos2").transform, GameObject.Find("EnemyPos3").transform};
         _currentPos = 0;
         _moveInRange = Resources.Load<GameObject>("Prefabs/Enemies/Attacks/MoveInAttackRange").GetComponent<EnemyAttack>();
+        _enemyIntention = GameObject.Find("EnemyIntentions").GetComponent<EnemyIntentionUI>();
     }
 
     public void PrepareAttack()
     {
+        _enemyIntention.gameObject.SetActive(true);
         int tempAtkIndex = _atkIndex + 1;
         if (tempAtkIndex >= _attacks.Count)
             tempAtkIndex = 0;
@@ -53,10 +57,30 @@ public class Enemy : MonoBehaviour
             _currentAttack = _moveInRange;
         }
         //Display how much damage/what type of attack it's going to deal
-        Text enemyText = GameObject.Find("EnemyText").GetComponent<Text>();
-        enemyText.text = "The enemy prepares to " + _currentAttack.PrepareAttack();
+        //Text enemyText = GameObject.Find("EnemyText").GetComponent<Text>();
+        _enemyIntention.Text = "The enemy prepares to " + _currentAttack.PrepareAttack();
         BattleManager.Instance.PushAttack(_currentAttack);
         
+    }
+
+    public void PrintNext3()
+    {
+        _enemyIntention.Text = "";
+        EnemyAttack a;
+        int atkI = -1;
+        for (int i = 0; i < 3; i++)
+        {
+            atkI++;
+            if (atkI >= _attacks.Count)
+                atkI = 0;
+            a = _attacks[0];
+            _enemyIntention.Text += (i+1) + "." + a.Warning + "\n";
+        }
+    }
+
+    public void HideIntentions()
+    {
+        _enemyIntention.gameObject.SetActive(false);
     }
     
     public int Attack()
@@ -106,17 +130,15 @@ public class Enemy : MonoBehaviour
                 if (distance > 0)
                     damageMod = 0;
                 break;
-            //Short range attacks are weaker if not right next
+            //Short ranged attacks are weaker if not right next
             case AttackRange.Short:
-                if (distance == 1)
+                if (distance >= 2) 
                     damageMod = 0.5f;
-                else if (distance >= 2)
-                    damageMod = 0;
                 break;
             //Long range attacks are only good far away
             case AttackRange.Long:
                 if (distance == 0)
-                    damageMod = 0;
+                    damageMod = 0.5f;
                 break;
             default:
                 damageMod = 1;

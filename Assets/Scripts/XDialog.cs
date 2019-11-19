@@ -30,6 +30,8 @@ public class XDialog : MonoBehaviour
     private void ChangeX(int n)
     {
         XValue += n;
+        if (XValue > AetherMax)
+            XValue -= n;
         if (XValue < 0)
             XValue = 0;
         _valueText.text = XValue.ToString();

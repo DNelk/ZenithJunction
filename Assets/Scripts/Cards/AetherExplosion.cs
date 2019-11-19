@@ -8,7 +8,8 @@ public class AetherExplosion : Card
     public override void Execute()
     {
         base.Execute();
-
-        AtkTotal = XValue + 2;
+        if(XValue == 0)
+            return;
+        PowerTotal = XValue + 2;
     }
 }

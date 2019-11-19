@@ -23,20 +23,27 @@ public class MovePlayerDialog : MonoBehaviour
         _moveText.text = MoveTotal + "";
         _confirmButton = transform.Find("Confirm").GetComponent<Button>();
         
-        _forwardButton.onClick.AddListener(() => StartCoroutine(Move(-1)));
-        _backwardButton.onClick.AddListener(() => StartCoroutine(Move(1)));
-        _confirmButton.onClick.AddListener(Confirm);
+        AssignListeners();
     }
 
     private IEnumerator Move(int n)
     {
         Player player = BattleManager.Instance.Player;
+        
+        _forwardButton.onClick.RemoveAllListeners();
+        _backwardButton.onClick.RemoveAllListeners();
+        _confirmButton.onClick.RemoveAllListeners();
+        
         //Move forward
         if (n < 0)
         {
             //Already at the front
             if (player.Position == 0)
+            {
+                AssignListeners();
                 yield break;
+            }
+
             //Undoing?
             if (_lastDirection > 0)
             {
@@ -59,7 +66,11 @@ public class MovePlayerDialog : MonoBehaviour
         {
             //Already at the back
             if (player.Position == 3)
+            {
+                AssignListeners();
                 yield break;
+            }
+
             //Undoing?
             if (_lastDirection < 0)
             {
@@ -78,10 +89,19 @@ public class MovePlayerDialog : MonoBehaviour
                 _lastDirection = 1;
             }
         }
+        
+        AssignListeners();
     }
 
     private void Confirm()
     {
         Confirmed = true;
+    }
+
+    private void AssignListeners()
+    {
+        _forwardButton.onClick.AddListener(() => StartCoroutine(Move(-1)));
+        _backwardButton.onClick.AddListener(() => StartCoroutine(Move(1)));
+        _confirmButton.onClick.AddListener(Confirm);
     }
 }

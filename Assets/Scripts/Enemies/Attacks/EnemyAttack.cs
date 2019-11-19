@@ -12,6 +12,12 @@ public class EnemyAttack : MonoBehaviour
     [SerializeField] protected string _name;
     [SerializeField] protected string _description;
     [SerializeField] protected string _warning;
+
+    public string Warning
+    {
+        get => _warning;
+        set => _warning = value;
+    }
     public virtual void ExecuteOtherEffect(){}
 
     public virtual string PrepareAttack()
@@ -19,6 +25,9 @@ public class EnemyAttack : MonoBehaviour
         _totalDamage = _baseDamage;
         return _warning;
     }
+    
+    
+    
 
     public virtual bool IsAttackInRange()
     {

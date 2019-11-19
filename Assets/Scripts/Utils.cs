@@ -24,7 +24,20 @@ public static class Utils
     {
         if(CurrentPreview != null)
             return;
-        CurrentPreview = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/CardPreview"), GameObject.Find("Canvas").transform).GetComponent<CardPreview>();
+        Transform parent = null;
+        if (BattleManager.Instance.BattleState == BattleStates.BuyingCards)
+        {
+            parent = BuyManager.Instance.transform;
+        }
+        else
+        {
+            parent = GameObject.Find("Canvas").transform;
+        }
+        CurrentPreview = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/CardPreview"), parent).GetComponent<CardPreview>();
+        if (BattleManager.Instance.BattleState == BattleStates.BuyingCards)
+        {
+            CurrentPreview.transform.GetChild(0).transform.localScale = Vector3.one * 1.8f;
+        }
         CurrentPreview.SetCard(c);
     }
 
@@ -40,5 +53,24 @@ public static class Utils
     {
         int rng = Random.Range(0, 2);
         return rng == 0;
+    }
+
+    public static string ReplaceWithSymbols(string org)
+    {
+        string txtWSymbols = org;
+        
+        //Replace power
+        txtWSymbols = txtWSymbols.Replace("Power", "power");
+        txtWSymbols = txtWSymbols.Replace("power", " <sprite=\"icons\" name=\"icons_power\"> ");
+
+        //Replace aether
+        txtWSymbols = txtWSymbols.Replace("Aether", "aether");
+        txtWSymbols = txtWSymbols.Replace("aether", " <sprite=\"icons\" name=\"icons_aether\"> ");
+
+        //Replace move
+        txtWSymbols = txtWSymbols.Replace("Move", "move");
+        txtWSymbols = txtWSymbols.Replace("move", " <sprite=\"icons\" name=\"icons_move\"> ");
+
+        return txtWSymbols;
     }
 }

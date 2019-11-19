@@ -16,16 +16,17 @@ MonoBehaviour:
   _cardType: 2
   _buyCost: 3
   _aetherCost: -1
-  _cardText: Creates power equal to X Aether plus 2
+  _cardText: Creates power equal to X Aether plus 2 (No effect if X is zero)
   _aetherValue: 0
-  _atkValue: 0
-  _atkRange: 5
+  _powerValue: 0
+  _range: 4
   _moveValue: 0
-  AtkTotal: 0
+  PowerTotal: 0
   AetherTotal: 0
   MoveTotal: 0
   _priority: 1
-  Purchasable: 0
+  _purchasable: 0
+  TrashThis: 0
   XValue: 0
   Tweening: 0
   IsPreview: 0
@@ -41,6 +42,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: AetherExplosion
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _cardName
+      value: Steam Explosion
       objectReference: {fileID: 0}
     - target: {fileID: 1176058906799001469, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
@@ -96,11 +102,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _cardName
-      value: Steam Explosion
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf, type: 3}

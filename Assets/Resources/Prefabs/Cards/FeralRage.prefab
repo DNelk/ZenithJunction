@@ -16,12 +16,12 @@ MonoBehaviour:
   _cardType: 0
   _buyCost: 1
   _aetherCost: 0
-  _cardText: 4 Attack, you can't buy cards this turn.
+  _cardText: +4 Power, you can't buy cards this turn.
   _aetherValue: 0
-  _atkValue: 4
-  _atkRange: 0
+  _powerValue: 4
+  _range: 0
   _moveValue: 0
-  AtkTotal: 0
+  PowerTotal: 0
   AetherTotal: 0
   MoveTotal: 0
   _priority: 2
