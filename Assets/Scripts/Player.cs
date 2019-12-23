@@ -101,6 +101,11 @@ public class Player : MonoBehaviour
             {
                 stat.TurnsLeft--;
             }
+            
+            if(stat.TurnsLeft == 0)
+            {
+                stat.Value = 0;
+            }
         }
     }
     #endregion

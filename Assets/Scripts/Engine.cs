@@ -11,9 +11,6 @@ using Debug = UnityEngine.Debug;
 
 public class Engine : MonoBehaviour
 {
-    //Instance
-    //public static Engine Instance = null;
-
     public Stack<Card> Stack;
     
     //UI
@@ -68,17 +65,6 @@ public class Engine : MonoBehaviour
     public bool Executed;
     private void Awake()
     {
-       /*//Check if Instance already exists
-        if (Instance == null)             
-            //if not, set Instance to this
-            Instance = this;
-            
-        //If Instance already exists and it's not this:
-        else if (Instance != this)   
-            //Then destroy this. This enforces our singleton pattern, meaning there can only ever be one Instance of a GameManager.
-            Destroy(gameObject);
-    */
-        Init();
     }
 
     private void Init()
@@ -135,7 +121,7 @@ public class Engine : MonoBehaviour
 
         c.Engine = this;
         c.SetEngine(GlowColor, u_Circles[1].transform, CurrentCardPos(_pending.Count), transform.localScale);
-        Debug.Log(transform.localScale.x);
+//        Debug.Log(transform.localScale.x);
         _pending.Add(c);
     }
 
@@ -234,10 +220,12 @@ public class Engine : MonoBehaviour
             StackCardsForPreview();
     }
 
+    private List<Card> _poppedCards;
     public IEnumerator ExecuteStack()
     {
         BattleDelegateHandler.ApplyEngineEffects();
         ReadyCards();
+        _poppedCards = new List<Card>();
         while (Stack.Count > 0)
         {
             Card c = Stack.Pop();
@@ -261,13 +249,9 @@ public class Engine : MonoBehaviour
                 Utils.DisplayError("Not enough aether to power " + c.CardName + "!", 0.5f);
                 c.ExecuteFailed();
             }
-            _powerTotal += c.CalculateAttackTotalWithPosition();
             _aetherTotal += c.AetherTotal;
             _moveTotal += c.MoveTotal;
-            if (c.TrashThis)
-                DeckManager.Instance.Trash(c);
-            else
-                DeckManager.Instance.Discard(c);
+            _poppedCards.Add(c);
         }
         //Stat Check! -only move implemented
         Player player = BattleManager.Instance.Player;
@@ -286,6 +270,19 @@ public class Engine : MonoBehaviour
         Deselect();
     }
 
+    //Last stage of execution
+    public void CalculatePowerTotal()
+    {
+        foreach (var c in _poppedCards)
+        {
+            _powerTotal += c.CalculateAttackTotalWithPosition();
+            //Finish Executing
+            if (c.TrashThis)
+                DeckManager.Instance.Trash(c);
+            else
+                DeckManager.Instance.Discard(c);
+        }
+    }
     private int ExecuteStackForPreview()
     { 
         int totalCost = 0;

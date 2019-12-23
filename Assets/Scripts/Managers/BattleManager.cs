@@ -171,43 +171,12 @@ public class BattleManager : MonoBehaviour
         CurrentEnemy.HideIntentions();
         Utils.DestroyCardPreview();
         _confirmButtonText.text = "";
-        //Player go
+        
+        /***Player go***/
         _playerAttack.StartCoroutine(_playerAttack.ExecuteStack());
         yield return new WaitUntil(() =>_playerAttack.Executed);
         //Apply any debuffs
         BattleDelegateHandler.ApplyNegativeEnemyEffects();
-        int playerDamage = _playerAttack.PowerTotal;
-        if (playerDamage < 0)
-            playerDamage = 0;
-        CurrentAether = _playerAttack.AetherTotal;
-        
-        /*Display text
-        _playerText.Text = "You attack for " + playerDamage + " damage. You have " + CurrentAether + " aether to spend.";
-        _playerText.PopIn();
-        yield return new WaitUntil(() => _playerText.AnimationComplete);
-        */
-        //Enemy go
-        int enemyDamage = CurrentEnemy.Attack();
-        if (enemyDamage < 0)
-            enemyDamage = 0;
-        /*
-        //Display text
-        _enemyText.Text = "The enemy attacks for " + enemyDamage + " damage.";
-        _enemyText.PopIn();
-        yield return new WaitUntil(() => _enemyText.AnimationComplete);
-        */
-        
-        //Resolve attacks
-        if (playerDamage != 0 || enemyDamage != 0)
-        {
-            ClashUIManager.Instance.TriggerClash(playerDamage, enemyDamage);
-            yield return new WaitUntil(() => ClashUIManager.Instance.AnimDone);
-            ClashUIManager.Instance.AnimDone = false;
-        }
-
-        DisplayAttackResult(playerDamage, enemyDamage);
-        //yield return new WaitUntil(() => _resultText.AnimationComplete);
-
         
         //Allow player movement
         if (_playerAttack.MoveTotal > 0)
@@ -217,18 +186,40 @@ public class BattleManager : MonoBehaviour
             yield return new WaitUntil(() => mpd.Confirmed);
             Destroy(mpd.gameObject);
         }
+
+        //Finish Executing
+        _playerAttack.CalculatePowerTotal();
         
+        int playerDamage = _playerAttack.PowerTotal;
+        if (playerDamage < 0)
+            playerDamage = 0;
+        CurrentAether = _playerAttack.AetherTotal;
+        
+        
+        /***Enemy go***/
+        
+        int enemyDamage = CurrentEnemy.Attack();
+        if (enemyDamage < 0)
+            enemyDamage = 0;
         //Move Enemy
         BattleDelegateHandler.MoveEnemy();
+
+        //Resolve attacks
+        if (playerDamage != 0 || enemyDamage != 0)
+        {
+            ClashUIManager.Instance.TriggerClash(playerDamage, enemyDamage);
+            yield return new WaitUntil(() => ClashUIManager.Instance.AnimDone);
+            ClashUIManager.Instance.AnimDone = false;
+        }
+
+        DisplayAttackResult(playerDamage, enemyDamage);
         
         //yield return new WaitForSeconds(2.0f);
         //Load next enemy attack
         Player.TickDownStats();
         _enemyAttack = null;
         CurrentEnemy.TickDownStats();
-       // _playerText.FadeOut();
-       // _enemyText.FadeOut();
-       // _resultText.FadeOut();
+
         _playerAttack = null;
         
         _confirmButtonText.text = "Select an Engine";
@@ -250,30 +241,6 @@ public class BattleManager : MonoBehaviour
     
     }
 
-    /*With "trampling
-    private void DisplayAttackResult(int playerDamage, int enemyDamage)
-    {
-        int damage = Math.Abs(playerDamage - enemyDamage);
-        if (playerDamage > enemyDamage)
-        {
-            _resultText.text = "The enemy takes " + damage + " damage!";
-            _resultText.color = Color.green;
-            _currentEnemy.TakeDamage(damage);
-        }
-        else if (playerDamage < enemyDamage)
-        {
-            _resultText.text = "You take " + damage + " damage!";
-            _resultText.color = Color.red;
-            Player.TakeDamage(damage);
-        }
-        else
-        {
-            _resultText.color = Color.yellow;
-            _resultText.text = "It's a tie! The attacks bounce off!";
-        }
-    }
-    */
-    
     /*Without "trampling*/
     private void DisplayAttackResult(int playerDamage, int enemyDamage)
     {

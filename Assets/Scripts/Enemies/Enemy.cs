@@ -247,7 +247,8 @@ public class Enemy : MonoBehaviour
             {
                 stat.TurnsLeft--;
             }
-            else
+            
+            if(stat.TurnsLeft == 0)
             {
                 stat.Value = 0;
             }
