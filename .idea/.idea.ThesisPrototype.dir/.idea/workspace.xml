@@ -105,6 +105,11 @@
     </replaceStrings>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
@@ -121,12 +126,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="1746" />
-    <option name="y" value="1" />
-    <option name="width" value="1434" />
-    <option name="height" value="792" />
-  </component>
+  <component name="ProjectId" id="1VPCAm5HIxkjRMpSRthboDFfkSH" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator currentView="FileSystemExplorer" proportions="" version="1">
