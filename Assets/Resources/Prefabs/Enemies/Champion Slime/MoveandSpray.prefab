@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &225158989940204696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5795080014236626668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f44763d5fd3514cb497115d3b05d6914, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _baseDamage: 0
+  _range: 3
+  _name: Move 'N Spray
+  _description: A slides along and sprays a sticky coating.
+  _warning: move in range and immobilize you for the next turn.
+--- !u!1001 &4831808031512647121
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1396755096963578685, guid: 327aec496c1a644aca85783c39f37780,
+        type: 3}
+      propertyPath: m_Name
+      value: MoveandSpray
+      objectReference: {fileID: 0}
+    - target: {fileID: 2892540844388718021, guid: 327aec496c1a644aca85783c39f37780,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2892540844388718021, guid: 327aec496c1a644aca85783c39f37780,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2892540844388718021, guid: 327aec496c1a644aca85783c39f37780,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2892540844388718021, guid: 327aec496c1a644aca85783c39f37780,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2892540844388718021, guid: 327aec496c1a644aca85783c39f37780,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2892540844388718021, guid: 327aec496c1a644aca85783c39f37780,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2892540844388718021, guid: 327aec496c1a644aca85783c39f37780,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2892540844388718021, guid: 327aec496c1a644aca85783c39f37780,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2892540844388718021, guid: 327aec496c1a644aca85783c39f37780,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2892540844388718021, guid: 327aec496c1a644aca85783c39f37780,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2892540844388718021, guid: 327aec496c1a644aca85783c39f37780,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 732093685641487304, guid: 327aec496c1a644aca85783c39f37780, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 327aec496c1a644aca85783c39f37780, type: 3}
+--- !u!1 &5795080014236626668 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1396755096963578685, guid: 327aec496c1a644aca85783c39f37780,
+    type: 3}
+  m_PrefabInstance: {fileID: 4831808031512647121}
+  m_PrefabAsset: {fileID: 0}

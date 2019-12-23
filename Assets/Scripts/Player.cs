@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    private MeshRenderer _mr;
+    private SkinnedMeshRenderer _mr;
     
     [SerializeField] private int _maxHP = 10;
     private int _currentHP;
@@ -18,12 +18,17 @@ public class Player : MonoBehaviour
     private Transform[] _positions;
     private int _currentPos; public int Position => _currentPos;
     private Enemy _enemy;
+
+    //Stats
+    public Dictionary<StatType, Stat> ActiveStats = new Dictionary<StatType, Stat>();
+    public Dictionary<StatType, Stat> BaseStats = new Dictionary<StatType, Stat>();
     
     private void Awake()
     {
         _currentHP = _maxHP;
-        _mr = GetComponent<MeshRenderer>();
+        _mr = GetComponentInChildren<SkinnedMeshRenderer>();
         _healthBar = GameObject.Find("PlayerHealth").GetComponent<Slider>();
+        _healthBar.GetComponent<HealthBar>().Target = "Player";
         _healthBar.maxValue = _maxHP;
         _hpText = _healthBar.transform.Find("Numbers").GetComponent<TMP_Text>();
         UpdateHealth();
@@ -43,10 +48,10 @@ public class Player : MonoBehaviour
     public void TakeDamage(int damage)
     {
         _currentHP -= damage;
-        _mr.material.DOColor(Color.red, 0.2f).OnComplete(()=>_mr.material.DOColor(Color.white, 0.5f));
+        //_mr.material.DOColor(Color.red, 0.2f).OnComplete(()=>_mr.material.DOColor(Color.white, 0.5f));
         UpdateHealth();
         if (_currentHP <= 0)
-            Utils.DisplayGameOver("You Died!");
+            Utils.DisplayGameOver("Defeat!");
     }
 
     private void UpdateHealth()
@@ -65,4 +70,38 @@ public class Player : MonoBehaviour
         move.Join(transform.DORotate(_positions[_currentPos].rotation.eulerAngles, 0.5f));
         return move.Duration();
     }
+
+    #region Stats
+    public void ModifyStat(StatType type, int turnsLeft, int value, bool applyImmidiately = false)
+    {
+        if (ActiveStats.ContainsKey(type))
+        {
+            if (ActiveStats[type].Value == 0)
+                ActiveStats[type].IsNew = true;
+            ActiveStats[type].Value += value;
+            ActiveStats[type].TurnsLeft += turnsLeft;
+        }
+        else
+        {
+            ActiveStats.Add(type, new Stat(turnsLeft, value, applyImmidiately));
+        }
+            
+    }
+    public void TickDownStats()
+    {
+        foreach (var stat in ActiveStats.Values)
+        {
+            if (stat.IsNew)
+            {
+                stat.IsNew = false;
+                continue;
+            }
+            
+            if (stat.TurnsLeft > 0)
+            {
+                stat.TurnsLeft--;
+            }
+        }
+    }
+    #endregion
 }

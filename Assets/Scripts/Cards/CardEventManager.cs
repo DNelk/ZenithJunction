@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class CardEventManager : EventTrigger
 {
@@ -17,10 +18,14 @@ public class CardEventManager : EventTrigger
     private bool _hovering;
     public Vector3 BaseScale = Vector3.zero;
     private bool _dontMagnifyUntilHoverAgainHack = false;
+
+    private ParticleSystem _glow;
+    
     private void Start()
     {
         _myCard = GetComponent<Card>();
         _hovering = false;
+        _glow = transform.Find("PuffyGlow").GetComponent<ParticleSystem>();
     }
 
     private void Update()
@@ -36,6 +41,13 @@ public class CardEventManager : EventTrigger
             }
 
             _pointerOverTimer += Time.deltaTime;
+
+            if (_pointerOverTimer >= 0.4f && _myCard.Engine==null && !_myCard.Purchasable)
+            {
+                if (!_glow.isPlaying)
+                    _glow.Play();
+            }
+
             if(_pointerOverTimer >= 0.75f)
                 Utils.GenerateCardPreview(_myCard);
 
@@ -68,7 +80,6 @@ public class CardEventManager : EventTrigger
         else if (_myCard.Purchasable)
         {
             BuyManager.Instance.BuyCard(_myCard);
-            return;
         }
         else
         {
@@ -76,6 +87,9 @@ public class CardEventManager : EventTrigger
             transform.SetSiblingIndex(transform.GetSiblingIndex() + 8);
             _myCard.Dragging = true;
         }
+        
+        if(_pointerOverTimer >= 0.75f)
+            Utils.DestroyCardPreview();
     }
 
     public override void OnDrag(PointerEventData eventData)
@@ -125,6 +139,8 @@ public class CardEventManager : EventTrigger
             //transform.position += Vector3.up * BaseScale.x * 2;
             transform.SetSiblingIndex(transform.GetSiblingIndex() + 8);
         }
+        
+
         _hovering = true;
     }
     
@@ -140,6 +156,8 @@ public class CardEventManager : EventTrigger
         BaseScale = Vector3.zero;
         _hovering = false;
         _dontMagnifyUntilHoverAgainHack = false;
+        if(_glow.isPlaying)
+            _glow.Stop();
     }
     
 }

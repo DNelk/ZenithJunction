@@ -22,16 +22,20 @@ public class Engine : MonoBehaviour
     private Material u_CircleGlowMat;
     private GameObject[] u_Wheels;
     private GameObject u_EngineImg;
+    private Animator u_EngineImgAnim;
     private GameObject u_HolesImg;
     private Material[] u_WheelMat;
     private bool _wheelTurning;
     private Tooltip _tooltip;
     private RectTransform[] _cardPositons;
+
+    private ParticleSystem _steamParticle;
     
     [SerializeField] private List<Card> _pending;
     private Vector3 _initialPosition;
     private BoxCollider2D _collider;
 
+    private bool _selected;
 
     //Total attack this round
     private int _powerTotal;
@@ -56,6 +60,8 @@ public class Engine : MonoBehaviour
         get => _moveTotal;
         set => _moveTotal = value;
     }
+
+    private bool _inRange = true;
     
     public EngineState EngineState;
     
@@ -104,6 +110,10 @@ public class Engine : MonoBehaviour
         _wheelTurning = false;
 
         u_EngineImg = u_Circles[0].transform.Find("EngineImg").gameObject;
+        u_EngineImgAnim = u_EngineImg.GetComponent<Animator>();
+
+        _steamParticle = transform.Find("Steam").GetComponent<ParticleSystem>();
+        
         u_HolesImg = u_EngineImg.transform.Find("EngineHoles").gameObject;
 
         _tooltip = null;
@@ -125,6 +135,7 @@ public class Engine : MonoBehaviour
 
         c.Engine = this;
         c.SetEngine(GlowColor, u_Circles[1].transform, CurrentCardPos(_pending.Count), transform.localScale);
+        Debug.Log(transform.localScale.x);
         _pending.Add(c);
     }
 
@@ -232,7 +243,7 @@ public class Engine : MonoBehaviour
             Card c = Stack.Pop();
             if (c.IsXCost) //-1 is X
             {
-                XDialog xd = Instantiate(Resources.Load<GameObject>("prefabs/xdialog"), GameObject.Find("Canvas").transform).GetComponent<XDialog>();
+                XDialog xd = Instantiate(Resources.Load<GameObject>("prefabs/xdialog"), GameObject.Find("MainCanvas").transform).GetComponent<XDialog>();
                 xd.AetherMax = _aetherTotal;
                 //Wait until user assigns x value
                 yield return new WaitUntil(() => xd.XConfirmed);
@@ -258,7 +269,19 @@ public class Engine : MonoBehaviour
             else
                 DeckManager.Instance.Discard(c);
         }
-
+        //Stat Check! -only move implemented
+        Player player = BattleManager.Instance.Player;
+        if (player.ActiveStats.ContainsKey(StatType.MovesUP))
+        {
+            if(!player.ActiveStats[StatType.MovesUP].IsNew)
+                _moveTotal += player.ActiveStats[StatType.MovesUP].Value;
+        }
+        if (player.ActiveStats.ContainsKey(StatType.MovesDOWN))
+        {
+            if(!player.ActiveStats[StatType.MovesDOWN].IsNew)
+                _moveTotal -= player.ActiveStats[StatType.MovesDOWN].Value;
+        }
+        
         Executed = true;
         Deselect();
     }
@@ -271,6 +294,8 @@ public class Engine : MonoBehaviour
         
         if (EngineState == EngineState.Stacking)
             StackCardsForPreview();
+        
+        
 
         foreach (var c in Stack)
         {
@@ -285,6 +310,8 @@ public class Engine : MonoBehaviour
             _aetherTotal += c.AetherTotal;
             _moveTotal += c.MoveTotal;
             totalCost += c.AetherCost;
+            if (!c.IsAttackInRange() && _inRange)
+                _inRange = false;
         }
 
         if (EngineState == EngineState.Stacking)
@@ -298,9 +325,12 @@ public class Engine : MonoBehaviour
     
     public void ShowPreview()
     {
+        u_CircleGlowMat.SetColor("_MyColor", Color.yellow);
+        
         string previewStr = "";
         int tempPow, tempAet, tempMove, tempCost;
         tempPow = tempAet = tempMove = tempCost = 0;
+        bool tempInRange;
         if (EngineState == EngineState.Stacking)
         {
             if(_pending.Count == 0)
@@ -318,8 +348,10 @@ public class Engine : MonoBehaviour
         _aetherTotal = 0;
         tempMove = MoveTotal;
         _moveTotal = 0;
+        tempInRange = _inRange;
+        _inRange = true;
         
-        previewStr += "This engine can produce:\n";
+        previewStr = "";
         if(tempPow > 0)
             previewStr += tempPow + " Power" + "\n";
         if (tempAet > 0)
@@ -328,14 +360,18 @@ public class Engine : MonoBehaviour
             previewStr += tempMove + " Move" + "\n";
         if (tempCost > 0)
             previewStr += "Cards in this engine will cost " + tempCost + " total Aether to use.";
+        if (!tempInRange)
+            previewStr += "Some cards in this engine are not in range!";
         
         _tooltip = Instantiate(Resources.Load<GameObject>("prefabs/tooltip"), transform.GetChild(0).transform.position,
-            Quaternion.identity, GameObject.Find("Canvas").transform).GetComponent<Tooltip>();
+            Quaternion.identity, GameObject.Find("MainCanvas").transform).GetComponent<Tooltip>();
         _tooltip.Text = previewStr;
     }
 
     public void HidePreview()
     {
+        if(!_selected)
+            u_CircleGlowMat.SetColor("_MyColor", GlowColor);
         if(_tooltip == null)
             return;
         _tooltip.StartCoroutine(_tooltip.FadeOut());
@@ -375,7 +411,7 @@ public class Engine : MonoBehaviour
     
     private void Update()
     {
-        if (PendingCount >= 3 || EngineState == EngineState.Stacked && !_wheelTurning)
+        if ((PendingCount >= 3 || (EngineState == EngineState.Stacked && Stack.Count != 0)) && !_wheelTurning)
         {
             for (int i = 0; i < u_WheelMat.Length; i++)
             {
@@ -383,16 +419,21 @@ public class Engine : MonoBehaviour
                // u_Wheels[i].GetComponent<Image>().material = u_WheelMat[i];
             }
 
+            u_EngineImgAnim.SetBool("IsReady", true);
+            if(_steamParticle.isPlaying)
+                _steamParticle.Stop();
+            _steamParticle.Play();
             _wheelTurning = true;
         }
-        else if (PendingCount < 3 && _wheelTurning && EngineState != EngineState.Stacked)
+        else if (PendingCount < 3 && _wheelTurning && EngineState != EngineState.Stacked || (EngineState == EngineState.Stacked && Stack.Count == 0))
         {
             for (int i = 0; i < u_WheelMat.Length; i++)
             {
                 u_WheelMat[i].SetFloat("_TimeScale", 0);
                 //u_Wheels[i].GetComponent<Image>().material = u_WheelMat[i];
             }
-
+            u_EngineImgAnim.SetBool("IsReady", false);
+            _steamParticle.Stop();
             _wheelTurning = false;
         }
     }
@@ -414,6 +455,7 @@ public class Engine : MonoBehaviour
             _aetherTotal = 0;
             _powerTotal = 0;
             _moveTotal = 0;
+            _inRange = true;
         }
     }
     
@@ -424,6 +466,7 @@ public class Engine : MonoBehaviour
             c.SetEngine(GlowColor, u_Circles[1].transform);
         }*/
         u_CircleGlowMat.SetColor("_MyColor", GlowColor);
+        _selected = false;
     }
 
     public void Select()
@@ -437,6 +480,7 @@ public class Engine : MonoBehaviour
         u_CircleGlowMat.SetColor("_MyColor", Color.yellow);
         BattleManager.Instance.EngineSelected();
         BattleManager.Instance.PushAttack(this);
+        _selected = true;
     }
 
     private void OnMouseEnter()

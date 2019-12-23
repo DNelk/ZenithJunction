@@ -73,6 +73,11 @@ public class Card : MonoBehaviour
         AssignUI();
     }
 
+    private void Start()
+    {
+        _initialScale = transform.localScale;
+    }
+
     protected void Init()
     {
         u_cardBackground = transform.Find("Back").GetComponent<Image>();
@@ -181,7 +186,7 @@ public class Card : MonoBehaviour
         transform.SetParent(parent);
         Tweening = true;
         transform.DOMove(position, 0.5f).OnComplete(() => Tweening = false);
-        transform.DOScale( scale.x * _initialScale, 0.5f);
+        transform.DOScale( scale.x * 9, 0.5f);
     }
 
     //Pay aether cost for spells
@@ -230,6 +235,28 @@ public class Card : MonoBehaviour
     }
     #endregion
     
+    public virtual bool IsAttackInRange()
+    {
+        int distance = Mathf.Abs(BattleManager.Instance.Player.Position - BattleManager.Instance.CurrentEnemy.Position);
+        switch (_range)
+        {
+            case AttackRange.Melee:
+                if (distance != 0)
+                    return false;
+                break;
+            case AttackRange.Short:
+                if (distance == 2)
+                    return false;
+                break;
+            case AttackRange.Long:
+                if (distance == 0)
+                    return false;
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
 }
 
 public enum CardTypes

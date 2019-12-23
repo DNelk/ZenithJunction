@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Card
   - Enemy
+  - UIFrame
   layers:
   - Default
   - TransparentFX
