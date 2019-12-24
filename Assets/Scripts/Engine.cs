@@ -64,7 +64,8 @@ public class Engine : MonoBehaviour
     
     public bool Executed;
     private void Awake()
-    {
+    { 
+        Init();
     }
 
     private void Init()
