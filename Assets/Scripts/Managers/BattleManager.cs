@@ -316,8 +316,7 @@ public class BattleManager : MonoBehaviour
     private int EmptyEnginesCount()
     {
         int count = 0;
-        foreach (Engine e in Engines)
-        {
+        foreach (Engine e in Engines){
             if (e.Stack.Count == 0 && e.PendingCount == 0)
                 count++;
         }
