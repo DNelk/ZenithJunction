@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = System.Random;
@@ -26,7 +29,7 @@ public static class Utils
         if(CurrentPreview != null)
             return;
         Transform parent = null;
-        if (BattleManager.Instance.BattleState == BattleStates.BuyingCards)
+        if (BattleManager.Instance != null && BattleManager.Instance.BattleState == BattleStates.BuyingCards)
         {
             parent = BuyManager.Instance.transform;
         }
@@ -35,7 +38,7 @@ public static class Utils
             parent = GameObject.Find("MainCanvas").transform;
         }
         CurrentPreview = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/CardPreview"), parent).GetComponent<CardPreview>();
-        if (BattleManager.Instance.BattleState == BattleStates.BuyingCards)
+        if (BattleManager.Instance != null && BattleManager.Instance.BattleState == BattleStates.BuyingCards)
         {
             CurrentPreview.transform.GetChild(0).transform.localScale = Vector3.one * 1.8f;
         }
@@ -89,5 +92,34 @@ public static class Utils
         }
 
         return toShuffle;
+    }
+
+    public static void Save<T>(T dataToSave, string filename)
+    {
+        filename += ".save";
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream file = File.Create(Application.persistentDataPath + filename);
+        bf.Serialize(file, dataToSave);
+        file.Close();
+
+       // Debug.Log(filename + " Saved");
+    }
+
+    public static T Load<T>(string filename)
+    {
+        filename += ".save";
+        if (File.Exists(Application.persistentDataPath + filename))
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file = File.Open(Application.persistentDataPath + filename, FileMode.Open);
+            T save = (T) bf.Deserialize(file);
+            file.Close();
+            
+            Debug.Log(filename + " Loaded");
+            return save;
+        }
+        
+        Debug.Log(filename + ": file not found!");
+        return default(T);
     }
 }

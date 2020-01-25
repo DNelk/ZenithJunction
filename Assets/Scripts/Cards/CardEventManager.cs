@@ -73,21 +73,28 @@ public class CardEventManager : EventTrigger
 
     public override void OnPointerDown(PointerEventData eventData)
     {
-        if (_myCard.Engine != null && _myCard.Engine.EngineState == EngineState.Stacked && BattleManager.Instance.BattleState == BattleStates.ChoosingAction)
+        if(GameManager.Instance.State == GameState.Battle)
         {
-            _myCard.Engine.Select();
+            if (_myCard.Engine != null && _myCard.Engine.EngineState == EngineState.Stacked && BattleManager.Instance.BattleState == BattleStates.ChoosingAction)
+            {
+                _myCard.Engine.Select();
+            }
+            else if (_myCard.Purchasable)
+            {
+                BuyManager.Instance.BuyCard(_myCard);
+            }
+            else
+            {
+                CalcOffset();
+                transform.SetSiblingIndex(transform.GetSiblingIndex() + 8);
+                _myCard.Dragging = true;
+            }
         }
-        else if (_myCard.Purchasable)
+
+        if (GameManager.Instance.State == GameState.Customizing)
         {
-            BuyManager.Instance.BuyCard(_myCard);
+            //Check if in deck, if not add to deck and add highlight
         }
-        else
-        {
-            CalcOffset();
-            transform.SetSiblingIndex(transform.GetSiblingIndex() + 8);
-            _myCard.Dragging = true;
-        }
-        
         if(_pointerOverTimer >= 0.75f)
             Utils.DestroyCardPreview();
     }
@@ -100,7 +107,8 @@ public class CardEventManager : EventTrigger
     public override void OnPointerUp(PointerEventData eventData)
     {
         _myCard.Dragging = false;
-        transform.localScale = BaseScale;
+        if(BaseScale != Vector3.zero)
+            transform.localScale = BaseScale;
         _dontMagnifyUntilHoverAgainHack = true;
     }
 
@@ -116,16 +124,28 @@ public class CardEventManager : EventTrigger
         if(_myCard.Engine != null && _myCard.Engine.EngineState == EngineState.Stacked)
             return;
         Vector3 currMousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0);
-        transform.position = currMousePos + _offset;
+        if(GameManager.Instance.State == GameState.Battle)
+            transform.position = currMousePos + _offset;
     }
 
     //Snap automatically to an open engine
     public override void OnPointerClick(PointerEventData eventData)
     {
-        if (_myCard.Engine == null && !_myCard.Purchasable && !_myCard.Dragging && Input.GetMouseButtonUp(1))
+        if(GameManager.Instance.State == GameState.Battle)
         {
-            //Find an empty engine
-            BattleManager.Instance.GetNextOpenEngine().AddCard(_myCard);
+            if (_myCard.Engine == null && !_myCard.Purchasable && !_myCard.Dragging && Input.GetMouseButtonUp(1))
+            {
+                //Find an empty engine
+                BattleManager.Instance.GetNextOpenEngine().AddCard(_myCard);
+            }
+        }
+
+        if (GameManager.Instance.State == GameState.Customizing)
+        {
+            if(!_myCard.Equipped)
+                CustomizeManager.Instance.SelectEquippedCard(_myCard);
+            else
+                CustomizeManager.Instance.DeselectEquipped(_myCard);
         }
         
     }
@@ -137,7 +157,8 @@ public class CardEventManager : EventTrigger
         {
             BaseScale = transform.localScale;
             //transform.position += Vector3.up * BaseScale.x * 2;
-            transform.SetSiblingIndex(transform.GetSiblingIndex() + 8);
+            if(GameManager.Instance.State == GameState.Battle)
+                transform.SetSiblingIndex(transform.GetSiblingIndex() + 8);
         }
         
 

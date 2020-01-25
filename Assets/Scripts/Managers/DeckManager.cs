@@ -44,7 +44,9 @@ public class DeckManager : MonoBehaviour
         _discard = new Stack<String>();
         _deck = new Stack<String>();
         _trash = new Stack<String>();
-        foreach (String e in Deck)
+
+        PlayerCollection pc = Utils.Load<PlayerCollection>("playercollection");
+        foreach (String e in pc.Equipped)
         {
             _deck.Push(e);
         }

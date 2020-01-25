@@ -241,6 +241,7 @@ GameObject:
   - component: {fileID: 6964687361830319079}
   - component: {fileID: 7229410773294158278}
   - component: {fileID: 6419771467541205590}
+  - component: {fileID: 3736888068461158887}
   m_Layer: 0
   m_Name: Card
   m_TagString: Card
@@ -301,13 +302,14 @@ MonoBehaviour:
   PowerTotal: 0
   AetherTotal: 0
   MoveTotal: 0
+  XValue: 0
+  TrashThis: 0
   _priority: 0
   _purchasable: 0
-  TrashThis: 0
-  XValue: 0
   Tweening: 0
   IsPreview: 0
   Dragging: 0
+  Equipped: 0
 --- !u!61 &6964687361830319079
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -369,6 +371,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Delegates: []
   BaseScale: {x: 0, y: 0, z: 0}
+--- !u!225 &3736888068461158887
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1176058906799001468}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1176058906951990944
 GameObject:
   m_ObjectHideFlags: 0

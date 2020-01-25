@@ -22,12 +22,24 @@ public class Card : MonoBehaviour
     [HideInInspector] public int PowerTotal; //Modified attack value
     [HideInInspector] public int AetherTotal; //Modified aether value
     [HideInInspector] public int MoveTotal; //Totalified aether value
+    
+    //Gameplay
+    [HideInInspector] public int XValue = 0;
+    public bool IsXCost => _aetherCost == -1;
+    [HideInInspector] public bool TrashThis = false; //Cards that are to be trashed are instead removed from the deck until end of the battle
+
+    //Engines
+    protected Engine _myEngine; 
+    public Engine Engine
+    {
+        get => _myEngine;
+        set => _myEngine = value;
+    }
+    
     [SerializeField] protected int _priority; public int Priority => _priority;
     
+    //Store
     [SerializeField] private bool _purchasable = false;
-    private Vector3 _initialScale;
-    private CardEventManager _eventManager;
-    
     public bool Purchasable
     {
         get => _purchasable;
@@ -37,24 +49,23 @@ public class Card : MonoBehaviour
             AssignUI();
         }
     }
-
-    [HideInInspector] public bool TrashThis = false; //Cards that are to be trashed are instead removed from the deck until end of the battle
     
-    [HideInInspector] public int XValue = 0;
+    //Events & UX
+    private Vector3 _initialScale;
+    private CardEventManager _eventManager;
     [HideInInspector] public bool Tweening = false;
     [HideInInspector] public bool IsPreview = false;
-    public bool IsXCost => _aetherCost == -1;
-    
-    
-    //UI
     [HideInInspector] public bool Dragging = false;
-    protected Engine _myEngine; 
-    public Engine Engine
+    private bool _equipped = false;
+    public bool Equipped
     {
-        get => _myEngine;
-        set => _myEngine = value;
+        get => _equipped;
+        set
+        {
+            _equipped = value;
+            AssignUI();
+        }
     }
-
 
     //Card UI
     protected Image u_cardBackground;
@@ -65,6 +76,7 @@ public class Card : MonoBehaviour
     protected TMP_Text u_bodyText;
     protected Image u_image;
     protected Image u_glow;
+    protected CanvasGroup u_cg;
 
     // Called when object is created
     protected void Awake()
@@ -91,6 +103,7 @@ public class Card : MonoBehaviour
         //u_glow.color = Color.clear;
         _initialScale = transform.localScale;
         _eventManager = GetComponent<CardEventManager>();
+        u_cg = GetComponent<CanvasGroup>();
     }
     
     //Execute a card's unique text
@@ -159,6 +172,11 @@ public class Card : MonoBehaviour
             u_aetherCost.transform.parent.gameObject.SetActive(false);
         
         u_bodyText.text = Utils.ReplaceWithSymbols(_cardText);
+
+        if (_equipped)
+            u_cg.alpha = 0.5f;
+        else
+            u_cg.alpha = 1f;
     }
     
 
