@@ -18,7 +18,7 @@ public class CardPreview : MonoBehaviour
     public void SetCard(Card c)
     {
         _myCard = Instantiate(Resources.Load<GameObject>("Prefabs/Cards/" + c.CardName.Replace(" ", String.Empty)), transform.GetChild(0));
-        if(BattleManager.Instance.BattleState == BattleStates.BuyingCards)
+        if(BattleManager.Instance != null && BattleManager.Instance.BattleState == BattleStates.BuyingCards)
             _myCard.GetComponent<Card>().Purchasable = true;
         FadeIn();
     }
