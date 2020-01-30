@@ -198,7 +198,7 @@ public class Card : MonoBehaviour
             transform.localScale = _initialScale;
     }
     
-    public void SetEngine(Color glowColor, Transform parent, Vector3 position, Vector3 scale)
+    public void SetEngine(Transform parent, Vector3 position, Vector3 scale)
     {
         // u_glow.color = glowColor;
         transform.SetParent(parent);

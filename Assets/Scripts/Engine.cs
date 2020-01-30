@@ -15,13 +15,10 @@ public class Engine : MonoBehaviour
     
     //UI
     public Color GlowColor;
-    private GameObject[] u_Circles;
-    private Material u_CircleGlowMat;
-    private GameObject[] u_Wheels;
+    private GameObject u_Circle;
+    private Material u_CircleGlowMat; 
     private GameObject u_EngineImg;
     private Animator u_EngineImgAnim;
-    private GameObject u_HolesImg;
-    private Material[] u_WheelMat;
     private bool _wheelTurning;
     private Tooltip _tooltip;
     private RectTransform[] _cardPositons;
@@ -77,35 +74,18 @@ public class Engine : MonoBehaviour
         Executed = false;
         _collider = GetComponent<BoxCollider2D>();
         
-        u_Circles = new GameObject[2];
-        u_Circles[0] = transform.Find("CircleGlow").gameObject;
-        u_Circles[1] = u_Circles[0].transform.Find("CircleFlat").gameObject;
-        u_CircleGlowMat = Instantiate(u_Circles[0].GetComponent<Image>().material);
-        u_CircleGlowMat.SetColor("_MyColor", GlowColor);
-        //u_Circles[0].GetComponent<Image>().material.SetColor("_MyColor", GlowColor);
-        u_Circles[0].GetComponent<Image>().material = u_CircleGlowMat;
-        
-        u_Wheels = new GameObject[2];
-        u_Wheels[0] = u_Circles[0].transform.Find("WheelGlow").gameObject;
-        u_Wheels[1] = u_Wheels[0].transform.Find("Wheel").gameObject;
-        u_WheelMat = new Material[2];
-        u_WheelMat[0] = Instantiate(u_Wheels[0].GetComponent<Image>().material);
-        u_WheelMat[0].SetColor("_MyColor", GlowColor);
-        u_Wheels[0].GetComponent<Image>().material = u_WheelMat[0];
-        u_WheelMat[1] = Instantiate(u_Wheels[1].GetComponent<Image>().material);
-        u_Wheels[1].GetComponent<Image>().material = u_WheelMat[1];
-        _wheelTurning = false;
+        u_Circle = transform.Find("CircleGlow").gameObject;
+        u_CircleGlowMat = Instantiate(u_Circle.GetComponent<Image>().material);
+        u_Circle.GetComponent<Image>().material = u_CircleGlowMat;
 
-        u_EngineImg = u_Circles[0].transform.Find("EngineImg").gameObject;
+        u_EngineImg = transform.Find("EngineImg").gameObject;
         u_EngineImgAnim = u_EngineImg.GetComponent<Animator>();
 
         _steamParticle = transform.Find("Steam").GetComponent<ParticleSystem>();
         
-        u_HolesImg = u_EngineImg.transform.Find("EngineHoles").gameObject;
-
         _tooltip = null;
         
-        _cardPositons = u_Circles[0].transform.Find("CardPositions").GetComponentsInChildren<RectTransform>();
+        _cardPositons = transform.Find("CardPositions").GetComponentsInChildren<RectTransform>();
     }
 
     //Adds a card to the pending card array
@@ -121,7 +101,7 @@ public class Engine : MonoBehaviour
             c.Engine.RemoveCard(c);
 
         c.Engine = this;
-        c.SetEngine(GlowColor, u_Circles[1].transform, CurrentCardPos(_pending.Count), transform.localScale);
+        c.SetEngine(transform, CurrentCardPos(_pending.Count), transform.localScale);
 //        Debug.Log(transform.localScale.x);
         _pending.Add(c);
     }
@@ -411,12 +391,6 @@ public class Engine : MonoBehaviour
     {
         if ((PendingCount >= 3 || (EngineState == EngineState.Stacked && Stack.Count != 0)) && !_wheelTurning)
         {
-            for (int i = 0; i < u_WheelMat.Length; i++)
-            {
-                u_WheelMat[i].SetFloat("_TimeScale", 100f);
-               // u_Wheels[i].GetComponent<Image>().material = u_WheelMat[i];
-            }
-
             u_EngineImgAnim.SetBool("IsReady", true);
             if(_steamParticle.isPlaying)
                 _steamParticle.Stop();
@@ -425,11 +399,6 @@ public class Engine : MonoBehaviour
         }
         else if (PendingCount < 3 && _wheelTurning && EngineState != EngineState.Stacked || (EngineState == EngineState.Stacked && Stack.Count == 0))
         {
-            for (int i = 0; i < u_WheelMat.Length; i++)
-            {
-                u_WheelMat[i].SetFloat("_TimeScale", 0);
-                //u_Wheels[i].GetComponent<Image>().material = u_WheelMat[i];
-            }
             u_EngineImgAnim.SetBool("IsReady", false);
             _steamParticle.Stop();
             _wheelTurning = false;
