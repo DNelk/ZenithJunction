@@ -201,10 +201,15 @@ public class Card : MonoBehaviour
     public void SetEngine(Transform parent, Vector3 position, Vector3 scale)
     {
         // u_glow.color = glowColor;
+        
         transform.SetParent(parent);
+        if (_eventManager.BaseScale != Vector3.zero)
+            _eventManager.BaseScale = _initialScale;
+        else
+            transform.localScale = _initialScale;
         Tweening = true;
         transform.DOMove(position, 0.5f).OnComplete(() => Tweening = false);
-        transform.DOScale( scale.x * 9, 0.5f);
+        transform.DOScale( scale.x * _initialScale.x, 0.5f);
     }
 
     //Pay aether cost for spells

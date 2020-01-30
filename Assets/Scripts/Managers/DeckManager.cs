@@ -53,9 +53,9 @@ public class DeckManager : MonoBehaviour
 
         _cardPanel = transform.parent;
         _counts = new TMP_Text[3];
-        _counts[0] = GameObject.Find("DeckCount").transform.Find("InDeck").GetChild(0).GetComponent<TMP_Text>();
-        _counts[1] = GameObject.Find("DeckCount").transform.Find("Discarded").GetChild(0).GetComponent<TMP_Text>();
-        _counts[2] = GameObject.Find("DeckCount").transform.Find("Trash").GetChild(0).GetComponent<TMP_Text>();
+        _counts[0] = GameObject.Find("DeckCount").transform.Find("InDeck").GetComponent<TMP_Text>();
+        _counts[1] = GameObject.Find("DeckCount").transform.Find("Discarded").GetComponent<TMP_Text>();
+        _counts[2] = GameObject.Find("DeckCount").transform.Find("Trash").GetComponent<TMP_Text>();
 
         var positions = transform.Find("CardPositions").GetComponentsInChildren<RectTransform>();
         _cardPositions = new RectTransform[positions.Length];

@@ -101,7 +101,7 @@ public class Engine : MonoBehaviour
             c.Engine.RemoveCard(c);
 
         c.Engine = this;
-        c.SetEngine(transform, CurrentCardPos(_pending.Count), transform.localScale);
+        c.SetEngine(_cardPositons[0].parent.transform, CurrentCardPos(_pending.Count), _cardPositons[0].parent.localScale);
 //        Debug.Log(transform.localScale.x);
         _pending.Add(c);
     }
@@ -391,7 +391,7 @@ public class Engine : MonoBehaviour
     {
         if ((PendingCount >= 3 || (EngineState == EngineState.Stacked && Stack.Count != 0)) && !_wheelTurning)
         {
-            u_EngineImgAnim.SetBool("IsReady", true);
+            //u_EngineImgAnim.SetBool("IsReady", true);
             if(_steamParticle.isPlaying)
                 _steamParticle.Stop();
             _steamParticle.Play();
@@ -399,7 +399,7 @@ public class Engine : MonoBehaviour
         }
         else if (PendingCount < 3 && _wheelTurning && EngineState != EngineState.Stacked || (EngineState == EngineState.Stacked && Stack.Count == 0))
         {
-            u_EngineImgAnim.SetBool("IsReady", false);
+           // u_EngineImgAnim.SetBool("IsReady", false);
             _steamParticle.Stop();
             _wheelTurning = false;
         }
