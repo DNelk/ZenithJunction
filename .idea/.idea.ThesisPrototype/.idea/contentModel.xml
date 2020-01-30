@@ -1043,6 +1043,7 @@
             <e p="Readme.txt" t="Include" />
           </e>
         </e>
+        <e p="EquippedCardIcon.cs" t="Include" />
         <e p="GameOverPanel.cs" t="Include" />
         <e p="HealthBar.cs" t="Include" />
         <e p="Materials" t="Include">
@@ -1104,7 +1105,9 @@
             <e p="BattleManager.cs" t="Include" />
             <e p="BuyManager.cs" t="Include" />
             <e p="ClashUIManager.cs" t="Include" />
+            <e p="CustomizeManager.cs" t="Include" />
             <e p="DeckManager.cs" t="Include" />
+            <e p="GameManager.cs" t="Include" />
           </e>
           <e p="Player.cs" t="Include" />
           <e p="ProceduralTerrain" t="Include">
@@ -1125,6 +1128,7 @@
           <e p="Utils" t="Include">
             <e p="ErrorMessage.cs" t="Include" />
             <e p="MovePlayerDialog.cs" t="Include" />
+            <e p="PlayerCollection.cs" t="Include" />
             <e p="Utils.cs" t="Include" />
             <e p="XDialog.cs" t="Include" />
           </e>
@@ -1205,6 +1209,7 @@
           <e p="UIParticle_Demo.cs" t="Include" />
           <e p="UIParticleSystem_Demo.cs" t="Include" />
         </e>
+        <e p="Waypoint.cs" t="Include" />
       </e>
       <e p="Coffee.UIParticle.csproj" t="IncludeRecursive" />
       <e p="Coffee.UIParticle.Demo.csproj" t="IncludeRecursive" />
