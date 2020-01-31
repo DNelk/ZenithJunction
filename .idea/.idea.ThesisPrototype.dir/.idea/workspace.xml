@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="a09b874d-2018-4a88-b6ee-ad21e6ed63d5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ThesisPrototype.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ThesisPrototype.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.ThesisPrototype/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ThesisPrototype/.idea/contentModel.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.ThesisPrototype/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ThesisPrototype/.idea/indexLayout.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Examples/HD SRP Samples (Legacy).unitypackage.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Examples/HD SRP Samples.unitypackage.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Examples/LW SRP Samples (Legacy).unitypackage.meta" beforeDir="false" />
@@ -25,11 +23,8 @@
       <change beforePath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Plugins/EditorResources/Templates/SRP (Legacy)/LWSRPTemplates 3xx (Legacy).unitypackage.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Plugins/EditorResources/Templates/SRP (Legacy)/LWSRPTemplates 4xx (Legacy).unitypackage.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Coffee/UIExtensions/UIParticle/UIParticle_Demo.unitypackage.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/Engine/GlowCircle.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Engine/GlowCircle.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Prefabs/Engine.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Prefabs/Engine.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Resources/Prefabs/UI/MainCanvas.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Prefabs/UI/MainCanvas.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/PrototypeBattle.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/PrototypeBattle.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/WholeDeck.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/WholeDeck.png" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -62,12 +57,15 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Engine.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Cards/CardEventManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Materials.meta" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Managers/DeckManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Managers/CustomizeManager.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/Assets/Scripts/Card.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Managers/CustomizeManager.cs" />
       </list>
     </option>
   </component>
@@ -127,7 +125,7 @@
       <workItem from="1573756766557" duration="555000" />
       <workItem from="1577145205916" duration="798000" />
       <workItem from="1577146324195" duration="199000" />
-      <workItem from="1580414233801" duration="1865000" />
+      <workItem from="1580414233801" duration="3712000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <created>1568928034325</created>
@@ -157,7 +155,21 @@
       <option name="project" value="LOCAL" />
       <updated>1580416974270</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Palmmy Implementing UI 2">
+      <created>1580419936104</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1580419936104</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Palmmy Implementing UI 2.5">
+      <created>1580420109497</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1580420109497</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -184,7 +196,9 @@
     <MESSAGE value="Ini PalmmyBranch" />
     <MESSAGE value="Ini PalmmyBranch_Unity" />
     <MESSAGE value="Palmmy Implementing UI" />
-    <option name="LAST_COMMIT_MESSAGE" value="Palmmy Implementing UI" />
+    <MESSAGE value="Palmmy Implementing UI 2" />
+    <MESSAGE value="Palmmy Implementing UI 2.5" />
+    <option name="LAST_COMMIT_MESSAGE" value="Palmmy Implementing UI 2.5" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
