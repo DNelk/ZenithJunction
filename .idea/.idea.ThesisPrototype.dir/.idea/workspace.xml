@@ -3,28 +3,19 @@
   <component name="ChangeListManager">
     <list default="true" id="a09b874d-2018-4a88-b6ee-ad21e6ed63d5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ThesisPrototype.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ThesisPrototype.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Examples/HD SRP Samples (Legacy).unitypackage.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Examples/HD SRP Samples.unitypackage.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Examples/LW SRP Samples (Legacy).unitypackage.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Examples/LW SRP Samples.unitypackage.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Examples/Official/CustomRTRain/Custom RT Samples.unitypackage.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Examples/Official/Mosaic Effect PPS/MosaicEffectPPS.unitypackage.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Examples/Official/SimpleTerrain/ApplyGrassWindToTerrain.unitypackage.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Examples/Official/Substance/LegacySubstanceExample.unitypackage.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Examples/Official/Substance2018/Substance2018.unitypackage.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Plugins/EditorResources/Templates/CustomRTTemplates.unitypackage.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Plugins/EditorResources/Templates/HDSRPTemplates.unitypackage.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Plugins/EditorResources/Templates/LWSRPTemplates.unitypackage.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Plugins/EditorResources/Templates/PPStackTemplates.unitypackage.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Plugins/EditorResources/Templates/SRP (Legacy)/HDSRPTemplates 3xx (Legacy).unitypackage.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Plugins/EditorResources/Templates/SRP (Legacy)/HDSRPTemplates 4xx (Legacy).unitypackage.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Plugins/EditorResources/Templates/SRP (Legacy)/HDSRPTemplates 572 (Legacy).unitypackage.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Plugins/EditorResources/Templates/SRP (Legacy)/HDSRPTemplates 5xx (Legacy).unitypackage.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Plugins/EditorResources/Templates/SRP (Legacy)/LWSRPTemplates 3xx (Legacy).unitypackage.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Plugins/EditorResources/Templates/SRP (Legacy)/LWSRPTemplates 4xx (Legacy).unitypackage.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Coffee/UIExtensions/UIParticle/UIParticle_Demo.unitypackage.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.ThesisPrototype/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ThesisPrototype/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Resources/Prefabs/UI/MainCanvas.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Prefabs/UI/MainCanvas.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/PrototypeBattle.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/PrototypeBattle.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/PalmmyScene/PM_BattleUITest.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/PalmmyScene/PM_BattleUITest.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Test/Commandgear.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Test/Commandgear.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Test/Commandgear_Back.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Test/Commandgear_Back.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Test/CommenceCore.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Test/CommenceCore.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Test/MagicCircle.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Test/MagicCircle.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Test/Outline.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Test/Outline.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Test/ShopMachine.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Test/ShopMachine.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Test/WholeDeck.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Test/WholeDeck.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Test/WholeDeckWithShade.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Test/WholeDeckWithShade.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Test/WholeDeck_BG.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Test/WholeDeck_BG.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Test/WholeDeck_Deck.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Test/WholeDeck_Deck.png.meta" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -54,10 +45,12 @@
     <option name="CREATE_PULL_REQUEST_DEFAULT_REPO_NAME" value="ThesisPrototype" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Test/Commandgear.png.meta" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Engine.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Cards/CardEventManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Materials.meta" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Managers/DeckManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/Palmmy_UI/BattleUI_Hover.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Managers/CustomizeManager.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
@@ -66,6 +59,7 @@
       <list>
         <option value="$PROJECT_DIR$/Assets/Scripts/Card.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Managers/CustomizeManager.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/UI/Palmmy_UI/BattleUI_Hover.cs" />
       </list>
     </option>
   </component>
@@ -126,6 +120,9 @@
       <workItem from="1577145205916" duration="798000" />
       <workItem from="1577146324195" duration="199000" />
       <workItem from="1580414233801" duration="3712000" />
+      <workItem from="1580532649169" duration="600000" />
+      <workItem from="1580671006343" duration="260000" />
+      <workItem from="1580671289620" duration="15000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <created>1568928034325</created>
