@@ -1120,6 +1120,10 @@
             <e p="ConfirmButton.cs" t="Include" />
             <e p="DeselectCardPanel.cs" t="Include" />
             <e p="EnemyIntentionUI.cs" t="Include" />
+            <e p="Palmmy_UI" t="Include">
+              <e p="BattleUI_Hover.cs" t="Include" />
+              <e p="RotatingGear.cs" t="Include" />
+            </e>
             <e p="PowerBanner.cs" t="Include" />
             <e p="PowerMeter.cs" t="Include" />
             <e p="Tooltip.cs" t="Include" />
