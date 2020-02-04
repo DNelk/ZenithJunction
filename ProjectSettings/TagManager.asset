@@ -9,6 +9,8 @@ TagManager:
   - UIFrame
   - CustomizeScreenContent
   - CustomizeScreenSelected
+  - OverworldTrain
+  - OverworldInteractable
   layers:
   - Default
   - TransparentFX
