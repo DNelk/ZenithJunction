@@ -1,10 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//Script for waypoints on the overworld map
-public class Waypoint : MonoBehaviour
+
+public class MapObstacle : MapInteractable
 {
-    
     // Start is called before the first frame update
     void Start()
     {

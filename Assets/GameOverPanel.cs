@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
@@ -9,19 +10,30 @@ using UnityEngine.UI;
 public class GameOverPanel : MonoBehaviour
 {
     private TMP_Text _result;
-
+    public bool win;
     private CanvasGroup _cg;
+    private Button[] _buttons;
     // Start is called before the first frame update
     void Awake()
     {
         _result = transform.Find("ResultText").GetComponent<TMP_Text>();
         _cg = GetComponent<CanvasGroup>();
         _cg.alpha = 0;
+        _buttons = transform.Find("Buttons").GetComponentsInChildren<Button>();
+    }
+
+    private void Start()
+    {
     }
 
     public void ToMainMenu()
     {
         SceneManager.LoadScene("StartScreen");
+    }
+    
+    public void ToMap()
+    {
+        SceneManager.LoadScene("Overworld");
     }
 
     public string Result
