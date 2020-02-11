@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MapInteractable : MonoBehaviour
 {
@@ -19,6 +20,8 @@ public class MapInteractable : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
         OverworldTrain.Instance.TravelToNode(Node);
     }
 }

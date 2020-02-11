@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +16,7 @@ public class CustomizeManager : MonoBehaviour
     
     private List<Card> _cardsOnScreen;
     private List<EquippedCardIcon> _equippedCardIcons;
-    
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -33,21 +34,27 @@ public class CustomizeManager : MonoBehaviour
         _equipped = GameObject.FindWithTag("CustomizeScreenSelected").transform;
         _cardsOnScreen = new List<Card>();
         _equippedCardIcons = new List<EquippedCardIcon>();
-        /*PlayerCollection pc = new PlayerCollection();
-        pc.Cards.Add("strike");
-        pc.Cards.Add("strike");
-        pc.Cards.Add("strike");
-        pc.Cards.Add("strike");
-        pc.Cards.Add("railcharge");
-        pc.Cards.Add("allaboard");
-        pc.Cards.Add("manaboil");
-        pc.Cards.Add("manaboil");
-        pc.Cards.Add("manaboil");
         
-        Utils.Save(pc, "playercollection");
-*/
-        //Load collection
+        if (!File.Exists(Application.persistentDataPath + "playercollection.save"))
+        {
+            PlayerCollection pc = new PlayerCollection();
+            pc.Cards.Add("strike");
+            pc.Cards.Add("strike");
+            pc.Cards.Add("strike");
+            pc.Cards.Add("strike");
+            pc.Cards.Add("railcharge");
+            pc.Cards.Add("allaboard");
+            pc.Cards.Add("manaboil");
+            pc.Cards.Add("manaboil");
+            pc.Cards.Add("manaboil");
+            pc.Cards.Add("DevRage");
+        
+            Utils.Save(pc, "playercollection");
+        }
+
         PlayerCollection collection = Utils.Load<PlayerCollection>("playercollection");
+        
+
         foreach (string c in collection.Cards)
         {
             GameObject go = Instantiate(Resources.Load<GameObject>("prefabs/cards/" + c.Replace(" ", String.Empty)), _content);
@@ -128,5 +135,6 @@ public class CustomizeManager : MonoBehaviour
         }
         
         Utils.Save(pc, "playercollection");
+        gameObject.SetActive(false);
     }
 }

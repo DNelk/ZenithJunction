@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,18 @@ public class MapManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (!File.Exists(Application.persistentDataPath + "playermapdata.save"))
+        {
+            PlayerMapData pmd = new PlayerMapData(OverworldTrain.Instance.CurrentNode.NodeID);
+            Utils.Save(pmd, "playermapdata");
+        }
+
+        PlayerMapData mapData = Utils.Load<PlayerMapData>("playermapdata");
+
+        OverworldTrain.Instance.CurrentNode = GameObject.FindWithTag("OverworldTracks").transform
+            .Find(mapData.NodeID.Substring(0, 1)).transform.Find(mapData.NodeID.Substring(1, 1))
+            .GetComponent<MapNode>();
+        OverworldTrain.Instance.SnapToNode();
     }
 
     // Update is called once per frame

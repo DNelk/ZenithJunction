@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.PackageManager.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public GameState State;
+
+    //Map Stuff
+    private string _currentEnagingInteractable;
+    
     private void Awake()
     {
         if (Instance == null)
@@ -16,6 +22,22 @@ public class GameManager : MonoBehaviour
         
         DontDestroyOnLoad(gameObject);
     }
+
+    public void LoadScene(string sceneName)
+    {
+        StartCoroutine(LoadSceneAsync(sceneName));
+    }
+
+    private IEnumerator LoadSceneAsync(string sceneName)
+    {
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+        }
+    }
+    
 }
 
 public enum GameState

@@ -29,7 +29,7 @@ public class OverworldTrain : MonoBehaviour
         SnapToNode();
     }
 
-    private void SnapToNode()
+    public void SnapToNode()
     {
         transform.position = CurrentNode.transform.position;
     }
