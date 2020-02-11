@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 582a553e05699d048827fd76fdda37a4
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 500
+  forceTextureCase: 0
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Steamfont_alpha_numberonly
+  fontNames:
+  - Steamfont_alpha_numberonly
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 2
+  useLegacyBoundsCalculation: 1
+  shouldRoundAdvanceValue: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
