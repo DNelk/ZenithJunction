@@ -12,6 +12,8 @@ public class Card : MonoBehaviour
     //Card Variables
     [SerializeField] protected string _cardName; public String CardName => _cardName;
     [SerializeField] protected CardTypes _cardType; public CardTypes CardType => _cardType;
+    [SerializeField] protected CardRarities _cardRarities; public CardRarities CardRarity => _cardRarities;
+    [SerializeField] protected Sprite _cardImage; public Sprite CardImage => _cardImage;
     [SerializeField] protected int _buyCost; public int BuyCost => _buyCost;
     [SerializeField] protected int _aetherCost; public int AetherCost => _aetherCost;
     [SerializeField] protected string _cardText;
@@ -70,9 +72,16 @@ public class Card : MonoBehaviour
     //Card UI
     protected Image u_cardBackground;
     protected TMP_Text u_cardName;
+    protected Image u_rarity;
     protected TMP_Text u_type;
+    protected Image u_type_color;
     protected TMP_Text u_buyCost;
-    protected TMP_Text u_aetherCost;
+    protected GameObject u_attackValue;
+    protected GameObject u_aetherValue;
+    protected GameObject u_moveValue;
+    protected Image[] u_aetherCost;
+    protected Text u_aetherCost_X;
+    protected Image[] u_range;
     protected TMP_Text u_bodyText;
     protected Image u_image;
     protected Image u_glow;
@@ -94,11 +103,18 @@ public class Card : MonoBehaviour
     {
         u_cardBackground = transform.Find("Back").GetComponent<Image>();
         u_cardName = transform.Find("NameBanner").transform.Find("CardName").GetComponent<TMP_Text>();
+        u_rarity = transform.Find("Rarity").GetComponent<Image>();
         u_type = transform.Find("Type").transform.Find("TypeLine").GetComponent<TMP_Text>();
+        u_type_color = transform.Find("Type").GetComponent<Image>();
         u_buyCost = transform.Find("Cost").transform.Find("BuyCost").GetComponent<TMP_Text>();
-        u_aetherCost = transform.Find("Aether").transform.Find("AetherCost").GetComponent<TMP_Text>();
+        u_attackValue = transform.Find("Parameter").transform.Find("Parameter_Attack").gameObject;
+        u_aetherValue = transform.Find("Parameter").transform.Find("Parameter_Aether").gameObject;
+        u_moveValue = transform.Find("Parameter").transform.Find("Parameter_Move").gameObject;
+        u_aetherCost = transform.Find("Aether_Cost").GetComponentsInChildren<Image>();
+        u_aetherCost_X = u_aetherCost[0].transform.Find("AetherCost_Xnumber").GetComponent<Text>();
+        u_range = transform.Find("Range").GetComponentsInChildren<Image>();
         u_bodyText = transform.Find("BodyText").GetComponent<TMP_Text>();
-        u_image = transform.Find("Image").GetComponent<Image>();
+        u_image = transform.Find("Back").transform.Find("CardImage").GetComponent<Image>();
         //u_glow = transform.Find("Glow").GetComponent<Image>();
         //u_glow.color = Color.clear;
         _initialScale = transform.localScale;
@@ -123,37 +139,59 @@ public class Card : MonoBehaviour
     {
         u_cardName.text = _cardName;
         
+        //check type
         switch (CardType)
         {
             case CardTypes.Attack:
-                u_cardBackground.color = new Color(0.9f, 0.6f, 0.6f);
+                u_type_color.color = new Color(0.752f, 0.098f, 0);
                 break;
             case CardTypes.Aether:
-                u_cardBackground.color = new Color(0.7f, 1f, 1f);
+                u_type_color.color = new Color(0.2f, 0.18f, 0.58f);
                 break;
             case CardTypes.Special:
-                u_cardBackground.color = new Color(0.8f,0.6f,1f);
+                u_type_color.color = new Color(0.658f,0.282f,0.627f);
                 break;
             case CardTypes.Movement:
-                u_cardBackground.color = new Color(0.5f, 0.5f, 0f);
+                u_type_color.color = new Color(0.956f,0.749f,0.031f);
                 break;
                 
         }
         
+        //check rarity
+        switch (CardRarity)
+        {
+            case CardRarities.Common:
+                u_rarity.color = new Color(0,0,0);
+                break;
+            case CardRarities.Uncommon:
+                u_type_color.color = new Color(0.7f, 0.7f, 0.7f);
+                break;
+            case CardRarities.Rare:
+                u_type_color.color = new Color(1,0.8f,0);
+                break;
+            case CardRarities.UltraRare:
+                u_type_color.color = new Color(0.8f,0.5f,1);
+                break;
+                
+        }
+        
+        //check Image
+        if (_cardImage != null) // check first there is the CardArt Ornot
+            u_image.sprite = _cardImage;
+        
+        //check type_Text
         u_type.text = Enum.GetName(typeof(CardTypes), _cardType);
 
         switch (_range)
         {
             case AttackRange.Melee:
-                u_type.text = "Melee " + u_type.text;
                 break;
             case AttackRange.Short:
-                u_type.text = "Ranged " + u_type.text + " - Short";
-                u_cardBackground.color = new Color(0.8f, 0.3f, 0.1f);
+                u_range[0].color = Color.white;
                 break;
             case AttackRange.Long:
-                u_type.text = "Ranged " + u_type.text + " - Long";
-                u_cardBackground.color = new Color(0.6f, 0.3f, 0.3f);
+                u_range[0].color = Color.white;
+                u_range[1].color = Color.white;
                 break;
             default:
                 break;
@@ -165,18 +203,48 @@ public class Card : MonoBehaviour
         else
             u_buyCost.transform.parent.gameObject.SetActive(false);
         
-        u_aetherCost.text = _aetherCost.ToString();
-        if (_aetherCost == -1) //-1 is X
-            u_aetherCost.text = "X";
+        //Aether Cost change
+
+        //if it's an X card
+        if (_aetherCost == -1) //-1 is X 
+        {
+            u_aetherCost[0].color = Color.white; //make the first aether cost symbol active
+            u_aetherCost_X.color = Color.white; //set the X text to be active
+            u_aetherCost[0].transform.localScale *= 1.3f; //scaling them to be bigger
+        }
+        else if (_aetherCost > 0)
+        {
+            for (int i = 0; i < _aetherCost; i++)
+            {
+                u_aetherCost[i].color = Color.white; //set the symbol active depend on aether cost
+            }
+        }
         else if (_aetherCost == 0)
-            u_aetherCost.transform.parent.gameObject.SetActive(false);
-        
-        u_bodyText.text = Utils.ReplaceWithSymbols(_cardText);
+            //nothing happen
+
+            u_bodyText.text = Utils.ReplaceWithSymbols(_cardText);
 
         if (_equipped)
             u_cg.alpha = 0.5f;
         else
             u_cg.alpha = 1f;
+        
+        //assign Parameter
+        if (_powerValue > 0)
+        {
+            u_attackValue.SetActive(true);
+            u_attackValue.GetComponentInChildren<Text>().text = _powerValue.ToString();
+        }
+        if (_aetherValue > 0)
+        {
+            u_aetherValue.SetActive(true);
+            u_aetherValue.GetComponentInChildren<Text>().text = _aetherValue.ToString();
+        }
+        if (_moveValue > 0)
+        {
+            u_moveValue.SetActive(true);
+            u_moveValue.GetComponentInChildren<Text>().text = _moveValue.ToString();
+        }
     }
     
 
@@ -288,6 +356,20 @@ public enum CardTypes
     Aether,
     Special,
     Movement
+}
+
+public enum CardRarities
+{
+    Common,
+    Uncommon,
+    Rare,
+    UltraRare
+}
+
+public enum CardView
+{
+    catridge,
+    preview
 }
 
 

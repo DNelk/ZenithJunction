@@ -1129,13 +1129,6 @@
             <e p="Tooltip.cs" t="Include" />
             <e p="UIPopIn.cs" t="Include" />
           </e>
-          <e p="Utils" t="Include">
-            <e p="ErrorMessage.cs" t="Include" />
-            <e p="MovePlayerDialog.cs" t="Include" />
-            <e p="PlayerCollection.cs" t="Include" />
-            <e p="Utils.cs" t="Include" />
-            <e p="XDialog.cs" t="Include" />
-          </e>
         </e>
         <e p="ShakeCamera.cs" t="Include" />
         <e p="TextMesh Pro" t="Include">
@@ -1206,6 +1199,19 @@
           </e>
           <e p="Sprites" t="Include">
             <e p="EmojiOne Attribution.txt" t="Include" />
+          </e>
+        </e>
+        <e p="Textures" t="Include">
+          <e p="Cards" t="Include">
+            <e p="Palmmy" t="Include">
+              <e p="Utils" t="Include">
+                <e p="ErrorMessage.cs" t="Include" />
+                <e p="MovePlayerDialog.cs" t="Include" />
+                <e p="PlayerCollection.cs" t="Include" />
+                <e p="Utils.cs" t="Include" />
+                <e p="XDialog.cs" t="Include" />
+              </e>
+            </e>
           </e>
         </e>
         <e p="UIParticle_Demo" t="Include">
