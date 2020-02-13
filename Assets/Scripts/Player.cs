@@ -13,7 +13,8 @@ public class Player : MonoBehaviour
     [SerializeField] private int _maxHP = 10;
     private int _currentHP;
     //HP UI
-    private Slider _healthBar;
+    private GameObject _healthBar;
+    private float hp_OriginLength;
     private TMP_Text _hpText;
     private Transform[] _positions;
     private int _currentPos; public int Position => _currentPos;
@@ -27,10 +28,11 @@ public class Player : MonoBehaviour
     {
         _currentHP = _maxHP;
         _mr = GetComponentInChildren<SkinnedMeshRenderer>();
-        _healthBar = GameObject.Find("PlayerHealth").GetComponent<Slider>();
-        _healthBar.GetComponent<HealthBar>().Target = "Player";
-        _healthBar.maxValue = _maxHP;
-        _hpText = _healthBar.transform.Find("Numbers").GetComponent<TMP_Text>();
+        _healthBar = GameObject.Find("PlayerHealth").transform.Find("Fill Area").gameObject;
+        hp_OriginLength = _healthBar.GetComponent<RectTransform>().sizeDelta.x;
+        _healthBar.transform.parent.GetComponent<HealthBar>().Target = "Player";
+        //_healthBar.maxValue = _maxHP;
+        _hpText = _healthBar.transform.parent.transform.Find("Numbers").GetComponent<TMP_Text>();
         UpdateHealth();
         _positions = new []{GameObject.Find("PlayerPos1").transform, GameObject.Find("PlayerPos2").transform, GameObject.Find("PlayerPos3").transform};
         _currentPos = 0;
@@ -56,7 +58,8 @@ public class Player : MonoBehaviour
 
     private void UpdateHealth()
     {
-        _healthBar.value = _currentHP;
+        //_healthBar.value = _currentHP;
+        _healthBar.GetComponent<RectTransform>().sizeDelta = new Vector2( (((_currentHP*100)/_maxHP) * hp_OriginLength)/100, _healthBar.GetComponent<RectTransform>().sizeDelta.y);
         _hpText.text = _currentHP + "/" + _maxHP;
     }
 

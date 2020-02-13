@@ -421,6 +421,11 @@ public class Engine : MonoBehaviour
 
     private void UpdateUICounts()
     {
+        for (int i = 0; i < u_move.Length; i++)
+        {
+            u_move[i].color = new Color(0,0,0,0);
+        }
+        
         int tempPow, tempAet, tempMove, tempCost;
         tempPow = tempAet = tempMove = tempCost = 0;
         bool tempInRange = false;
@@ -443,7 +448,7 @@ public class Engine : MonoBehaviour
         u_aetherNumber.text = tempAet.ToString();
         for (int i = 0; i < tempMove; i++)
         {
-            u_move[i].gameObject.SetActive(true);
+            u_move[i].color = Color.white;
         }
     }
 
