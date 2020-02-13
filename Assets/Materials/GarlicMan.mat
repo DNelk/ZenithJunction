@@ -8,9 +8,9 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: GarlicMan
-  m_Shader: {fileID: 4800000, guid: 5dde35cabcdd6d84e916c4a7b1cfebc3, type: 3}
+  m_Shader: {fileID: 4800000, guid: 34d0d470e723d43e48caf4f328bd9150, type: 3}
   m_ShaderKeywords: 
-  m_LightmapFlags: 0
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -19,6 +19,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Albedo:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseColorRGBOutlineWidthA:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -60,6 +64,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Normal:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _NormalMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -73,7 +81,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ToonRamp:
-        m_Texture: {fileID: 2800000, guid: 52e66a9243cdfed44b5e906f5910d35b, type: 3}
+        m_Texture: {fileID: 2800000, guid: 8cc36f10dd63e43abba68c70d6252c19, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _texcoord:
@@ -102,7 +110,8 @@ Material:
     - _OutlineWidth: 0.02
     - _Parallax: 0.02
     - _RimOffset: 0.6
-    - _RimPower: 0.4
+    - _RimPower: 0
+    - _Scale: 0.3
     - _ShadowContribution: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -123,3 +132,5 @@ Material:
     - _HighlightTint: {r: 1, g: 1, b: 1, a: 1}
     - _OutlineTint: {r: 0.5294118, g: 0.5294118, b: 0.5294118, a: 0}
     - _RimColor: {r: 1, g: 1, b: 1, a: 0}
+    - _RimTint: {r: 0.5990566, g: 0.9495268, b: 1, a: 0}
+    - _Tint: {r: 0.92923707, g: 0.7146226, b: 0.9528302, a: 1}
