@@ -114,6 +114,7 @@ public class Engine : MonoBehaviour
         c.SetEngine(_cardPositons[0].parent.transform, CurrentCardPos(_pending.Count), _cardPositons[0].parent.localScale);
 //        Debug.Log(transform.localScale.x);
         _pending.Add(c);
+        UpdateUICounts();
     }
 
     public void RemoveCard(Card c)
@@ -137,6 +138,7 @@ public class Engine : MonoBehaviour
             nextC = _pending[cInd];
             nextC.transform.DOMove(CurrentCardPos(cInd), 0.1f);
         }
+        UpdateUICounts();
     }
 
     public void ReadyCards()
@@ -415,11 +417,31 @@ public class Engine : MonoBehaviour
             _steamParticle.Stop();
             _wheelTurning = false;
         }
+    }
+
+    private void UpdateUICounts()
+    {
+        int tempPow, tempAet, tempMove, tempCost;
+        tempPow = tempAet = tempMove = tempCost = 0;
+        bool tempInRange = false;
+        
+        //Clone this engine, and calculate
+        ReadyCards();
+        tempCost = ExecuteStackForPreview();
+
+        tempPow = PowerTotal;
+        _powerTotal = 0;
+        tempAet = AetherTotal - tempCost;
+        _aetherTotal = 0;
+        tempMove = MoveTotal;
+        _moveTotal = 0;
+        tempInRange = _inRange;
+        _inRange = true;
         
         //set TotalPower
-        u_powerNumber.text = _powerTotal.ToString();
-        u_aetherNumber.text = _powerTotal.ToString();
-        for (int i = 0; i < _moveTotal; i++)
+        u_powerNumber.text = tempPow.ToString();
+        u_aetherNumber.text = tempAet.ToString();
+        for (int i = 0; i < tempMove; i++)
         {
             u_move[i].gameObject.SetActive(true);
         }
