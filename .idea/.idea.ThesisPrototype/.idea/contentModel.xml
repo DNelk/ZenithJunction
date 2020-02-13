@@ -1043,15 +1043,21 @@
             <e p="Readme.txt" t="Include" />
           </e>
         </e>
+        <e p="EnemyMapObstacle.cs" t="Include" />
         <e p="EquippedCardIcon.cs" t="Include" />
         <e p="GameOverPanel.cs" t="Include" />
         <e p="HealthBar.cs" t="Include" />
+        <e p="MapInteractable.cs" t="Include" />
+        <e p="MapManager.cs" t="Include" />
+        <e p="MapNode.cs" t="Include" />
+        <e p="MapObstacle.cs" t="Include" />
         <e p="Materials" t="Include">
           <e p="Shaders" t="Include">
             <e p="Glow.shader" t="Include" />
             <e p="RotateTexture.shader" t="Include" />
           </e>
         </e>
+        <e p="OverworldTrain.cs" t="Include" />
         <e p="RotateGloveOnHover.cs" t="Include" />
         <e p="ScriptCalculator" t="Include">
           <e p="Editor" t="Include">
@@ -1130,11 +1136,7 @@
             <e p="UIPopIn.cs" t="Include" />
           </e>
           <e p="Utils" t="Include">
-            <e p="ErrorMessage.cs" t="Include" />
-            <e p="MovePlayerDialog.cs" t="Include" />
-            <e p="PlayerCollection.cs" t="Include" />
-            <e p="Utils.cs" t="Include" />
-            <e p="XDialog.cs" t="Include" />
+            <e p="PlayerMapData.cs" t="Include" />
           </e>
         </e>
         <e p="ShakeCamera.cs" t="Include" />
@@ -1208,12 +1210,24 @@
             <e p="EmojiOne Attribution.txt" t="Include" />
           </e>
         </e>
+        <e p="Textures" t="Include">
+          <e p="Cards" t="Include">
+            <e p="Palmmy" t="Include">
+              <e p="Utils" t="Include">
+                <e p="ErrorMessage.cs" t="Include" />
+                <e p="MovePlayerDialog.cs" t="Include" />
+                <e p="PlayerCollection.cs" t="Include" />
+                <e p="Utils.cs" t="Include" />
+                <e p="XDialog.cs" t="Include" />
+              </e>
+            </e>
+          </e>
+        </e>
         <e p="UIParticle_Demo" t="Include">
           <e p="Coffee.UIParticle.Demo.asmdef" t="Include" />
           <e p="UIParticle_Demo.cs" t="Include" />
           <e p="UIParticleSystem_Demo.cs" t="Include" />
         </e>
-        <e p="Waypoint.cs" t="Include" />
       </e>
       <e p="Coffee.UIParticle.csproj" t="IncludeRecursive" />
       <e p="Coffee.UIParticle.Demo.csproj" t="IncludeRecursive" />

@@ -47,9 +47,9 @@ public class CardEventManager : EventTrigger
                 if (!_glow.isPlaying)
                     _glow.Play();
             }
-
-            if(_pointerOverTimer >= 0.75f)
-                Utils.GenerateCardPreview(_myCard);
+            
+            //generateCard
+            Utils.GenerateCardPreview(_myCard);
 
             if (Input.GetKeyDown(KeyCode.Alpha1) && _myCard.Engine == null && !_myCard.Purchasable)
             {
@@ -95,8 +95,7 @@ public class CardEventManager : EventTrigger
         {
             //Check if in deck, if not add to deck and add highlight
         }
-        if(_pointerOverTimer >= 0.75f)
-            Utils.DestroyCardPreview();
+
     }
 
     public override void OnDrag(PointerEventData eventData)
@@ -168,14 +167,13 @@ public class CardEventManager : EventTrigger
     //Make card preview go away
     public override void OnPointerExit(PointerEventData eventData)
     {
-        if(_pointerOverTimer >= 0.75f)
-            Utils.DestroyCardPreview();
         _pointerOverTimer = 0;
         if(BaseScale != Vector3.zero) 
             transform.localScale = BaseScale;
         //transform.position -= Vector3.up * BaseScale.x * 2;
         BaseScale = Vector3.zero;
         _hovering = false;
+        Utils.DestroyCardPreview();
         _dontMagnifyUntilHoverAgainHack = false;
         if(_glow.isPlaying)
             _glow.Stop();

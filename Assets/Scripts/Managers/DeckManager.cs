@@ -22,8 +22,11 @@ public class DeckManager : MonoBehaviour
     private Stack<String> _trash; //Trashed cards (removed until end of battle)
     
     //UI
+    private Transform _cardMachine;
     private Transform _cardPanel;
-    private TMP_Text[] _counts;
+    private TMP_Text[] _inDeckCount;
+    private TMP_Text[] _disCount;
+    private TMP_Text[] _trashCount;
     private RectTransform[] _cardPositions;
     
     private void Awake()
@@ -52,10 +55,11 @@ public class DeckManager : MonoBehaviour
         }
 
         _cardPanel = transform.parent;
-        _counts = new TMP_Text[3];
-        _counts[0] = GameObject.Find("DeckCount").transform.Find("InDeck").GetComponent<TMP_Text>();
-        _counts[1] = GameObject.Find("DeckCount").transform.Find("Discarded").GetComponent<TMP_Text>();
-        _counts[2] = GameObject.Find("DeckCount").transform.Find("Trash").GetComponent<TMP_Text>();
+        _cardMachine = transform.parent.transform.parent;
+        
+        _inDeckCount = _cardMachine.transform.Find("DeckMachine").transform.Find("Number").GetComponentsInChildren<TMP_Text>();
+        _disCount = _cardMachine.transform.Find("DiscardMachine").transform.Find("Number").GetComponentsInChildren<TMP_Text>();    
+        _trashCount = _cardMachine.transform.Find("TrashMachine").transform.Find("Number").GetComponentsInChildren<TMP_Text>();
 
         var positions = transform.Find("CardPositions").GetComponentsInChildren<RectTransform>();
         _cardPositions = new RectTransform[positions.Length];
@@ -120,7 +124,7 @@ public class DeckManager : MonoBehaviour
             
 
             Tween dealTween = activeCardGO.transform.DOMove(_cardPositions[i].position, 0.1f, false);
-            activeCardGO.transform.localScale = _cardPositions[i].localScale;
+            activeCardGO.transform.localScale = _cardPositions[i].localScale*0.95f;
             yield return dealTween.WaitForCompletion();
         }
     }
@@ -165,9 +169,48 @@ public class DeckManager : MonoBehaviour
     
     private void Update()
     {
-        _counts[0].text = InDeckCount().ToString();
+        //update indeck number
+        if (InDeckCount() < 10)
+        {
+            _inDeckCount[0].text = "0";
+            _inDeckCount[1].text = InDeckCount().ToString();
+        }
+        else
+        {
+            String count = InDeckCount().ToString();
+            _inDeckCount[0].text = count[0].ToString();
+            _inDeckCount[1].text = count[1].ToString();
+        }
+        
+        //update discard number
+        if (InDiscardCount() < 10)
+        {
+            _disCount[0].text = "0";
+            _disCount[1].text = InDiscardCount().ToString();
+        }
+        else
+        {
+            String count = InDiscardCount().ToString();
+            _disCount[0].text = count[0].ToString();
+            _disCount[1].text = count[1].ToString();
+        }
+        
+        //update trash number
+        if (InTrashCount() < 10)
+        {
+            _trashCount[0].text = "0";
+            _trashCount[1].text = InTrashCount().ToString();
+        }
+        else
+        {
+            String count = InTrashCount().ToString();
+            _trashCount[0].text = count[0].ToString();
+            _trashCount[1].text = count[1].ToString();
+        }
+        
+        /*_counts[0].text = InDeckCount().ToString();
         _counts[1].text = InDiscardCount().ToString();
-        _counts[2].text = InTrashCount().ToString();
+        _counts[2].text = InTrashCount().ToString();*/
 
     }
 
