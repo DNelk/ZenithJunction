@@ -16,11 +16,11 @@ public class Card : MonoBehaviour
     [SerializeField] protected Sprite _cardImage; public Sprite CardImage => _cardImage;
     [SerializeField] protected int _buyCost; public int BuyCost => _buyCost;
     [SerializeField] protected int _aetherCost; public int AetherCost => _aetherCost;
-    [SerializeField] protected string _cardText;
-    [SerializeField] protected int _aetherValue;
-    [SerializeField] protected int _powerValue;
-    [SerializeField] protected AttackRange _range = AttackRange.Null;
-    [SerializeField] protected int _moveValue;
+    [SerializeField] protected string _cardText; public string CardText => _cardText;
+    [SerializeField] protected int _aetherValue; public int AetherValue => _aetherValue;
+    [SerializeField] protected int _powerValue; public int PowerValue => _powerValue;
+    [SerializeField] protected AttackRange _range = AttackRange.Null; public AttackRange Range => _range;
+    [SerializeField] protected int _moveValue; public int MoveValue => _moveValue;
     [HideInInspector] public int PowerTotal; //Modified attack value
     [HideInInspector] public int AetherTotal; //Modified aether value
     [HideInInspector] public int MoveTotal; //Totalified aether value
@@ -178,10 +178,15 @@ public class Card : MonoBehaviour
         //check Image
         if (_cardImage != null) // check first there is the CardArt Ornot
             u_image.sprite = _cardImage;
+        else
+        {
+            u_image.color = new Color(0.2f, 0.2f, 0.2f);
+        }
         
         //check type_Text
         u_type.text = Enum.GetName(typeof(CardTypes), _cardType);
 
+        //check Range
         switch (_range)
         {
             case AttackRange.Melee:
@@ -219,9 +224,10 @@ public class Card : MonoBehaviour
                 u_aetherCost[i].color = Color.white; //set the symbol active depend on aether cost
             }
         }
-        else if (_aetherCost == 0)
+        else if (_aetherCost == 0) 
             //nothing happen
 
+        //set Text
             u_bodyText.text = Utils.ReplaceWithSymbols(_cardText);
 
         if (_equipped)
@@ -233,17 +239,17 @@ public class Card : MonoBehaviour
         if (_powerValue > 0)
         {
             u_attackValue.SetActive(true);
-            u_attackValue.GetComponentInChildren<Text>().text = _powerValue.ToString();
+            u_attackValue.GetComponentInChildren<TMP_Text>().text = _powerValue.ToString();
         }
         if (_aetherValue > 0)
         {
             u_aetherValue.SetActive(true);
-            u_aetherValue.GetComponentInChildren<Text>().text = _aetherValue.ToString();
+            u_aetherValue.GetComponentInChildren<TMP_Text>().text = _aetherValue.ToString();
         }
         if (_moveValue > 0)
         {
             u_moveValue.SetActive(true);
-            u_moveValue.GetComponentInChildren<Text>().text = _moveValue.ToString();
+            u_moveValue.GetComponentInChildren<TMP_Text>().text = _moveValue.ToString();
         }
     }
     

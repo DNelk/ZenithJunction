@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Experimental.PlayerLoop;
@@ -22,6 +23,10 @@ public class Engine : MonoBehaviour
     private bool _wheelTurning;
     private Tooltip _tooltip;
     private RectTransform[] _cardPositons;
+
+    private TMP_Text u_powerNumber;
+    private TMP_Text u_aetherNumber;
+    private Image[] u_move;
 
     private ParticleSystem _steamParticle;
     
@@ -74,7 +79,7 @@ public class Engine : MonoBehaviour
         Executed = false;
         _collider = GetComponent<BoxCollider2D>();
         
-        u_Circle = transform.Find("CircleGlow").gameObject;
+        u_Circle = transform.Find("MagicCircle").gameObject;
         u_CircleGlowMat = Instantiate(u_Circle.GetComponent<Image>().material);
         u_Circle.GetComponent<Image>().material = u_CircleGlowMat;
 
@@ -86,6 +91,11 @@ public class Engine : MonoBehaviour
         _tooltip = null;
         
         _cardPositons = transform.Find("CardPositions").GetComponentsInChildren<RectTransform>();
+        
+        //set up number and Icon for total engine power
+        u_powerNumber = transform.Find("PowerNumber").GetComponent<TMP_Text>();
+        u_aetherNumber = transform.Find("AetherNumber").GetComponent<TMP_Text>();
+        u_move = transform.Find("MoveIcon").GetComponentsInChildren<Image>();
     }
 
     //Adds a card to the pending card array
@@ -396,12 +406,22 @@ public class Engine : MonoBehaviour
                 _steamParticle.Stop();
             _steamParticle.Play();
             _wheelTurning = true;
+            
+            u_Circle.GetComponent<Image>().enabled = true;
         }
         else if (PendingCount < 3 && _wheelTurning && EngineState != EngineState.Stacked || (EngineState == EngineState.Stacked && Stack.Count == 0))
         {
            // u_EngineImgAnim.SetBool("IsReady", false);
             _steamParticle.Stop();
             _wheelTurning = false;
+        }
+        
+        //set TotalPower
+        u_powerNumber.text = _powerTotal.ToString();
+        u_aetherNumber.text = _powerTotal.ToString();
+        for (int i = 0; i < _moveTotal; i++)
+        {
+            u_move[i].gameObject.SetActive(true);
         }
     }
 
