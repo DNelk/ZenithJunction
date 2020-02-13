@@ -30,7 +30,8 @@ public class Enemy : MonoBehaviour
     public Dictionary<StatType, Stat> BaseStats = new Dictionary<StatType, Stat>();
     
     //HP UI
-    private Slider _healthBar;
+    private GameObject _healthBar;
+    private float hp_OriginLength;
     private TMP_Text _hpText;
     
     private void Awake()
@@ -38,10 +39,12 @@ public class Enemy : MonoBehaviour
         _atkIndex = -1;
         _currentHP = _maxHP;
        // _mr = GetComponent<MeshRenderer>();
-        _healthBar = GameObject.Find("EnemyHealth").GetComponent<Slider>();
-        _healthBar.maxValue = _maxHP;
-        _healthBar.GetComponent<HealthBar>().Target = "Enemy";
-        _hpText = _healthBar.transform.Find("Numbers").GetComponent<TMP_Text>();
+        _healthBar = GameObject.Find("EnemyHealth").transform.Find("Fill Area").gameObject;
+        hp_OriginLength = _healthBar.GetComponent<RectTransform>().sizeDelta.x;
+        Debug.Log(hp_OriginLength);
+        //_healthBar.maxValue = _maxHP;
+        _healthBar.transform.parent.GetComponent<HealthBar>().Target = "Enemy";
+        _hpText = _healthBar.transform.parent.transform.Find("Numbers").GetComponent<TMP_Text>();
         UpdateHealth();
         _positions = new []{GameObject.Find("EnemyPos1").transform, GameObject.Find("EnemyPos2").transform, GameObject.Find("EnemyPos3").transform};
         _currentPos = 0;
@@ -132,7 +135,8 @@ public class Enemy : MonoBehaviour
     
     private void UpdateHealth()
     {
-        _healthBar.value = _currentHP;
+        //_healthBar.value = _currentHP;
+        _healthBar.GetComponent<RectTransform>().sizeDelta = new Vector2( (((_currentHP*100)/_maxHP) * hp_OriginLength)/100, _healthBar.GetComponent<RectTransform>().sizeDelta.y);
         _hpText.text = _currentHP + "/" + _maxHP;
     }
     
