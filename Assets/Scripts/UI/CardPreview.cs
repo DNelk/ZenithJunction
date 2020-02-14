@@ -161,10 +161,11 @@ public class CardPreview : MonoBehaviour
                 u_aetherCost[i].color = Color.white; //set the symbol active depend on aether cost
             }
         }
-        else if (c.AetherCost == 0) 
+        else if (c.AetherCost == 0) {}
             //nothing happen
         
         //set range
+        //Debug.Log(c.Range);
         switch (c.Range)
             {
                 case AttackRange.Melee:
