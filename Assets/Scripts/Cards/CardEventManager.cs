@@ -106,9 +106,11 @@ public class CardEventManager : EventTrigger
     public override void OnPointerUp(PointerEventData eventData)
     {
         _myCard.Dragging = false;
-        if(BaseScale != Vector3.zero)
-            transform.localScale = BaseScale;
-        _dontMagnifyUntilHoverAgainHack = true;
+        
+        //I turn this off to make it so that it still scaled after you release the click
+        //if(BaseScale != Vector3.zero)
+            //transform.localScale = BaseScale;
+        //_dontMagnifyUntilHoverAgainHack = true; 
     }
 
     private void CalcOffset()
