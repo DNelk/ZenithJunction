@@ -1053,6 +1053,7 @@
         <e p="MapObstacle.cs" t="Include" />
         <e p="Materials" t="Include">
           <e p="Shaders" t="Include">
+            <e p="BasicAnime.shader" t="Include" />
             <e p="Glow.shader" t="Include" />
             <e p="RotateTexture.shader" t="Include" />
           </e>
