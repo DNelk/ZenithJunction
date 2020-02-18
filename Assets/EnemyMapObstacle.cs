@@ -22,4 +22,5 @@ public class EnemyMapObstacle : MapObstacle
         GameManager.Instance.LoadScene(MyScene);
         GameManager.Instance.State = GameState.Battle;
     }
+
 }

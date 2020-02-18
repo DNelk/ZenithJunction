@@ -154,7 +154,8 @@ public class Card : MonoBehaviour
             case CardTypes.Movement:
                 u_type_color.color = new Color(0.956f,0.749f,0.031f);
                 break;
-                
+            default:
+                break;
         }
         
         //check rarity
@@ -164,15 +165,16 @@ public class Card : MonoBehaviour
                 u_rarity.color = new Color(0,0,0);
                 break;
             case CardRarities.Uncommon:
-                u_type_color.color = new Color(0.7f, 0.7f, 0.7f);
+                u_rarity.color = new Color(0.7f, 0.7f, 0.7f);
                 break;
             case CardRarities.Rare:
-                u_type_color.color = new Color(1,0.8f,0);
+                u_rarity.color = new Color(1,0.8f,0);
                 break;
             case CardRarities.UltraRare:
-                u_type_color.color = new Color(0.8f,0.5f,1);
+                u_rarity.color = new Color(0.8f,0.5f,1);
                 break;
-                
+            default:
+                break;
         }
         
         //check Image

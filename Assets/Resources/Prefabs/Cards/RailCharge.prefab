@@ -14,19 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cardName: Rail Charge
   _cardType: 2
+  _cardRarities: 1
+  _cardImage: {fileID: 21300000, guid: 1e19e16867692e64ca9f8c01e49183cc, type: 3}
   _buyCost: 2
   _aetherCost: 0
   _cardText: Double the power of all your attacks in this engine
   _aetherValue: 0
-  _atkValue: 0
-  _atkRange: 3
+  _powerValue: 0
+  _range: 3
   _moveValue: 0
-  AtkTotal: 0
+  PowerTotal: 0
   AetherTotal: 0
   MoveTotal: 0
-  _priority: 4
-  Purchasable: 0
   XValue: 0
+  TrashThis: 0
+  _priority: 4
+  _purchasable: 0
   Tweening: 0
   IsPreview: 0
   Dragging: 0

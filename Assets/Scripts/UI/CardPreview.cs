@@ -162,7 +162,7 @@ public class CardPreview : MonoBehaviour
             }
         }
         else if (c.AetherCost == 0) {}
-            //nothing happen
+        //nothing happen
         
         //set range
         //Debug.Log(c.Range);
