@@ -12,6 +12,36 @@ PrefabInstance:
       propertyPath: m_Name
       value: AllAboard
       objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _cardName
+      value: All Aboard
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _cardText
+      value: +1 Power +1 Move
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _powerValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _moveValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _range
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _priority
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1178716853317580715, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -116,36 +146,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _cardName
-      value: AllAboard
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _cardText
-      value: +1 Power +1 Move
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _powerValue
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _moveValue
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _range
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _priority
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d479990a3bf94b66add313f61a36fdf, type: 3}

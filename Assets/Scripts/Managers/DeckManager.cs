@@ -124,7 +124,7 @@ public class DeckManager : MonoBehaviour
             
 
             Tween dealTween = activeCardGO.transform.DOMove(_cardPositions[i].position, 0.1f, false);
-            activeCardGO.transform.localScale = _cardPositions[i].localScale*0.95f;
+            activeCardGO.transform.localScale = _cardPositions[i].localScale*1f;
             yield return dealTween.WaitForCompletion();
         }
     }
