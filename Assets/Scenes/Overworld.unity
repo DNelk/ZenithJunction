@@ -864,7 +864,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Node: {fileID: 1106637452}
   AllowPass: 0
-  MyScene: {fileID: 102900000, guid: 54734c7acc5424f7d998f15e22928ebb, type: 3}
+  MyScene: PrototypeBattle
 --- !u!61 &425705744
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class EnemyMapObstacle : MapObstacle
 {
-    public SceneAsset MyScene;
+    public string MyScene;
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!other.CompareTag("OverworldTrain"))
@@ -19,7 +19,7 @@ public class EnemyMapObstacle : MapObstacle
         }
 
         Utils.Save(new PlayerMapData(Node.NodeID), "playermapdata");
-        GameManager.Instance.LoadScene(MyScene.name);
+        GameManager.Instance.LoadScene(MyScene);
         GameManager.Instance.State = GameState.Battle;
     }
 }

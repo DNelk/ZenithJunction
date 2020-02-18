@@ -47,7 +47,7 @@ public class CustomizeManager : MonoBehaviour
             pc.Cards.Add("manaboil");
             pc.Cards.Add("manaboil");
             pc.Cards.Add("manaboil");
-            pc.Cards.Add("DevRage");
+            //pc.Cards.Add("DevRage");
         
             Utils.Save(pc, "playercollection");
         }

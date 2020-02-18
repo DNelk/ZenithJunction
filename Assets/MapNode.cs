@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 //Script for nodes on the overworld map
 public class MapNode : MonoBehaviour
