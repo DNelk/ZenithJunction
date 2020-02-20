@@ -121,7 +121,7 @@ public class BuyManager : MonoBehaviour
     }
 
     public void LoadShop()
-    {
+    { 
         StartCoroutine(LoadBuyMenu());
     }
 
@@ -209,9 +209,10 @@ public class BuyManager : MonoBehaviour
     {
         if(_shopDeck.Count == 0)
             ShuffleShopDeck();
-        GameObject activeCardGO = Instantiate(Resources.Load<GameObject>("prefabs/cards/" + _shopDeck.Pop().Replace(" ", String.Empty)), DeckPos.position, Quaternion.identity, _cardParent);
+        GameObject activeCardGO = Instantiate(Utils.LoadCard(_shopDeck.Pop()), DeckPos.position, Quaternion.identity, _cardParent);
         Card activeCard = activeCardGO.GetComponent<Card>();
         activeCard.Purchasable = true;
+        activeCard.ShowFullSize = true;
         _activeCards.Add(activeCard);
             
         _activeCardObjects.Add(activeCardGO);

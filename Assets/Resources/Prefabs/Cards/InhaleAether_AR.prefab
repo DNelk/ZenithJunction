@@ -14,23 +14,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cardName: Inhale Aether
   _cardType: 2
+  _cardRarities: 2
+  _cardImage: {fileID: 0}
   _buyCost: 4
   _aetherCost: 0
   _cardText: Buy a card for free.
   _aetherValue: 0
-  _atkValue: 0
-  _atkRange: 3
+  _powerValue: 0
+  _range: 3
   _moveValue: 0
-  AtkTotal: 0
+  PowerTotal: 0
   AetherTotal: 0
   MoveTotal: 0
+  XValue: 0
+  TrashThis: 0
   _priority: 2
   _purchasable: 0
-  TrashThis: 0
-  XValue: 0
   Tweening: 0
   IsPreview: 0
   Dragging: 0
+  _fullSize: 0
 --- !u!1001 &2472252866356394243
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -41,7 +44,7 @@ PrefabInstance:
     - target: {fileID: 1176058906799001468, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
       propertyPath: m_Name
-      value: InhaleAether
+      value: InhaleAether_AR
       objectReference: {fileID: 0}
     - target: {fileID: 1176058906799001469, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}

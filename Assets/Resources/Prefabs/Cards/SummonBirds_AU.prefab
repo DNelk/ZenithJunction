@@ -1,37 +1,40 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &3707815732400002490
+--- !u!114 &-6760438856913390919
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2723199092423294067}
+  m_GameObject: {fileID: 1124658099148864452}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7eac1b163349240ab8e3e098ce8fac6c, type: 3}
+  m_Script: {fileID: 11500000, guid: 45b98ff15e81045319f5e2a2ca861cb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cardName: Cone of Garbage
+  _cardName: Summon Birds
   _cardType: 2
-  _buyCost: 1
+  _cardRarities: 1
+  _cardImage: {fileID: 0}
+  _buyCost: 2
   _aetherCost: 1
-  _cardText: xxx
+  _cardText: +1 Power. Your opponent has -2 power.
   _aetherValue: 0
-  _powerValue: 0
-  _range: 1
+  _powerValue: 1
+  _range: 3
   _moveValue: 0
   PowerTotal: 0
   AetherTotal: 0
   MoveTotal: 0
+  XValue: 0
+  TrashThis: 0
   _priority: 2
   _purchasable: 0
-  TrashThis: 0
-  XValue: 0
   Tweening: 0
   IsPreview: 0
   Dragging: 0
---- !u!1001 &3861991150080373519
+  _fullSize: 0
+--- !u!1001 &2290544185972421816
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -41,7 +44,7 @@ PrefabInstance:
     - target: {fileID: 1176058906799001468, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
       propertyPath: m_Name
-      value: ConeOfGarbage
+      value: SummonBirds_AU
       objectReference: {fileID: 0}
     - target: {fileID: 1176058906799001469, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
@@ -101,9 +104,9 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 0d479990a3bf94b66add313f61a36fdf, type: 3}
---- !u!1 &2723199092423294067 stripped
+--- !u!1 &1124658099148864452 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1176058906799001468, guid: 0d479990a3bf94b66add313f61a36fdf,
     type: 3}
-  m_PrefabInstance: {fileID: 3861991150080373519}
+  m_PrefabInstance: {fileID: 2290544185972421816}
   m_PrefabAsset: {fileID: 0}

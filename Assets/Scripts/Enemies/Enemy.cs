@@ -41,7 +41,7 @@ public class Enemy : MonoBehaviour
        // _mr = GetComponent<MeshRenderer>();
         _healthBar = GameObject.Find("EnemyHealth").transform.Find("Fill Area").gameObject;
         hp_OriginLength = _healthBar.GetComponent<RectTransform>().sizeDelta.x;
-        Debug.Log(hp_OriginLength);
+//        Debug.Log(hp_OriginLength);
         //_healthBar.maxValue = _maxHP;
         _healthBar.transform.parent.GetComponent<HealthBar>().Target = "Enemy";
         _hpText = _healthBar.transform.parent.transform.Find("Numbers").GetComponent<TMP_Text>();

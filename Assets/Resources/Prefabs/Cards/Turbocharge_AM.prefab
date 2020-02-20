@@ -1,6 +1,40 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &6406460135408512232
+--- !u!114 &3814275968747663244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2082670171404076193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eafbef5db8c9e4371b3fbe74a86c2d35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cardName: Turbocharge
+  _cardType: 1
+  _cardRarities: 3
+  _cardImage: {fileID: 0}
+  _buyCost: 2
+  _aetherCost: 0
+  _cardText: +10 Aether. You can't buy cards this turn.
+  _aetherValue: 10
+  _powerValue: 0
+  _range: 3
+  _moveValue: 0
+  PowerTotal: 0
+  AetherTotal: 0
+  MoveTotal: 0
+  XValue: 0
+  TrashThis: 0
+  _priority: 3
+  _purchasable: 0
+  Tweening: 0
+  IsPreview: 0
+  Dragging: 0
+  _fullSize: 0
+--- !u!1001 &915658048161696733
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -10,7 +44,7 @@ PrefabInstance:
     - target: {fileID: 1176058906799001468, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
       propertyPath: m_Name
-      value: WhistleShot
+      value: Turbocharge
       objectReference: {fileID: 0}
     - target: {fileID: 1178716853317580715, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
@@ -117,45 +151,12 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _cardName
-      value: Whistle Shot
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _buyCost
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _cardText
-      value: +3 Power +1 Move
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _range
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _moveValue
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _powerValue
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _priority
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _purchasable
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 0d479990a3bf94b66add313f61a36fdf, type: 3}
+--- !u!1 &2082670171404076193 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1176058906799001468, guid: 0d479990a3bf94b66add313f61a36fdf,
+    type: 3}
+  m_PrefabInstance: {fileID: 915658048161696733}
+  m_PrefabAsset: {fileID: 0}

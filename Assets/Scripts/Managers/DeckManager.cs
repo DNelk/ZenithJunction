@@ -114,7 +114,7 @@ public class DeckManager : MonoBehaviour
             if(_deck.Count == 0)
                 ShuffleDeck();
             
-            GameObject activeCardGO = Instantiate(Resources.Load<GameObject>("Prefabs/Cards/" + _deck.Pop().Replace(" ", String.Empty)), transform.position, Quaternion.identity,
+            GameObject activeCardGO = Instantiate(Utils.LoadCard(_deck.Pop()), transform.position, Quaternion.identity,
                 _cardPanel);
             _activeCardObjects.Add(activeCardGO);
 

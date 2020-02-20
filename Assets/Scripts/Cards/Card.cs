@@ -86,6 +86,18 @@ public class Card : MonoBehaviour
     protected Image u_image;
     protected Image u_glow;
     protected CanvasGroup u_cg;
+    //Fullsize
+    [SerializeField] private bool _fullSize = false;
+    public bool ShowFullSize
+    {
+        get => _fullSize;
+        set
+        { 
+            _fullSize = value;
+            Init();
+            AssignUI();
+        }
+    }
 
     // Called when object is created
     protected void Awake()
@@ -101,20 +113,33 @@ public class Card : MonoBehaviour
 
     protected void Init()
     {
-        u_cardBackground = transform.Find("Back").GetComponent<Image>();
-        u_cardName = transform.Find("NameBanner").transform.Find("CardName").GetComponent<TMP_Text>();
-        u_rarity = transform.Find("Rarity").GetComponent<Image>();
-        u_type = transform.Find("Type").transform.Find("TypeLine").GetComponent<TMP_Text>();
-        u_type_color = transform.Find("Type").GetComponent<Image>();
-        u_buyCost = transform.Find("Cost").transform.Find("BuyCost").GetComponent<TMP_Text>();
-        u_attackValue = transform.Find("Parameter").transform.Find("Parameter_Attack").gameObject;
-        u_aetherValue = transform.Find("Parameter").transform.Find("Parameter_Aether").gameObject;
-        u_moveValue = transform.Find("Parameter").transform.Find("Parameter_Move").gameObject;
-        u_aetherCost = transform.Find("Aether_Cost").GetComponentsInChildren<Image>();
+        Transform parent;
+
+        if (_fullSize)
+        {
+            parent = transform.Find("FullSize");
+            transform.Find("Minimized").gameObject.SetActive(false);
+        }
+        else
+        {
+            parent = transform.Find("Minimized");
+            transform.Find("FullSize").gameObject.SetActive(false);
+        }
+        parent.gameObject.SetActive(true);
+        u_cardBackground = parent.Find("Back").GetComponent<Image>();
+        u_cardName = parent.Find("NameBanner").transform.Find("CardName").GetComponent<TMP_Text>();
+        u_rarity = parent.Find("Rarity").GetComponent<Image>();
+        u_type = parent.Find("Type").transform.Find("TypeLine").GetComponent<TMP_Text>();
+        u_type_color = parent.Find("Type").GetComponent<Image>();
+        u_buyCost = parent.Find("Cost").transform.Find("BuyCost").GetComponent<TMP_Text>();
+        u_attackValue = parent.Find("Parameter").transform.Find("Parameter_Attack").gameObject;
+        u_aetherValue = parent.Find("Parameter").transform.Find("Parameter_Aether").gameObject;
+        u_moveValue = parent.Find("Parameter").transform.Find("Parameter_Move").gameObject;
+        u_aetherCost = parent.Find("Aether_Cost").GetComponentsInChildren<Image>();
         u_aetherCost_X = u_aetherCost[0].transform.Find("AetherCost_Xnumber").GetComponent<Text>();
-        u_range = transform.Find("Range").GetComponentsInChildren<Image>();
-        u_bodyText = transform.Find("BodyText").GetComponent<TMP_Text>();
-        u_image = transform.Find("Back").transform.Find("CardImage").GetComponent<Image>();
+        u_range = parent.Find("Range").GetComponentsInChildren<Image>();
+        u_bodyText = parent.Find("BodyText").GetComponent<TMP_Text>();
+        u_image = parent.Find("Back").transform.Find("CardImage").GetComponent<Image>();
         //u_glow = transform.Find("Glow").GetComponent<Image>();
         //u_glow.color = Color.clear;
         _initialScale = transform.localScale;
@@ -138,6 +163,8 @@ public class Card : MonoBehaviour
     protected void AssignUI()
     {
         u_cardName.text = _cardName;
+        if (_fullSize)
+            u_cardName.transform.parent.Find("CardName_Shadow").GetComponent<TMP_Text>().text = _cardName;
         
         //check type
         switch (CardType)
@@ -159,24 +186,27 @@ public class Card : MonoBehaviour
         }
         
         //check rarity
-        switch (CardRarity)
+        if (!_fullSize)
         {
-            case CardRarities.Common:
-                u_rarity.color = new Color(0,0,0);
-                break;
-            case CardRarities.Uncommon:
-                u_rarity.color = new Color(0.7f, 0.7f, 0.7f);
-                break;
-            case CardRarities.Rare:
-                u_rarity.color = new Color(1,0.8f,0);
-                break;
-            case CardRarities.UltraRare:
-                u_rarity.color = new Color(0.8f,0.5f,1);
-                break;
-            default:
-                break;
+            switch (CardRarity)
+            {
+                case CardRarities.Common:
+                    u_rarity.color = new Color(0, 0, 0);
+                    break;
+                case CardRarities.Uncommon:
+                    u_rarity.color = new Color(0.7f, 0.7f, 0.7f);
+                    break;
+                case CardRarities.Rare:
+                    u_rarity.color = new Color(1, 0.8f, 0);
+                    break;
+                case CardRarities.UltraRare:
+                    u_rarity.color = new Color(0.8f, 0.5f, 1);
+                    break;
+                default:
+                    break;
+            }
         }
-        
+
         //check Image
         if (_cardImage != null) // check first there is the CardArt Ornot
             u_image.sprite = _cardImage;
@@ -187,6 +217,9 @@ public class Card : MonoBehaviour
         
         //check type_Text
         u_type.text = Enum.GetName(typeof(CardTypes), _cardType);
+        if (_fullSize)
+            u_type.transform.parent.Find("TypeLine_Shadow").GetComponent<TMP_Text>().text = u_type.text;
+
 
         //check Range
         switch (_range)

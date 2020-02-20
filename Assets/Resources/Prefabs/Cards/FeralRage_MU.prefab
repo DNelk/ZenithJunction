@@ -1,37 +1,40 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &1398414591355069691
+--- !u!114 &5080107487271129297
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9181530351983652048}
+  m_GameObject: {fileID: 1164796985762165492}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88cdd2b98617745f598800e22942acb4, type: 3}
+  m_Script: {fileID: 11500000, guid: b4680eac759124763ae173f5830cd473, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cardName: Track Change
-  _cardType: 1
-  _buyCost: 2
-  _aetherCost: 1
-  _cardText: +2 Aether. Your next engine gets +2 Aether.
-  _aetherValue: 2
-  _powerValue: 0
-  _range: 3
+  _cardName: Feral Rage
+  _cardType: 0
+  _cardRarities: 1
+  _cardImage: {fileID: 0}
+  _buyCost: 1
+  _aetherCost: 0
+  _cardText: +4 Power, you can't buy cards this turn.
+  _aetherValue: 0
+  _powerValue: 4
+  _range: 0
   _moveValue: 0
   PowerTotal: 0
   AetherTotal: 0
   MoveTotal: 0
+  XValue: 0
+  TrashThis: 0
   _priority: 2
   _purchasable: 0
-  TrashThis: 0
-  XValue: 0
   Tweening: 0
   IsPreview: 0
   Dragging: 0
---- !u!1001 &8014554031131435948
+  _fullSize: 0
+--- !u!1001 &33781360178822536
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -41,7 +44,7 @@ PrefabInstance:
     - target: {fileID: 1176058906799001468, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
       propertyPath: m_Name
-      value: TrackChange
+      value: FeralRage_MU
       objectReference: {fileID: 0}
     - target: {fileID: 1176058906799001469, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
@@ -101,9 +104,9 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 0d479990a3bf94b66add313f61a36fdf, type: 3}
---- !u!1 &9181530351983652048 stripped
+--- !u!1 &1164796985762165492 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1176058906799001468, guid: 0d479990a3bf94b66add313f61a36fdf,
     type: 3}
-  m_PrefabInstance: {fileID: 8014554031131435948}
+  m_PrefabInstance: {fileID: 33781360178822536}
   m_PrefabAsset: {fileID: 0}

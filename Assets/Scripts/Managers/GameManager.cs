@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         
         DontDestroyOnLoad(gameObject);
+        
+        CardDirectory.LoadDirectory();
     }
 
     public void LoadScene(string sceneName)

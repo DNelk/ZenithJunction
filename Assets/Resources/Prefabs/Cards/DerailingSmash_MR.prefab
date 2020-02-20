@@ -1,37 +1,40 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-6760438856913390919
+--- !u!114 &1828065955676597279
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1124658099148864452}
+  m_GameObject: {fileID: 2720653467801630892}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45b98ff15e81045319f5e2a2ca861cb6, type: 3}
+  m_Script: {fileID: 11500000, guid: b7e51e6e6fb0d49e580da06f6fd4a605, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cardName: Summon Birds
-  _cardType: 2
+  _cardName: Derailing Smash
+  _cardType: 0
+  _cardRarities: 2
+  _cardImage: {fileID: 0}
   _buyCost: 2
   _aetherCost: 1
-  _cardText: +1 Power. Your opponent has -2 power.
+  _cardText: +5 Power. You take 2 damage.
   _aetherValue: 0
-  _powerValue: 1
-  _range: 3
+  _powerValue: 5
+  _range: 0
   _moveValue: 0
   PowerTotal: 0
   AetherTotal: 0
   MoveTotal: 0
-  _priority: 2
-  _purchasable: 0
-  TrashThis: 0
   XValue: 0
+  TrashThis: 0
+  _priority: 1
+  _purchasable: 0
   Tweening: 0
   IsPreview: 0
   Dragging: 0
---- !u!1001 &2290544185972421816
+  _fullSize: 0
+--- !u!1001 &3860570808383469520
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -41,7 +44,32 @@ PrefabInstance:
     - target: {fileID: 1176058906799001468, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
       propertyPath: m_Name
-      value: SummonBirds
+      value: DerailingSmash_
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _cardName
+      value: Reckless Smash
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _priority
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _atkValue
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _buyCost
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _steamCost
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1176058906799001469, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
@@ -101,9 +129,9 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 0d479990a3bf94b66add313f61a36fdf, type: 3}
---- !u!1 &1124658099148864452 stripped
+--- !u!1 &2720653467801630892 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1176058906799001468, guid: 0d479990a3bf94b66add313f61a36fdf,
     type: 3}
-  m_PrefabInstance: {fileID: 2290544185972421816}
+  m_PrefabInstance: {fileID: 3860570808383469520}
   m_PrefabAsset: {fileID: 0}

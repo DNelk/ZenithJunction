@@ -122,4 +122,10 @@ public static class Utils
         Debug.Log(filename + ": file not found!");
         return default(T);
     }
+
+    public static GameObject LoadCard(string cardname)
+    {
+        string key = cardname.Replace(" ", String.Empty).ToLower();
+        return Resources.Load<GameObject>("prefabs/cards/" + CardDirectory.CardsByName[key]);
+    }
 }
