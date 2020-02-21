@@ -186,7 +186,27 @@ public class Card : MonoBehaviour
         }
         
         //check rarity
-        if (!_fullSize)
+        if(_fullSize)
+        {
+            switch (CardRarity)
+            {
+                case CardRarities.Common:
+                    u_rarity.sprite = Resources.Load<Sprite>("Sprites/Rarity_Common");
+                    break;
+                case CardRarities.Uncommon:
+                    u_rarity.sprite = Resources.Load<Sprite>("Sprites/Rarity_Uncommon");
+                    break;
+                case CardRarities.Rare:
+                    u_rarity.sprite = Resources.Load<Sprite>("Sprites/Rarity_Rare");
+                    break;
+                case CardRarities.UltraRare:
+                    u_rarity.sprite = Resources.Load<Sprite>("Sprites/Rarity_UltraRare");
+                    break;
+                default:
+                    break;
+            }
+        }
+        else
         {
             switch (CardRarity)
             {
@@ -407,10 +427,11 @@ public enum CardRarities
     UltraRare
 }
 
-public enum CardView
+public enum CardArchetype
 {
-    catridge,
-    preview
+    BigEcon,
+    Melee,
+    Ranged
 }
 
 

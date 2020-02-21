@@ -30,12 +30,13 @@ public class GameOverPanel : MonoBehaviour
     {
         SceneManager.LoadScene("StartScreen");
     }
-    
-    public void ToMap()
-    {
-        SceneManager.LoadScene("Overworld");
-    }
 
+    public void Continue()
+    {
+        Instantiate(Resources.Load<GameObject>("prefabs/CardChoiceDialog"), transform.parent);
+        Destroy(gameObject);
+    }
+    
     public string Result
     {
         get => _result.text;

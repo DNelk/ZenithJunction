@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using Random = UnityEngine.Random;
 
 public static class CardDirectory
 {
@@ -75,5 +76,41 @@ public static class CardDirectory
         }
         
         //Debug.Log("Card Directory Loaded");
+    }
+
+    public static string GetRandomCard(CardArchetype archetype, CardRarities rarity)
+    {
+        //Search the right list
+        Dictionary<string, CardRarities> currentList;
+        
+        switch (archetype)
+        {
+            case CardArchetype.BigEcon:
+                currentList = BigEcon;
+                break;
+            case CardArchetype.Melee:
+                currentList = Melee;
+                break;
+            case CardArchetype.Ranged:
+                currentList = Ranged;
+                break;
+            default:
+                return "error";
+        }
+
+        //Now sort by rarity
+        List<string> rarityList = new List<string>();
+
+        foreach (var c in currentList)
+        {
+            if (c.Value == rarity)
+                rarityList.Add(c.Key);
+        }
+
+        if (rarityList.Count == 0)
+            return GetRandomCard(archetype, CardRarities.Common);
+        
+        //Now get random from rarity list
+        return rarityList[Random.Range(0, rarityList.Count - 1)];
     }
 }

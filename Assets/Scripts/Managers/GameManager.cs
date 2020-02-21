@@ -21,7 +21,13 @@ public class GameManager : MonoBehaviour
         
         DontDestroyOnLoad(gameObject);
         
-        CardDirectory.LoadDirectory();
+        if(CardDirectory.CardsByName.Count == 0)
+            CardDirectory.LoadDirectory();
+    }
+
+    private void Start()
+    {
+        
     }
 
     public void LoadScene(string sceneName)
@@ -47,4 +53,5 @@ public enum GameState
     WorldMap,
     Paused,
     Customizing,
+    Acquiring
 }

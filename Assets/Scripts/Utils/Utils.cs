@@ -115,7 +115,7 @@ public static class Utils
             T save = (T) bf.Deserialize(file);
             file.Close();
             
-            Debug.Log(filename + " Loaded");
+            //Debug.Log(filename + " Loaded");
             return save;
         }
         
@@ -123,8 +123,10 @@ public static class Utils
         return default(T);
     }
 
-    public static GameObject LoadCard(string cardname)
+    public static GameObject LoadCard(string cardname, bool fullCardName = false)
     {
+        if (fullCardName)
+            return Resources.Load<GameObject>("prefabs/cards/" + cardname);
         string key = cardname.Replace(" ", String.Empty).ToLower();
         return Resources.Load<GameObject>("prefabs/cards/" + CardDirectory.CardsByName[key]);
     }

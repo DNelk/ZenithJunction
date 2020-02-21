@@ -122,7 +122,11 @@ public class CardEventManager : EventTrigger
     //Drag + Offset
     private void CalcPosOnMouseMove()
     {
+        if(GameManager.Instance.State != GameState.Battle)
+            return;
         if(_myCard.Engine != null && _myCard.Engine.EngineState == EngineState.Stacked)
+            return;
+        if(BattleManager.Instance.BattleState == BattleStates.BuyingCards)
             return;
         Vector3 currMousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0);
         if(GameManager.Instance.State == GameState.Battle)
@@ -147,6 +151,12 @@ public class CardEventManager : EventTrigger
                 CustomizeManager.Instance.SelectEquippedCard(_myCard);
             else
                 CustomizeManager.Instance.DeselectEquipped(_myCard);
+        }
+
+        if (GameManager.Instance.State == GameState.Acquiring && !NewCardChooser.Instance.CardChosen)
+        {
+            NewCardChooser.Instance.ChooseCard(_myCard.CardName);
+            Destroy(_myCard.gameObject);
         }
         
     }
