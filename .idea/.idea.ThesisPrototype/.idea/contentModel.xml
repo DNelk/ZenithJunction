@@ -1067,6 +1067,7 @@
             <e p="Card.cs" t="Include" />
             <e p="CardEventManager.cs" t="Include" />
             <e p="ConeOfGarbage.cs" t="Include" />
+            <e p="Electrotherapy.cs" t="Include" />
             <e p="FeralRage.cs" t="Include" />
             <e p="IgniteTheAether.cs" t="Include" />
             <e p="InhaleAether.cs" t="Include" />
@@ -1131,6 +1132,7 @@
             <e p="EnemyIntentionUI.cs" t="Include" />
             <e p="Palmmy_UI" t="Include">
               <e p="BattleUI_Hover.cs" t="Include" />
+              <e p="DummyIntention.cs" t="Include" />
               <e p="Rotating_Around.cs" t="Include" />
               <e p="Rotating_Self.cs" t="Include" />
             </e>
