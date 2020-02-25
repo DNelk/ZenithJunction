@@ -29,27 +29,13 @@ public class NewCardChooser : MonoBehaviour
     private void Start()
     {
         Card[] cards = new Card[3];
-        cards[0] = Instantiate(Utils.LoadCard(CardDirectory.GetRandomCard(CardArchetype.Melee, GetRandomRarity()), true), _cardPanel).GetComponent<Card>();
-        cards[1] = Instantiate(Utils.LoadCard(CardDirectory.GetRandomCard(CardArchetype.BigEcon, GetRandomRarity()), true), _cardPanel).GetComponent<Card>();
-        cards[2] = Instantiate(Utils.LoadCard(CardDirectory.GetRandomCard(CardArchetype.Ranged, GetRandomRarity()), true), _cardPanel).GetComponent<Card>();
+        cards[0] = Instantiate(Utils.LoadCard(CardDirectory.GetRandomCard(CardArchetype.Melee, Utils.GetRandomRarity()), true), _cardPanel).GetComponent<Card>();
+        cards[1] = Instantiate(Utils.LoadCard(CardDirectory.GetRandomCard(CardArchetype.BigEcon, Utils.GetRandomRarity()), true), _cardPanel).GetComponent<Card>();
+        cards[2] = Instantiate(Utils.LoadCard(CardDirectory.GetRandomCard(CardArchetype.Ranged, Utils.GetRandomRarity()), true), _cardPanel).GetComponent<Card>();
         foreach (var c in cards)
         {
             c.ShowFullSize = true;
         }
-    }
-
-    //Change this! Rarity odds should shift with player collection
-    private CardRarities GetRandomRarity()
-    {
-        int rnd = Random.Range(0, 100);
-
-        if (rnd <= 30)
-            return CardRarities.Uncommon;
-        if (rnd <= 45)
-            return CardRarities.Rare;
-        if (rnd <= 48)
-            return CardRarities.UltraRare;
-        return CardRarities.Common;
     }
 
     public void ChooseCard(string name)

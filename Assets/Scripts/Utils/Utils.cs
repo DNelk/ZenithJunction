@@ -130,4 +130,35 @@ public static class Utils
         string key = cardname.Replace(" ", String.Empty).ToLower();
         return Resources.Load<GameObject>("prefabs/cards/" + CardDirectory.CardsByName[key]);
     }
+    
+    //TODO:Change this! Rarity odds should shift with player collection
+    public static CardRarities GetRandomRarity()
+    {
+        int rnd = UnityEngine.Random.Range(0, 100);
+
+        if (rnd <= 30)
+            return CardRarities.Uncommon;
+        if (rnd <= 45)
+            return CardRarities.Rare;
+        if (rnd <= 48)
+            return CardRarities.UltraRare;
+        return CardRarities.Common;
+    }
+    
+    public static CardArchetype GetRandomArchetype()
+    {
+        int rnd = UnityEngine.Random.Range(0, 3);
+
+        switch (rnd)
+        {
+            case 0:
+                return CardArchetype.Melee;
+            case 1:
+                return CardArchetype.Ranged;
+            case 2:
+                return CardArchetype.BigEcon;
+        }
+
+        return CardArchetype.Melee;
+    }
 }

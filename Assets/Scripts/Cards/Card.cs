@@ -24,7 +24,11 @@ public class Card : MonoBehaviour
     [HideInInspector] public int PowerTotal; //Modified attack value
     [HideInInspector] public int AetherTotal; //Modified aether value
     [HideInInspector] public int MoveTotal; //Totalified aether value
-    
+    [HideInInspector] public bool StatModifer = false;
+    [HideInInspector] public List<Stat> StatBoosts = new List<Stat>();
+
+
+
     //Gameplay
     [HideInInspector] public int XValue = 0;
     public bool IsXCost => _aetherCost == -1;
@@ -154,7 +158,14 @@ public class Card : MonoBehaviour
     //Execute a card's unique text
     public virtual void Execute()
     {
-
+        //Apply Some Stats
+        if (BattleManager.Instance != null && BattleManager.Instance.BattleState == BattleStates.Battle)
+        {
+            foreach (var stat in StatBoosts)
+            {
+                BattleManager.Instance.Player.ModifyStat(stat.StatType, stat.TurnsLeft, stat.Value, !stat.IsNew);
+            }
+        }
     }
 
     public virtual void ExecuteFailed()
@@ -483,5 +494,3 @@ public enum CardArchetype
     Melee,
     Ranged
 }
-
-
