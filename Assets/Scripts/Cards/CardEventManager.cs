@@ -20,12 +20,20 @@ public class CardEventManager : EventTrigger
     private bool _dontMagnifyUntilHoverAgainHack = false;
 
     private ParticleSystem _glow;
+    private Vector3 _glowScale = Vector3.zero;
+    private Gradient _inEngineColor, _baseColor;
     
     private void Start()
     {
         _myCard = GetComponent<Card>();
         _hovering = false;
         _glow = transform.Find("PuffyGlow").GetComponent<ParticleSystem>();
+        _glowScale = _glow.transform.localScale;
+
+        Color whiteSmoke = new Color(0.5f,0.8f,1);
+        _baseColor = new Gradient();
+        _baseColor.SetKeys(new GradientColorKey[]{new GradientColorKey(whiteSmoke, 0.0f)}, 
+            new GradientAlphaKey[]{new GradientAlphaKey(0.0f, 0.0f), new GradientAlphaKey(1.0f, 0.524f), new GradientAlphaKey(0.0f, 1.0f)});
     }
 
     private void Update()
@@ -42,10 +50,16 @@ public class CardEventManager : EventTrigger
 
             _pointerOverTimer += Time.deltaTime;
 
-            if (_pointerOverTimer >= 0.4f && _myCard.Engine==null && !_myCard.Purchasable)
+            if (_myCard.Engine==null && !_myCard.Purchasable)
             {
+                _glow.gameObject.SetActive(true);
+                _glow.transform.localScale = _glowScale;
                 if (!_glow.isPlaying)
                     _glow.Play();
+            }
+            else if (_myCard.Engine != null && !_myCard.Purchasable)
+            {
+                _glow.transform.localScale = _glowScale *0.6f;
             }
             
             //generateCard
@@ -69,6 +83,19 @@ public class CardEventManager : EventTrigger
         {
             transform.localScale = Vector3.one * 30;
         }
+/*        var col = _glow.colorOverLifetime;
+        if (_myCard.Engine!=null)
+        {
+            _glow.transform.localScale = _glowScale*0.4f;
+            _glow.gameObject.SetActive(true);
+            if (!_glow.isPlaying)
+                _glow.Play();
+        }
+        else
+        {
+            col.color = _baseColor;
+            _glow.transform.localScale = _glowScale;
+        }*/
     }
 
     public override void OnPointerDown(PointerEventData eventData)
@@ -187,8 +214,20 @@ public class CardEventManager : EventTrigger
         _hovering = false;
         Utils.DestroyCardPreview();
         _dontMagnifyUntilHoverAgainHack = false;
-        if(_glow.isPlaying)
-            _glow.Stop();
+
+        if (_myCard.Engine == null)
+        {
+            var col = _glow.colorOverLifetime;
+            col.color = _baseColor;
+            _glow.gameObject.SetActive(false);//_glow.Stop();
+        }
+        else
+        {
+            _glow.transform.localScale = _glowScale*0.4f;
+            _glow.gameObject.SetActive(true);
+            if (!_glow.isPlaying)
+                _glow.Play();
+        }
     }
     
 }

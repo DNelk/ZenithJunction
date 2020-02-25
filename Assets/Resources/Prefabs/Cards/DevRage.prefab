@@ -12,6 +12,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: DevRage
       objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _cardName
+      value: Dev Rage
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _cardText
+      value: INFINITE power
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _powerValue
+      value: 100000
+      objectReference: {fileID: 0}
     - target: {fileID: 1178716853317580715, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -117,20 +132,75 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+    - target: {fileID: 562196311199942788, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
-      propertyPath: _cardName
-      value: Dev Rage
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+    - target: {fileID: 9202434761619724420, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
-      propertyPath: _cardText
-      value: INFINITE power
+      propertyPath: ShapeModule.m_Scale.x
+      value: 10.9962
       objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+    - target: {fileID: 9202434761619724420, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
-      propertyPath: _powerValue
-      value: 100000
+      propertyPath: ShapeModule.m_Scale.y
+      value: 16.7835
+      objectReference: {fileID: 0}
+    - target: {fileID: 9202434761619724420, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9202434761619724420, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.66
+      objectReference: {fileID: 0}
+    - target: {fileID: 9202434761619724420, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 9202434761619724420, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: ShapeModule.sphericalDirectionAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9202434761619724420, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: ShapeModule.randomPositionAmount
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9202434761619724420, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: NoiseModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9202434761619724420, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: NoiseModule.separateAxes
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9202434761619724420, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: NoiseModule.frequency
+      value: 3.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 9202434761619724420, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: NoiseModule.strength.scalar
+      value: 3.22
+      objectReference: {fileID: 0}
+    - target: {fileID: 9202434761619724420, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: NoiseModule.damping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9202434761619724420, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: ShapeModule.randomDirectionAmount
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d479990a3bf94b66add313f61a36fdf, type: 3}

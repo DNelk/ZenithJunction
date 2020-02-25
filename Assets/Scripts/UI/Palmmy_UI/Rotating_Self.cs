@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RotatingGear : MonoBehaviour
+public class Rotating_Self : MonoBehaviour
 {
     public rotateDirection direction;
     private float direction_Multiply;

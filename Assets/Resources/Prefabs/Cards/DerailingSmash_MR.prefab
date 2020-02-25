@@ -44,7 +44,7 @@ PrefabInstance:
     - target: {fileID: 1176058906799001468, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
       propertyPath: m_Name
-      value: DerailingSmash_
+      value: DerailingSmash_MR
       objectReference: {fileID: 0}
     - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
@@ -70,6 +70,16 @@ PrefabInstance:
         type: 3}
       propertyPath: _steamCost
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4170780471678891038, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 4170780471678891038, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1176058906799001469, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}

@@ -86,6 +86,9 @@ public class Card : MonoBehaviour
     protected Image u_image;
     protected Image u_glow;
     protected CanvasGroup u_cg;
+    private ParticleSystem u_particle;
+    private Color u_particleColor;
+    
     //Fullsize
     [SerializeField] private bool _fullSize = false;
     public bool ShowFullSize
@@ -131,14 +134,15 @@ public class Card : MonoBehaviour
         u_rarity = parent.Find("Rarity").GetComponent<Image>();
         u_type = parent.Find("Type").transform.Find("TypeLine").GetComponent<TMP_Text>();
         u_type_color = parent.Find("Type").GetComponent<Image>();
-        u_buyCost = parent.Find("Cost").transform.Find("BuyCost").GetComponent<TMP_Text>();
+        if (_fullSize) u_buyCost = parent.Find("Cost").transform.Find("BuyCost").GetComponent<TMP_Text>();
         u_attackValue = parent.Find("Parameter").transform.Find("Parameter_Attack").gameObject;
         u_aetherValue = parent.Find("Parameter").transform.Find("Parameter_Aether").gameObject;
         u_moveValue = parent.Find("Parameter").transform.Find("Parameter_Move").gameObject;
         u_aetherCost = parent.Find("Aether_Cost").GetComponentsInChildren<Image>();
         u_aetherCost_X = u_aetherCost[0].transform.Find("AetherCost_Xnumber").GetComponent<Text>();
         u_range = parent.Find("Range").GetComponentsInChildren<Image>();
-        u_bodyText = parent.Find("BodyText").GetComponent<TMP_Text>();
+        if (_fullSize) u_bodyText = parent.Find("BodyText").GetComponent<TMP_Text>();
+        if (!_fullSize) u_particle = transform.Find("PuffyGlow").GetComponent<ParticleSystem>();
         u_image = parent.Find("Back").transform.Find("CardImage").GetComponent<Image>();
         //u_glow = transform.Find("Glow").GetComponent<Image>();
         //u_glow.color = Color.clear;
@@ -167,24 +171,56 @@ public class Card : MonoBehaviour
             u_cardName.transform.parent.Find("CardName_Shadow").GetComponent<TMP_Text>().text = _cardName;
         
         //check type
-        switch (CardType)
+        if (_fullSize)
         {
-            case CardTypes.Attack:
-                u_type_color.color = new Color(0.752f, 0.098f, 0);
-                break;
-            case CardTypes.Aether:
-                u_type_color.color = new Color(0.2f, 0.18f, 0.58f);
-                break;
-            case CardTypes.Special:
-                u_type_color.color = new Color(0.658f,0.282f,0.627f);
-                break;
-            case CardTypes.Movement:
-                u_type_color.color = new Color(0.956f,0.749f,0.031f);
-                break;
-            default:
-                break;
+            Image nameBanner = transform.Find("FullSize").Find("NameBanner").GetComponent<Image>();
+            switch (CardType)
+            {
+                case CardTypes.Attack:
+                    nameBanner.color = new Color(0.752f, 0.098f, 0);
+                    u_type_color.color = new Color(0.752f, 0.098f, 0);
+                    break;
+                case CardTypes.Aether:
+                    nameBanner.color = new Color(0.2f, 0.18f, 0.58f);
+                    u_type_color.color = new Color(0.2f, 0.18f, 0.58f);
+                    break;
+                case CardTypes.Special:
+                    nameBanner.color = new Color(0.658f,0.282f,0.627f);
+                    u_type_color.color = new Color(0.658f,0.282f,0.627f);
+                    break;
+                case CardTypes.Movement:
+                    nameBanner.color = new Color(0.956f,0.749f,0.031f);
+                    u_type_color.color = new Color(0.956f,0.749f,0.031f);
+                    break;
+                default:
+                    break;
+            }
         }
-        
+        else
+        {
+            switch (CardType)
+            {
+                case CardTypes.Attack:
+                    u_particleColor = new Color(0.752f, 0.098f, 0);
+                    u_type_color.color = new Color(0.752f, 0.098f, 0);
+                    break;
+                case CardTypes.Aether:
+                    u_particleColor = new Color(0.2f, 0.18f, 0.58f);
+                    u_type_color.color = new Color(0.2f, 0.18f, 0.58f);
+                    break;
+                case CardTypes.Special:
+                    u_particleColor = new Color(0.658f,0.282f,0.627f);
+                    u_type_color.color = new Color(0.658f,0.282f,0.627f);
+                    break;
+                case CardTypes.Movement:
+                    u_particleColor = new Color(0.956f,0.749f,0.031f);
+                    u_type_color.color = new Color(0.956f,0.749f,0.031f);
+                    break;
+                default:
+                    break;
+            }
+        }
+
         //check rarity
         if(_fullSize)
         {
@@ -208,23 +244,26 @@ public class Card : MonoBehaviour
         }
         else
         {
-            switch (CardRarity)
+            /*switch (CardRarity)
             {
                 case CardRarities.Common:
                     u_rarity.color = new Color(0, 0, 0);
                     break;
                 case CardRarities.Uncommon:
                     u_rarity.color = new Color(0.7f, 0.7f, 0.7f);
+                    u_rarity.color = new Color(0, 0, 0);
                     break;
                 case CardRarities.Rare:
                     u_rarity.color = new Color(1, 0.8f, 0);
+                    u_rarity.color = new Color(0, 0, 0);
                     break;
                 case CardRarities.UltraRare:
                     u_rarity.color = new Color(0.8f, 0.5f, 1);
+                    u_rarity.color = new Color(0, 0, 0);
                     break;
                 default:
                     break;
-            }
+            }*/
         }
 
         //check Image
@@ -256,13 +295,16 @@ public class Card : MonoBehaviour
             default:
                 break;
         }
-        
-        u_buyCost.text = _buyCost.ToString();
-        if (_purchasable)
-            u_buyCost.transform.parent.gameObject.SetActive(true);
-        else
-            u_buyCost.transform.parent.gameObject.SetActive(false);
-        
+
+        if (_fullSize)
+        {
+            u_buyCost.text = _buyCost.ToString();
+            if (_purchasable)
+                u_buyCost.transform.parent.gameObject.SetActive(true);
+            else
+                u_buyCost.transform.parent.gameObject.SetActive(false);
+        }
+
         //Aether Cost change
 
         //if it's an X card
@@ -283,6 +325,7 @@ public class Card : MonoBehaviour
             //nothing happen
 
         //set Text
+        if (_fullSize)
             u_bodyText.text = Utils.ReplaceWithSymbols(_cardText);
 
         if (_equipped)
@@ -339,6 +382,13 @@ public class Card : MonoBehaviour
         Tweening = true;
         transform.DOMove(position, 0.5f).OnComplete(() => Tweening = false);
         transform.DOScale( scale.x * _initialScale.x, 0.5f);
+        
+        Gradient _inEngineColor = new Gradient();
+        _inEngineColor.SetKeys(new GradientColorKey[]{new GradientColorKey(u_particleColor, 0.0f)}, 
+            new GradientAlphaKey[]{new GradientAlphaKey(0.0f, 0.0f), new GradientAlphaKey(1.0f, 0.524f),new GradientAlphaKey(1.0f, 0.75f), new GradientAlphaKey(0.0f, 1.0f)});
+
+        var smoke = u_particle.colorOverLifetime;
+        smoke.color = _inEngineColor;
     }
 
     //Pay aether cost for spells

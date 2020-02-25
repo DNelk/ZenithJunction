@@ -23,6 +23,8 @@ public class BattleManager : MonoBehaviour
     //UI
     private Button _finishEnginesButton;
     private TMP_Text _confirmButtonText;
+
+    private Image _confirmCore;
     //private UIPopIn _playerText;
     //private UIPopIn _enemyText;
     //private UIPopIn _resultText;
@@ -48,6 +50,7 @@ public class BattleManager : MonoBehaviour
         
         _finishEnginesButton = GameObject.Find("ConfirmButton").GetComponent<Button>();
         _confirmButtonText = _finishEnginesButton.GetComponentInChildren<TMP_Text>();
+        _confirmCore = _finishEnginesButton.transform.parent.transform.Find("Core").GetComponent<Image>();
         _finishEnginesButton.onClick.AddListener(ConfirmEngines);
         _finishEnginesButton.gameObject.SetActive(false);
         
@@ -93,12 +96,16 @@ public class BattleManager : MonoBehaviour
             if (e.PendingCount > 3 || e.PendingCount < 3)
             {
                 enginesDone = false;
+                _confirmCore.sprite = Resources.Load<Sprite>("Sprites/Core/CommenceCore_Off");
+                _confirmCore.SetNativeSize();
             }
         }
 
         if (enginesDone)
         {
             _finishEnginesButton.gameObject.SetActive(true);
+            _confirmCore.sprite = Resources.Load<Sprite>("Sprites/Core/CommenceCore_On");
+            _confirmCore.SetNativeSize();
         }
 
         if (Input.GetKeyDown(KeyCode.Return))
