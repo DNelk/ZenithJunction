@@ -56,6 +56,13 @@ public class Player : MonoBehaviour
             Utils.DisplayGameOver("Defeat!");
     }
 
+    public void GainLife(int heal)
+    {
+        _currentHP += heal;
+        if (_currentHP > _maxHP)
+            _currentHP = _maxHP;
+    }
+    
     private void UpdateHealth()
     {
         //_healthBar.value = _currentHP;
