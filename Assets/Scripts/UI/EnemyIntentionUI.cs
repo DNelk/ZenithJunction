@@ -10,7 +10,7 @@ public class EnemyIntentionUI : MonoBehaviour
 
     private void Awake()
     {
-        _myText = transform.Find("Text").GetComponent<TMP_Text>();
+        _myText = transform.Find("Move").GetComponent<TMP_Text>();
     }
 
     public string Text

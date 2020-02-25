@@ -81,12 +81,12 @@ public class Enemy : MonoBehaviour
         _enemyIntention.Text = "";
         EnemyAttack a;
         int atkI = _atkIndex + 1;
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 1; i++)
         {
             if (atkI >= _attacks.Count || atkI < 0)
                 atkI = 0;
             a = _attacks[atkI];
-            _enemyIntention.Text += (i+1) + "." + a.Warning + "\n";
+            _enemyIntention.Text += a.Warning + "\n";
             atkI++;
         }
     }
