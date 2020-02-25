@@ -25,7 +25,9 @@ public class Engine : MonoBehaviour
     private RectTransform[] _cardPositons;
 
     private TMP_Text u_powerNumber;
+    private Image u_powerCore;
     private TMP_Text u_aetherNumber;
+    private Image u_aetherCore;
     private Image[] u_move;
 
     private ParticleSystem _steamParticle;
@@ -83,8 +85,8 @@ public class Engine : MonoBehaviour
         u_CircleGlowMat = Instantiate(u_Circle.GetComponent<Image>().material);
         u_Circle.GetComponent<Image>().material = u_CircleGlowMat;
 
-        u_EngineImg = transform.Find("EngineImg").gameObject;
-        u_EngineImgAnim = u_EngineImg.GetComponent<Animator>();
+        //u_EngineImg = transform.Find("EngineImg").gameObject;
+        //u_EngineImgAnim = u_EngineImg.GetComponent<Animator>();
 
         _steamParticle = transform.Find("Steam").GetComponent<ParticleSystem>();
         
@@ -94,7 +96,9 @@ public class Engine : MonoBehaviour
         
         //set up number and Icon for total engine power
         u_powerNumber = transform.Find("PowerNumber").GetComponent<TMP_Text>();
+        u_powerCore = transform.Find("AttackEngine").transform.Find("Core_Main").GetComponent<Image>();
         u_aetherNumber = transform.Find("AetherNumber").GetComponent<TMP_Text>();
+        u_aetherCore = transform.Find("AetherEngine").transform.Find("Core_Main").GetComponent<Image>();
         u_move = transform.Find("MoveIcon").GetComponentsInChildren<Image>();
     }
 
@@ -111,7 +115,7 @@ public class Engine : MonoBehaviour
             c.Engine.RemoveCard(c);
 
         c.Engine = this;
-        c.SetEngine(_cardPositons[0].parent.transform, CurrentCardPos(_pending.Count), _cardPositons[0].parent.localScale);
+        c.SetEngine(_cardPositons[0].parent.transform, CurrentCardPos(_pending.Count), _cardPositons[0].parent.localScale *0.8f);
 //        Debug.Log(transform.localScale.x);
         _pending.Add(c);
         UpdateUICounts();
@@ -450,6 +454,28 @@ public class Engine : MonoBehaviour
         {
             u_move[i].color = Color.white;
         }
+
+        if (tempPow > 0)
+        {
+            u_powerCore.sprite = Resources.Load<Sprite>("Sprites/Core/AttackCore_On");
+            u_powerCore.SetNativeSize();
+        }
+        else
+        {
+            u_powerCore.sprite = Resources.Load<Sprite>("Sprites/Core/AttackCore_Off");
+            u_powerCore.SetNativeSize();
+        }
+
+        if (tempAet > 0)
+        {
+            u_aetherCore.sprite = Resources.Load<Sprite>("Sprites/Core/ManaCore_On");
+            u_aetherCore.SetNativeSize();
+        }
+        else
+        { 
+            u_aetherCore.sprite = Resources.Load<Sprite>("Sprites/Core/ManaCore_Off");
+        }
+        //u_rarity.sprite = Resources.Load<Sprite>("Sprites/Rarity_Common");
     }
 
     public void ToggleMode()
@@ -489,7 +515,7 @@ public class Engine : MonoBehaviour
         {
             c.SetEngine(Color.white, u_Circles[1].transform);
         }*/
-        if(EngineState != EngineState.Stacked || BattleManager.Instance.BattleState != BattleStates.ChoosingAction)
+        if(EngineState != EngineState.Stacked || BattleManager.Instance.BattleState != BattleStates.ChoosingAction || Stack.Count < 3)
             return;
         u_CircleGlowMat.SetColor("_MyColor", Color.yellow);
         BattleManager.Instance.EngineSelected();
