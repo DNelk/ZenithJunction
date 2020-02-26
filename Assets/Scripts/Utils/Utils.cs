@@ -161,4 +161,11 @@ public static class Utils
 
         return CardArchetype.Melee;
     }
+
+    public static bool CompareCardName(string a, string b)
+    {
+        if (a.ToLower().Replace(" ", string.Empty) == b.ToLower().Replace(" ", string.Empty))
+            return true;
+        return false;
+    }
 }

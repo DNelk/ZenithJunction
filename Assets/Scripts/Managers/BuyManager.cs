@@ -46,13 +46,13 @@ public class BuyManager : MonoBehaviour
             Instance = this;
         else if (Instance != this)
             Destroy(gameObject);
-        Init();
     }
 
 
     private void Start()
     {
         //StartCoroutine(LoadBuyMenu());
+        Init();
     }
 
     private void Init()
@@ -306,7 +306,7 @@ public class BuyManager : MonoBehaviour
         _catalog = new List<string>();
         for (int i = 0; i < 10; i++)
         {
-            _catalog.Add(CardDirectory.GetRandomCard(Utils.GetRandomArchetype(), Utils.GetRandomRarity()));
+            _catalog.Add(CardDirectory.GetRandomCard(Utils.GetRandomArchetype(), Utils.GetRandomRarity(), true));
         }
     }
 }

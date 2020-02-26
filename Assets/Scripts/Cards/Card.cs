@@ -332,8 +332,10 @@ public class Card : MonoBehaviour
                 u_aetherCost[i].color = Color.white; //set the symbol active depend on aether cost
             }
         }
-        else if (_aetherCost == 0) 
+        else if (_aetherCost == 0)
+        {
             //nothing happen
+        }
 
         //set Text
         if (_fullSize)

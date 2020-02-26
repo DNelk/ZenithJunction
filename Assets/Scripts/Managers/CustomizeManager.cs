@@ -47,8 +47,18 @@ public class CustomizeManager : MonoBehaviour
             pc.Cards.Add("manaboil");
             pc.Cards.Add("manaboil");
             pc.Cards.Add("manaboil");
-            pc.Cards.Add("DevRage");
+            //pc.Cards.Add("DevRage");
         
+            pc.Equipped.Add("strike");
+            pc.Equipped.Add("strike");
+            pc.Equipped.Add("strike");
+            pc.Equipped.Add("strike");
+            pc.Equipped.Add("railcharge");
+            pc.Equipped.Add("allaboard");
+            pc.Equipped.Add("manaboil");
+            pc.Equipped.Add("manaboil");
+            pc.Equipped.Add("manaboil");
+            
             Utils.Save(pc, "playercollection");
         }
 
@@ -70,7 +80,7 @@ public class CustomizeManager : MonoBehaviour
             bool found = false;
             foreach (Card c in _cardsOnScreen)
             {
-                if (c.CardName == e && !c.Equipped && !found)
+                if (Utils.CompareCardName(c.CardName,e) && !c.Equipped && !found)
                 {
                     c.Equipped = true;
                     GameObject equipGO = Instantiate(Resources.Load<GameObject>("prefabs/UI/EquippedCardIcon"), _equipped);
