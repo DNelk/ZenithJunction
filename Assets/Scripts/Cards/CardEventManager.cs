@@ -218,7 +218,7 @@ public class CardEventManager : EventTrigger
         if (_myCard.Engine == null)
         {
             var col = _glow.colorOverLifetime;
-            col.color = _baseColor;
+            //col.color = _baseColor;
             _glow.gameObject.SetActive(false);//_glow.Stop();
         }
         else

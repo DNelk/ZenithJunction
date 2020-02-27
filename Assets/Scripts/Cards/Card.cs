@@ -220,6 +220,13 @@ public class Card : MonoBehaviour
                     break;
             }
         }
+        
+        Gradient _inEngineColor = new Gradient();
+        _inEngineColor.SetKeys(new GradientColorKey[]{new GradientColorKey(u_particleColor, 0.0f)}, 
+            new GradientAlphaKey[]{new GradientAlphaKey(0.0f, 0.0f), new GradientAlphaKey(1.0f, 0.524f),new GradientAlphaKey(1.0f, 0.75f), new GradientAlphaKey(0.0f, 1.0f)});
+
+        var smoke = u_particle.colorOverLifetime;
+        smoke.color = _inEngineColor;
 
         //check rarity
         if(_fullSize)
@@ -383,12 +390,12 @@ public class Card : MonoBehaviour
         transform.DOMove(position, 0.5f).OnComplete(() => Tweening = false);
         transform.DOScale( scale.x * _initialScale.x, 0.5f);
         
-        Gradient _inEngineColor = new Gradient();
+        /*Gradient _inEngineColor = new Gradient();
         _inEngineColor.SetKeys(new GradientColorKey[]{new GradientColorKey(u_particleColor, 0.0f)}, 
             new GradientAlphaKey[]{new GradientAlphaKey(0.0f, 0.0f), new GradientAlphaKey(1.0f, 0.524f),new GradientAlphaKey(1.0f, 0.75f), new GradientAlphaKey(0.0f, 1.0f)});
 
         var smoke = u_particle.colorOverLifetime;
-        smoke.color = _inEngineColor;
+        smoke.color = _inEngineColor;*/
     }
 
     //Pay aether cost for spells
