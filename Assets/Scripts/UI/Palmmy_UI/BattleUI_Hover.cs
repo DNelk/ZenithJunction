@@ -18,11 +18,14 @@ public class BattleUI_Hover : MonoBehaviour
 
     public Animator[] BG;
     public Image[] subBG;
-    
+
     // Start is called before the first frame update
     void Start()
-    {    
-        
+    {
+        for (int i = 0; i < BG.Length; i++)
+        {
+            BG[i].GetComponent<Image>().color = new Color(1, 1, 1, 0.8f);
+        }
     }
 
     // Update is called once per frame
@@ -49,6 +52,7 @@ public class BattleUI_Hover : MonoBehaviour
         //turn BlackMask on
         for (int i = 0; i < BG.Length; i++)
         {
+            BG[i].transform.position = transform.position;
             if (BG[i].GetBool("TurnOn") == false) 
                 BG[i].SetBool("TurnOn", true);
         }

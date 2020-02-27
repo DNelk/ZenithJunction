@@ -398,6 +398,7 @@ MonoBehaviour:
   Player: {fileID: 0}
   CurrentAether: 0
   BattleState: 0
+  NumEngines: 3
   Engines: []
 --- !u!4 &184574609
 Transform:

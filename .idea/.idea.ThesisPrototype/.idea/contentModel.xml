@@ -1065,6 +1065,7 @@
             <e p="BlessingOfLightning.cs" t="Include" />
             <e p="BlessingOfWind.cs" t="Include" />
             <e p="Card.cs" t="Include" />
+            <e p="CardEditor.cs" t="Include" />
             <e p="CardEventManager.cs" t="Include" />
             <e p="ConeOfGarbage.cs" t="Include" />
             <e p="Electrotherapy.cs" t="Include" />

@@ -421,6 +421,7 @@ public class Engine : MonoBehaviour
            // u_EngineImgAnim.SetBool("IsReady", false);
             _steamParticle.Stop();
             _wheelTurning = false;
+            u_Circle.GetComponent<Image>().enabled = false;
         }
     }
 
