@@ -37,7 +37,8 @@ public class Engine : MonoBehaviour
     private BoxCollider2D _collider;
 
     private bool _selected;
-
+    
+    //Game Vars
     //Total attack this round
     private int _powerTotal;
     public int PowerTotal
@@ -62,6 +63,9 @@ public class Engine : MonoBehaviour
         set => _moveTotal = value;
     }
 
+
+    public int AmtMoved;
+    
     private bool _inRange = true;
     
     public EngineState EngineState;
@@ -502,6 +506,7 @@ public class Engine : MonoBehaviour
             _aetherTotal = 0;
             _powerTotal = 0;
             _moveTotal = 0;
+            AmtMoved = 0;
             _inRange = true;
         }
     }

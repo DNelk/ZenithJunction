@@ -96,6 +96,7 @@ public class MovePlayerDialog : MonoBehaviour
     private void Confirm()
     {
         Confirmed = true;
+        BattleManager.Instance.PlayerAttack.AmtMoved = _currentMoves;
     }
 
     private void AssignListeners()

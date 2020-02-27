@@ -6,6 +6,7 @@ public class BlessingOfIce : Card
 {
     public override void Execute()
     {
+        base.Execute();
         if(BattleManager.Instance.BattleState != BattleStates.Battle)
             return;
         BattleDelegateHandler.EnemyEffect  += () => BattleManager.Instance.CurrentEnemy.AtkDebuff = 1;

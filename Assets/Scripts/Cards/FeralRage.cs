@@ -6,6 +6,7 @@ public class FeralRage : Card
 {
     public override void Execute()
     {
+        base.Execute();
         if(BattleManager.Instance.BattleState != BattleStates.Battle)
             return;
         BuyManager.Instance.BuysRemaining = 0; 
