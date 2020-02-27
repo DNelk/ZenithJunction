@@ -3,6 +3,7 @@ public class Stat
     public int TurnsLeft;
     public int Value;
     public bool IsNew;
+    public StatType StatType;
 
     public Stat(int turnsLeft, int value)
     {
@@ -19,6 +20,17 @@ public class Stat
             IsNew = false;
         else
             IsNew = true;
+    }
+    
+    public Stat(int turnsLeft, int value, bool applyImmediately, StatType statType)
+    {
+        TurnsLeft = turnsLeft;
+        Value = value;
+        if (applyImmediately)
+            IsNew = false;
+        else
+            IsNew = true;
+        StatType = statType;
     }
 }
 

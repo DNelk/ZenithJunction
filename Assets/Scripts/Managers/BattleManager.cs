@@ -17,12 +17,13 @@ public class BattleManager : MonoBehaviour
     public Enemy CurrentEnemy;
     public Player Player;
     public int CurrentAether;
-    
+
     public BattleStates BattleState;
     private int _clashingDamage;
     //UI
     private Button _finishEnginesButton;
     private TMP_Text _confirmButtonText;
+    public int NumEngines = 3;
 
     private Image _confirmCore;
     //private UIPopIn _playerText;
@@ -115,7 +116,7 @@ public class BattleManager : MonoBehaviour
     }
     private void ChoosingActionUpdate()
     {
-        if (EmptyEnginesCount() == 3)
+        if (EmptyEnginesCount() == NumEngines)
         {
             foreach (Engine e in Engines)
             {
@@ -201,7 +202,7 @@ public class BattleManager : MonoBehaviour
         if (playerDamage < 0)
             playerDamage = 0;
         CurrentAether = _playerAttack.AetherTotal;
-        
+        _playerAttack.UpdateUICounts(true);
         
         /***Enemy go***/
         

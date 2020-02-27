@@ -78,7 +78,7 @@ public static class CardDirectory
         //Debug.Log("Card Directory Loaded");
     }
 
-    public static string GetRandomCard(CardArchetype archetype, CardRarities rarity)
+    public static string GetRandomCard(CardArchetype archetype, CardRarities rarity, bool split = false)
     {
         //Search the right list
         Dictionary<string, CardRarities> currentList;
@@ -108,9 +108,15 @@ public static class CardDirectory
         }
 
         if (rarityList.Count == 0)
-            return GetRandomCard(archetype, CardRarities.Common);
+            return GetRandomCard(archetype, CardRarities.Common, split);
         
         //Now get random from rarity list
-        return rarityList[Random.Range(0, rarityList.Count - 1)];
+        string rndC =  rarityList[Random.Range(0, rarityList.Count - 1)];
+
+        if (split)
+            return rndC.Split('_')[0];
+        return rndC;
     }
+    
+    
 }

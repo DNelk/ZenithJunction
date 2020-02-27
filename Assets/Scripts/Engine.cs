@@ -131,6 +131,8 @@ public class Engine : MonoBehaviour
         
         _pending.Remove(c);
         
+        UpdateUICounts();
+        
         if(cInd == _pending.Count)
             return;
         if(_pending.Count == 0)
@@ -142,7 +144,6 @@ public class Engine : MonoBehaviour
             nextC = _pending[cInd];
             nextC.transform.DOMove(CurrentCardPos(cInd), 0.1f);
         }
-        UpdateUICounts();
     }
 
     public void ReadyCards()
@@ -423,8 +424,9 @@ public class Engine : MonoBehaviour
         }
     }
 
-    private void UpdateUICounts()
+    public void UpdateUICounts(bool setToZero = false)
     {
+
         for (int i = 0; i < u_move.Length; i++)
         {
             u_move[i].color = new Color(0,0,0,0);
@@ -436,7 +438,8 @@ public class Engine : MonoBehaviour
         
         //Clone this engine, and calculate
         ReadyCards();
-        tempCost = ExecuteStackForPreview();
+        if (_pending.Count != 0 || Stack.Count != 0)
+            tempCost = ExecuteStackForPreview();
 
         tempPow = PowerTotal;
         _powerTotal = 0;
@@ -446,6 +449,9 @@ public class Engine : MonoBehaviour
         _moveTotal = 0;
         tempInRange = _inRange;
         _inRange = true;
+        
+        if(setToZero)
+            tempPow = tempAet = tempMove = tempCost = 0;
         
         //set TotalPower
         u_powerNumber.text = tempPow.ToString();
@@ -525,7 +531,7 @@ public class Engine : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        Debug.Log("over");
+//        Debug.Log("over");
     }
 
     private Vector3 CurrentCardPos(int count)

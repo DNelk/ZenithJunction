@@ -46,13 +46,13 @@ public class BuyManager : MonoBehaviour
             Instance = this;
         else if (Instance != this)
             Destroy(gameObject);
-        Init();
     }
 
 
     private void Start()
     {
         //StartCoroutine(LoadBuyMenu());
+        Init();
     }
 
     private void Init()
@@ -65,6 +65,7 @@ public class BuyManager : MonoBehaviour
         _soldOutMarkers = new List<GameObject>();
         _shopDeck = new Stack<String>();
         _discarded = new Stack<String>();
+        GenerateCatalog();
         ShuffleShopDeck();
         _cg = GetComponent<CanvasGroup>();
         _leaveButton = bg.Find("LeaveShop").GetComponent<Button>();
@@ -297,5 +298,15 @@ public class BuyManager : MonoBehaviour
         }
         
         _activeCards.Remove(c);
+    }
+
+    //TODO: Actually Implement this, card selection can be different based on level of enemy, area, etc
+    private void GenerateCatalog()
+    {
+        _catalog = new List<string>();
+        for (int i = 0; i < 10; i++)
+        {
+            _catalog.Add(CardDirectory.GetRandomCard(Utils.GetRandomArchetype(), Utils.GetRandomRarity(), true));
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -16,13 +17,42 @@ public class GameManager : MonoBehaviour
     {
         if (Instance == null)
             Instance = this;
-        else if(Instance != this)
+        else if (Instance != this)
+        {
             Destroy(gameObject);
-        
+            return;
+        }
+
         DontDestroyOnLoad(gameObject);
         
         if(CardDirectory.CardsByName.Count == 0)
             CardDirectory.LoadDirectory();
+        if (!File.Exists(Application.persistentDataPath + "playercollection.save"))
+        {
+            PlayerCollection pc = new PlayerCollection();
+            pc.Cards.Add("strike");
+            pc.Cards.Add("strike");
+            pc.Cards.Add("strike");
+            pc.Cards.Add("strike");
+            pc.Cards.Add("railcharge");
+            pc.Cards.Add("allaboard");
+            pc.Cards.Add("manaboil");
+            pc.Cards.Add("manaboil");
+            pc.Cards.Add("manaboil");
+            //pc.Cards.Add("DevRage");
+            
+            pc.Equipped.Add("strike");
+            pc.Equipped.Add("strike");
+            pc.Equipped.Add("strike");
+            pc.Equipped.Add("strike");
+            pc.Equipped.Add("railcharge");
+            pc.Equipped.Add("allaboard");
+            pc.Equipped.Add("manaboil");
+            pc.Equipped.Add("manaboil");
+            pc.Equipped.Add("manaboil");
+            
+            Utils.Save(pc, "playercollection");
+        }
     }
 
     private void Start()
