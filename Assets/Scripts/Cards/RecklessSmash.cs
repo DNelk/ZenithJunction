@@ -6,6 +6,7 @@ public class RecklessSmash : Card
 {
     public override void Execute()
     {
+        base.Execute();
         if(BattleManager.Instance.BattleState != BattleStates.Battle)
             return;
         BattleManager.Instance.Player.TakeDamage(2);

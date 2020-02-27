@@ -6,6 +6,7 @@ public class IgniteTheAether : Card
 {
     public override void Execute()
     {
+        base.Execute();
         foreach (Card c in _myEngine.Stack)
         {
             if (c.CardType == CardTypes.Aether)

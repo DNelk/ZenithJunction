@@ -420,8 +420,11 @@ public class Card : MonoBehaviour
         return false;
     }
 
-    public int CalculateAttackTotalWithPosition()
+    public virtual int CalculateAttackTotalWithPosition(int overridePowerTotal = 0)
     {
+        if (overridePowerTotal != 0)
+            PowerTotal = overridePowerTotal;
+        
         int distance = Mathf.Abs(BattleManager.Instance.Player.Position - BattleManager.Instance.CurrentEnemy.Position);
         float damageMod = 1;
         switch (_range)
