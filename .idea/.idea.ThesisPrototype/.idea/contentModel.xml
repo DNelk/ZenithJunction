@@ -1072,6 +1072,7 @@
             <e p="FeralRage.cs" t="Include" />
             <e p="IgniteTheAether.cs" t="Include" />
             <e p="InhaleAether.cs" t="Include" />
+            <e p="MagSprint.cs" t="Include" />
             <e p="RailCharge.cs" t="Include" />
             <e p="RecklessSmash.cs" t="Include" />
             <e p="SummonBirds.cs" t="Include" />

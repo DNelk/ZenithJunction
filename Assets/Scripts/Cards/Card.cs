@@ -118,6 +118,7 @@ public class Card : MonoBehaviour
         _initialScale = transform.localScale;
     }
 
+
     protected void Init()
     {
         Transform parent;
@@ -381,34 +382,17 @@ public class Card : MonoBehaviour
         MoveTotal = _moveValue;
     }
 
-    public void SetEngine(Transform parent)
-    {
-        transform.SetParent(parent);
-        if (_eventManager.BaseScale != Vector3.zero)
-            _eventManager.BaseScale = _initialScale;
-        else
-            transform.localScale = _initialScale;
-    }
-    
-    public void SetEngine(Transform parent, Vector3 position, Vector3 scale)
+    public void SetEngine(Transform parent, Vector3 position, float scale)
     {
         // u_glow.color = glowColor;
-        
+        transform.DOScale( transform.localScale * scale, 0.5f);
         transform.SetParent(parent);
-        if (_eventManager.BaseScale != Vector3.zero)
+        /*if (_eventManager.BaseScale != Vector3.zero)
             _eventManager.BaseScale = _initialScale;
         else
-            transform.localScale = _initialScale;
+            transform.localScale = _initialScale;*/
         Tweening = true;
         transform.DOMove(position, 0.5f).OnComplete(() => Tweening = false);
-        transform.DOScale( scale.x * _initialScale.x, 0.5f);
-        
-        /*Gradient _inEngineColor = new Gradient();
-        _inEngineColor.SetKeys(new GradientColorKey[]{new GradientColorKey(u_particleColor, 0.0f)}, 
-            new GradientAlphaKey[]{new GradientAlphaKey(0.0f, 0.0f), new GradientAlphaKey(1.0f, 0.524f),new GradientAlphaKey(1.0f, 0.75f), new GradientAlphaKey(0.0f, 1.0f)});
-
-        var smoke = u_particle.colorOverLifetime;
-        smoke.color = _inEngineColor;*/
     }
 
     //Pay aether cost for spells

@@ -119,8 +119,7 @@ public class Engine : MonoBehaviour
             c.Engine.RemoveCard(c);
 
         c.Engine = this;
-        c.SetEngine(_cardPositons[0].parent.transform, CurrentCardPos(_pending.Count), _cardPositons[0].parent.localScale *0.8f);
-//        Debug.Log(transform.localScale.x);
+        c.SetEngine(_cardPositons[0].parent.transform, CurrentCardPos(_pending.Count), 0.45f);
         _pending.Add(c);
         UpdateUICounts();
     }
@@ -468,23 +467,36 @@ public class Engine : MonoBehaviour
 
         if (tempPow > 0)
         {
+            u_powerNumber.font = Resources.Load<TMP_FontAsset>("Fonts/Palmmy/Bebsa_SDF_PowerGlow");
+            u_powerNumber.color = Color.white;
+            
             u_powerCore.sprite = Resources.Load<Sprite>("Sprites/Core/AttackCore_On");
             u_powerCore.SetNativeSize();
         }
         else
         {
+            u_powerNumber.font = Resources.Load<TMP_FontAsset>("Fonts/Palmmy/BebasNeue-Regular SDF");
+            u_powerNumber.color = new Color(0.4f,0.4f, 0.4f,1);
+            
             u_powerCore.sprite = Resources.Load<Sprite>("Sprites/Core/AttackCore_Off");
             u_powerCore.SetNativeSize();
         }
 
         if (tempAet > 0)
         {
+            u_aetherNumber.font = Resources.Load<TMP_FontAsset>("Fonts/Palmmy/Bebsa_SDF_AetherGlow");
+            u_aetherNumber.color = Color.white;
+            
             u_aetherCore.sprite = Resources.Load<Sprite>("Sprites/Core/ManaCore_On");
             u_aetherCore.SetNativeSize();
         }
         else
         { 
+            u_aetherNumber.font = Resources.Load<TMP_FontAsset>("Fonts/Palmmy/BebasNeue-Regular SDF");
+            u_aetherNumber.color = new Color(0.4f,0.4f, 0.4f,1);
+            
             u_aetherCore.sprite = Resources.Load<Sprite>("Sprites/Core/ManaCore_Off");
+            u_aetherCore.SetNativeSize();
         }
         //u_rarity.sprite = Resources.Load<Sprite>("Sprites/Rarity_Common");
     }
