@@ -40,13 +40,13 @@ public class CardEventManager : EventTrigger
     {
         if (_hovering)
         {
-            if (!_dontMagnifyUntilHoverAgainHack)
+/*            if (!_dontMagnifyUntilHoverAgainHack && !_myCard.Dragging)
             {
                 if (transform.localScale.x < BaseScale.x * 1.5f)
                     transform.localScale += BaseScale * 5f * Time.deltaTime;
                 if (transform.localScale.x > BaseScale.x * 1.5f)
                     transform.localScale = BaseScale * 1.5f;
-            }
+            }*/
 
             _pointerOverTimer += Time.deltaTime;
 
@@ -192,13 +192,16 @@ public class CardEventManager : EventTrigger
     public override void OnPointerEnter(PointerEventData eventData)
     {
         if (BaseScale == Vector3.zero)
-        {
             BaseScale = transform.localScale;
-            //transform.position += Vector3.up * BaseScale.x * 2;
-            if(GameManager.Instance.State == GameState.Battle)
-                transform.SetSiblingIndex(transform.GetSiblingIndex() + 8);
-        }
         
+        Debug.Log(BaseScale);
+
+        transform.DOScale(BaseScale*1.5f, 0.2f);
+        
+        //transform.position += Vector3.up * BaseScale.x * 2;
+        if(GameManager.Instance.State == GameState.Battle)
+            transform.SetSiblingIndex(transform.GetSiblingIndex() + 8);
+
 
         _hovering = true;
     }
@@ -207,10 +210,13 @@ public class CardEventManager : EventTrigger
     public override void OnPointerExit(PointerEventData eventData)
     {
         _pointerOverTimer = 0;
-        if(BaseScale != Vector3.zero) 
-            transform.localScale = BaseScale;
-        //transform.position -= Vector3.up * BaseScale.x * 2;
-        BaseScale = Vector3.zero;
+
+        if (BaseScale != Vector3.zero && !_myCard.Dragging)
+        {
+            transform.DOScale(BaseScale, 0.2f);
+        }
+
+        //BaseScale = Vector3.zero;
         _hovering = false;
         Utils.DestroyCardPreview();
         _dontMagnifyUntilHoverAgainHack = false;
@@ -218,7 +224,7 @@ public class CardEventManager : EventTrigger
         if (_myCard.Engine == null)
         {
             var col = _glow.colorOverLifetime;
-            col.color = _baseColor;
+            //col.color = _baseColor;
             _glow.gameObject.SetActive(false);//_glow.Stop();
         }
         else

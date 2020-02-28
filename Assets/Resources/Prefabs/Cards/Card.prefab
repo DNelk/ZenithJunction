@@ -3203,7 +3203,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6361322567580288003
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4206,7 +4206,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: d6482dde7a06d074197078d31c5c27e4, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -6442,12 +6442,12 @@ PrefabInstance:
     - target: {fileID: 117564428185620430, guid: 0cde568f6a98640fe9900ac5f94204cf,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 16
+      value: 15.5
       objectReference: {fileID: 0}
     - target: {fileID: 117564428185620430, guid: 0cde568f6a98640fe9900ac5f94204cf,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 16
+      value: 15.5
       objectReference: {fileID: 0}
     - target: {fileID: 117564428185620430, guid: 0cde568f6a98640fe9900ac5f94204cf,
         type: 3}
@@ -6667,7 +6667,7 @@ PrefabInstance:
     - target: {fileID: 5185234353503560532, guid: 0cde568f6a98640fe9900ac5f94204cf,
         type: 3}
       propertyPath: InitialModule.maxNumParticles
-      value: 1000
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 5185234353503560532, guid: 0cde568f6a98640fe9900ac5f94204cf,
         type: 3}

@@ -1065,12 +1065,14 @@
             <e p="BlessingOfLightning.cs" t="Include" />
             <e p="BlessingOfWind.cs" t="Include" />
             <e p="Card.cs" t="Include" />
+            <e p="CardEditor.cs" t="Include" />
             <e p="CardEventManager.cs" t="Include" />
             <e p="ConeOfGarbage.cs" t="Include" />
             <e p="Electrotherapy.cs" t="Include" />
             <e p="FeralRage.cs" t="Include" />
             <e p="IgniteTheAether.cs" t="Include" />
             <e p="InhaleAether.cs" t="Include" />
+            <e p="MagSprint.cs" t="Include" />
             <e p="RailCharge.cs" t="Include" />
             <e p="RecklessSmash.cs" t="Include" />
             <e p="SummonBirds.cs" t="Include" />

@@ -398,6 +398,7 @@ MonoBehaviour:
   Player: {fileID: 0}
   CurrentAether: 0
   BattleState: 0
+  NumEngines: 3
   Engines: []
 --- !u!4 &184574609
 Transform:
@@ -2824,6 +2825,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 17c325b23d5bc8b49947ca993cdabb74, type: 2}
+    - target: {fileID: 2842597002200191706, guid: 21119765b5aec4c07b0adaf8d909f5ee,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 152
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 21119765b5aec4c07b0adaf8d909f5ee, type: 3}
 --- !u!1 &1184351999
