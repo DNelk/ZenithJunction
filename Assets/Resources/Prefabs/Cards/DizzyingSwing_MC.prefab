@@ -1,41 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-6126344635072577862
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 788229857935880799}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8f0ab90bdafb450bbab56bdaa416c4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _cardName: Rain of Nails
-  _cardType: 0
-  _cardRarities: 1
-  _cardImage: {fileID: 21300000, guid: d6482dde7a06d074197078d31c5c27e4, type: 3}
-  _buyCost: 2
-  _aetherCost: 0
-  _cardText: +2 Power. +2 Power in your next engine.
-  _aetherValue: 0
-  _powerValue: 2
-  _range: 2
-  _moveValue: 0
-  PowerTotal: 0
-  AetherTotal: 0
-  MoveTotal: 0
-  StatModifer: 0
-  XValue: 0
-  TrashThis: 0
-  _priority: 2
-  _purchasable: 0
-  Tweening: 0
-  IsPreview: 0
-  Dragging: 0
-  _fullSize: 0
---- !u!1001 &1919212634858568995
+--- !u!1001 &7860032177866963033
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -45,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 1176058906799001468, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
       propertyPath: m_Name
-      value: RainOfNails_RU
+      value: DizzyingSwing_MC
       objectReference: {fileID: 0}
     - target: {fileID: 1178716853317580715, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
@@ -152,12 +117,35 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf, type: 3}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _cardName
+      value: Dizzying Swing
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _range
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _buyCost
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _cardText
+      value: +2 Power +1 Aether
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _powerValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _priority
+      value: 3
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d479990a3bf94b66add313f61a36fdf, type: 3}
---- !u!1 &788229857935880799 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1176058906799001468, guid: 0d479990a3bf94b66add313f61a36fdf,
-    type: 3}
-  m_PrefabInstance: {fileID: 1919212634858568995}
-  m_PrefabAsset: {fileID: 0}

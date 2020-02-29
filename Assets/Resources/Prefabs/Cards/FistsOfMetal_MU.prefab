@@ -146,7 +146,7 @@ PrefabInstance:
     - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
       propertyPath: _cardText
-      value: +2 Defense for 2 turns. +2 Power
+      value: +2 Defense for 2 Engines. +2 Power
       objectReference: {fileID: 0}
     - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
