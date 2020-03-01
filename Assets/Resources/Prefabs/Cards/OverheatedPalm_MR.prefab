@@ -1,6 +1,42 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &7361606866193279928
+--- !u!114 &4737273296864181997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6978550061203801105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 677996a3093f44bf78ca10f500c70bd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cardName: OverheatedPalm
+  _cardType: 0
+  _cardRarities: 2
+  _cardImage: {fileID: 21300000, guid: 257d4be260176b74cb0b093561481991, type: 3}
+  _buyCost: 4
+  _aetherCost: 2
+  _cardText: +9 Power. Exhaust all Aether cards in this engine
+  _aetherValue: 0
+  _powerValue: 9
+  _range: 0
+  _moveValue: 0
+  PowerTotal: 0
+  AetherTotal: 0
+  MoveTotal: 0
+  StatModifer: 0
+  EnemyStatModifer: 0
+  XValue: 0
+  TrashThis: 0
+  _priority: 1
+  _purchasable: 0
+  Tweening: 0
+  IsPreview: 0
+  Dragging: 0
+  _fullSize: 0
+--- !u!1001 &8109567955070946157
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -10,7 +46,7 @@ PrefabInstance:
     - target: {fileID: 1176058906799001468, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
       propertyPath: m_Name
-      value: PumpIron_MU
+      value: OverheatedPalm_MR
       objectReference: {fileID: 0}
     - target: {fileID: 1178716853317580715, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
@@ -117,51 +153,12 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _cardName
-      value: Pump Iron
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _cardRarities
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _cardImage
-      value: 
-      objectReference: {fileID: 21300000, guid: 257d4be260176b74cb0b093561481991,
-        type: 3}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _range
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _buyCost
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _cardText
-      value: +2 Attack For 2 Engines. +1 Power
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _powerValue
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: StatModifer
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _priority
-      value: 4
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 0d479990a3bf94b66add313f61a36fdf, type: 3}
+--- !u!1 &6978550061203801105 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1176058906799001468, guid: 0d479990a3bf94b66add313f61a36fdf,
+    type: 3}
+  m_PrefabInstance: {fileID: 8109567955070946157}
+  m_PrefabAsset: {fileID: 0}

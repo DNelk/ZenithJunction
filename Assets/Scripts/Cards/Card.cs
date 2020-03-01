@@ -19,13 +19,21 @@ public class Card : MonoBehaviour
     [SerializeField] protected string _cardText; public string CardText => _cardText;
     [SerializeField] protected int _aetherValue; public int AetherValue => _aetherValue;
     [SerializeField] protected int _powerValue; public int PowerValue => _powerValue;
-    [SerializeField] protected AttackRange _range = AttackRange.Null; public AttackRange Range => _range;
+    [SerializeField] protected AttackRange _range = AttackRange.Null;
+    public AttackRange Range
+    {
+        get => _range;
+        set => value = _range;
+    }
+
     [SerializeField] protected int _moveValue; public int MoveValue => _moveValue;
     [HideInInspector] public int PowerTotal; //Modified attack value
     [HideInInspector] public int AetherTotal; //Modified aether value
     [HideInInspector] public int MoveTotal; //Totalified aether value
     [HideInInspector] public bool StatModifer = false;
     [HideInInspector] public List<Stat> StatBoosts = new List<Stat>();
+    [HideInInspector] public bool EnemyStatModifer = false;
+    [HideInInspector] public List<Stat> EnemyStatMods = new List<Stat>();
 
 
 
@@ -165,6 +173,11 @@ public class Card : MonoBehaviour
             foreach (var stat in StatBoosts)
             {
                 BattleManager.Instance.Player.ModifyStat(stat.StatType, stat.TurnsLeft, stat.Value, !stat.IsNew);
+            }
+            
+            foreach (var stat in EnemyStatMods)
+            {
+                BattleManager.Instance.CurrentEnemy.ModifyStat(stat.StatType, stat.TurnsLeft, stat.Value, !stat.IsNew);
             }
         }
     }

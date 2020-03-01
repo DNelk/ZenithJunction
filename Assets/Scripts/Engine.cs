@@ -221,12 +221,12 @@ public class Engine : MonoBehaviour
             StackCardsForPreview();
     }
 
-    private List<Card> _poppedCards;
+    public List<Card> PoppedCards; //Cards go here between execution steps 1 and 2
     public IEnumerator ExecuteStack()
     {
         BattleDelegateHandler.ApplyEngineEffects();
         ReadyCards();
-        _poppedCards = new List<Card>();
+        PoppedCards = new List<Card>();
         while (Stack.Count > 0)
         {
             Card c = Stack.Pop();
@@ -252,7 +252,7 @@ public class Engine : MonoBehaviour
             }
             _aetherTotal += c.AetherTotal;
             _moveTotal += c.MoveTotal;
-            _poppedCards.Add(c);
+            PoppedCards.Add(c);
         }
         //Stat Check! -only move implemented
         Player player = BattleManager.Instance.Player;
@@ -274,7 +274,7 @@ public class Engine : MonoBehaviour
     //Last stage of execution
     public void CalculatePowerTotal()
     {
-        foreach (var c in _poppedCards)
+        foreach (var c in PoppedCards)
         {
             _powerTotal += c.CalculateAttackTotalWithPosition();
             //Finish Executing
