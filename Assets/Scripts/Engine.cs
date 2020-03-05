@@ -63,7 +63,7 @@ public class Engine : MonoBehaviour
         set => _moveTotal = value;
     }
 
-    public int OverridePower, OverrideAether, OverrideMove;
+    public int OverridePower, OverrideAether, OverrideMove = -1;
     
     public int AmtMoved;
     
@@ -314,7 +314,7 @@ public class Engine : MonoBehaviour
 
             c.Execute();
 
-            _powerTotal += c.PowerTotal;
+            _powerTotal += c.CalculateAttackTotalWithPosition();
             _aetherTotal += c.AetherTotal;
             _moveTotal += c.MoveTotal;
             totalCost += c.AetherCost;
