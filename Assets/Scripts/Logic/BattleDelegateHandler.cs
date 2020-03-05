@@ -79,4 +79,22 @@ public class BattleDelegateHandler : MonoBehaviour
         }
     }
     
+    public delegate void AfterDamageDelegate();
+
+    public static AfterDamageDelegate AfterDamageEffect;
+
+    public static void ApplyAfterDamageEffects()
+    {
+        if(AfterDamageEffect == null)
+            return;
+        AfterDamageEffect();
+        if (AfterDamageEffect != null)
+        {
+            foreach (var d in AfterDamageEffect.GetInvocationList())
+            {
+                AfterDamageEffect -= (d as AfterDamageDelegate);
+            }
+        }
+    }
+    
 }

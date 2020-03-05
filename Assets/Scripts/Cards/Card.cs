@@ -11,7 +11,14 @@ public class Card : MonoBehaviour
 {
     //Card Variables
     [SerializeField] protected string _cardName; public String CardName => _cardName;
-    [SerializeField] protected CardTypes _cardType; public CardTypes CardType => _cardType;
+    [SerializeField] protected CardTypes _cardType;
+
+    public CardTypes CardType
+    {
+        get => _cardType;
+        set => _cardType = value;
+    }
+    
     [SerializeField] protected CardRarities _cardRarities; public CardRarities CardRarity => _cardRarities;
     [SerializeField] protected Sprite _cardImage; public Sprite CardImage => _cardImage;
     [SerializeField] protected int _buyCost; public int BuyCost => _buyCost;
@@ -189,7 +196,7 @@ public class Card : MonoBehaviour
         MoveTotal = 0;
     }
 
-    protected void AssignUI()
+    public void AssignUI()
     {
         u_cardName.text = _cardName;
         if (_fullSize)

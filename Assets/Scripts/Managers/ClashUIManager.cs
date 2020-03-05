@@ -64,7 +64,6 @@ public class ClashUIManager : MonoBehaviour
         {
             dmg = playerDamage - enemyDamage;
             _result.text = "You deal " + playerDamage + " damage!";
-            
             if (playerDamage >= 2 * enemyDamage)
                 _animTrigger = "PlayerWinBig";
             else

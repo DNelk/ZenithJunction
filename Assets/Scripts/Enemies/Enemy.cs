@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] protected string _name; 
     [SerializeField] protected List<EnemyAttack> _attacks; //Our pool of attacks
-    [SerializeField] protected EnemyAttack _currentAttack;
+    public EnemyAttack CurrentAttack;
     [SerializeField] protected EnemyAttack _moveInRange; //Our move action that we can do when we need to get in range
     [SerializeField] public string ExtraInfo;
     
@@ -59,19 +59,19 @@ public class Enemy : MonoBehaviour
         int tempAtkIndex = _atkIndex + 1;
         if (tempAtkIndex >= _attacks.Count)
             tempAtkIndex = 0;
-        _currentAttack = _attacks[tempAtkIndex];
+        CurrentAttack = _attacks[tempAtkIndex];
         //If this attack is out of range we should just move towards the player instead
-        if (_currentAttack.IsAttackInRange())
+        if (CurrentAttack.IsAttackInRange())
             _atkIndex = tempAtkIndex;
         else
         {
-            DesiredRange = _currentAttack.Range;
-            _currentAttack = _moveInRange; 
+            DesiredRange = CurrentAttack.Range;
+            CurrentAttack = _moveInRange; 
         }
         //Display how much damage/what type of attack it's going to deal
         //Text enemyText = GameObject.Find("EnemyText").GetComponent<Text>();
-        _enemyIntention.Text = "The enemy prepares to " + _currentAttack.PrepareAttack();
-        BattleManager.Instance.PushAttack(_currentAttack);
+        _enemyIntention.Text = "The enemy prepares to " + CurrentAttack.PrepareAttack();
+        BattleManager.Instance.PushAttack(CurrentAttack);
         
     }
 
@@ -100,8 +100,8 @@ public class Enemy : MonoBehaviour
     {
         
         //Deal damage and execute any other effects.
-        _currentAttack.ExecuteOtherEffect();
-        int dmg = CalculateAttackTotalWithPosition(_currentAttack);
+        CurrentAttack.ExecuteOtherEffect();
+        int dmg = CalculateAttackTotalWithPosition(CurrentAttack);
         dmg -= AtkDebuff;
         AtkDebuff = 0;
         return dmg;
@@ -150,6 +150,29 @@ public class Enemy : MonoBehaviour
         move.Insert(0,transform.DORotate(_positions[_currentPos].rotation.eulerAngles, 0.5f));
         return move.Duration();
     }
+
+    public void PushPosition(int moveAmount)
+    {
+        bool backMovement = BattleManager.Instance.Player.Position > _currentPos;
+
+        int pos = _currentPos;
+        
+        while (moveAmount > 0 && _currentPos != 0 && _currentPos != _positions.Length-1)
+        {
+            if (backMovement)
+            {
+                pos--;
+                moveAmount--;
+            }
+            else
+            {
+                pos++;
+                moveAmount--;
+            }
+        }
+
+        ChangePosition(pos);
+    }
     
     public int CalculateAttackTotalWithPosition(EnemyAttack currentAttack)
     {
@@ -179,9 +202,15 @@ public class Enemy : MonoBehaviour
 
         return (int)(currentAttack.TotalDamage * damageMod);
     }
-
+    
     public IEnumerator MoveInRange(int moves = 3)
     {
+        //Stat Check
+        if (ActiveStats.ContainsKey(StatType.MovesUP))
+            moves += ActiveStats[StatType.MovesUP].Value;
+        if (ActiveStats.ContainsKey(StatType.MovesDOWN))
+            moves += ActiveStats[StatType.MovesDOWN].Value;
+        
         Player player = BattleManager.Instance.Player;
         //We want to move closer
         if (DesiredRange == AttackRange.Melee || DesiredRange == AttackRange.Short)

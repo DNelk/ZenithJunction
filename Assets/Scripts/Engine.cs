@@ -63,7 +63,8 @@ public class Engine : MonoBehaviour
         set => _moveTotal = value;
     }
 
-
+    public int OverridePower, OverrideAether, OverrideMove;
+    
     public int AmtMoved;
     
     private bool _inRange = true;
@@ -222,6 +223,7 @@ public class Engine : MonoBehaviour
     }
 
     public List<Card> PoppedCards; //Cards go here between execution steps 1 and 2
+    public bool GoldOrSilverFound = false;  //Boolean for the Golden/Silver combo cards
     public IEnumerator ExecuteStack()
     {
         BattleDelegateHandler.ApplyEngineEffects();
@@ -254,6 +256,12 @@ public class Engine : MonoBehaviour
             _moveTotal += c.MoveTotal;
             PoppedCards.Add(c);
         }
+
+        if (OverrideAether != -1)
+            _aetherTotal = OverrideAether;
+        if (OverrideMove != -1)
+            _moveTotal = OverrideMove;
+        
         //Stat Check! -only move implemented
         Player player = BattleManager.Instance.Player;
         if (player.ActiveStats.ContainsKey(StatType.MovesUP))
@@ -277,6 +285,8 @@ public class Engine : MonoBehaviour
         foreach (var c in PoppedCards)
         {
             _powerTotal += c.CalculateAttackTotalWithPosition();
+            if (OverridePower != -1)
+                _powerTotal = OverridePower;
             //Finish Executing
             if (c.TrashThis)
                 DeckManager.Instance.Trash(c);
@@ -520,6 +530,7 @@ public class Engine : MonoBehaviour
             _moveTotal = 0;
             AmtMoved = 0;
             _inRange = true;
+            OverrideAether = OverrideMove = OverrideAether = -1;
         }
     }
     
