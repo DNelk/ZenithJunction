@@ -23,11 +23,13 @@ public class DeckManager : MonoBehaviour
     
     //UI
     private Transform _cardMachine;
+    private Animator[] _cardTabLock;
+    private ParticleSystem[] _tabParticles;
     private Transform _cardPanel;
     private TMP_Text[] _inDeckCount;
     private TMP_Text[] _disCount;
     private TMP_Text[] _trashCount;
-    private RectTransform[] _cardPositions;
+    [HideInInspector] public RectTransform[] _cardPositions;
     
     private void Awake()
     {
@@ -56,7 +58,10 @@ public class DeckManager : MonoBehaviour
 
         _cardPanel = transform.parent;
         _cardMachine = transform.parent.transform.parent;
-        
+        _cardTabLock = _cardMachine.transform.Find("CardTab").transform.Find("TabLocks").GetComponentsInChildren<Animator>();
+        _tabParticles = _cardMachine.transform.Find("CardTab").transform.Find("TabParticle").GetComponentsInChildren<ParticleSystem>();
+        ;
+
         _inDeckCount = _cardMachine.transform.Find("DeckMachine").transform.Find("Number").GetComponentsInChildren<TMP_Text>();
         _disCount = _cardMachine.transform.Find("DiscardMachine").transform.Find("Number").GetComponentsInChildren<TMP_Text>();    
         _trashCount = _cardMachine.transform.Find("TrashMachine").transform.Find("Number").GetComponentsInChildren<TMP_Text>();
@@ -109,6 +114,9 @@ public class DeckManager : MonoBehaviour
     //Deal 9 to player
     private IEnumerator DealActive()
     {
+        unlockTab();
+        yield return new WaitForSeconds(0.5f);
+        
         for (int i = 0; i < 9; i++)
         {
             if(_deck.Count == 0)
@@ -124,9 +132,19 @@ public class DeckManager : MonoBehaviour
             
 
             Tween dealTween = activeCardGO.transform.DOMove(_cardPositions[i].position, 0.1f, false);
+            
+            //for Palmmy
+            activeCard.InActive = true;
+            activeCard.MyIndex = i;
+            _cardPositions[i].GetComponent<BoxCollider2D>().enabled = true;
+
             activeCardGO.transform.localScale = _cardPositions[i].localScale*0.975f;
             yield return dealTween.WaitForCompletion();
         }
+
+        yield return new WaitForSeconds(0.1f);
+        
+        playUnlockTabParticle();
     }
     /*
     public void Discard(Engine discardedEngine)
@@ -218,4 +236,81 @@ public class DeckManager : MonoBehaviour
     {
         StartCoroutine(DealActive());
     }
+
+    public void moveCardsToTray(int cardIndex)
+    {
+        _activeCards[cardIndex].MyCol.enabled = false;
+        
+        if (_activeCards[cardIndex].Dragging != true && _activeCards[cardIndex].transform.position != _cardPositions[cardIndex].position && _activeCards[cardIndex].Engine == null)
+        {
+            _activeCards[cardIndex].transform.DOMove(_cardPositions[cardIndex].position, 0.1f, false);
+        }
+    }
+
+    public void swapCardLocation(int currentIndex, int newIndex)
+    {
+        var temp = _activeCards[currentIndex];
+        
+        if (newIndex > currentIndex)
+        {
+            for (int i = currentIndex; i < newIndex; i++)
+            {
+                _activeCards[i] = _activeCards[i + 1];
+                _activeCards[i].MyIndex = i;
+                _activeCards[i + 1] = null;
+                moveCardsToTray(i);
+            }
+        }
+        else if (newIndex < currentIndex)
+        {
+            for (int i = currentIndex; i > newIndex; i--)
+            {
+                _activeCards[i] = _activeCards[i - 1];
+                _activeCards[i].MyIndex = i;
+                _activeCards[i - 1] = null;
+                moveCardsToTray(i);
+            }
+        }
+        
+        _activeCards[newIndex] = temp;
+    }
+
+    public void unlockTab()
+    {
+        for (int i = 0; i < _cardTabLock.Length; i++)
+        {
+            if (_cardTabLock[i].GetBool("isActive") != true)
+            {
+                _cardTabLock[i].SetBool("isActive", true);
+            }
+        }
+    }
+
+    public void playUnlockTabParticle()
+    {
+        for (int i = 0; i < _tabParticles.Length; i++)
+        {
+            _tabParticles[i].Play();
+        }
+    }
+
+    public void lockTab()
+    {
+        for (int i = 0; i < _cardTabLock.Length; i++)
+        {
+            if (_cardTabLock[i].GetBool("isActive") != false)
+            {
+                _cardTabLock[i].SetBool("isActive", false);
+            }
+        }
+    }
+    
+    public void playLockTabParticle()
+    {
+        for (int i = 0; i < _tabParticles.Length; i++)
+        {
+            _tabParticles[i].Stop();
+        }
+    }
+    
 }

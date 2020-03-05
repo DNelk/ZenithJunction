@@ -70,6 +70,10 @@ public class Card : MonoBehaviour
     [HideInInspector] public bool Tweening = false;
     [HideInInspector] public bool IsPreview = false;
     [HideInInspector] public bool Dragging = false;
+    [HideInInspector] public int MyIndex = 0;
+    [HideInInspector] public bool InActive = false;
+    [HideInInspector] public Collider2D MyCol;
+    
     private bool _equipped = false;
     public bool Equipped
     {
@@ -162,6 +166,7 @@ public class Card : MonoBehaviour
         _initialScale = transform.localScale;
         _eventManager = GetComponent<CardEventManager>();
         u_cg = GetComponent<CanvasGroup>();
+        MyCol = GetComponent<Collider2D>();
     }
     
     //Execute a card's unique text

@@ -12,6 +12,7 @@ TagManager:
   - OverworldTrain
   - OverworldInteractable
   - OverworldTracks
+  - CardPos
   layers:
   - Default
   - TransparentFX

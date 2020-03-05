@@ -984,6 +984,7 @@ MonoBehaviour:
   AetherTotal: 0
   MoveTotal: 0
   StatModifer: 0
+  EnemyStatModifer: 0
   XValue: 0
   TrashThis: 0
   _priority: 0
@@ -999,7 +1000,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1176058906799001468}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -1016,7 +1017,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3.0185957, y: 4.4192953}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!50 &7229410773294158278
 Rigidbody2D:
@@ -1026,7 +1027,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1176058906799001468}
-  m_BodyType: 2
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -1053,6 +1054,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Delegates: []
   BaseScale: {x: 0, y: 0, z: 0}
+  _inActive: 0
+  _myIndex: 0
 --- !u!225 &3736888068461158887
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -1994,7 +1997,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3565915242508755289}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 058cba836c1846c3aa1c5fd2e28aea77, type: 3}
   m_Name: 
@@ -3203,7 +3206,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6361322567580288003
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3406,7 +3409,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5652801426010893887
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6454,6 +6457,61 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 14.659301
       objectReference: {fileID: 0}
+    - target: {fileID: 4579430832316101460, guid: 0cde568f6a98640fe9900ac5f94204cf,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4579430832316101460, guid: 0cde568f6a98640fe9900ac5f94204cf,
+        type: 3}
+      propertyPath: m_RenderMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4579430832316101460, guid: 0cde568f6a98640fe9900ac5f94204cf,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+    - target: {fileID: 4579430832316101460, guid: 0cde568f6a98640fe9900ac5f94204cf,
+        type: 3}
+      propertyPath: m_LengthScale
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4579430832316101460, guid: 0cde568f6a98640fe9900ac5f94204cf,
+        type: 3}
+      propertyPath: m_NormalDirection
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4579430832316101460, guid: 0cde568f6a98640fe9900ac5f94204cf,
+        type: 3}
+      propertyPath: m_MaxParticleSize
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4579430832316101460, guid: 0cde568f6a98640fe9900ac5f94204cf,
+        type: 3}
+      propertyPath: m_ApplyActiveColorSpace
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4579430832316101460, guid: 0cde568f6a98640fe9900ac5f94204cf,
+        type: 3}
+      propertyPath: m_Flip.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4579430832316101460, guid: 0cde568f6a98640fe9900ac5f94204cf,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4579430832316101460, guid: 0cde568f6a98640fe9900ac5f94204cf,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9bf8117cab8804c67b5e106e020ecaee, type: 2}
+    - target: {fileID: 4579430832316101460, guid: 0cde568f6a98640fe9900ac5f94204cf,
+        type: 3}
+      propertyPath: m_MaskInteraction
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8757800913981932231, guid: 0cde568f6a98640fe9900ac5f94204cf,
         type: 3}
       propertyPath: m_IgnoreParent
@@ -6778,61 +6836,6 @@ PrefabInstance:
         type: 3}
       propertyPath: ShapeModule.m_MeshSpawn.mode
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4579430832316101460, guid: 0cde568f6a98640fe9900ac5f94204cf,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4579430832316101460, guid: 0cde568f6a98640fe9900ac5f94204cf,
-        type: 3}
-      propertyPath: m_RenderMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4579430832316101460, guid: 0cde568f6a98640fe9900ac5f94204cf,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-    - target: {fileID: 4579430832316101460, guid: 0cde568f6a98640fe9900ac5f94204cf,
-        type: 3}
-      propertyPath: m_LengthScale
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4579430832316101460, guid: 0cde568f6a98640fe9900ac5f94204cf,
-        type: 3}
-      propertyPath: m_NormalDirection
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4579430832316101460, guid: 0cde568f6a98640fe9900ac5f94204cf,
-        type: 3}
-      propertyPath: m_MaxParticleSize
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4579430832316101460, guid: 0cde568f6a98640fe9900ac5f94204cf,
-        type: 3}
-      propertyPath: m_ApplyActiveColorSpace
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4579430832316101460, guid: 0cde568f6a98640fe9900ac5f94204cf,
-        type: 3}
-      propertyPath: m_Flip.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4579430832316101460, guid: 0cde568f6a98640fe9900ac5f94204cf,
-        type: 3}
-      propertyPath: m_Pivot.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4579430832316101460, guid: 0cde568f6a98640fe9900ac5f94204cf,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 9bf8117cab8804c67b5e106e020ecaee, type: 2}
-    - target: {fileID: 4579430832316101460, guid: 0cde568f6a98640fe9900ac5f94204cf,
-        type: 3}
-      propertyPath: m_MaskInteraction
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0cde568f6a98640fe9900ac5f94204cf, type: 3}

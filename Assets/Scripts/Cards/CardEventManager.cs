@@ -22,7 +22,7 @@ public class CardEventManager : EventTrigger
     private ParticleSystem _glow;
     private Vector3 _glowScale = Vector3.zero;
     private Gradient _inEngineColor, _baseColor;
-    
+
     private void Start()
     {
         _myCard = GetComponent<Card>();
@@ -128,12 +128,13 @@ public class CardEventManager : EventTrigger
     public override void OnDrag(PointerEventData eventData)
     {
         CalcPosOnMouseMove();
+        _myCard.MyCol.enabled = true;
     }
 
     public override void OnPointerUp(PointerEventData eventData)
     {
         _myCard.Dragging = false;
-        
+
         //I turn this off to make it so that it still scaled after you release the click
         //if(BaseScale != Vector3.zero)
             //transform.localScale = BaseScale;
@@ -194,7 +195,7 @@ public class CardEventManager : EventTrigger
         if (BaseScale == Vector3.zero)
             BaseScale = transform.localScale;
         
-        Debug.Log(BaseScale);
+        //Debug.Log(BaseScale);
 
         transform.DOScale(BaseScale*1.5f, 0.2f);
         
@@ -216,7 +217,7 @@ public class CardEventManager : EventTrigger
             transform.DOScale(BaseScale, 0.2f);
         }
 
-        //BaseScale = Vector3.zero;
+        //fBaseScale = Vector3.zero;
         _hovering = false;
         Utils.DestroyCardPreview();
         _dontMagnifyUntilHoverAgainHack = false;
@@ -235,5 +236,22 @@ public class CardEventManager : EventTrigger
                 _glow.Play();
         }
     }
-    
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (_myCard.InActive && other.gameObject.CompareTag("CardPos"))
+        {
+            DeckManager DM = DeckManager.Instance;
+            int pos_Index = Array.IndexOf(DM._cardPositions, other.transform);
+            if (_myCard.MyIndex != pos_Index)
+            {
+                DM.swapCardLocation(_myCard.MyIndex, pos_Index);
+                _myCard.MyIndex = pos_Index;
+            }
+        }
+    }
+
+/*    private void OnTriggerExit2D(Collider other)
+    {
+    }*/
 }

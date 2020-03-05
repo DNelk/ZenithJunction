@@ -301,6 +301,8 @@ public class BattleManager : MonoBehaviour
         }
 
         BattleState = BattleStates.ChoosingAction;
+        DeckManager.Instance.lockTab();
+        DeckManager.Instance.playLockTabParticle();
         OrganizeEngines();
         LoadEnemyAttack();
     }
