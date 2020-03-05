@@ -131,7 +131,8 @@ public class BattleManager : MonoBehaviour
             _finishEnginesButton.onClick.RemoveAllListeners();
             _finishEnginesButton.onClick.AddListener(ConfirmEngines);
             _finishEnginesButton.gameObject.SetActive(false);
-            
+            DamageDealtThisTurn = 0;
+
         }
         else
         {
@@ -173,6 +174,7 @@ public class BattleManager : MonoBehaviour
         _playerAttack = s;
     }
 
+    public int DamageDealtThisTurn = 0;
     public IEnumerator ProcessAttacks()
     {
         BattleState = BattleStates.Battle;
@@ -227,8 +229,9 @@ public class BattleManager : MonoBehaviour
         Player.TickDownStats();
         _enemyAttack = null;
         CurrentEnemy.TickDownStats();
-
+        
         _playerAttack = null;
+        BattleDelegateHandler.ApplyAfterDamageEffects();
         
         _confirmButtonText.text = "Select an Engine";
         
@@ -257,6 +260,7 @@ public class BattleManager : MonoBehaviour
            //_resultText.Text = "The enemy takes " + (playerDamage + _clashingDamage) + " damage!";
            //_resultText.Color = Color.green;
             CurrentEnemy.TakeDamage(playerDamage + _clashingDamage);
+            DamageDealtThisTurn += playerDamage + _clashingDamage;
             _clashingDamage = 0;
            // _clashText.Alpha = 0;
 
@@ -323,7 +327,7 @@ public class BattleManager : MonoBehaviour
         _finishEnginesButton.onClick.RemoveAllListeners();
     }
 
-    private int EmptyEnginesCount()
+    public int EmptyEnginesCount()
     {
         int count = 0;
         foreach (Engine e in Engines){
