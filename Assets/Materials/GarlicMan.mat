@@ -20,7 +20,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Albedo:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 3f5a143e758f946559c178a6365bc2f9, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseColorRGBOutlineWidthA:
@@ -44,8 +44,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Diffuse:
-        m_Texture: {fileID: 28748549905332312, guid: 90991e63dcca0ad47833c1d2ee9b588b,
-          type: 2}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
@@ -65,7 +64,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 19280ffc5de94419cbbc449c92cc8b9e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
@@ -81,11 +80,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: a234e06c179104a3a9ea549b8ddc03f9, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ToonRamp:
-        m_Texture: {fileID: 2800000, guid: 8cc36f10dd63e43abba68c70d6252c19, type: 3}
+        m_Texture: {fileID: 2800000, guid: 54f7d2d29edbf4204be2a33fed570ab9, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _texcoord:
@@ -93,14 +92,14 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _ASEOutlineWidth: 0.0001
+    - _ASEOutlineWidth: 0.0004
     - _BaseCellOffset: 0
     - _BaseCellSharpness: 0.01
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _Gloss: 0.923
+    - _Gloss: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -114,9 +113,9 @@ Material:
     - _OcclusionStrength: 1
     - _OutlineWidth: 0.02
     - _Parallax: 0.02
-    - _RimOffset: 0.54
-    - _RimPower: 0.912
-    - _Scale: 0.3
+    - _RimOffset: 0.21
+    - _RimPower: 0
+    - _Scale: 0.63
     - _ShadowContribution: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecIntensity: 0
@@ -132,17 +131,17 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     - __dirty: 0
-    - _max: 1.12
-    - _min: 0
+    - _max: 1.95
+    - _min: 0.65
     m_Colors:
-    - _ASEOutlineColor: {r: 0, g: 0, b: 0, a: 0}
+    - _ASEOutlineColor: {r: 0.28858152, g: 0.03551085, b: 0.3962264, a: 0}
     - _BaseTint: {r: 1, g: 1, b: 1, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _HighlightTint: {r: 1, g: 1, b: 1, a: 1}
     - _OutlineTint: {r: 0.5294118, g: 0.5294118, b: 0.5294118, a: 0}
     - _RimColor: {r: 1, g: 1, b: 1, a: 0}
-    - _RimTint: {r: 0.5990566, g: 0.9495268, b: 1, a: 0}
+    - _RimTint: {r: 0.6327083, g: 0, b: 0.94509804, a: 1}
     - _SpecColor: {r: 1, g: 1, b: 1, a: 0}
-    - _SpecTint: {r: 1, g: 0, b: 0, a: 1}
-    - _Tint: {r: 0.92923707, g: 0.7146226, b: 0.9528302, a: 1}
+    - _SpecTint: {r: 0.89365447, g: 0.514151, b: 1, a: 1}
+    - _Tint: {r: 0.9056604, g: 0.80740476, b: 0.83591026, a: 1}
