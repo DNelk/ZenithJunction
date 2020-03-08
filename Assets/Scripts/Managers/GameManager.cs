@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     public GameState State;
 
     //Map Stuff
-    private string _currentEnagingInteractable;
+    public string BattlingNode;
     
     private void Awake()
     {
@@ -29,29 +29,7 @@ public class GameManager : MonoBehaviour
             CardDirectory.LoadDirectory();
         if (!File.Exists(Application.persistentDataPath + "playercollection.save"))
         {
-            PlayerCollection pc = new PlayerCollection();
-            pc.Cards.Add("strike");
-            pc.Cards.Add("strike");
-            pc.Cards.Add("strike");
-            pc.Cards.Add("strike");
-            pc.Cards.Add("railcharge");
-            pc.Cards.Add("allaboard");
-            pc.Cards.Add("manaboil");
-            pc.Cards.Add("manaboil");
-            pc.Cards.Add("manaboil");
-            pc.Cards.Add("DevRage");
-            
-            pc.Equipped.Add("strike");
-            pc.Equipped.Add("strike");
-            pc.Equipped.Add("strike");
-            pc.Equipped.Add("DevRage");
-            pc.Equipped.Add("railcharge");
-            pc.Equipped.Add("allaboard");
-            pc.Equipped.Add("manaboil");
-            pc.Equipped.Add("manaboil");
-            pc.Equipped.Add("manaboil");
-            
-            Utils.Save(pc, "playercollection");
+            ResetPlayerSave();
         }
     }
 
@@ -73,6 +51,33 @@ public class GameManager : MonoBehaviour
         {
             yield return null;
         }
+    }
+
+    public void ResetPlayerSave()
+    {
+        PlayerCollection pc = new PlayerCollection();
+        pc.Cards.Add("strike");
+        pc.Cards.Add("strike");
+        pc.Cards.Add("strike");
+        pc.Cards.Add("strike");
+        pc.Cards.Add("railcharge");
+        pc.Cards.Add("allaboard");
+        pc.Cards.Add("manaboil");
+        pc.Cards.Add("manaboil");
+        pc.Cards.Add("manaboil");
+        pc.Cards.Add("DevRage");
+            
+        pc.Equipped.Add("strike");
+        pc.Equipped.Add("strike");
+        pc.Equipped.Add("strike");
+        pc.Equipped.Add("DevRage");
+        pc.Equipped.Add("railcharge");
+        pc.Equipped.Add("allaboard");
+        pc.Equipped.Add("manaboil");
+        pc.Equipped.Add("manaboil");
+        pc.Equipped.Add("manaboil");
+            
+        Utils.Save(pc, "playercollection");
     }
     
 }

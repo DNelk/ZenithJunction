@@ -16,11 +16,11 @@ public static class Utils
         error.StartCoroutine(error.StartFade(err, time));
     }
 
-    public static void DisplayGameOver(string message)
+    public static void DisplayGameOver(string message, bool win)
     {
         BattleManager.Instance.BattleState = BattleStates.GameOver;
         GameOverPanel go = GameObject.Instantiate(Resources.Load<GameObject>("prefabs/GameOver"), GameObject.Find("MainCanvas").transform).GetComponent<GameOverPanel>();
-        go.Load(message);
+        go.Load(message, win);
     }
 
     public static CardPreview CurrentPreview;

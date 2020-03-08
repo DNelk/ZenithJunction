@@ -37,29 +37,7 @@ public class CustomizeManager : MonoBehaviour
         
         if (!File.Exists(Application.persistentDataPath + "playercollection.save"))
         {
-            PlayerCollection pc = new PlayerCollection();
-            pc.Cards.Add("strike");
-            pc.Cards.Add("strike");
-            pc.Cards.Add("strike");
-            pc.Cards.Add("strike");
-            pc.Cards.Add("railcharge");
-            pc.Cards.Add("allaboard");
-            pc.Cards.Add("manaboil");
-            pc.Cards.Add("manaboil");
-            pc.Cards.Add("manaboil");
-            //pc.Cards.Add("DevRage");
-        
-            pc.Equipped.Add("strike");
-            pc.Equipped.Add("strike");
-            pc.Equipped.Add("strike");
-            pc.Equipped.Add("strike");
-            pc.Equipped.Add("railcharge");
-            pc.Equipped.Add("allaboard");
-            pc.Equipped.Add("manaboil");
-            pc.Equipped.Add("manaboil");
-            pc.Equipped.Add("manaboil");
-            
-            Utils.Save(pc, "playercollection");
+            GameManager.Instance.ResetPlayerSave();
         }
 
         PlayerCollection collection = Utils.Load<PlayerCollection>("playercollection");

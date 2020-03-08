@@ -63,7 +63,7 @@ public class Engine : MonoBehaviour
         set => _moveTotal = value;
     }
 
-    public int OverridePower, OverrideAether, OverrideMove = -1;
+    [HideInInspector] public int OverridePower, OverrideAether, OverrideMove = -1;
     
     public int AmtMoved;
     
@@ -105,6 +105,8 @@ public class Engine : MonoBehaviour
         u_aetherNumber = transform.Find("AetherNumber").GetComponent<TMP_Text>();
         u_aetherCore = transform.Find("AetherEngine").transform.Find("Core_Main").GetComponent<Image>();
         u_move = transform.Find("MoveIcon").GetComponentsInChildren<Image>();
+        
+        OverridePower = OverrideAether = OverrideMove = -1;
     }
 
     //Adds a card to the pending card array

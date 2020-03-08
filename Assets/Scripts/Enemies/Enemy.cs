@@ -130,7 +130,7 @@ public class Enemy : MonoBehaviour
         //_mr.material.DOColor(Color.red, 0.2f).OnComplete(() => _mr.material.DOColor(Color.white, 0.5f));
         UpdateHealth();
         if (_currentHP <= 0)
-            Utils.DisplayGameOver("Victory!");
+            Utils.DisplayGameOver("Victory!", true);
     }
     
     private void UpdateHealth()
