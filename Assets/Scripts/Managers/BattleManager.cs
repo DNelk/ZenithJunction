@@ -132,7 +132,6 @@ public class BattleManager : MonoBehaviour
             _finishEnginesButton.onClick.AddListener(ConfirmEngines);
             _finishEnginesButton.gameObject.SetActive(false);
             DamageDealtThisTurn = 0;
-
         }
         else
         {

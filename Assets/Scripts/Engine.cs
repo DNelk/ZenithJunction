@@ -30,6 +30,13 @@ public class Engine : MonoBehaviour
     private Image u_aetherCore;
     private Image[] u_move;
 
+    //for state change event
+    private Vector3 baseScale;
+    private Image[] u_allSprite;
+    private GameObject myCheatImg;
+    [Range(1,3)] public int engineNumber;
+    [HideInInspector] public List<Transform> _statePos;
+
     private ParticleSystem _steamParticle;
     
     [SerializeField] private List<Card> _pending;
@@ -37,7 +44,7 @@ public class Engine : MonoBehaviour
     private BoxCollider2D _collider;
 
     private bool _selected;
-    
+
     //Game Vars
     //Total attack this round
     private int _powerTotal;
@@ -63,7 +70,7 @@ public class Engine : MonoBehaviour
         set => _moveTotal = value;
     }
 
-    public int OverridePower, OverrideAether, OverrideMove = -1;
+    [HideInInspector] public int OverridePower, OverrideAether, OverrideMove = -1;
     
     public int AmtMoved;
     
@@ -90,21 +97,39 @@ public class Engine : MonoBehaviour
         u_CircleGlowMat = Instantiate(u_Circle.GetComponent<Image>().material);
         u_Circle.GetComponent<Image>().material = u_CircleGlowMat;
 
-        //u_EngineImg = transform.Find("EngineImg").gameObject;
-        //u_EngineImgAnim = u_EngineImg.GetComponent<Animator>();
-
         _steamParticle = transform.Find("Steam").GetComponent<ParticleSystem>();
         
         _tooltip = null;
         
         _cardPositons = transform.Find("CardPositions").GetComponentsInChildren<RectTransform>();
         
+        //set up the position to go in each state
+        Transform[] _stateTran= transform.parent.transform.Find("EnginePos" + engineNumber).GetComponentsInChildren<Transform>();
+        Transform[] temp = new Transform[3];
+        for (int i = 1; i < _stateTran.Length; i++)
+        {
+            temp[i - 1] = _stateTran[i];
+        }
+        _stateTran = temp;
+        foreach (var trans in _stateTran)
+        {
+            _statePos.Add(trans);
+        }
+        //Destroy(transform.parent.transform.Find("EnginePos" + engineNumber).gameObject);
+        
+        //set up images and cheatImg for state change
+        baseScale = transform.localScale;
+        u_allSprite = GetComponentsInChildren<Image>();
+        myCheatImg = transform.Find("CheatImg").gameObject;
+
         //set up number and Icon for total engine power
         u_powerNumber = transform.Find("PowerNumber").GetComponent<TMP_Text>();
         u_powerCore = transform.Find("AttackEngine").transform.Find("Core_Main").GetComponent<Image>();
         u_aetherNumber = transform.Find("AetherNumber").GetComponent<TMP_Text>();
         u_aetherCore = transform.Find("AetherEngine").transform.Find("Core_Main").GetComponent<Image>();
         u_move = transform.Find("MoveIcon").GetComponentsInChildren<Image>();
+
+        OverrideAether = OverrideMove = OverridePower = -1;
     }
 
     //Adds a card to the pending card array
@@ -123,6 +148,9 @@ public class Engine : MonoBehaviour
         c.SetEngine(_cardPositons[0].parent.transform, CurrentCardPos(_pending.Count), 0.45f);
         _pending.Add(c);
         UpdateUICounts();
+        
+        //turn on the circle
+        MagicCircle();
     }
 
     public void RemoveCard(Card c)
@@ -136,6 +164,9 @@ public class Engine : MonoBehaviour
         _pending.Remove(c);
         
         UpdateUICounts();
+        
+        //turn off magiuc circle
+        MagicCircle();
         
         if(cInd == _pending.Count)
             return;
@@ -293,6 +324,8 @@ public class Engine : MonoBehaviour
             else
                 DeckManager.Instance.Discard(c);
         }
+        
+        MagicCircle();
     }
     private int ExecuteStackForPreview()
     { 
@@ -302,8 +335,6 @@ public class Engine : MonoBehaviour
         
         if (EngineState == EngineState.Stacking)
             StackCardsForPreview();
-        
-        
 
         foreach (var c in Stack)
         {
@@ -327,7 +358,7 @@ public class Engine : MonoBehaviour
             _pending = tempPending;
             Stack.Clear();
         }
-
+        
         return totalCost;
     }
     
@@ -426,16 +457,17 @@ public class Engine : MonoBehaviour
                 _steamParticle.Stop();
             _steamParticle.Play();
             _wheelTurning = true;
-            
-            u_Circle.GetComponent<Image>().enabled = true;
         }
         else if (PendingCount < 3 && _wheelTurning && EngineState != EngineState.Stacked || (EngineState == EngineState.Stacked && Stack.Count == 0))
         {
            // u_EngineImgAnim.SetBool("IsReady", false);
             _steamParticle.Stop();
             _wheelTurning = false;
-            u_Circle.GetComponent<Image>().enabled = false;
         }
+        
+        if (Input.GetKeyDown(KeyCode.A)) turnedEngineOff();
+        if (Input.GetKeyDown(KeyCode.S)) prepareEngine();
+        if (Input.GetKeyDown(KeyCode.D)) turnOnEngine();
     }
 
     public void UpdateUICounts(bool setToZero = false)
@@ -566,6 +598,48 @@ public class Engine : MonoBehaviour
     private Vector3 CurrentCardPos(int count)
     {
         return _cardPositons[count].position;
+    }
+
+    private void MagicCircle()
+    {
+        if(PendingCount >= 3) u_Circle.SetActive(true);
+        else
+        {
+            u_Circle.SetActive(false);
+        }
+    }
+
+    private void turnedEngineOff()
+    {
+        myCheatImg.SetActive(false);
+        foreach (Image allsprite in u_allSprite)
+        {
+            allsprite.DOColor(new Color(0.6f, 0.6f, 0.6f), 0.2f);
+        }
+        
+        transform.DOMove(_statePos[0].position, 0.2f, false);
+        transform.DOScale(baseScale * 0.8f, 0.2f);
+        u_Circle.SetActive(false); //delete later
+    }
+    
+    private void prepareEngine()
+    {
+        myCheatImg.SetActive(false);
+        foreach (Image allsprite in u_allSprite)
+        {
+            allsprite.DOColor(Color.white, 0.2f);
+        }
+        
+        transform.DOMove(_statePos[1].position, 0.2f, false);
+        transform.DOScale(baseScale, 0.2f);
+        u_Circle.SetActive(false); //delete later
+    }
+
+    private void turnOnEngine()
+    {
+        transform.DOMove(_statePos[2].position, 0.2f, false);
+        transform.DOScale(baseScale, 0.2f);
+        u_Circle.SetActive(true); //delete later
     }
 }
 

@@ -13,6 +13,7 @@ TagManager:
   - OverworldInteractable
   - OverworldTracks
   - CardPos
+  - TabZone
   layers:
   - Default
   - TransparentFX

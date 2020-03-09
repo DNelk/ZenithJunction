@@ -1059,6 +1059,7 @@
         <e p="Scripts" t="Include">
           <e p="Cards" t="Include">
             <e p="AetherExplosion.cs" t="Include" />
+            <e p="BindToTracks.cs" t="Include" />
             <e p="BlessingOfFire.cs" t="Include" />
             <e p="BlessingOfIce.cs" t="Include" />
             <e p="BlessingOfLightning.cs" t="Include" />
@@ -1067,11 +1068,16 @@
             <e p="CardEditor.cs" t="Include" />
             <e p="CardEventManager.cs" t="Include" />
             <e p="ConeOfGarbage.cs" t="Include" />
+            <e p="CowcatcherCrash.cs" t="Include" />
+            <e p="DisorientingShot.cs" t="Include" />
             <e p="EagleEye.cs" t="Include" />
             <e p="Electrotherapy.cs" t="Include" />
             <e p="FeralRage.cs" t="Include" />
+            <e p="FistOfUnity.cs" t="Include" />
+            <e p="GoldenPhysique.cs" t="Include" />
             <e p="HiSpeedBeam.cs" t="Include" />
             <e p="IgniteTheAether.cs" t="Include" />
+            <e p="InfiniteAmmo.cs" t="Include" />
             <e p="InhaleAether.cs" t="Include" />
             <e p="MagSprint.cs" t="Include" />
             <e p="OverheatedPalm.cs" t="Include" />
@@ -1079,9 +1085,15 @@
             <e p="RailCharge.cs" t="Include" />
             <e p="RainOfNails.cs" t="Include" />
             <e p="RecklessSmash.cs" t="Include" />
+            <e p="ShockingShinkansenShot.cs" t="Include" />
+            <e p="SilverProwess.cs" t="Include" />
+            <e p="SniperLock.cs" t="Include" />
+            <e p="SolidarityBeam.cs" t="Include" />
             <e p="SummonBirds.cs" t="Include" />
+            <e p="TitanicCollision.cs" t="Include" />
             <e p="TrackChange.cs" t="Include" />
             <e p="Turbocharge.cs" t="Include" />
+            <e p="Weightless.cs" t="Include" />
           </e>
           <e p="DemoManager.cs" t="Include" />
           <e p="Enemies" t="Include">

@@ -15,7 +15,7 @@ public class DeckManager : MonoBehaviour
     
     //Card Vars
     public List<String> Deck = new List<String>(); //User's library of cards (prototype only)
-    private List<Card> _activeCards; //Cards in play
+    public List<Card> _activeCards; //Cards in play
     private List<GameObject> _activeCardObjects; //GameObjects of cards in play
     private Stack<String> _discard; //Discarded Cards
     private Stack<String> _deck; //Runtime version of the deck
@@ -127,16 +127,20 @@ public class DeckManager : MonoBehaviour
             _activeCardObjects.Add(activeCardGO);
 
             Card activeCard = activeCardGO.GetComponent<Card>();
-            _activeCards.Add(activeCard);
             
-            
+            if (_activeCards.Count <= i) _activeCards.Add(activeCard);
+            else
+            {
+                _activeCards[i] = activeCard;
+            }
 
             Tween dealTween = activeCardGO.transform.DOMove(_cardPositions[i].position, 0.1f, false);
             
             //for Palmmy
             activeCard.InActive = true;
             activeCard.MyIndex = i;
-            _cardPositions[i].GetComponent<BoxCollider2D>().enabled = true;
+            activeCard._inSlot = true;
+            //_cardPositions[i].GetComponent<BoxCollider2D>().enabled = true;
 
             activeCardGO.transform.localScale = _cardPositions[i].localScale*0.975f;
             yield return dealTween.WaitForCompletion();
@@ -145,6 +149,7 @@ public class DeckManager : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         
         playUnlockTabParticle();
+        turnOnRaycast();
     }
     /*
     public void Discard(Engine discardedEngine)
@@ -237,14 +242,17 @@ public class DeckManager : MonoBehaviour
         StartCoroutine(DealActive());
     }
 
-    public void moveCardsToTray(int cardIndex)
+    public void moveCardsToTray(int cardIndex, float duration)
     {
         _activeCards[cardIndex].MyCol.enabled = false;
-        
+
         if (_activeCards[cardIndex].Dragging != true && _activeCards[cardIndex].transform.position != _cardPositions[cardIndex].position && _activeCards[cardIndex].Engine == null)
-        {
-            _activeCards[cardIndex].transform.DOMove(_cardPositions[cardIndex].position, 0.1f, false);
+        { 
+            _activeCards[cardIndex].transform.DOMove(_cardPositions[cardIndex].position, duration, false);
         }
+        
+        //make sure that after it move to tray, it declare to be in slot
+        if (!_activeCards[cardIndex]._inSlot) _activeCards[cardIndex]._inSlot = true;
     }
 
     public void swapCardLocation(int currentIndex, int newIndex)
@@ -258,7 +266,7 @@ public class DeckManager : MonoBehaviour
                 _activeCards[i] = _activeCards[i + 1];
                 _activeCards[i].MyIndex = i;
                 _activeCards[i + 1] = null;
-                moveCardsToTray(i);
+                if (_activeCards[i]._inSlot == true) moveCardsToTray(i, 0.1f);
             }
         }
         else if (newIndex < currentIndex)
@@ -268,49 +276,58 @@ public class DeckManager : MonoBehaviour
                 _activeCards[i] = _activeCards[i - 1];
                 _activeCards[i].MyIndex = i;
                 _activeCards[i - 1] = null;
-                moveCardsToTray(i);
+                if (_activeCards[i]._inSlot == true) moveCardsToTray(i, 0.1f);
             }
         }
         
         _activeCards[newIndex] = temp;
     }
 
-    public void unlockTab()
+    private void unlockTab()
     {
-        for (int i = 0; i < _cardTabLock.Length; i++)
+        foreach (var anim in _cardTabLock)
         {
-            if (_cardTabLock[i].GetBool("isActive") != true)
-            {
-                _cardTabLock[i].SetBool("isActive", true);
-            }
+            if (anim.GetBool("isActive") != true) anim.SetBool("isActive", true);
         }
     }
 
-    public void playUnlockTabParticle()
+    private void playUnlockTabParticle()
     {
-        for (int i = 0; i < _tabParticles.Length; i++)
+        foreach (var particle in _tabParticles)
         {
-            _tabParticles[i].Play();
+            particle.Play();
         }
     }
 
     public void lockTab()
     {
-        for (int i = 0; i < _cardTabLock.Length; i++)
+        foreach (var anim in _cardTabLock)
         {
-            if (_cardTabLock[i].GetBool("isActive") != false)
-            {
-                _cardTabLock[i].SetBool("isActive", false);
-            }
+            if (anim.GetBool("isActive") != false) anim.SetBool("isActive", false);
         }
     }
     
     public void playLockTabParticle()
     {
-        for (int i = 0; i < _tabParticles.Length; i++)
+        foreach (var particle in _tabParticles)
         {
-            _tabParticles[i].Stop();
+            particle.Stop();
         }
     }
-    
+
+    public void turnOnRaycast()
+    {
+        foreach (var card in _activeCards)
+        {
+            card.MyCheatImg.SetActive(true);
+        }
+    }
+
+    public void turnOffOtherRaycast(int cardIndex)
+    {
+        foreach (var card in _activeCards)
+        {
+            if (card.MyIndex != cardIndex) card.MyCheatImg.SetActive(true);
+        }
+    }
 }
