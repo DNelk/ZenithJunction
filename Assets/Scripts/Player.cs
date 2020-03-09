@@ -53,7 +53,7 @@ public class Player : MonoBehaviour
         //_mr.material.DOColor(Color.red, 0.2f).OnComplete(()=>_mr.material.DOColor(Color.white, 0.5f));
         UpdateHealth();
         if (_currentHP <= 0)
-            Utils.DisplayGameOver("Defeat!");
+            Utils.DisplayGameOver("Defeat!", false);
     }
 
     public void GainLife(int heal)

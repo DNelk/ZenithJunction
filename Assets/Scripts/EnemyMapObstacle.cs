@@ -25,14 +25,9 @@ public class EnemyMapObstacle : MapObstacle
         if(_triggered)
             return;
         _triggered = true;
-        
-        if (OverworldTrain.Instance.CurrentNode == Node)
-        {
-            Destroy(gameObject);
-            return;
-        }
 
-        Utils.Save(new PlayerMapData(Node.NodeID), "playermapdata");
+        MapManager.Instance.SaveMap();
+        GameManager.Instance.BattlingNode = Node.NodeID;
         GameManager.Instance.LoadScene(MyScene);
         GameManager.Instance.State = GameState.Battle;
     }

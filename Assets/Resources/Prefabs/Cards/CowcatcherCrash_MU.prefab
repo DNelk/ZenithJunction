@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cardName: Cowcatcher Crash
   _cardType: 0
-  _cardRarities: 0
+  _cardRarities: 1
   _cardImage: {fileID: 0}
   _buyCost: 4
   _aetherCost: 0

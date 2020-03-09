@@ -97,6 +97,9 @@ public class Engine : MonoBehaviour
         u_CircleGlowMat = Instantiate(u_Circle.GetComponent<Image>().material);
         u_Circle.GetComponent<Image>().material = u_CircleGlowMat;
 
+        //u_EngineImg = transform.Find("EngineImg").gameObject;
+        //u_EngineImgAnim = u_EngineImg.GetComponent<Animator>();
+
         _steamParticle = transform.Find("Steam").GetComponent<ParticleSystem>();
         
         _tooltip = null;
@@ -128,8 +131,8 @@ public class Engine : MonoBehaviour
         u_aetherNumber = transform.Find("AetherNumber").GetComponent<TMP_Text>();
         u_aetherCore = transform.Find("AetherEngine").transform.Find("Core_Main").GetComponent<Image>();
         u_move = transform.Find("MoveIcon").GetComponentsInChildren<Image>();
-
-        OverrideAether = OverrideMove = OverridePower = -1;
+        
+        OverridePower = OverrideAether = OverrideMove = -1;
     }
 
     //Adds a card to the pending card array
@@ -335,6 +338,8 @@ public class Engine : MonoBehaviour
         
         if (EngineState == EngineState.Stacking)
             StackCardsForPreview();
+        
+        
 
         foreach (var c in Stack)
         {
@@ -358,7 +363,7 @@ public class Engine : MonoBehaviour
             _pending = tempPending;
             Stack.Clear();
         }
-        
+
         return totalCost;
     }
     
@@ -457,12 +462,15 @@ public class Engine : MonoBehaviour
                 _steamParticle.Stop();
             _steamParticle.Play();
             _wheelTurning = true;
+            
+            u_Circle.GetComponent<Image>().enabled = true;
         }
         else if (PendingCount < 3 && _wheelTurning && EngineState != EngineState.Stacked || (EngineState == EngineState.Stacked && Stack.Count == 0))
         {
            // u_EngineImgAnim.SetBool("IsReady", false);
             _steamParticle.Stop();
             _wheelTurning = false;
+            u_Circle.GetComponent<Image>().enabled = false;
         }
         
         if (Input.GetKeyDown(KeyCode.A)) turnedEngineOff();
