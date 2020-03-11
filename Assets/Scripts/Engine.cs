@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Security.Cryptography.X509Certificates;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -29,21 +30,24 @@ public class Engine : MonoBehaviour
     private TMP_Text u_aetherNumber;
     private Image u_aetherCore;
     private Image[] u_move;
+    
+    //animator
+    private Animator slotAuraAnim;
 
     //for state change event
-    private Vector3 baseScale;
-    private Image[] u_allSprite;
-    private GameObject myCheatImg;
-    [Range(1,3)] public int engineNumber;
+    [HideInInspector] public Vector3 _baseScale;
+    private GameObject _myCheatImage;
+    [Range(1, 3)] public int engineNumber = 1;
     [HideInInspector] public List<Transform> _statePos;
 
-    private ParticleSystem _steamParticle;
-    
     [SerializeField] private List<Card> _pending;
     private Vector3 _initialPosition;
     private BoxCollider2D _collider;
 
     private bool _selected;
+    
+    //for pointer event
+    private Animator gearAnim;
 
     //Game Vars
     //Total attack this round
@@ -100,8 +104,6 @@ public class Engine : MonoBehaviour
         //u_EngineImg = transform.Find("EngineImg").gameObject;
         //u_EngineImgAnim = u_EngineImg.GetComponent<Animator>();
 
-        _steamParticle = transform.Find("Steam").GetComponent<ParticleSystem>();
-        
         _tooltip = null;
         
         _cardPositons = transform.Find("CardPositions").GetComponentsInChildren<RectTransform>();
@@ -118,12 +120,17 @@ public class Engine : MonoBehaviour
         {
             _statePos.Add(trans);
         }
-        //Destroy(transform.parent.transform.Find("EnginePos" + engineNumber).gameObject);
-        
+
         //set up images and cheatImg for state change
-        baseScale = transform.localScale;
-        u_allSprite = GetComponentsInChildren<Image>();
-        myCheatImg = transform.Find("CheatImg").gameObject;
+        _baseScale = transform.localScale;
+        _myCheatImage = transform.Find("CheatImg").gameObject;
+        
+        //anim
+        slotAuraAnim = transform.Find("SlotAura").GetComponent<Animator>();
+        gearAnim = transform.Find("Gear").GetComponent<Animator>();
+        //set Gear Sprite 
+        Image engineNumGear = gearAnim.transform.Find("EngineNumber").GetComponent<Image>();
+        engineNumGear.sprite = Resources.Load<Sprite>("Sprites/Engine" + engineNumber);
 
         //set up number and Icon for total engine power
         u_powerNumber = transform.Find("PowerNumber").GetComponent<TMP_Text>();
@@ -407,7 +414,7 @@ public class Engine : MonoBehaviour
         if (!tempInRange)
             previewStr += "Some cards in this engine are not in range!";
         
-        _tooltip = Instantiate(Resources.Load<GameObject>("prefabs/tooltip"), transform.GetChild(0).transform.position,
+        _tooltip = Instantiate(Resources.Load<GameObject>("prefabs/tooltip"), transform.GetChild(1).transform.position,
             Quaternion.identity, GameObject.Find("MainCanvas").transform).GetComponent<Tooltip>();
         _tooltip.Text = previewStr;
     }
@@ -458,9 +465,14 @@ public class Engine : MonoBehaviour
         if ((PendingCount >= 3 || (EngineState == EngineState.Stacked && Stack.Count != 0)) && !_wheelTurning)
         {
             //u_EngineImgAnim.SetBool("IsReady", true);
-            if(_steamParticle.isPlaying)
+            /*if(_steamParticle.isPlaying)
                 _steamParticle.Stop();
             _steamParticle.Play();
+            
+            if(_steamBubble.isPlaying)
+                _steamBubble.Stop();
+            _steamBubble.Play();*/
+            
             _wheelTurning = true;
             
             u_Circle.GetComponent<Image>().enabled = true;
@@ -468,7 +480,7 @@ public class Engine : MonoBehaviour
         else if (PendingCount < 3 && _wheelTurning && EngineState != EngineState.Stacked || (EngineState == EngineState.Stacked && Stack.Count == 0))
         {
            // u_EngineImgAnim.SetBool("IsReady", false);
-            _steamParticle.Stop();
+            //_steamParticle.Stop();
             _wheelTurning = false;
             u_Circle.GetComponent<Image>().enabled = false;
         }
@@ -619,36 +631,44 @@ public class Engine : MonoBehaviour
 
     private void turnedEngineOff()
     {
-        myCheatImg.SetActive(false);
-        foreach (Image allsprite in u_allSprite)
-        {
-            allsprite.DOColor(new Color(0.6f, 0.6f, 0.6f), 0.2f);
-        }
-        
+        _myCheatImage.SetActive(false);
+
         transform.DOMove(_statePos[0].position, 0.2f, false);
-        transform.DOScale(baseScale * 0.8f, 0.2f);
+        transform.DOScale(_baseScale * 0.8f, 0.2f);
         u_Circle.SetActive(false); //delete later
     }
     
     private void prepareEngine()
     {
-        myCheatImg.SetActive(false);
-        foreach (Image allsprite in u_allSprite)
-        {
-            allsprite.DOColor(Color.white, 0.2f);
-        }
-        
+        _myCheatImage.SetActive(false);
+
         transform.DOMove(_statePos[1].position, 0.2f, false);
-        transform.DOScale(baseScale, 0.2f);
+        transform.DOScale(_baseScale, 0.2f);
         u_Circle.SetActive(false); //delete later
     }
 
     private void turnOnEngine()
     {
         transform.DOMove(_statePos[2].position, 0.2f, false);
-        transform.DOScale(baseScale, 0.2f);
+        transform.DOScale(_baseScale, 0.2f);
         u_Circle.SetActive(true); //delete later
     }
+
+    public void playAuraAnim()
+    {
+        slotAuraAnim.Play("EngineAura_On", -1 , 0f);
+    }
+
+    public void turnGearOn()
+    {
+        if (gearAnim.GetBool("TurnOn") == false) gearAnim.SetBool("TurnOn", true);
+    }
+
+    public void turnGearOff()
+    {
+        if (gearAnim.GetBool("TurnOn") == true) gearAnim.SetBool("TurnOn", false);
+    }
+    
 }
 
 public enum EngineState

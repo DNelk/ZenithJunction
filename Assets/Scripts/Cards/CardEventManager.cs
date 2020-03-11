@@ -123,7 +123,7 @@ public class CardEventManager : EventTrigger
         }
         
         //prevent when dragging card too fast it hover over card
-        DeckManager.Instance.turnOffOtherRaycast(_myCard.MyIndex);
+        if (_myCard.InActive) DeckManager.Instance.turnOffOtherRaycast(_myCard.MyIndex);
     }
 
     public override void OnDrag(PointerEventData eventData)
@@ -140,7 +140,7 @@ public class CardEventManager : EventTrigger
             DeckManager.Instance.moveCardsToTray(_myCard.MyIndex, 0.3f);
         }
         
-        DeckManager.Instance.turnOnRaycast();
+        if (_myCard.InActive) DeckManager.Instance.turnOnRaycast();
 
         //I turn this off to make it so that it still scaled after you release the click
         //if(BaseScale != Vector3.zero)

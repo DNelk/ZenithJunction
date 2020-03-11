@@ -319,7 +319,7 @@ public class DeckManager : MonoBehaviour
     {
         foreach (var card in _activeCards)
         {
-            card.MyCheatImg.SetActive(true);
+            if (_activeCards != null)  card.MyCheatImg.SetActive(true);
         }
     }
 
@@ -327,7 +327,10 @@ public class DeckManager : MonoBehaviour
     {
         foreach (var card in _activeCards)
         {
-            if (card.MyIndex != cardIndex) card.MyCheatImg.SetActive(true);
+            if (_activeCards != null)
+            {
+                if (card.MyIndex != cardIndex) card.MyCheatImg.SetActive(true);
+            }
         }
     }
 }

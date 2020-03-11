@@ -1831,6 +1831,16 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2842597002200192349, guid: 21119765b5aec4c07b0adaf8d909f5ee,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 12.200012
+      objectReference: {fileID: 0}
+    - target: {fileID: 2842597002200197444, guid: 21119765b5aec4c07b0adaf8d909f5ee,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 21119765b5aec4c07b0adaf8d909f5ee, type: 3}
 --- !u!1 &1184351999
@@ -2659,6 +2669,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   State: 0
+  BattlingNode: 
 --- !u!4 &2011203188
 Transform:
   m_ObjectHideFlags: 0
