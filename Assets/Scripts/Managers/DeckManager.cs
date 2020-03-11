@@ -20,6 +20,7 @@ public class DeckManager : MonoBehaviour
     private Stack<String> _discard; //Discarded Cards
     private Stack<String> _deck; //Runtime version of the deck
     private Stack<String> _trash; //Trashed cards (removed until end of battle)
+    public List<Card> CardsToBeSorted;
     
     //UI
     private Transform _cardMachine;
@@ -47,7 +48,8 @@ public class DeckManager : MonoBehaviour
         _discard = new Stack<String>();
         _deck = new Stack<String>();
         _trash = new Stack<String>();
-
+        CardsToBeSorted = new List<Card>();
+        
         PlayerCollection pc = Utils.Load<PlayerCollection>("playercollection");
         foreach (String e in pc.Equipped)
         {
@@ -109,7 +111,13 @@ public class DeckManager : MonoBehaviour
     //Deal 9 to player
     private IEnumerator DealActive()
     {
-        for (int i = 0; i < 9; i++)
+        int dealAmt = 9;
+        int totalCardsNum = _deck.Count + _discard.Count;
+        
+        if (totalCardsNum < 9)
+            dealAmt = totalCardsNum;
+        
+        for (int i = 0; i < dealAmt; i++)
         {
             if(_deck.Count == 0)
                 ShuffleDeck();
@@ -120,6 +128,7 @@ public class DeckManager : MonoBehaviour
 
             Card activeCard = activeCardGO.GetComponent<Card>();
             _activeCards.Add(activeCard);
+            CardsToBeSorted.Add(activeCard);
             
             
 
@@ -128,19 +137,7 @@ public class DeckManager : MonoBehaviour
             yield return dealTween.WaitForCompletion();
         }
     }
-    /*
-    public void Discard(Engine discardedEngine)
-    {
-        Stack<Card> toDiscard = discardedEngine.Stack;
-        while(toDiscard.Count > 0)
-        {
-            Card discarding = toDiscard.Pop();
-            _discard.Push(discarding.CardName);
-            _activeCardObjects.Remove(discarding.gameObject);
-            Destroy(discarding.gameObject);
-        }
-    }
-*/
+
     public void Discard(Card c)
     {
         _discard.Push(c.CardName);

@@ -70,7 +70,8 @@ public class Engine : MonoBehaviour
     private bool _inRange = true;
     
     public EngineState EngineState;
-    
+
+    public bool EmptyStack = false;
     public bool Executed;
     private void Awake()
     { 
@@ -124,6 +125,7 @@ public class Engine : MonoBehaviour
         c.Engine = this;
         c.SetEngine(_cardPositons[0].parent.transform, CurrentCardPos(_pending.Count), 0.45f);
         _pending.Add(c);
+        DeckManager.Instance.CardsToBeSorted.Remove(c);
         UpdateUICounts();
     }
 
@@ -136,6 +138,7 @@ public class Engine : MonoBehaviour
             nextC = _pending[cInd + 1];
         
         _pending.Remove(c);
+        DeckManager.Instance.CardsToBeSorted.Add(c);
         
         UpdateUICounts();
         
@@ -176,6 +179,9 @@ public class Engine : MonoBehaviour
         {
             ToggleMode();
         }
+
+        if (_pending.Count == 0)
+            EmptyStack = true;
         
         int lowest = Int32.MaxValue;
         int indexToStack = 0;
@@ -396,7 +402,7 @@ public class Engine : MonoBehaviour
         Card c = other.gameObject.GetComponent<Card>();
         if(c.Engine != null  && c.Engine.EngineState == EngineState.Stacked|| c.Purchasable || c.Dragging || c.Tweening || c.IsPreview)
             return;
-        AddCard(c); 
+        AddCard(c);
     }
 
 
@@ -533,6 +539,7 @@ public class Engine : MonoBehaviour
             AmtMoved = 0;
             _inRange = true;
             OverrideAether = OverrideMove = OverrideAether = -1;
+            EmptyStack = false;
         }
     }
     
@@ -552,7 +559,7 @@ public class Engine : MonoBehaviour
         {
             c.SetEngine(Color.white, u_Circles[1].transform);
         }*/
-        if(EngineState != EngineState.Stacked || BattleManager.Instance.BattleState != BattleStates.ChoosingAction || Stack.Count < 3)
+        if(EngineState != EngineState.Stacked || BattleManager.Instance.BattleState != BattleStates.ChoosingAction)
             return;
         u_CircleGlowMat.SetColor("_MyColor", Color.yellow);
         BattleManager.Instance.EngineSelected();
