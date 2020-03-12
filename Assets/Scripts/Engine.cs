@@ -683,16 +683,18 @@ public class Engine : MonoBehaviour
     public void selectGear()
     {
         if (_gearAnim.GetBool("TurnOn") == false) _gearAnim.SetBool("TurnOn", true); //pop desc. window
+        //transform.DOScale(_baseScale * 1.2f, 0.2f); //change size
+        slotAuraAnim.Play("EngineAura_On", -1 , 0f); //play anim
         u_selectedAura.color = Color.white; //turn on Aura for selected
-        
     }
 
     public void disselectGear()
     {
         if (_gearAnim.GetBool("TurnOn") == true) _gearAnim.SetBool("TurnOn", false); //pop down desc. window
+        //transform.DOScale(_baseScale, 0.2f); //return size
+        transform.DOScale(_baseScale, 0.2f); //return size
         u_selectedAura.color = new Color(1,1,1,0); //turn off Aura for selected
     }
-    
 }
 
 public enum EngineState
