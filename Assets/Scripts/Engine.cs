@@ -230,8 +230,11 @@ public class Engine : MonoBehaviour
         }
 
         if (_pending.Count == 0)
+        {
             EmptyStack = true;
-        
+            return;
+        }
+
         int lowest = Int32.MaxValue;
         int indexToStack = 0;
         
@@ -333,6 +336,7 @@ public class Engine : MonoBehaviour
         }
         
         Executed = true;
+        EmptyStack = false;
         Deselect();
     }
 
@@ -619,7 +623,7 @@ public class Engine : MonoBehaviour
         {
             c.SetEngine(Color.white, u_Circles[1].transform);
         }*/
-        if(EngineState != EngineState.Stacked || BattleManager.Instance.BattleState != BattleStates.ChoosingAction)
+        if(EngineState != EngineState.Stacked || BattleManager.Instance.BattleState != BattleStates.ChoosingAction || (Stack.Count == 0 && !EmptyStack))
             return;
         //u_CircleGlowMat.SetColor("_MyColor", Color.yellow);
         BattleManager.Instance.EngineSelected();
