@@ -70,12 +70,12 @@ public class GameManager : MonoBehaviour
         pc.Equipped.Add("strike");
         pc.Equipped.Add("strike");
         pc.Equipped.Add("strike");
-        /*pc.Equipped.Add("DevRage");
+        pc.Equipped.Add("strike");
         pc.Equipped.Add("railcharge");
         pc.Equipped.Add("allaboard");
         pc.Equipped.Add("manaboil");
         pc.Equipped.Add("manaboil");
-        pc.Equipped.Add("manaboil");*/
+        pc.Equipped.Add("manaboil");
             
         Utils.Save(pc, "playercollection");
     }
