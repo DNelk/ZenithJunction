@@ -15,7 +15,7 @@ public class DeselectCardPanel : MonoBehaviour
             return;
         if (c.Engine != null)
         {
-            c.Engine.RemoveCard(c);
+            c.Engine.RemoveCard(c, false);
             c.Engine = null;
             //c.SetEngine(transform.parent, c.transform.position, c.transform.localScale * 1.25f);
         }

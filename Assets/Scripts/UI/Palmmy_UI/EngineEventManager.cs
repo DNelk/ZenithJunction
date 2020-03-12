@@ -36,12 +36,12 @@ public class EngineEventManager : EventTrigger
     {
         transform.DOScale(_myEngine._baseScale * 1.2f, 0.2f);
         _myEngine.playAuraAnim();
-        _myEngine.turnGearOn();
+        _myEngine.selectGear();
     }
 
     public override void OnPointerExit(PointerEventData eventData)
     {
         transform.DOScale(_myEngine._baseScale, 0.2f);
-        _myEngine.turnGearOff();
+        _myEngine.disselectGear();
     }
 }
