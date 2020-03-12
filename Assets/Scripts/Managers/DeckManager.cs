@@ -24,11 +24,13 @@ public class DeckManager : MonoBehaviour
     
     //UI
     private Transform _cardMachine;
+    private Animator[] _cardTabLock;
+    private ParticleSystem[] _tabParticles;
     private Transform _cardPanel;
     private TMP_Text[] _inDeckCount;
     private TMP_Text[] _disCount;
     private TMP_Text[] _trashCount;
-    private RectTransform[] _cardPositions;
+    [HideInInspector] public RectTransform[] _cardPositions;
     
     private void Awake()
     {
@@ -58,7 +60,10 @@ public class DeckManager : MonoBehaviour
 
         _cardPanel = transform.parent;
         _cardMachine = transform.parent.transform.parent;
-        
+        _cardTabLock = _cardMachine.transform.Find("CardTab").transform.Find("TabLocks").GetComponentsInChildren<Animator>();
+        _tabParticles = _cardMachine.transform.Find("CardTab").transform.Find("TabParticle").GetComponentsInChildren<ParticleSystem>();
+        ;
+
         _inDeckCount = _cardMachine.transform.Find("DeckMachine").transform.Find("Number").GetComponentsInChildren<TMP_Text>();
         _disCount = _cardMachine.transform.Find("DiscardMachine").transform.Find("Number").GetComponentsInChildren<TMP_Text>();    
         _trashCount = _cardMachine.transform.Find("TrashMachine").transform.Find("Number").GetComponentsInChildren<TMP_Text>();
@@ -111,13 +116,18 @@ public class DeckManager : MonoBehaviour
     //Deal 9 to player
     private IEnumerator DealActive()
     {
+        //Palmmy
+        unlockTab();
+        yield return new WaitForSeconds(0.5f);
+        
+        //Dylan
         int dealAmt = 9;
         int totalCardsNum = _deck.Count + _discard.Count;
         
         if (totalCardsNum < 9)
             dealAmt = totalCardsNum;
         
-        for (int i = 0; i < dealAmt; i++)
+        for (int i = 0; i < 9; i++)
         {
             if(_deck.Count == 0)
                 ShuffleDeck();
@@ -130,12 +140,28 @@ public class DeckManager : MonoBehaviour
             _activeCards.Add(activeCard);
             CardsToBeSorted.Add(activeCard);
             
-            
+            if (_activeCards.Count <= i) _activeCards.Add(activeCard);
+            else
+            {
+                _activeCards[i] = activeCard;
+            }
 
             Tween dealTween = activeCardGO.transform.DOMove(_cardPositions[i].position, 0.1f, false);
+            
+            //for Palmmy
+            activeCard.InActive = true;
+            activeCard.MyIndex = i;
+            activeCard._inSlot = true;
+            //_cardPositions[i].GetComponent<BoxCollider2D>().enabled = true;
+
             activeCardGO.transform.localScale = _cardPositions[i].localScale*0.975f;
             yield return dealTween.WaitForCompletion();
         }
+
+        yield return new WaitForSeconds(0.1f);
+        
+        playUnlockTabParticle();
+        turnOnRaycast();
     }
 
     public void Discard(Card c)
@@ -214,5 +240,97 @@ public class DeckManager : MonoBehaviour
     public void Reset()
     {
         StartCoroutine(DealActive());
+    }
+
+    public void moveCardsToTray(int cardIndex, float duration)
+    {
+        _activeCards[cardIndex].MyCol.enabled = false;
+
+        if (_activeCards[cardIndex].Dragging != true && _activeCards[cardIndex].transform.position != _cardPositions[cardIndex].position && _activeCards[cardIndex].Engine == null)
+        { 
+            _activeCards[cardIndex].transform.DOMove(_cardPositions[cardIndex].position, duration, false);
+        }
+        
+        //make sure that after it move to tray, it declare to be in slot
+        if (!_activeCards[cardIndex]._inSlot) _activeCards[cardIndex]._inSlot = true;
+    }
+
+    public void swapCardLocation(int currentIndex, int newIndex)
+    {
+        var temp = _activeCards[currentIndex];
+        
+        if (newIndex > currentIndex)
+        {
+            for (int i = currentIndex; i < newIndex; i++)
+            {
+                _activeCards[i] = _activeCards[i + 1];
+                _activeCards[i].MyIndex = i;
+                _activeCards[i + 1] = null;
+                if (_activeCards[i]._inSlot == true) moveCardsToTray(i, 0.1f);
+            }
+        }
+        else if (newIndex < currentIndex)
+        {
+            for (int i = currentIndex; i > newIndex; i--)
+            {
+                _activeCards[i] = _activeCards[i - 1];
+                _activeCards[i].MyIndex = i;
+                _activeCards[i - 1] = null;
+                if (_activeCards[i]._inSlot == true) moveCardsToTray(i, 0.1f);
+            }
+        }
+        
+        _activeCards[newIndex] = temp;
+    }
+
+    private void unlockTab()
+    {
+        foreach (var anim in _cardTabLock)
+        {
+            if (anim.GetBool("isActive") != true) anim.SetBool("isActive", true);
+        }
+    }
+
+    private void playUnlockTabParticle()
+    {
+        foreach (var particle in _tabParticles)
+        {
+            particle.Play();
+        }
+    }
+
+    public void lockTab()
+    {
+        foreach (var anim in _cardTabLock)
+        {
+            if (anim.GetBool("isActive") != false) anim.SetBool("isActive", false);
+        }
+    }
+    
+    public void playLockTabParticle()
+    {
+        foreach (var particle in _tabParticles)
+        {
+            particle.Stop();
+        }
+    }
+
+    public void turnOnRaycast()
+    {
+        foreach (var card in _activeCards)
+        {
+            if (_activeCards != null)  card.MyCheatImg.SetActive(true);
+        }
+    }
+
+    public void turnOffOtherRaycast(int cardIndex)
+    {
+        foreach (var card in _activeCards)
+        {
+            if (_activeCards != null)
+            {
+                if (card.MyIndex != cardIndex) card.MyCheatImg.SetActive(true);
+            }
+        }
     }
 }

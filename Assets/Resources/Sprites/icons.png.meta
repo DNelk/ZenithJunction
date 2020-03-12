@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: bc74a231021534e3785e4ac46e019a2d
+guid: a4cbdb7f0b1c4954a8ede38747a00ac8
 TextureImporter:
   internalIDToNameTable:
   - first:
@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -84,7 +84,19 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -98,18 +110,18 @@ TextureImporter:
       name: icons_power
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 439
-        height: 472
+        x: 13
+        y: 33
+        width: 451
+        height: 416
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 49330f00321a14e2688a5991d1215159
+      spriteID: 6eebcaa5d5b021446a18aea91a62a26a
       internalID: -4756507671520698244
       vertices: []
       indices: 
@@ -119,18 +131,18 @@ TextureImporter:
       name: icons_aether
       rect:
         serializedVersion: 2
-        x: 492
-        y: 5
-        width: 449
-        height: 470
+        x: 515
+        y: 33
+        width: 421
+        height: 416
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dc4ac67489d34454a88bcbf8b94f023b
+      spriteID: e03e04cac4af9c04e8375d1d9729f721
       internalID: 5570701045580423832
       vertices: []
       indices: 
@@ -140,18 +152,18 @@ TextureImporter:
       name: icons_move
       rect:
         serializedVersion: 2
-        x: 966
-        y: 28
-        width: 467
-        height: 425
+        x: 998
+        y: 38
+        width: 415
+        height: 405
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3782e93b79abd4669b44cf0fc7315e77
+      spriteID: b869648d8b555e840868ac80e91d57c1
       internalID: -5569296913444018580
       vertices: []
       indices: 

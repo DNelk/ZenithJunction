@@ -132,7 +132,6 @@ public class BattleManager : MonoBehaviour
             _finishEnginesButton.onClick.AddListener(ConfirmEngines);
             _finishEnginesButton.gameObject.SetActive(false);
             DamageDealtThisTurn = 0;
-
         }
         else
         {
@@ -305,6 +304,8 @@ public class BattleManager : MonoBehaviour
         }
 
         BattleState = BattleStates.ChoosingAction;
+        DeckManager.Instance.lockTab();
+        DeckManager.Instance.playLockTabParticle();
         OrganizeEngines();
         LoadEnemyAttack();
     }

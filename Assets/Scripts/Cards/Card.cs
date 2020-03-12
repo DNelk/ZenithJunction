@@ -50,12 +50,13 @@ public class Card : MonoBehaviour
     [HideInInspector] public bool TrashThis = false; //Cards that are to be trashed are instead removed from the deck until end of the battle
 
     //Engines
-    protected Engine _myEngine; 
+    protected Engine _myEngine;
     public Engine Engine
     {
         get => _myEngine;
         set => _myEngine = value;
     }
+    [HideInInspector] public bool _inSlot;
     
     [SerializeField] protected int _priority; public int Priority => _priority;
     
@@ -77,6 +78,11 @@ public class Card : MonoBehaviour
     [HideInInspector] public bool Tweening = false;
     [HideInInspector] public bool IsPreview = false;
     [HideInInspector] public bool Dragging = false;
+    [HideInInspector] public int MyIndex = 0;
+    [HideInInspector] public bool InActive = false;
+    [HideInInspector] public Collider2D MyCol;
+    [HideInInspector] public GameObject MyCheatImg;
+    
     private bool _equipped = false;
     public bool Equipped
     {
@@ -107,7 +113,7 @@ public class Card : MonoBehaviour
     protected CanvasGroup u_cg;
     private ParticleSystem u_particle;
     private Color u_particleColor;
-    
+
     //Fullsize
     [SerializeField] private bool _fullSize = false;
     public bool ShowFullSize
@@ -142,11 +148,18 @@ public class Card : MonoBehaviour
         {
             parent = transform.Find("FullSize");
             transform.Find("Minimized").gameObject.SetActive(false);
+            
+            //get cheat IMG
+            MyCheatImg = parent.transform.Find("CheatImg").gameObject;
         }
         else
         {
             parent = transform.Find("Minimized");
             transform.Find("FullSize").gameObject.SetActive(false);
+            
+            //get cheat IMG
+            MyCheatImg = parent.transform.Find("CheatImg").gameObject;
+            MyCheatImg.SetActive(false);
         }
         parent.gameObject.SetActive(true);
         u_cardBackground = parent.Find("Back").GetComponent<Image>();
@@ -169,6 +182,7 @@ public class Card : MonoBehaviour
         _initialScale = transform.localScale;
         _eventManager = GetComponent<CardEventManager>();
         u_cg = GetComponent<CanvasGroup>();
+        MyCol = GetComponent<Collider2D>();
     }
     
     //Execute a card's unique text
