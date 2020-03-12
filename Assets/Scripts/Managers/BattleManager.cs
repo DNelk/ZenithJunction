@@ -99,6 +99,7 @@ public class BattleManager : MonoBehaviour
                 enginesDone = false;
                 _confirmCore.sprite = Resources.Load<Sprite>("Sprites/Core/CommenceCore_Off");
                 _confirmCore.SetNativeSize();
+                _confirmButtonText.color = new Color(1,1,1,0);
             }
         }
 
@@ -107,6 +108,7 @@ public class BattleManager : MonoBehaviour
             _finishEnginesButton.gameObject.SetActive(true);
             _confirmCore.sprite = Resources.Load<Sprite>("Sprites/Core/CommenceCore_On");
             _confirmCore.SetNativeSize();
+            _confirmButtonText.color = Color.yellow;
         }
 
         if (Input.GetKeyDown(KeyCode.Return))
