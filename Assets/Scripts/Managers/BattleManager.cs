@@ -94,7 +94,7 @@ public class BattleManager : MonoBehaviour
         bool enginesDone = true;
         foreach (Engine e in Engines)
         {
-            if (e.PendingCount > 3 || e.PendingCount < 3)
+            if (e.PendingCount > 3 || e.PendingCount < 3 && DeckManager.Instance.CardsToBeSorted.Count != 0)
             {
                 enginesDone = false;
                 _confirmCore.sprite = Resources.Load<Sprite>("Sprites/Core/CommenceCore_Off");
@@ -296,7 +296,7 @@ public class BattleManager : MonoBehaviour
     {
         foreach (Engine e in Engines)
         {
-            if (e.PendingCount > 3 || e.PendingCount < 3)
+            if (e.PendingCount > 3 || e.PendingCount < 3 && DeckManager.Instance.CardsToBeSorted.Count != 0)
             {
                 Utils.DisplayError("Engines must be exactly 3 cards!", 3f);
                 return;
@@ -330,7 +330,7 @@ public class BattleManager : MonoBehaviour
     {
         int count = 0;
         foreach (Engine e in Engines){
-            if (e.Stack.Count == 0 && e.PendingCount == 0)
+            if (e.Stack.Count == 0 && e.PendingCount == 0 && !e.EmptyStack)
                 count++;
         }
 
