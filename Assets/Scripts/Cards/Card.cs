@@ -419,8 +419,8 @@ public class Card : MonoBehaviour
     public void SetEngine(Transform parent, Vector3 position, float scale)
     {
         // u_glow.color = glowColor;
-        transform.DOScale( _eventManager.BaseScale * scale, 0.5f);
         transform.SetParent(parent);
+        transform.DOScale( _eventManager.BaseScale * scale, 0.5f);
         /*if (_eventManager.BaseScale != Vector3.zero)
             _eventManager.BaseScale = _initialScale;
         else

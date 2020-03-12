@@ -215,6 +215,11 @@ public class CardEventManager : EventTrigger
         if(GameManager.Instance.State == GameState.Battle)
             transform.SetSiblingIndex(transform.GetSiblingIndex() + 8);
 
+        //show the engine that avaiable
+        for (int i = 0; i < BattleManager.Instance.Engines.Length; i++)
+        {
+            if (BattleManager.Instance.Engines[i].PendingCount < 3) BattleManager.Instance.Engines[i].selectGear();
+        }
 
         _hovering = true;
     }
@@ -230,7 +235,15 @@ public class CardEventManager : EventTrigger
         }
 
         //fBaseScale = Vector3.zero;
-        _hovering = false;
+        if (_myCard.Dragging == false)
+        {
+            _hovering = false;
+            //show the engine that available
+            foreach (var Engine in BattleManager.Instance.Engines)
+            {
+                Engine.disselectGear();
+            }
+        }
         Utils.DestroyCardPreview();
         _dontMagnifyUntilHoverAgainHack = false;
 
