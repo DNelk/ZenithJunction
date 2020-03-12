@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -15,7 +16,7 @@ public class CardEventManager : EventTrigger
 
     //Card Previews
     private float _pointerOverTimer;
-    private bool _hovering;
+    public bool _hovering;
     public Vector3 BaseScale = Vector3.zero;
     private bool _dontMagnifyUntilHoverAgainHack = false;
 
@@ -123,7 +124,7 @@ public class CardEventManager : EventTrigger
         }
         
         //prevent when dragging card too fast it hover over card
-        if (_myCard.InActive) DeckManager.Instance.turnOffOtherRaycast(_myCard.MyIndex);
+        if (_myCard.InActive && _myCard.Engine != null) DeckManager.Instance.turnOffOtherRaycast(_myCard.MyIndex);
     }
 
     public override void OnDrag(PointerEventData eventData)
@@ -140,7 +141,7 @@ public class CardEventManager : EventTrigger
             DeckManager.Instance.moveCardsToTray(_myCard.MyIndex, 0.3f);
         }
         
-        if (_myCard.InActive) DeckManager.Instance.turnOnRaycast();
+        if (_myCard.InActive && _myCard.Engine != null) DeckManager.Instance.turnOnRaycast();
 
         //I turn this off to make it so that it still scaled after you release the click
         //if(BaseScale != Vector3.zero)
@@ -177,6 +178,10 @@ public class CardEventManager : EventTrigger
             {
                 //Find an empty engine
                 BattleManager.Instance.GetNextOpenEngine().AddCard(_myCard);
+            }
+            else if (_myCard.Engine != null && !_myCard.Purchasable && !_myCard.Dragging && Input.GetMouseButtonUp(1))
+            {
+                BattleManager.Instance.GetNextOpenEngine().RemoveCard(_myCard, true);
             }
         }
 
