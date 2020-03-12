@@ -127,7 +127,7 @@ public class DeckManager : MonoBehaviour
         if (totalCardsNum < 9)
             dealAmt = totalCardsNum;
         
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < totalCardsNum; i++)
         {
             if(_deck.Count == 0)
                 ShuffleDeck();

@@ -1467,7 +1467,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 205.5
+  orthographic size: 519
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -1503,7 +1503,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 818654133}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 205.5, y: 115.5, z: -100}
+  m_LocalPosition: {x: 519, y: 292, z: -100}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1836,9 +1836,59 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 12.200012
       objectReference: {fileID: 0}
+    - target: {fileID: 4408092283739615266, guid: 21119765b5aec4c07b0adaf8d909f5ee,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2842597002200197444, guid: 21119765b5aec4c07b0adaf8d909f5ee,
         type: 3}
       propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 62876120881852511, guid: 21119765b5aec4c07b0adaf8d909f5ee,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3261787889197859296, guid: 21119765b5aec4c07b0adaf8d909f5ee,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6914921938280887866, guid: 21119765b5aec4c07b0adaf8d909f5ee,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2571704858340474649, guid: 21119765b5aec4c07b0adaf8d909f5ee,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3243544480255343892, guid: 21119765b5aec4c07b0adaf8d909f5ee,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5611857679495829841, guid: 21119765b5aec4c07b0adaf8d909f5ee,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5212406080837700843, guid: 21119765b5aec4c07b0adaf8d909f5ee,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3351826372546212747, guid: 21119765b5aec4c07b0adaf8d909f5ee,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8576879084702762669, guid: 21119765b5aec4c07b0adaf8d909f5ee,
+        type: 3}
+      propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
