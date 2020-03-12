@@ -8,7 +8,7 @@ public class DemoManager : MonoBehaviour
 {
     public void LoadBeginner()
     {
-        SceneManager.LoadScene("Scenes/PrototypeBattle");
+        SceneManager.LoadScene("Scenes/Overworld");
     }
     
     public void LoadElite()
