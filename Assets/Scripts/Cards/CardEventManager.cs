@@ -22,7 +22,7 @@ public class CardEventManager : EventTrigger
     private ParticleSystem _glow;
     private Vector3 _glowScale = Vector3.zero;
     private Gradient _inEngineColor, _baseColor;
-    
+
     private void Start()
     {
         _myCard = GetComponent<Card>();
@@ -54,8 +54,7 @@ public class CardEventManager : EventTrigger
             {
                 _glow.gameObject.SetActive(true);
                 _glow.transform.localScale = _glowScale;
-                if (!_glow.isPlaying)
-                    _glow.Play();
+                if (!_glow.isPlaying) _glow.Play();
             }
             else if (_myCard.Engine != null && !_myCard.Purchasable)
             {
@@ -122,21 +121,30 @@ public class CardEventManager : EventTrigger
         {
             //Check if in deck, if not add to deck and add highlight
         }
-
+        
+        //prevent when dragging card too fast it hover over card
+        if (_myCard.InActive) DeckManager.Instance.turnOffOtherRaycast(_myCard.MyIndex);
     }
 
     public override void OnDrag(PointerEventData eventData)
     {
         CalcPosOnMouseMove();
+        _myCard.MyCol.enabled = true;
     }
 
     public override void OnPointerUp(PointerEventData eventData)
     {
         _myCard.Dragging = false;
+        if (_myCard.Engine == null && _myCard._inSlot == true)
+        {
+            DeckManager.Instance.moveCardsToTray(_myCard.MyIndex, 0.3f);
+        }
         
+        if (_myCard.InActive) DeckManager.Instance.turnOnRaycast();
+
         //I turn this off to make it so that it still scaled after you release the click
         //if(BaseScale != Vector3.zero)
-            //transform.localScale = BaseScale;
+        //transform.localScale = BaseScale;
         //_dontMagnifyUntilHoverAgainHack = true; 
     }
 
@@ -194,7 +202,7 @@ public class CardEventManager : EventTrigger
         if (BaseScale == Vector3.zero)
             BaseScale = transform.localScale;
         
-        Debug.Log(BaseScale);
+        //Debug.Log(BaseScale);
 
         transform.DOScale(BaseScale*1.5f, 0.2f);
         
@@ -216,7 +224,7 @@ public class CardEventManager : EventTrigger
             transform.DOScale(BaseScale, 0.2f);
         }
 
-        //BaseScale = Vector3.zero;
+        //fBaseScale = Vector3.zero;
         _hovering = false;
         Utils.DestroyCardPreview();
         _dontMagnifyUntilHoverAgainHack = false;
@@ -235,5 +243,47 @@ public class CardEventManager : EventTrigger
                 _glow.Play();
         }
     }
-    
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (_myCard.InActive)
+        {
+            if (other.gameObject.CompareTag("CardPos"))
+            {
+                DeckManager DM = DeckManager.Instance;
+                int pos_Index = Array.IndexOf(DM._cardPositions, other.transform);
+                if (_myCard.MyIndex != pos_Index)
+                {
+                    DM.swapCardLocation(_myCard.MyIndex, pos_Index);
+                    _myCard.MyIndex = pos_Index;
+                }
+                else
+                {
+                    _myCard._inSlot = true;
+                }
+            }
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (_myCard.InActive)
+        {
+            if (other.gameObject.CompareTag("TabZone"))
+            {
+                if (_myCard.Engine == null) _myCard._inSlot = true;
+            }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (_myCard.InActive)
+        {
+            if (other.gameObject.CompareTag("TabZone"))
+            {
+                _myCard._inSlot = false;
+            }
+        }
+    }
 }

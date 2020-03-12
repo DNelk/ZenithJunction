@@ -1050,7 +1050,6 @@
             <e p="RotateTexture.shader" t="Include" />
           </e>
         </e>
-        <e p="NewCardChooser.cs" t="Include" />
         <e p="ScriptCalculator" t="Include">
           <e p="Editor" t="Include">
             <e p="ScriptCalculator.cs" t="Include" />
@@ -1060,6 +1059,7 @@
         <e p="Scripts" t="Include">
           <e p="Cards" t="Include">
             <e p="AetherExplosion.cs" t="Include" />
+            <e p="BindToTracks.cs" t="Include" />
             <e p="BlessingOfFire.cs" t="Include" />
             <e p="BlessingOfIce.cs" t="Include" />
             <e p="BlessingOfLightning.cs" t="Include" />
@@ -1068,16 +1068,32 @@
             <e p="CardEditor.cs" t="Include" />
             <e p="CardEventManager.cs" t="Include" />
             <e p="ConeOfGarbage.cs" t="Include" />
+            <e p="CowcatcherCrash.cs" t="Include" />
+            <e p="DisorientingShot.cs" t="Include" />
+            <e p="EagleEye.cs" t="Include" />
             <e p="Electrotherapy.cs" t="Include" />
             <e p="FeralRage.cs" t="Include" />
+            <e p="FistOfUnity.cs" t="Include" />
+            <e p="GoldenPhysique.cs" t="Include" />
+            <e p="HiSpeedBeam.cs" t="Include" />
             <e p="IgniteTheAether.cs" t="Include" />
+            <e p="InfiniteAmmo.cs" t="Include" />
             <e p="InhaleAether.cs" t="Include" />
             <e p="MagSprint.cs" t="Include" />
+            <e p="OverheatedPalm.cs" t="Include" />
+            <e p="PointBlank.cs" t="Include" />
             <e p="RailCharge.cs" t="Include" />
+            <e p="RainOfNails.cs" t="Include" />
             <e p="RecklessSmash.cs" t="Include" />
+            <e p="ShockingShinkansenShot.cs" t="Include" />
+            <e p="SilverProwess.cs" t="Include" />
+            <e p="SniperLock.cs" t="Include" />
+            <e p="SolidarityBeam.cs" t="Include" />
             <e p="SummonBirds.cs" t="Include" />
+            <e p="TitanicCollision.cs" t="Include" />
             <e p="TrackChange.cs" t="Include" />
             <e p="Turbocharge.cs" t="Include" />
+            <e p="Weightless.cs" t="Include" />
           </e>
           <e p="DemoManager.cs" t="Include" />
           <e p="Enemies" t="Include">
@@ -1113,11 +1129,14 @@
             <e p="CustomizeManager.cs" t="Include" />
             <e p="DeckManager.cs" t="Include" />
             <e p="GameManager.cs" t="Include" />
+            <e p="MapManager.cs" t="Include" />
+            <e p="MapSaveEditor.cs" t="Include" />
+            <e p="PlayerSaveEditor.cs" t="Include" />
           </e>
           <e p="MapInteractable.cs" t="Include" />
-          <e p="MapManager.cs" t="Include" />
           <e p="MapNode.cs" t="Include" />
           <e p="MapObstacle.cs" t="Include" />
+          <e p="NewCardChooser.cs" t="Include" />
           <e p="OverworldTrain.cs" t="Include" />
           <e p="Player.cs" t="Include" />
           <e p="ProceduralTerrain" t="Include">
@@ -1135,6 +1154,8 @@
             <e p="Palmmy_UI" t="Include">
               <e p="BattleUI_Hover.cs" t="Include" />
               <e p="DummyIntention.cs" t="Include" />
+              <e p="EngineEventManager.cs" t="Include" />
+              <e p="LockAuraAnim.cs" t="Include" />
               <e p="Rotating_Around.cs" t="Include" />
               <e p="Rotating_Self.cs" t="Include" />
             </e>
@@ -1145,7 +1166,7 @@
           </e>
           <e p="Utils" t="Include">
             <e p="CardDirectory.cs" t="Include" />
-            <e p="PlayerMapData.cs" t="Include" />
+            <e p="MapData.cs" t="Include" />
             <e p="Utils.cs" t="Include" />
           </e>
         </e>
