@@ -30,6 +30,7 @@ public class Engine : MonoBehaviour
     private TMP_Text u_aetherNumber;
     private Image u_aetherCore;
     private Image[] u_move;
+    private Image u_selectedAura;
     
     //animator
     private Animator slotAuraAnim;
@@ -47,7 +48,8 @@ public class Engine : MonoBehaviour
     private bool _selected;
     
     //for pointer event
-    private Animator gearAnim;
+    private GameObject _gear;
+    private Animator _gearAnim;
 
     //Game Vars
     //Total attack this round
@@ -101,6 +103,7 @@ public class Engine : MonoBehaviour
         u_Circle = transform.Find("MagicCircle").gameObject;
         u_CircleGlowMat = Instantiate(u_Circle.GetComponent<Image>().material);
         u_Circle.GetComponent<Image>().material = u_CircleGlowMat;
+        u_selectedAura = transform.Find("SelectedAura").GetComponent<Image>();
 
         //u_EngineImg = transform.Find("EngineImg").gameObject;
         //u_EngineImgAnim = u_EngineImg.GetComponent<Animator>();
@@ -128,9 +131,10 @@ public class Engine : MonoBehaviour
         
         //anim
         slotAuraAnim = transform.Find("SlotAura").GetComponent<Animator>();
-        gearAnim = transform.Find("Gear").GetComponent<Animator>();
+        _gear = transform.Find("Gear").gameObject;
+        _gearAnim = _gear.GetComponent<Animator>();
         //set Gear Sprite 
-        Image engineNumGear = gearAnim.transform.Find("EngineNumber").GetComponent<Image>();
+        Image engineNumGear = _gearAnim.transform.Find("EngineNumber").GetComponent<Image>();
         engineNumGear.sprite = Resources.Load<Sprite>("Sprites/Engine" + engineNumber);
 
         //set up number and Icon for total engine power
@@ -153,10 +157,10 @@ public class Engine : MonoBehaviour
             return;
         
         if (c.Engine != null)
-            c.Engine.RemoveCard(c);
+            c.Engine.RemoveCard(c, false);
 
         c.Engine = this;
-        c.SetEngine(_cardPositons[0].parent.transform, CurrentCardPos(_pending.Count), 0.45f);
+        c.SetEngine(_cardPositons[0].parent.transform, CurrentCardPos(_pending.Count), 0.7f);
         _pending.Add(c);
         DeckManager.Instance.CardsToBeSorted.Remove(c);
         UpdateUICounts();
@@ -165,7 +169,7 @@ public class Engine : MonoBehaviour
         MagicCircle();
     }
 
-    public void RemoveCard(Card c)
+    public void RemoveCard(Card c, bool isClick)
     {
         int cInd = _pending.IndexOf(c);
         Card nextC = null;
@@ -177,8 +181,14 @@ public class Engine : MonoBehaviour
         DeckManager.Instance.CardsToBeSorted.Add(c);
         
         UpdateUICounts();
+        c.OffEngine(DeckManager.Instance.transform.parent, 1/0.7f);
+        c.Engine = null;
+        if (isClick)
+        {
+            DeckManager.Instance.moveCardsToTray(c.MyIndex,0.5f);
+        }
         
-        //turn off magiuc circle
+        //turn off magic circle
         MagicCircle();
         
         if(cInd == _pending.Count)
@@ -386,7 +396,7 @@ public class Engine : MonoBehaviour
     
     public void ShowPreview()
     {
-        u_CircleGlowMat.SetColor("_MyColor", Color.yellow);
+        //u_CircleGlowMat.SetColor("_MyColor", Color.yellow);
         
         string previewStr = "";
         int tempPow, tempAet, tempMove, tempCost;
@@ -424,8 +434,8 @@ public class Engine : MonoBehaviour
         if (!tempInRange)
             previewStr += "Some cards in this engine are not in range!";
         
-        _tooltip = Instantiate(Resources.Load<GameObject>("prefabs/tooltip"), transform.GetChild(1).transform.position,
-            Quaternion.identity, GameObject.Find("MainCanvas").transform).GetComponent<Tooltip>();
+        _tooltip = Instantiate(Resources.Load<GameObject>("prefabs/tooltip"), _gear.transform.position,
+            Quaternion.identity, _gear.transform).GetComponent<Tooltip>();
         _tooltip.Text = previewStr;
     }
 
@@ -615,7 +625,7 @@ public class Engine : MonoBehaviour
         }*/
         if(EngineState != EngineState.Stacked || BattleManager.Instance.BattleState != BattleStates.ChoosingAction || (Stack.Count == 0 && !EmptyStack))
             return;
-        u_CircleGlowMat.SetColor("_MyColor", Color.yellow);
+        //u_CircleGlowMat.SetColor("_MyColor", Color.yellow);
         BattleManager.Instance.EngineSelected();
         BattleManager.Instance.PushAttack(this);
         _selected = true;
@@ -670,14 +680,17 @@ public class Engine : MonoBehaviour
         slotAuraAnim.Play("EngineAura_On", -1 , 0f);
     }
 
-    public void turnGearOn()
+    public void selectGear()
     {
-        if (gearAnim.GetBool("TurnOn") == false) gearAnim.SetBool("TurnOn", true);
+        if (_gearAnim.GetBool("TurnOn") == false) _gearAnim.SetBool("TurnOn", true); //pop desc. window
+        u_selectedAura.color = Color.white; //turn on Aura for selected
+        
     }
 
-    public void turnGearOff()
+    public void disselectGear()
     {
-        if (gearAnim.GetBool("TurnOn") == true) gearAnim.SetBool("TurnOn", false);
+        if (_gearAnim.GetBool("TurnOn") == true) _gearAnim.SetBool("TurnOn", false); //pop down desc. window
+        u_selectedAura.color = new Color(1,1,1,0); //turn off Aura for selected
     }
     
 }

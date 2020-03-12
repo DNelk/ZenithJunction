@@ -419,14 +419,29 @@ public class Card : MonoBehaviour
     public void SetEngine(Transform parent, Vector3 position, float scale)
     {
         // u_glow.color = glowColor;
-        transform.DOScale( transform.localScale * scale, 0.5f);
+        transform.DOScale( _eventManager.BaseScale * scale, 0.5f);
         transform.SetParent(parent);
         /*if (_eventManager.BaseScale != Vector3.zero)
             _eventManager.BaseScale = _initialScale;
         else
             transform.localScale = _initialScale;*/
+        
         Tweening = true;
         transform.DOMove(position, 0.5f).OnComplete(() => Tweening = false);
+
+        _eventManager.BaseScale = _eventManager.BaseScale * scale;
+    }
+    
+    //use this function to put the card off engine back to its original hierachy
+    public void OffEngine(Transform parent, float scale)
+    {
+        if (Dragging) transform.DOScale( _eventManager.BaseScale * scale * 1.5f, 0.5f);
+        else
+        {
+            transform.DOScale( _eventManager.BaseScale * scale, 0.5f);
+        }
+        transform.SetParent(parent);
+        _eventManager.BaseScale = _eventManager.BaseScale * scale;
     }
 
     //Pay aether cost for spells

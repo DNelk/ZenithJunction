@@ -137,7 +137,6 @@ public class DeckManager : MonoBehaviour
             _activeCardObjects.Add(activeCardGO);
 
             Card activeCard = activeCardGO.GetComponent<Card>();
-            _activeCards.Add(activeCard);
             CardsToBeSorted.Add(activeCard);
             
             if (_activeCards.Count <= i) _activeCards.Add(activeCard);
