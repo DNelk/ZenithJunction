@@ -230,7 +230,7 @@ public class CardEventManager : EventTrigger
         }
 
         //fBaseScale = Vector3.zero;
-        _hovering = false;
+        if (_myCard.Dragging == false) _hovering = false;
         Utils.DestroyCardPreview();
         _dontMagnifyUntilHoverAgainHack = false;
 
