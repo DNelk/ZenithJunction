@@ -2315,7 +2315,7 @@ GameObject:
   - component: {fileID: 1350691244}
   - component: {fileID: 1350691243}
   m_Layer: 0
-  m_Name: EnemyInteractable (1)
+  m_Name: Slime
   m_TagString: OverworldInteractable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2347,7 +2347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78cf5fb5c4f6a41ae879632b1630dcac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Node: {fileID: 737830834}
+  Node: {fileID: 1190868598}
   AllowPass: 0
   MyScene: PrototypeBattle
 --- !u!61 &1350691244
@@ -2930,7 +2930,7 @@ GameObject:
   - component: {fileID: 1765410063}
   - component: {fileID: 1765410062}
   m_Layer: 0
-  m_Name: EnemyInteractable (2)
+  m_Name: Garlic2
   m_TagString: OverworldInteractable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3303,7 +3303,7 @@ PrefabInstance:
     - target: {fileID: 5334284269272677900, guid: cb2568df64b184071a348fbad7168cab,
         type: 3}
       propertyPath: m_Name
-      value: EnemyInteractable
+      value: Garlic
       objectReference: {fileID: 0}
     - target: {fileID: 5334284269272677903, guid: cb2568df64b184071a348fbad7168cab,
         type: 3}

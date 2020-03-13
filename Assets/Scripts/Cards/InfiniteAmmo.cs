@@ -18,10 +18,11 @@ public class InfiniteAmmo : Card
             {
                 if (c.CardType == CardTypes.Aether)
                 {
-                    c.PowerTotal = 3;
+                    c.PowerValue = 3;
                     c.Range = AttackRange.Short;
                     c.CardType = CardTypes.Attack;
                     c.AssignUI();
+                    c.Engine.UpdateUICounts();
                 }
             }
         }

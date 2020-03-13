@@ -14,6 +14,11 @@ public class PlayerSaveEditor : Editor
             GameManager manager = (GameManager) target;
             manager.ResetPlayerSave();
         }
+        
+        if (GUILayout.Button("Generate Card Directory"))
+        {
+            CardDirectory.SaveDirectory();
+        }
     }
     
 }

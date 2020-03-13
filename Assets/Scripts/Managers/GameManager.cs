@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
         pc.Cards.Add("manaboil");
         pc.Cards.Add("manaboil");
         pc.Cards.Add("manaboil");
-        pc.Cards.Add("DevRage");
+        //pc.Cards.Add("DevRage");
             
         pc.Equipped.Add("strike");
         pc.Equipped.Add("strike");

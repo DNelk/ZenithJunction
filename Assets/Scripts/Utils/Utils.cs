@@ -104,6 +104,19 @@ public static class Utils
 
        // Debug.Log(filename + " Saved");
     }
+    
+    public static void SaveStreaming<T>(T dataToSave, string filename)
+    {
+        filename += ".save";
+        filename = "/" + filename;
+        //Debug.Log(Application.streamingAssetsPath + filename);
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream file = File.Create(Application.streamingAssetsPath +  filename);
+        bf.Serialize(file, dataToSave);
+        file.Close();
+
+        // Debug.Log(filename + " Saved");
+    }
 
     public static T Load<T>(string filename)
     {
@@ -112,6 +125,26 @@ public static class Utils
         {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Open(Application.persistentDataPath + filename, FileMode.Open);
+            T save = (T) bf.Deserialize(file);
+            file.Close();
+            
+            //Debug.Log(filename + " Loaded");
+            return save;
+        }
+        
+        Debug.Log(filename + ": file not found!");
+        return default(T);
+    }
+    
+    public static T LoadStreaming<T>(string filename)
+    {
+        filename += ".save";
+        filename = "/" + filename;
+        //Debug.Log(Application.streamingAssetsPath + filename);
+        if (File.Exists(Application.streamingAssetsPath + filename))
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file = File.Open(Application.streamingAssetsPath + filename, FileMode.Open);
             T save = (T) bf.Deserialize(file);
             file.Close();
             
@@ -136,13 +169,13 @@ public static class Utils
     {
         int rnd = UnityEngine.Random.Range(0, 100);
 
-        if (rnd <= 30)
+        if (rnd <= 30) //30% uncommon
             return CardRarities.Uncommon;
-        if (rnd <= 45)
+        if (rnd <= 38) //8% rare
             return CardRarities.Rare;
-        if (rnd <= 48)
+        if (rnd <= 40) //2% Ultra rare
             return CardRarities.UltraRare;
-        return CardRarities.Common;
+        return CardRarities.Common; //60% common
     }
     
     public static CardArchetype GetRandomArchetype()

@@ -7,6 +7,7 @@ public class TitanicCollision : Card
     public override void Execute()
     {
         base.Execute();
-        PowerTotal = BattleManager.Instance.CurrentEnemy.CurrentAttack.TotalDamage * 2;
+        if(BattleManager.Instance.BattleState == BattleStates.Battle)
+            PowerTotal = BattleManager.Instance.CurrentEnemy.CurrentAttack.TotalDamage * 2;
     }
 }

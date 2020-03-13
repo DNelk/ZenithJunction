@@ -25,7 +25,14 @@ public class Card : MonoBehaviour
     [SerializeField] protected int _aetherCost; public int AetherCost => _aetherCost;
     [SerializeField] protected string _cardText; public string CardText => _cardText;
     [SerializeField] protected int _aetherValue; public int AetherValue => _aetherValue;
-    [SerializeField] protected int _powerValue; public int PowerValue => _powerValue;
+    [SerializeField] protected int _powerValue;
+    public int PowerValue
+    {
+        get => _powerValue;
+        set => _powerValue = value;
+    }
+
+    
     [SerializeField] protected AttackRange _range = AttackRange.Null;
     public AttackRange Range
     {
@@ -115,7 +122,7 @@ public class Card : MonoBehaviour
     private Color u_particleColor;
 
     //Fullsize
-    [SerializeField] private bool _fullSize = false;
+    [SerializeField] protected bool _fullSize = false;
     public bool ShowFullSize
     {
         get => _fullSize;

@@ -212,13 +212,15 @@ public class CardEventManager : EventTrigger
         transform.DOScale(BaseScale*1.5f, 0.2f);
         
         //transform.position += Vector3.up * BaseScale.x * 2;
-        if(GameManager.Instance.State == GameState.Battle)
+        if (GameManager.Instance.State == GameState.Battle)
+        {
             transform.SetSiblingIndex(transform.GetSiblingIndex() + 8);
 
-        //show the engine that avaiable
-        for (int i = 0; i < BattleManager.Instance.Engines.Length; i++)
-        {
-            if (BattleManager.Instance.Engines[i].PendingCount < 3) BattleManager.Instance.Engines[i].selectGear();
+            //show the engine that avaiable
+            for (int i = 0; i < BattleManager.Instance.Engines.Length; i++)
+            {
+                if (BattleManager.Instance.Engines[i].PendingCount < 3) BattleManager.Instance.Engines[i].selectGear();
+            }
         }
 
         _hovering = true;
@@ -239,9 +241,12 @@ public class CardEventManager : EventTrigger
         {
             _hovering = false;
             //show the engine that available
-            foreach (var Engine in BattleManager.Instance.Engines)
+            if (GameManager.Instance.State == GameState.Battle)
             {
-                Engine.disselectGear();
+                foreach (var Engine in BattleManager.Instance.Engines)
+                {
+                    Engine.disselectGear();
+                }
             }
         }
         Utils.DestroyCardPreview();

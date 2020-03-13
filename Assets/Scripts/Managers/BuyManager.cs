@@ -304,7 +304,7 @@ public class BuyManager : MonoBehaviour
     private void GenerateCatalog()
     {
         _catalog = new List<string>();
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 20; i++)
         {
             _catalog.Add(CardDirectory.GetRandomCard(Utils.GetRandomArchetype(), Utils.GetRandomRarity(), true));
         }

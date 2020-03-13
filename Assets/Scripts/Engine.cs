@@ -257,6 +257,8 @@ public class Engine : MonoBehaviour
         
         if(_pending.Count > 0)
             StackCards();
+        
+        UpdateUICounts();
     }
     
     public void StackCardsForPreview()

@@ -14,7 +14,7 @@ public class ConeOfGarbage : Card
 
     private void Start()
     {
-        u_bodyText.text = "+" + GarbageNum() + " power. Increases based on how many cards you have.";
+        if(_fullSize) u_bodyText.text = "+" + GarbageNum() + " power. Increases based on how many cards you have.";
     }
 
     private int GarbageNum()
