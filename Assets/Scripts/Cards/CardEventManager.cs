@@ -16,7 +16,8 @@ public class CardEventManager : EventTrigger
 
     //Card Previews
     private float _pointerOverTimer;
-    public bool _hovering;
+    public bool _hovering; //conceptual state of hovering tied to mouse click and other effects
+    private bool _isMouseOver; //literal state of hovering helping to prevent bugs
     public Vector3 BaseScale = Vector3.zero;
     private bool _dontMagnifyUntilHoverAgainHack = false;
 
@@ -37,34 +38,17 @@ public class CardEventManager : EventTrigger
             new GradientAlphaKey[]{new GradientAlphaKey(0.0f, 0.0f), new GradientAlphaKey(1.0f, 0.524f), new GradientAlphaKey(0.0f, 1.0f)});
     }
 
+    #region update event
     private void Update()
     {
         if (_hovering)
         {
-/*            if (!_dontMagnifyUntilHoverAgainHack && !_myCard.Dragging)
-            {
-                if (transform.localScale.x < BaseScale.x * 1.5f)
-                    transform.localScale += BaseScale * 5f * Time.deltaTime;
-                if (transform.localScale.x > BaseScale.x * 1.5f)
-                    transform.localScale = BaseScale * 1.5f;
-            }*/
-
             _pointerOverTimer += Time.deltaTime;
 
-            if (_myCard.Engine==null && !_myCard.Purchasable)
-            {
-                _glow.gameObject.SetActive(true);
-                _glow.transform.localScale = _glowScale;
-                if (!_glow.isPlaying) _glow.Play();
-            }
-            else if (_myCard.Engine != null && !_myCard.Purchasable)
-            {
-                _glow.transform.localScale = _glowScale *0.6f;
-            }
-            
             //generateCard
             Utils.GenerateCardPreview(_myCard);
-
+            
+            //for hotkey to put in engine
             if (Input.GetKeyDown(KeyCode.Alpha1) && _myCard.Engine == null && !_myCard.Purchasable)
             {
                 BattleManager.Instance.Engines[0].AddCard(_myCard);
@@ -83,21 +67,10 @@ public class CardEventManager : EventTrigger
         {
             transform.localScale = Vector3.one * 30;
         }
-/*        var col = _glow.colorOverLifetime;
-        if (_myCard.Engine!=null)
-        {
-            _glow.transform.localScale = _glowScale*0.4f;
-            _glow.gameObject.SetActive(true);
-            if (!_glow.isPlaying)
-                _glow.Play();
-        }
-        else
-        {
-            col.color = _baseColor;
-            _glow.transform.localScale = _glowScale;
-        }*/
     }
+    #endregion
 
+    #region Mouse Click Event
     public override void OnPointerDown(PointerEventData eventData)
     {
         if(GameManager.Instance.State == GameState.Battle)
@@ -124,7 +97,10 @@ public class CardEventManager : EventTrigger
         }
         
         //prevent when dragging card too fast it hover over card
-        if (_myCard.InActive && _myCard.Engine != null) DeckManager.Instance.turnOffOtherRaycast(_myCard.MyIndex);
+        if (_myCard.InActive && _myCard.Engine == null)
+        {
+            DeckManager.Instance.turnOffOtherRaycast(_myCard.MyIndex);
+        }
     }
 
     public override void OnDrag(PointerEventData eventData)
@@ -141,12 +117,15 @@ public class CardEventManager : EventTrigger
             DeckManager.Instance.moveCardsToTray(_myCard.MyIndex, 0.3f);
         }
         
-        if (_myCard.InActive && _myCard.Engine != null) DeckManager.Instance.turnOnRaycast();
-
-        //I turn this off to make it so that it still scaled after you release the click
-        //if(BaseScale != Vector3.zero)
-        //transform.localScale = BaseScale;
-        //_dontMagnifyUntilHoverAgainHack = true; 
+        //turn on raycast other card raycast
+        if (_myCard.InActive && _myCard.Engine == null) DeckManager.Instance.turnOnRaycast();
+        
+        //change size of card in case of fast hovering
+        if (!_isMouseOver && _hovering)
+        {
+            _hovering = false;
+            transform.DOScale(BaseScale, 0.2f);
+        }
     }
 
     private void CalcOffset()
@@ -168,7 +147,7 @@ public class CardEventManager : EventTrigger
         if(GameManager.Instance.State == GameState.Battle)
             transform.position = currMousePos + _offset;
     }
-
+    
     //Snap automatically to an open engine
     public override void OnPointerClick(PointerEventData eventData)
     {
@@ -198,35 +177,53 @@ public class CardEventManager : EventTrigger
             NewCardChooser.Instance.ChooseCard(_myCard.CardName);
             Destroy(_myCard.gameObject);
         }
-        
     }
-
-    //Generate a card preview
+    #endregion
+    
+    #region Mouse Over Event
     public override void OnPointerEnter(PointerEventData eventData)
     {
         if (BaseScale == Vector3.zero)
             BaseScale = transform.localScale;
-        
-        //Debug.Log(BaseScale);
 
-        transform.DOScale(BaseScale*1.5f, 0.2f);
+        //if not actually still holding it, make it bigger
+        if (!_myCard.Dragging) transform.DOScale(BaseScale*1.5f, 0.2f);
         
-        //transform.position += Vector3.up * BaseScale.x * 2;
+        //do whatever important in battel
         if (GameManager.Instance.State == GameState.Battle)
         {
             transform.SetSiblingIndex(transform.GetSiblingIndex() + 8);
 
-            //show the engine that avaiable
-            for (int i = 0; i < BattleManager.Instance.Engines.Length; i++)
+            //show the engine that available
+            if (!_myCard.Dragging)
             {
-                if (BattleManager.Instance.Engines[i].PendingCount < 3) BattleManager.Instance.Engines[i].selectGear();
+                for (int i = 0; i < BattleManager.Instance.Engines.Length; i++)
+                {
+                    if (BattleManager.Instance.Engines[i].PendingCount < 3) BattleManager.Instance.Engines[i].selectGear();
+                }
             }
         }
+        
+        //for particle
+        if (_myCard.Engine==null && !_myCard.Purchasable)
+        {
+            _glow.gameObject.SetActive(true);
+            _glow.transform.localScale = _glowScale;
+            if (!_glow.isPlaying) _glow.Play();
+        }
+        else if (_myCard.Engine != null && !_myCard.Purchasable)
+        {
+            _glow.transform.localScale = _glowScale *0.6f;
+        }
 
+        //change hovering
         _hovering = true;
+        
+        //change mouse over
+        _isMouseOver = true;
     }
-    
-    //Make card preview go away
+
+    //when move mouse away
     public override void OnPointerExit(PointerEventData eventData)
     {
         _pointerOverTimer = 0;
@@ -236,8 +233,8 @@ public class CardEventManager : EventTrigger
             transform.DOScale(BaseScale, 0.2f);
         }
 
-        //fBaseScale = Vector3.zero;
-        if (_myCard.Dragging == false)
+        //change hovering
+        if (!_myCard.Dragging) //prevent 
         {
             _hovering = false;
             //show the engine that available
@@ -249,15 +246,16 @@ public class CardEventManager : EventTrigger
                 }
             }
         }
-        Utils.DestroyCardPreview();
+        
+        //change mouse over
+        _isMouseOver = false;
+        
+        Utils.DestroyCardPreview(); //Make card preview go away
         _dontMagnifyUntilHoverAgainHack = false;
 
+        //turn on/off particle based on being in engine or not
         if (_myCard.Engine == null)
-        {
-            var col = _glow.colorOverLifetime;
-            //col.color = _baseColor;
             _glow.gameObject.SetActive(false);//_glow.Stop();
-        }
         else
         {
             _glow.transform.localScale = _glowScale*0.4f;
@@ -266,7 +264,9 @@ public class CardEventManager : EventTrigger
                 _glow.Play();
         }
     }
+    #endregion
 
+    #region Collision Event
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (_myCard.InActive)
@@ -309,4 +309,5 @@ public class CardEventManager : EventTrigger
             }
         }
     }
+    #endregion
 }
