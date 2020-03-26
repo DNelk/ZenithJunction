@@ -442,10 +442,10 @@ public class Card : MonoBehaviour
     //use this function to put the card off engine back to its original hierachy
     public void OffEngine(Transform parent, float scale)
     {
-        if (Dragging) transform.DOScale( _eventManager.BaseScale * scale * 1.5f, 0.5f);
+        if (Dragging) transform.DOScale( _eventManager.BaseScale * scale * 1.5f, 0.1f);
         else
         {
-            transform.DOScale( _eventManager.BaseScale * scale, 0.5f);
+            transform.DOScale( _eventManager.BaseScale * scale, 0.1f);
         }
         transform.SetParent(parent);
         _eventManager.BaseScale = _eventManager.BaseScale * scale;
