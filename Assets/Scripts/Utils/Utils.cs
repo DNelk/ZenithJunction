@@ -96,9 +96,10 @@ public static class Utils
 
     public static void Save<T>(T dataToSave, string filename)
     {
+//        Debug.Log(Application.persistentDataPath);
         filename += ".save";
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Create(Application.persistentDataPath + filename);
+        FileStream file = File.Create(Application.persistentDataPath + "/" + filename);
         bf.Serialize(file, dataToSave);
         file.Close();
 
@@ -121,10 +122,10 @@ public static class Utils
     public static T Load<T>(string filename)
     {
         filename += ".save";
-        if (File.Exists(Application.persistentDataPath + filename))
+        if (File.Exists(Application.persistentDataPath + "/" + filename))
         {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Open(Application.persistentDataPath + filename, FileMode.Open);
+            FileStream file = File.Open(Application.persistentDataPath + "/" + filename, FileMode.Open);
             T save = (T) bf.Deserialize(file);
             file.Close();
             
