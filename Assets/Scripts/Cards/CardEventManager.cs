@@ -14,6 +14,8 @@ public class CardEventManager : EventTrigger
 
     private Card _myCard;
 
+    private bool _event_inSlot = true; //use this variable to double check if the card suppose to be in slot or not
+
     //Card Previews
     private float _pointerOverTimer;
     public bool _hovering; //conceptual state of hovering tied to mouse click and other effects
@@ -67,6 +69,13 @@ public class CardEventManager : EventTrigger
         {
             transform.localScale = Vector3.one * 30;
         }
+        
+        //use this to make sure the card will back to its place
+        if (!_event_inSlot && _myCard._inSlot)
+        {
+            DeckManager.Instance.moveCardsToTray(_myCard.MyIndex, 0.3f);
+            _event_inSlot = true;
+        }
     }
     #endregion
 
@@ -116,7 +125,7 @@ public class CardEventManager : EventTrigger
         {
             DeckManager.Instance.moveCardsToTray(_myCard.MyIndex, 0.3f);
         }
-        
+
         //turn on raycast other card raycast
         if (_myCard.InActive && _myCard.Engine == null) DeckManager.Instance.turnOnRaycast();
         
@@ -306,6 +315,7 @@ public class CardEventManager : EventTrigger
             if (other.gameObject.CompareTag("TabZone"))
             {
                 _myCard._inSlot = false;
+                _event_inSlot = false;
             }
         }
     }
