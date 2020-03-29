@@ -317,6 +317,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6630285911696079627}
   - component: {fileID: 3641584889599317617}
+  - component: {fileID: 187774721455598019}
   m_Layer: 0
   m_Name: slime
   m_TagString: Untagged
@@ -359,6 +360,32 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &187774721455598019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7663112468830161176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e88584b298fd044c18db544ed961839e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: The Champion Slime
+  _attacks:
+  - {fileID: -8221920736037997004, guid: a7ec8c84fe01a46b4a5e665b4e4e1996, type: 3}
+  - {fileID: -7200846802743668189, guid: bf3cf4759c5504082aff564b96aafe23, type: 3}
+  - {fileID: 4580223534288593438, guid: a3619f62dbe994ad48e4a616c3119b51, type: 3}
+  - {fileID: -770375651707446137, guid: d2fe47abf600743d6a3c66bb872c6e5c, type: 3}
+  - {fileID: -8221920736037997004, guid: a7ec8c84fe01a46b4a5e665b4e4e1996, type: 3}
+  _description: 
+  CurrentAttack: {fileID: 0}
+  _moveInRange: {fileID: 0}
+  ExtraInfo: next to this enemy, you'll deal half damage.eal half damage.
+  _maxHP: 50
+  DesiredRange: 3
+  AtkDebuff: 0
 --- !u!1 &8087937378630122543
 GameObject:
   m_ObjectHideFlags: 0

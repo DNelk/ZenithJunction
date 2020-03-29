@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using DG.Tweening;
 using TMPro;
@@ -11,6 +12,7 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] protected string _name; 
     [SerializeField] protected List<EnemyAttack> _attacks; //Our pool of attacks
+    [SerializeField] protected string _description;
     public EnemyAttack CurrentAttack;
     [SerializeField] protected EnemyAttack _moveInRange; //Our move action that we can do when we need to get in range
     [SerializeField] public string ExtraInfo;
@@ -33,7 +35,7 @@ public class Enemy : MonoBehaviour
     private GameObject _healthBar;
     private float hp_OriginLength;
     private TMP_Text _hpText;
-    
+
     private void Awake()
     {
         _atkIndex = -1;
@@ -287,4 +289,28 @@ public class Enemy : MonoBehaviour
             }
         }
     }
+
+    
+    //for UI information of enemy
+    #region UI Information
+    public string getName()
+    {
+        return _name;
+    }
+
+    public string getDescription()
+    {
+        return _description;
+    }
+
+    public List<EnemyAttack> getAttack()
+    {
+        return _attacks;
+    }
+
+    public string getSpecial()
+    {
+        return ExtraInfo;
+    }
+    #endregion
 }

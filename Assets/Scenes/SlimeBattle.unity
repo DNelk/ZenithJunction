@@ -398,7 +398,9 @@ MonoBehaviour:
   Player: {fileID: 0}
   CurrentAether: 0
   BattleState: 0
+  NumEngines: 3
   Engines: []
+  DamageDealtThisTurn: 0
 --- !u!4 &184574609
 Transform:
   m_ObjectHideFlags: 0
@@ -1896,37 +1898,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2ae9cf998d9fc472aad6a3f3457f109d, type: 3}
---- !u!1 &1134458386 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7663112468830161176, guid: 2ae9cf998d9fc472aad6a3f3457f109d,
-    type: 3}
-  m_PrefabInstance: {fileID: 1134458385}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1134458387
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1134458386}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e88584b298fd044c18db544ed961839e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _name: The Champion Slime
-  _attacks:
-  - {fileID: -8221920736037997004, guid: a7ec8c84fe01a46b4a5e665b4e4e1996, type: 3}
-  - {fileID: -7200846802743668189, guid: bf3cf4759c5504082aff564b96aafe23, type: 3}
-  - {fileID: 4580223534288593438, guid: a3619f62dbe994ad48e4a616c3119b51, type: 3}
-  - {fileID: -770375651707446137, guid: d2fe47abf600743d6a3c66bb872c6e5c, type: 3}
-  - {fileID: -8221920736037997004, guid: a7ec8c84fe01a46b4a5e665b4e4e1996, type: 3}
-  _currentAttack: {fileID: 0}
-  _moveInRange: {fileID: 0}
-  ExtraInfo: If you're right next to this enemy, you'll deal half damage.
-  _maxHP: 50
-  DesiredRange: 3
-  AtkDebuff: 0
 --- !u!1 &1184351999
 GameObject:
   m_ObjectHideFlags: 0
@@ -2462,6 +2433,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   State: 0
+  BattlingNode: 
 --- !u!4 &1372992388
 Transform:
   m_ObjectHideFlags: 0
