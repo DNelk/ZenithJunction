@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 public class EngineEventManager : EventTrigger
 {
-    //engine
+    //engine ref
     private Engine _myEngine;
 
     private void Awake()
@@ -17,7 +17,7 @@ public class EngineEventManager : EventTrigger
 
     void init()
     {
-        _myEngine = GetComponent<Engine>();
+        _myEngine = GetComponent<Engine>(); //make ref to engine
     }
 
     // Start is called before the first frame update
@@ -32,6 +32,8 @@ public class EngineEventManager : EventTrigger
         
     }
 
+    #region pointer Enter&Exit
+    
     public override void OnPointerEnter(PointerEventData eventData)
     {
         transform.DOScale(_myEngine._baseScale * 1.2f, 0.2f);
@@ -44,4 +46,6 @@ public class EngineEventManager : EventTrigger
         transform.DOScale(_myEngine._baseScale, 0.2f);
         _myEngine.disselectGear();
     }
+    
+    #endregion
 }
