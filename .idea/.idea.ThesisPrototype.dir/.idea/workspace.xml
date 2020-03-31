@@ -4,67 +4,24 @@
     <list default="true" id="a09b874d-2018-4a88-b6ee-ad21e6ed63d5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ThesisPrototype.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ThesisPrototype.dir/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ThesisPrototype/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ThesisPrototype/.idea/contentModel.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Prefabs/Cards/Card.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Prefabs/Cards/Card.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/PalmmyScene/PM_BattleUITest.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/PalmmyScene/PM_BattleUITest.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Cards/Card.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Cards/Card.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/Palmmy_UI/BattleUI_Hover.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/Palmmy_UI/BattleUI_Hover.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utils.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utils/ErrorMessage.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utils/ErrorMessage.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utils/MovePlayerDialog.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utils/MovePlayerDialog.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utils/PlayerCollection.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utils/PlayerCollection.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utils/Utils.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utils/Utils.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utils/XDialog.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utils/XDialog.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Deck/BG_Dark.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Deck/BG_Dark.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Deck/BigCoreBorder.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Deck/BigCoreBorder.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Deck/BigCoreLight.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Deck/BigCoreLight.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Deck/DeckPad.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Deck/DeckPad.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Deck/DeckPad_Glow.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Deck/DeckPad_Glow.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Deck/Gear1_Deck.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Deck/Gear1_Deck.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Deck/Gear1_Gear.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Deck/Gear1_Gear.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Deck/Gear2.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Deck/Gear2.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Deck/Gear3.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Deck/Gear3.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Deck/MainPlate.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Deck/MainPlate.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Deck/Metal Pipe.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Deck/Metal Pipe.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Deck/Outline.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Deck/Outline.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Deck/SmallCoreLight.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Deck/SmallCoreLight.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Deck/SmallCore_Bound.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Deck/SmallCore_Bound.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Deck/SmallCore_BoundGlowing.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Deck/SmallCore_BoundGlowing.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Discard/DiscardCore.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Discard/DiscardCore.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Discard/Discard_MainPlate.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Discard/Discard_MainPlate.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Discard/Gear1_Discard.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Discard/Gear1_Discard.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Discard/Gear1_Main.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Discard/Gear1_Main.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Discard/Gear2.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Discard/Gear2.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Discard/Pad.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Discard/Pad.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Discard/Pad_Dark.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Discard/Pad_Dark.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Discard/Pad_Glow.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Discard/Pad_Glow.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Settings/SettingButton.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Settings/SettingButton.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Settings/SettingButton_Glow.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Settings/SettingButton_Glow.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Settings/SettingGear.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Settings/SettingGear.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Settings/SettingGear_Setting.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Settings/SettingGear_Setting.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Shop/Back.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Shop/Back.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Shop/Gear1.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Shop/Gear1.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Shop/Gear1_Shop.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Shop/Gear1_Shop.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Shop/OuterPlate.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Shop/OuterPlate.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Shop/OuterPlate_Glow.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Shop/OuterPlate_Glow.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Shop/ShopButton.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Shop/ShopButton.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Shop/ShopButtonBound.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Shop/ShopButtonBound.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Shop/ShopButtonBound_Glow.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Shop/ShopButtonBound_Glow.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Tab/Base.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Tab/Base.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Tab/CardBG.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Tab/CardBG.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Trash/TrashCore.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Trash/TrashCore.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Trash/TrashGear2.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Trash/TrashGear2.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Trash/TrashGear3.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Trash/TrashGear3.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Trash/TrashGear_1.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Trash/TrashGear_1.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Trash/TrashGear_Trash.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Trash/TrashGear_Trash.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Trash/TrashPad.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Trash/TrashPad.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Trash/TrashPad_Glow.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Trash/TrashPad_Glow.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/UnityConnectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/UnityConnectSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.ThesisPrototype/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ThesisPrototype/.idea/indexLayout.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Examples/Official/TemplateExamples/Sprites/SpriteMask/CubeMask.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Examples/Official/TemplateExamples/Sprites/SpriteMask/CubeMask.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Examples/Official/TemplateExamples/Sprites/SpriteMask/SphereMask.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Examples/Official/TemplateExamples/Sprites/SpriteMask/SphereMask.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Examples/Official/TemplateExamples/Sprites/SpriteMask/SpriteExampleAtlas.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Examples/Official/TemplateExamples/Sprites/SpriteMask/SpriteExampleAtlas.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Examples/Official/TemplateExamples/UI/MaskedUI/ASEIcon.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Examples/Official/TemplateExamples/UI/MaskedUI/ASEIcon.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Examples/Official/TemplateExamples/UI/MaskedUI/LogoMask.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AmplifyShaderEditor/Examples/Official/TemplateExamples/UI/MaskedUI/LogoMask.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/skybox.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/skybox.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Editor.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/PrototypeBattle.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/PrototypeBattle.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/ShaderTestScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/ShaderTestScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/StreamingAssets/build_info" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/StreamingAssets/build_info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UIParticle_Demo/Light_Frame.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UIParticle_Demo/Light_Frame.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UIParticle_Demo/Unity-chan.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UIParticle_Demo/Unity-chan.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Logs/Packages-Update.log" beforeDir="false" afterPath="$PROJECT_DIR$/Logs/Packages-Update.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -94,15 +51,15 @@
     <option name="CREATE_PULL_REQUEST_DEFAULT_REPO_NAME" value="ThesisPrototype" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Test/Commandgear.png.meta" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Engine.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Shop/Back.png.meta" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Cards/CardEventManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Test/Commandgear.png.meta" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Materials.meta" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Managers/CustomizeManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Engine.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Managers/DeckManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/Palmmy_UI/BattleUI_Hover.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Textures/UI/PalmmyUI/Battle/Shop/Back.png.meta" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Managers/CustomizeManager.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
