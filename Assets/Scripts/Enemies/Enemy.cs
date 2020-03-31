@@ -305,7 +305,9 @@ public class Enemy : MonoBehaviour
 
     public List<EnemyAttack> getAttack()
     {
-        return _attacks;
+        List<EnemyAttack> _allMoves = _attacks;
+        _allMoves.Add(_moveInRange);
+        return _allMoves;
     }
 
     public string getSpecial()

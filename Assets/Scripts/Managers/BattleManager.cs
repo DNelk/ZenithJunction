@@ -66,6 +66,9 @@ public class BattleManager : MonoBehaviour
         Engines[0] = GameObject.Find("Engine1").GetComponent<Engine>();
         Engines[1] = GameObject.Find("Engine2").GetComponent<Engine>();
         Engines[2] = GameObject.Find("Engine3").GetComponent<Engine>();
+        
+        if(CurrentEnemy == null)
+            CurrentEnemy = GameObject.FindWithTag("Enemy").GetComponent<Enemy>();
     }
     
     private void Start()

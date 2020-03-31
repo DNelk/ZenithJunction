@@ -49,6 +49,21 @@ public class EnemyAttack : MonoBehaviour
         }
         return true;
     }
+    
+    #region for UI information
+    //name 
+    public string getName()
+    {
+        return _name;
+    }
+
+    public string getWarning()
+    {
+        return _warning;
+    }
+    
+    
+    #endregion
 }
 
 public enum EnemyAttackType
