@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Skybox
+  m_Name: skybox
   m_Shader: {fileID: 4800000, guid: 947b55d7480f4ae4284a5952dd6f6053, type: 3}
   m_ShaderKeywords: FUZZY
   m_LightmapFlags: 4

@@ -41,8 +41,6 @@ public class BattleManager : MonoBehaviour
             Instance = this;
         else if(Instance != this)
             Destroy(gameObject);
-
-        Init();
     }
 
     private void Init()
@@ -60,6 +58,7 @@ public class BattleManager : MonoBehaviour
         //_resultText = GameObject.Find("ResultText").GetComponent<UIPopIn>();
         //_clashText = GameObject.Find("ClashText").GetComponent<UIPopIn>();
         BattleState = BattleStates.MakingEngines;
+        GameManager.Instance.StartBattle();
         _playerAttack = null;
         
         Engines = new Engine[3];
@@ -70,6 +69,7 @@ public class BattleManager : MonoBehaviour
     
     private void Start()
     {
+        Init();
         LoadAllEnemyAttacks();
     }
 
@@ -379,7 +379,8 @@ public enum BattleStates
     ChoosingAction,
     BuyingCards,
     Battle,
-    GameOver
+    GameOver,
+    BattleStart
 }
 
 //Used for both players and enemies

@@ -38,6 +38,13 @@ public class GameManager : MonoBehaviour
         
     }
 
+    public void StartBattle()
+    {
+        if (TutorialManager.Instance != null)
+            TutorialManager.Instance.Step();
+        DeckManager.Instance.DealHand();
+    }
+
     public void LoadScene(string sceneName)
     {
         StartCoroutine(LoadSceneAsync(sceneName));

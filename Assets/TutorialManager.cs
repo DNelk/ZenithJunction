@@ -21,4 +21,26 @@ public class TutorialManager : MonoBehaviour
    {
       TutorialStep = 0;
    }
+
+   public void Step()
+   {
+      switch (TutorialStep)
+      {
+         case 0:
+            Step1();
+            break;
+      } 
+   }
+
+   private void Step1()
+   {
+      List<string> tutDeck = new List<string>();
+      tutDeck.Add("strike");
+      tutDeck.Add("strike");
+      tutDeck.Add("strike");
+
+      DeckManager.Instance.LoadDeck(tutDeck);
+
+      DeckManager.Instance.DealAmt = 3;
+   }
 }
