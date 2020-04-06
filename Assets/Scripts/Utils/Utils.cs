@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Linq;
+using Boo.Lang.Environments;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = System.Random;
 
 public static class Utils
 {
+    #region Instantiators
     public static void DisplayError(string err, float time)
     {
         ErrorMessage error = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Error"), GameObject.Find("MainCanvas").transform).GetComponent<ErrorMessage>();
@@ -52,6 +54,13 @@ public static class Utils
         CurrentPreview.Destroy();
 
     }
+
+    public static TalkingHead GenerateTalkingHead()
+    {
+        return GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/TalkingHead"),
+            GameObject.Find("MainCanvas").transform).GetComponent<TalkingHead>();
+    }
+    #endregion
 
     public static bool FlipCoin()
     {

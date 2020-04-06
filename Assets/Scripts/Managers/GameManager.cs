@@ -42,7 +42,8 @@ public class GameManager : MonoBehaviour
     {
         if (TutorialManager.Instance != null)
             TutorialManager.Instance.Step();
-        DeckManager.Instance.DealHand();
+        else
+            DeckManager.Instance.DealHand();
     }
 
     public void LoadScene(string sceneName)

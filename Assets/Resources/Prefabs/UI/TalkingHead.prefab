@@ -451,8 +451,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.81960785}
-  m_RaycastTarget: 1
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -480,6 +480,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ee469d1d3f94a444a7530796d317b61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BG: {fileID: 0}
+  IsIdle: 0
+  TextDone: 1
 --- !u!95 &1994610823
 Animator:
   serializedVersion: 3
