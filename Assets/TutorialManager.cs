@@ -45,6 +45,8 @@ public class TutorialManager : MonoBehaviour
       DeckManager.Instance.LoadDeck(tutDeck);
 
       DeckManager.Instance.DealAmt = 3;
+      BattleManager.Instance.Engines[1].gameObject.SetActive(false);
+      BattleManager.Instance.Engines[2].gameObject.SetActive(false);
 
       _currentHead = Utils.GenerateTalkingHead();
 

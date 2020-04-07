@@ -18,7 +18,7 @@ public class BattleManager : MonoBehaviour
     public Player Player;
     public int CurrentAether;
 
-    public BattleStates BattleState;
+    public BattleStates BattleState = BattleStates.BattleStart;
     private int _clashingDamage;
     //UI
     private Button _finishEnginesButton;
@@ -43,7 +43,7 @@ public class BattleManager : MonoBehaviour
             Destroy(gameObject);
     }
 
-    private void Init()
+    public void Init()
     {
         Player = GameObject.FindWithTag("Player").GetComponent<Player>();
         
@@ -58,13 +58,15 @@ public class BattleManager : MonoBehaviour
         //_resultText = GameObject.Find("ResultText").GetComponent<UIPopIn>();
         //_clashText = GameObject.Find("ClashText").GetComponent<UIPopIn>();
         BattleState = BattleStates.MakingEngines;
-        GameManager.Instance.StartBattle();
+        
         _playerAttack = null;
         
         Engines = new Engine[3];
         Engines[0] = GameObject.Find("Engine1").GetComponent<Engine>();
         Engines[1] = GameObject.Find("Engine2").GetComponent<Engine>();
         Engines[2] = GameObject.Find("Engine3").GetComponent<Engine>();
+        
+        GameManager.Instance.StartBattle();
     }
     
     private void Start()
@@ -85,6 +87,8 @@ public class BattleManager : MonoBehaviour
                 break;
             case BattleStates.ChoosingAction:
                 ChoosingActionUpdate();
+                break;
+            default:
                 break;
         }
     }

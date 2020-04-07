@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour
 
     public void StartBattle()
     {
+
         if (TutorialManager.Instance != null)
             TutorialManager.Instance.Step();
         else
