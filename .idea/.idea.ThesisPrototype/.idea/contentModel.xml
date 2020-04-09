@@ -1013,6 +1013,29 @@
         </e>
         <e p="Coffee" t="Include">
           <e p="UIExtensions" t="Include">
+            <e p="SoftMaskForUGUI" t="Include">
+              <e p="Scripts" t="Include">
+                <e p="Coffee.SoftMaskForUGUI.asmdef" t="Include" />
+                <e p="Editor" t="Include">
+                  <e p="Coffee.SoftMaskForUGUI.Editor.asmdef" t="Include" />
+                  <e p="SoftMaskableEditor.cs" t="Include" />
+                  <e p="SoftMaskEditor.cs" t="Include" />
+                  <e p="Utils.cs" t="Include" />
+                </e>
+                <e p="SoftMask.cs" t="Include" />
+                <e p="SoftMaskable.cs" t="Include" />
+              </e>
+              <e p="Shaders" t="Include">
+                <e p="Resources" t="Include">
+                  <e p="SoftMask.shader" t="Include" />
+                  <e p="UI-Default-SoftMask.shader" t="Include" />
+                </e>
+                <e p="TMP_SDF (SoftMaskable).shader" t="Include" />
+                <e p="TMP_SDF-Mobile (SoftMaskable).shader" t="Include" />
+                <e p="TMP_Sprite (SoftMaskable).shader" t="Include" />
+              </e>
+              <e p="SoftMask.cginc" t="Include" />
+            </e>
             <e p="UIParticle" t="Include">
               <e p="Scripts" t="Include">
                 <e p="Coffee.UIParticle.asmdef" t="Include" />
@@ -1047,6 +1070,7 @@
           <e p="Shaders" t="Include">
             <e p="BasicAnime.shader" t="Include" />
             <e p="Glow.shader" t="Include" />
+            <e p="MinionsArtSkybox.shader" t="Include" />
             <e p="RotateTexture.shader" t="Include" />
           </e>
         </e>
@@ -1276,6 +1300,8 @@
           </e>
         </e>
       </e>
+      <e p="Coffee.SoftMaskForUGUI.csproj" t="IncludeRecursive" />
+      <e p="Coffee.SoftMaskForUGUI.Editor.csproj" t="IncludeRecursive" />
       <e p="Coffee.UIParticle.csproj" t="IncludeRecursive" />
       <e p="Coffee.UIParticle.Demo.csproj" t="IncludeRecursive" />
       <e p="Coffee.UIParticle.Editor.csproj" t="IncludeRecursive" />

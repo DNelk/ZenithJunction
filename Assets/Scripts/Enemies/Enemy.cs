@@ -33,6 +33,10 @@ public class Enemy : MonoBehaviour
     
     //HP UI
     private GameObject _healthBar;
+    private GameObject _hpBar;
+    private RectTransform _hpBarRect;
+    private Vector3 _hpBarPos;
+    private float _hpBarWidth;
     private float hp_OriginLength;
     private TMP_Text _hpText;
 
@@ -42,6 +46,11 @@ public class Enemy : MonoBehaviour
         _currentHP = _maxHP;
        // _mr = GetComponent<MeshRenderer>();
         _healthBar = GameObject.Find("EnemyHealth").transform.Find("Fill Area").gameObject;
+        _hpBar = _healthBar.transform.Find("HP").gameObject;
+        _hpBarRect = _hpBar.GetComponent<RectTransform>();
+        _hpBarPos = _hpBarRect.localPosition;
+        _hpBarWidth = _hpBarRect.rect.width;
+        
         hp_OriginLength = _healthBar.GetComponent<RectTransform>().sizeDelta.x;
 //        Debug.Log(hp_OriginLength);
         //_healthBar.maxValue = _maxHP;
@@ -138,7 +147,8 @@ public class Enemy : MonoBehaviour
     private void UpdateHealth()
     {
         //_healthBar.value = _currentHP;
-        _healthBar.GetComponent<RectTransform>().sizeDelta = new Vector2( (((_currentHP*100)/_maxHP) * hp_OriginLength)/100, _healthBar.GetComponent<RectTransform>().sizeDelta.y);
+        float x_pos = _hpBarPos.x + (((float)(_maxHP - _currentHP)/_maxHP)* _hpBarWidth);
+        _hpBarRect.localPosition = new Vector3(x_pos, _hpBarPos.y, _hpBarPos.z);
         _hpText.text = _currentHP + "/" + _maxHP;
     }
     
@@ -305,8 +315,9 @@ public class Enemy : MonoBehaviour
 
     public List<EnemyAttack> getAttack()
     {
-        List<EnemyAttack> _allMoves = _attacks;
+        List<EnemyAttack> _allMoves = new List<EnemyAttack>(_attacks);
         _allMoves.Add(_moveInRange);
+        
         return _allMoves;
     }
 
