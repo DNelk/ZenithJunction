@@ -153,6 +153,7 @@ MonoBehaviour:
   Player: {fileID: 0}
   CurrentAether: 0
   BattleState: 5
+  ConfirmButton: {fileID: 0}
   NumEngines: 3
   Engines: []
   DamageDealtThisTurn: 0
@@ -727,6 +728,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TutorialStep: 0
+  TriggerAfterBattle: 0
 --- !u!4 &1711060084
 Transform:
   m_ObjectHideFlags: 0

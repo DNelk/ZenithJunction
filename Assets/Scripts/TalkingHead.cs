@@ -11,6 +11,8 @@ public class TalkingHead : MonoBehaviour
     private Image _characterSprite;
     private TMP_Text _characterName;
     private TMP_Text _dialogue;
+    private Animator _anim;
+    
     public Image BG;
 
     public bool IsIdle = false;
@@ -46,6 +48,7 @@ public class TalkingHead : MonoBehaviour
         _dialogue = transform.Find("DialogueBox").GetComponentInChildren<TMP_Text>();
         _dialogue.text = "";
         BG = GetComponent<Image>();
+        _anim = GetComponent<Animator>();
     }
     
     public void SetIdle()
@@ -87,5 +90,14 @@ public class TalkingHead : MonoBehaviour
     {
         BG.DOFade(0.8f, 1f);
     }
-    
+
+    public void RollOut()
+    {
+        _anim.SetTrigger("RollOut");
+    }
+
+    public void SetOutOfFrame()
+    {
+        Destroy(gameObject);
+    }
 }
