@@ -21,7 +21,7 @@ public class BattleManager : MonoBehaviour
     public BattleStates BattleState = BattleStates.BattleStart;
     private int _clashingDamage;
     //UI
-    private Button _finishEnginesButton;
+    public Button ConfirmButton;
     private TMP_Text _confirmButtonText;
     public int NumEngines = 3;
 
@@ -47,11 +47,11 @@ public class BattleManager : MonoBehaviour
     {
         Player = GameObject.FindWithTag("Player").GetComponent<Player>();
         
-        _finishEnginesButton = GameObject.Find("ConfirmButton").GetComponent<Button>();
-        _confirmButtonText = _finishEnginesButton.GetComponentInChildren<TMP_Text>();
-        _confirmCore = _finishEnginesButton.transform.parent.transform.Find("Core").GetComponent<Image>();
-        _finishEnginesButton.onClick.AddListener(ConfirmEngines);
-        _finishEnginesButton.gameObject.SetActive(false);
+        ConfirmButton = GameObject.Find("ConfirmButton").GetComponent<Button>();
+        _confirmButtonText = ConfirmButton.GetComponentInChildren<TMP_Text>();
+        _confirmCore = ConfirmButton.transform.parent.transform.Find("Core").GetComponent<Image>();
+        ConfirmButton.onClick.AddListener(ConfirmEngines);
+        ConfirmButton.gameObject.SetActive(false);
         
         //_playerText = GameObject.Find("PlayerText").GetComponent<UIPopIn>();
         //_enemyText = GameObject.Find("EnemyText").GetComponent<UIPopIn>();
@@ -109,7 +109,7 @@ public class BattleManager : MonoBehaviour
 
         if (enginesDone)
         {
-            _finishEnginesButton.gameObject.SetActive(true);
+            ConfirmButton.gameObject.SetActive(true);
             _confirmCore.sprite = Resources.Load<Sprite>("Sprites/Core/CommenceCore_On");
             _confirmCore.SetNativeSize();
             _confirmButtonText.color = Color.yellow;
@@ -128,15 +128,18 @@ public class BattleManager : MonoBehaviour
             {
                 e.ToggleMode();
             }
-            DeckManager.Instance.Reset();
+            if (TutorialManager.Instance != null && TutorialManager.Instance.TriggerAfterBattle)
+                TutorialManager.Instance.Step();
+            else
+                DeckManager.Instance.Reset();
             CurrentEnemy.PrintNext3();
             //_clashText.Alpha = 0;
             _clashingDamage = 0;
             BattleState = BattleStates.MakingEngines;
             _confirmButtonText.text = "Confirm Engines";
-            _finishEnginesButton.onClick.RemoveAllListeners();
-            _finishEnginesButton.onClick.AddListener(ConfirmEngines);
-            _finishEnginesButton.gameObject.SetActive(false);
+            ConfirmButton.onClick.RemoveAllListeners();
+            ConfirmButton.onClick.AddListener(ConfirmEngines);
+            ConfirmButton.gameObject.SetActive(false);
             DamageDealtThisTurn = 0;
         }
         else
@@ -329,7 +332,7 @@ public class BattleManager : MonoBehaviour
         }
 
         _confirmButtonText.text = "Select an Engine";
-        _finishEnginesButton.onClick.RemoveAllListeners();
+        ConfirmButton.onClick.RemoveAllListeners();
     }
 
     public int EmptyEnginesCount()
@@ -359,7 +362,7 @@ public class BattleManager : MonoBehaviour
     public void EngineSelected()
     {
         _confirmButtonText.text = "Confirm Engine";
-        _finishEnginesButton.onClick.AddListener(ConfirmAction);
+        ConfirmButton.onClick.AddListener(ConfirmAction);
     }
     
     private void ConfirmAction()
@@ -372,7 +375,7 @@ public class BattleManager : MonoBehaviour
             Utils.DisplayError("No Action Selected", 3f);
             return;
         }
-        _finishEnginesButton.onClick.RemoveAllListeners();
+        ConfirmButton.onClick.RemoveAllListeners();
         StartCoroutine(ProcessAttacks());
     }
 }

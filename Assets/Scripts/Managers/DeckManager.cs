@@ -343,6 +343,7 @@ public class DeckManager : MonoBehaviour
 
     public void LoadDeck(List<string> deck)
     {
+        ShuffleDeck();
         _deck = new Stack<string>();
         foreach (var c in deck)
         {
