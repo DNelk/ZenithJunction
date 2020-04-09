@@ -50,15 +50,30 @@ public class TutorialManager : MonoBehaviour
 
       _currentHead = Utils.GenerateTalkingHead();
 
-      _currentHead.Name = "Test Name!";
+      _currentHead.CharacterName = "";
   
       yield return new WaitUntil(() => _currentHead.IsIdle);
 
-      _currentHead.Dialogue = "Hello, welcome to Zenith Junction. A very good card game.";
+      _currentHead.Dialogue = "Ok kid.. now's your chance to prove yourself. Remember your training?";
 
       yield return new WaitUntil(AdvanceText);
 
-      _currentHead.Dialogue = "Yes, this game is so good. Now lets deal cards";
+      //Change Character head
+      _currentHead.CharacterName = "Hugo";
+      _currentHead.Dialogue = "...";
+      
+      yield return new WaitUntil(AdvanceText);
+
+      _currentHead.CharacterName = "";
+      _currentHead.Dialogue = "...I see how it is. I swear, you squires get sloppier every year.";
+      
+      yield return new WaitUntil(AdvanceText);
+
+      _currentHead.Dialogue = "Well kid, if you want to be a full Knight of the Rails, the number one thing is using the rails to channel <color=red>Power</color>" + Utils.ReplaceWithSymbols("power") + " into your attacks.";
+      
+      yield return new WaitUntil(AdvanceText);
+      
+      _currentHead.Dialogue = "Now focus on bashing this guy over the head. You should manifest some spells to do some hurt.";
       
       yield return new WaitUntil(AdvanceText);
       
@@ -70,7 +85,7 @@ public class TutorialManager : MonoBehaviour
 
       yield return new WaitUntil(() => DeckManager.Instance.CardsToBeSorted.Count == 3);
 
-      _currentHead.Dialogue = "There are the cards!";
+      _currentHead.Dialogue = "There you go. Each of those strikes will give you one <color=red>Power</color>" + Utils.ReplaceWithSymbols("power") + ".";
 
    }
 

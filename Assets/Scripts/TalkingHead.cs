@@ -23,7 +23,7 @@ public class TalkingHead : MonoBehaviour
         set => _characterSprite.sprite = value;
     }
 
-    public string Name
+    public string CharacterName
     {
         get => _characterName.text;
         set => _characterName.text = value;
@@ -53,12 +53,28 @@ public class TalkingHead : MonoBehaviour
         IsIdle = true;
     }
     
+    //Print dialogue one char at a time
     private IEnumerator PrintDialogue()
     {
         string currentText = Dialogue;
+        bool tagOpen = false;
         for (int i = 0; i < currentText.Length; i++)
         {
             string subStr = currentText.Substring(0, i);
+            
+            //Check tags
+            if (tagOpen && currentText[i] == '>')
+            {
+                tagOpen = false;
+                continue;
+            }
+
+            if (currentText[i] == '<')
+                tagOpen = true;
+            if(tagOpen)
+                continue;
+            
+            //Set text and wait
             _dialogue.text = subStr;
             yield return new WaitForSeconds(_textSpeed);
         }
