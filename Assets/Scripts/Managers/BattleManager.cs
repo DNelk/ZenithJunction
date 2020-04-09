@@ -18,7 +18,7 @@ public class BattleManager : MonoBehaviour
     public Player Player;
     public int CurrentAether;
 
-    public BattleStates BattleState;
+    public BattleStates BattleState = BattleStates.BattleStart;
     private int _clashingDamage;
     //UI
     private Button _finishEnginesButton;
@@ -41,11 +41,9 @@ public class BattleManager : MonoBehaviour
             Instance = this;
         else if(Instance != this)
             Destroy(gameObject);
-
-        Init();
     }
 
-    private void Init()
+    public void Init()
     {
         Player = GameObject.FindWithTag("Player").GetComponent<Player>();
         
@@ -60,6 +58,7 @@ public class BattleManager : MonoBehaviour
         //_resultText = GameObject.Find("ResultText").GetComponent<UIPopIn>();
         //_clashText = GameObject.Find("ClashText").GetComponent<UIPopIn>();
         BattleState = BattleStates.MakingEngines;
+        
         _playerAttack = null;
         
         Engines = new Engine[3];
@@ -67,12 +66,12 @@ public class BattleManager : MonoBehaviour
         Engines[1] = GameObject.Find("Engine2").GetComponent<Engine>();
         Engines[2] = GameObject.Find("Engine3").GetComponent<Engine>();
         
-        if(CurrentEnemy == null)
-            CurrentEnemy = GameObject.FindWithTag("Enemy").GetComponent<Enemy>();
+        GameManager.Instance.StartBattle();
     }
     
     private void Start()
     {
+        Init();
         LoadAllEnemyAttacks();
     }
 
@@ -88,6 +87,8 @@ public class BattleManager : MonoBehaviour
                 break;
             case BattleStates.ChoosingAction:
                 ChoosingActionUpdate();
+                break;
+            default:
                 break;
         }
     }
@@ -382,7 +383,8 @@ public enum BattleStates
     ChoosingAction,
     BuyingCards,
     Battle,
-    GameOver
+    GameOver,
+    BattleStart
 }
 
 //Used for both players and enemies

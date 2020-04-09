@@ -32,6 +32,8 @@ public class DeckManager : MonoBehaviour
     private TMP_Text[] _trashCount;
     [HideInInspector] public RectTransform[] _cardPositions;
     
+    //Other Vars
+    public int DealAmt;
     private void Awake()
     {
         if (Instance == null)
@@ -77,12 +79,17 @@ public class DeckManager : MonoBehaviour
             j++;
         }
 
+        DealAmt = 9;
     }
 
 
     private void Start()
     {
         ShuffleDeck();
+    }
+
+    public void DealHand()
+    {
         StartCoroutine(DealActive());
     }
 
@@ -121,11 +128,10 @@ public class DeckManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         
         //Dylan
-        int dealAmt = 9;
         int totalCardsNum = _deck.Count + _discard.Count;
-        
-        if (totalCardsNum < 9)
-            dealAmt = totalCardsNum;
+        int tempDealAmt = DealAmt;
+        if (totalCardsNum < DealAmt)
+            DealAmt = totalCardsNum;
         
         for (int i = 0; i < totalCardsNum; i++)
         {
@@ -161,6 +167,8 @@ public class DeckManager : MonoBehaviour
         
         playUnlockTabParticle();
         turnOnRaycast();
+
+        DealAmt = tempDealAmt;
     }
 
     public void Discard(Card c)
@@ -330,6 +338,15 @@ public class DeckManager : MonoBehaviour
             {
                 if (card.MyIndex != cardIndex) card.MyCheatImg.SetActive(false);
             }
+        }
+    }
+
+    public void LoadDeck(List<string> deck)
+    {
+        _deck = new Stack<string>();
+        foreach (var c in deck)
+        {
+            _deck.Push(c);
         }
     }
 }
