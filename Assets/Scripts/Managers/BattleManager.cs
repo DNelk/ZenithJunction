@@ -34,18 +34,30 @@ public class BattleManager : MonoBehaviour
     //Battle Variables
     //Engines
     public Engine[] Engines;
-    
+    //set up canvas
+    private Transform _mainCanvas;
+    //set move 
+    private MovePlayerDialog _moveUI;
+    //set EnemyPos Ui
+    public EnemyPosition enemyPos;
+
     private void Awake()
     {
         if (Instance == null)
             Instance = this;
         else if(Instance != this)
             Destroy(gameObject);
+        
+        
+        //get enemy
+        if (CurrentEnemy == null)
+            CurrentEnemy = GameObject.FindWithTag("Enemy").GetComponent<Enemy>();
     }
 
     public void Init()
     {
         Player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        
         
         ConfirmButton = GameObject.Find("ConfirmButton").GetComponent<Button>();
         _confirmButtonText = ConfirmButton.GetComponentInChildren<TMP_Text>();
@@ -67,6 +79,15 @@ public class BattleManager : MonoBehaviour
         Engines[2] = GameObject.Find("Engine3").GetComponent<Engine>();
         
         GameManager.Instance.StartBattle();
+        
+        //get move UI
+        _mainCanvas = GameObject.Find("MainCanvas").transform;
+        Transform posPanel = _mainCanvas.Find("PositionsPanel");
+        //get move set
+        GameObject moveSet = posPanel.transform.Find("BackLayer").transform.Find("MoveButton").gameObject;
+        _moveUI = moveSet.GetComponent<MovePlayerDialog>();
+        //get enemyPos
+        enemyPos = posPanel.transform.Find("EnemyPos").GetComponent<EnemyPosition>();
     }
     
     private void Start()
@@ -199,10 +220,13 @@ public class BattleManager : MonoBehaviour
         //Allow player movement
         if (_playerAttack.MoveTotal > 0)
         {
-            MovePlayerDialog mpd = Instantiate(Resources.Load<GameObject>("prefabs/moveplayerdialog"), GameObject.Find("MainCanvas").transform).GetComponent<MovePlayerDialog>();
-            mpd.MoveTotal = _playerAttack.MoveTotal;
-            yield return new WaitUntil(() => mpd.Confirmed);
-            Destroy(mpd.gameObject);
+            _moveUI.MoveTotal = _playerAttack.MoveTotal;
+            _moveUI.gameObject.SetActive(true);
+
+            yield return new WaitUntil(() => _moveUI.Confirmed);
+
+            //new one
+            _moveUI.gameObject.SetActive(false);
         }
 
         //Finish Executing

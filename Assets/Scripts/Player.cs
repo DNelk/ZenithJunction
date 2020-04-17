@@ -14,6 +14,10 @@ public class Player : MonoBehaviour
     private int _currentHP;
     //HP UI
     private GameObject _healthBar;
+    private GameObject _hpBar;
+    private RectTransform _hpBarRect;
+    private Vector3 _hpBarPos;
+    private float _hpBarWidth;
     private float hp_OriginLength;
     private TMP_Text _hpText;
     private Transform[] _positions;
@@ -24,11 +28,22 @@ public class Player : MonoBehaviour
     public Dictionary<StatType, Stat> ActiveStats = new Dictionary<StatType, Stat>();
     public Dictionary<StatType, Stat> BaseStats = new Dictionary<StatType, Stat>();
     
+    private void Update()
+    {
+        UpdateHealth();
+    }
+    
     private void Awake()
     {
         _currentHP = _maxHP;
         _mr = GetComponentInChildren<SkinnedMeshRenderer>();
+            
         _healthBar = GameObject.Find("PlayerHealth").transform.Find("Fill Area").gameObject;
+        _hpBar = _healthBar.transform.Find("HP").gameObject;
+        _hpBarRect = _hpBar.GetComponent<RectTransform>();
+        _hpBarPos = _hpBarRect.localPosition;
+        _hpBarWidth = _hpBarRect.rect.width;
+        
         hp_OriginLength = _healthBar.GetComponent<RectTransform>().sizeDelta.x;
         _healthBar.transform.parent.GetComponent<HealthBar>().Target = "Player";
         //_healthBar.maxValue = _maxHP;
@@ -37,7 +52,6 @@ public class Player : MonoBehaviour
         _positions = new []{GameObject.Find("PlayerPos1").transform, GameObject.Find("PlayerPos2").transform, GameObject.Find("PlayerPos3").transform};
         _currentPos = 0;
         _enemy = GameObject.FindGameObjectWithTag("Enemy").GetComponent<Enemy>();
-
     }
 
     /*private void Update()
@@ -66,7 +80,8 @@ public class Player : MonoBehaviour
     private void UpdateHealth()
     {
         //_healthBar.value = _currentHP;
-        _healthBar.GetComponent<RectTransform>().sizeDelta = new Vector2( (((_currentHP*100)/_maxHP) * hp_OriginLength)/100, _healthBar.GetComponent<RectTransform>().sizeDelta.y);
+        float x_pos = _hpBarPos.x - (((float)(_maxHP - _currentHP)/_maxHP)* _hpBarWidth);
+        _hpBarRect.localPosition = new Vector3(x_pos,_hpBarPos.y, _hpBarPos.z);
         _hpText.text = _currentHP + "/" + _maxHP;
     }
 

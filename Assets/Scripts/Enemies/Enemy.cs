@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using DG.Tweening;
 using TMPro;
@@ -11,6 +12,7 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] protected string _name; 
     [SerializeField] protected List<EnemyAttack> _attacks; //Our pool of attacks
+    [SerializeField] protected string _description;
     public EnemyAttack CurrentAttack;
     [SerializeField] protected EnemyAttack _moveInRange; //Our move action that we can do when we need to get in range
     [SerializeField] public string ExtraInfo;
@@ -31,15 +33,24 @@ public class Enemy : MonoBehaviour
     
     //HP UI
     private GameObject _healthBar;
+    private GameObject _hpBar;
+    private RectTransform _hpBarRect;
+    private Vector3 _hpBarPos;
+    private float _hpBarWidth;
     private float hp_OriginLength;
     private TMP_Text _hpText;
-    
+
     private void Awake()
     {
         _atkIndex = -1;
         _currentHP = _maxHP;
        // _mr = GetComponent<MeshRenderer>();
         _healthBar = GameObject.Find("EnemyHealth").transform.Find("Fill Area").gameObject;
+        _hpBar = _healthBar.transform.Find("HP").gameObject;
+        _hpBarRect = _hpBar.GetComponent<RectTransform>();
+        _hpBarPos = _hpBarRect.localPosition;
+        _hpBarWidth = _hpBarRect.rect.width;
+        
         hp_OriginLength = _healthBar.GetComponent<RectTransform>().sizeDelta.x;
 //        Debug.Log(hp_OriginLength);
         //_healthBar.maxValue = _maxHP;
@@ -136,7 +147,8 @@ public class Enemy : MonoBehaviour
     private void UpdateHealth()
     {
         //_healthBar.value = _currentHP;
-        _healthBar.GetComponent<RectTransform>().sizeDelta = new Vector2( (((_currentHP*100)/_maxHP) * hp_OriginLength)/100, _healthBar.GetComponent<RectTransform>().sizeDelta.y);
+        float x_pos = _hpBarPos.x + (((float)(_maxHP - _currentHP)/_maxHP)* _hpBarWidth);
+        _hpBarRect.localPosition = new Vector3(x_pos, _hpBarPos.y, _hpBarPos.z);
         _hpText.text = _currentHP + "/" + _maxHP;
     }
     
@@ -243,6 +255,8 @@ public class Enemy : MonoBehaviour
                 yield return new WaitForSeconds(ChangePosition(_currentPos - 1));
             moves--;
         }
+        
+        BattleManager.Instance.enemyPos.UpdatePosition();
     }
 
     protected virtual int CalculateDamageWithStatus(int dmg)
@@ -287,4 +301,31 @@ public class Enemy : MonoBehaviour
             }
         }
     }
+
+    
+    //for UI information of enemy
+    #region UI Information
+    public string getName()
+    {
+        return _name;
+    }
+
+    public string getDescription()
+    {
+        return _description;
+    }
+
+    public List<EnemyAttack> getAttack()
+    {
+        List<EnemyAttack> _allMoves = new List<EnemyAttack>(_attacks);
+        _allMoves.Add(_moveInRange);
+        
+        return _allMoves;
+    }
+
+    public string getSpecial()
+    {
+        return ExtraInfo;
+    }
+    #endregion
 }
