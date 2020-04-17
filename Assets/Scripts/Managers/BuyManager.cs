@@ -34,6 +34,7 @@ public class BuyManager : MonoBehaviour
     public int BuysRemaining;
     public int FreeBuysRemaining;
     private BattleStates _lastState;
+    public int DealAmt = 5;
     
     //Freebies
     private Card _endlessAtk;
@@ -123,6 +124,8 @@ public class BuyManager : MonoBehaviour
 
     public void LoadShop()
     { 
+        if(TutorialManager.Instance != null && TutorialManager.Instance.TutorialStep == 2)
+            TutorialManager.Instance.Step();
         StartCoroutine(LoadBuyMenu());
     }
 
@@ -154,7 +157,7 @@ public class BuyManager : MonoBehaviour
         _activeCards.Clear();
         _activeCardObjects.Clear();
         
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < DealAmt; i++)
         {
             StartCoroutine(DealNewCard());
         }
@@ -308,5 +311,11 @@ public class BuyManager : MonoBehaviour
         {
             _catalog.Add(CardDirectory.GetRandomCard(Utils.GetRandomArchetype(), Utils.GetRandomRarity(), true));
         }
+    }
+
+    public void LoadNewCatalog(List<string> catalog)
+    {
+        _catalog = catalog;
+        ShuffleShopDeck();
     }
 }

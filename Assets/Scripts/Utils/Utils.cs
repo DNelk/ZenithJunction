@@ -55,10 +55,10 @@ public static class Utils
 
     }
 
-    public static TalkingHead GenerateTalkingHead()
+    public static TalkingHead GenerateTalkingHead(Transform parent)
     {
         return GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UI/TalkingHead"),
-            GameObject.Find("MainCanvas").transform).GetComponent<TalkingHead>();
+            parent).GetComponent<TalkingHead>();
     }
     #endregion
 
