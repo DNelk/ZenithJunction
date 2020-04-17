@@ -255,6 +255,8 @@ public class Enemy : MonoBehaviour
                 yield return new WaitForSeconds(ChangePosition(_currentPos - 1));
             moves--;
         }
+        
+        BattleManager.Instance.enemyPos.UpdatePosition();
     }
 
     protected virtual int CalculateDamageWithStatus(int dmg)

@@ -206,9 +206,12 @@ public class CardEventManager : EventTrigger
             //show the engine that available
             if (!_myCard.Dragging)
             {
-                for (int i = 0; i < BattleManager.Instance.Engines.Length; i++)
+                if (BattleManager.Instance.BattleState != BattleStates.ChoosingAction)
                 {
-                    if (BattleManager.Instance.Engines[i].PendingCount < 3) BattleManager.Instance.Engines[i].selectGear();
+                    for (int i = 0; i < BattleManager.Instance.Engines.Length; i++)
+                    {
+                        if (BattleManager.Instance.Engines[i].PendingCount < 3) BattleManager.Instance.Engines[i].selectGear();
+                    }
                 }
             }
         }
@@ -249,9 +252,12 @@ public class CardEventManager : EventTrigger
             //show the engine that available
             if (GameManager.Instance.State == GameState.Battle)
             {
-                foreach (var Engine in BattleManager.Instance.Engines)
+                if (BattleManager.Instance.BattleState != BattleStates.ChoosingAction)
                 {
-                    Engine.disselectGear();
+                    foreach (var Engine in BattleManager.Instance.Engines)
+                    {
+                        Engine.disselectGear();
+                    }
                 }
             }
         }

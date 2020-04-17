@@ -52,7 +52,6 @@ public class Player : MonoBehaviour
         _positions = new []{GameObject.Find("PlayerPos1").transform, GameObject.Find("PlayerPos2").transform, GameObject.Find("PlayerPos3").transform};
         _currentPos = 0;
         _enemy = GameObject.FindGameObjectWithTag("Enemy").GetComponent<Enemy>();
-
     }
 
     /*private void Update()

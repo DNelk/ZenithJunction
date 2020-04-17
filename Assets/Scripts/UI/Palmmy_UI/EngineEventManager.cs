@@ -9,6 +9,9 @@ public class EngineEventManager : EventTrigger
 {
     //engine ref
     private Engine _myEngine;
+    
+    //animationcheck
+    private bool _inAnim;
 
     private void Awake()
     {
@@ -39,12 +42,17 @@ public class EngineEventManager : EventTrigger
         transform.DOScale(_myEngine._baseScale * 1.2f, 0.2f);
         _myEngine.playAuraAnim();
         _myEngine.selectGear();
+        _inAnim = true;
     }
 
     public override void OnPointerExit(PointerEventData eventData)
     {
-        transform.DOScale(_myEngine._baseScale, 0.2f);
-        _myEngine.disselectGear();
+        if (!_myEngine._selected)
+        {
+            transform.DOScale(_myEngine._baseScale, 0.2f);
+            _myEngine.disselectGear();
+        }
+        
     }
     
     #endregion

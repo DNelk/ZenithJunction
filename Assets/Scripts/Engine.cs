@@ -31,7 +31,7 @@ public class Engine : MonoBehaviour
     private Image u_aetherCore;
     private Image[] u_move;
     private Image u_selectedAura;
-    
+
     //animator
     private Animator slotAuraAnim;
 
@@ -45,8 +45,8 @@ public class Engine : MonoBehaviour
     private Vector3 _initialPosition;
     private BoxCollider2D _collider;
 
-    private bool _selected;
-    
+    [HideInInspector] public bool _selected;
+
     //for pointer event
     private GameObject _gear;
     private Animator _gearAnim;
@@ -617,6 +617,7 @@ public class Engine : MonoBehaviour
         }*/
         u_CircleGlowMat.SetColor("_MyColor", GlowColor);
         _selected = false;
+        disselectGear();
     }
 
     public void Select()
