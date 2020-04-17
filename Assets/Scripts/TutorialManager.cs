@@ -8,12 +8,12 @@ public class TutorialManager : MonoBehaviour
 {
    public static TutorialManager Instance = null;
 
-   public int TutorialStep;
+   public int TutorialStep = 0;
 
    private TalkingHead _currentHead;
 
-   public bool TriggerAfterBattle = false;
-   
+   public bool TriggerAfterBattle = true;
+
    private void Awake()
    {
       if (Instance == null)
@@ -24,7 +24,7 @@ public class TutorialManager : MonoBehaviour
 
    private void Start()
    {
-      TutorialStep = 0;
+      
    }
 
    public void Step()
@@ -36,6 +36,15 @@ public class TutorialManager : MonoBehaviour
             break;
          case 1:
             StartCoroutine(Step2());
+            break;
+         case 2:
+            StartCoroutine(Step3());
+            break;
+         case 3:
+            StartCoroutine(Step4());
+            break;
+         case 4:
+            StartCoroutine(Step5());
             break;
       } 
    }
@@ -54,7 +63,7 @@ public class TutorialManager : MonoBehaviour
       BattleManager.Instance.Engines[2].gameObject.SetActive(false);
       BattleManager.Instance.NumEngines = 1;
 
-      _currentHead = Utils.GenerateTalkingHead();
+      _currentHead = Utils.GenerateTalkingHead(GameObject.Find("MainCanvas").transform);
 
       _currentHead.CharacterName = "Sir John";
   
@@ -153,7 +162,6 @@ public class TutorialManager : MonoBehaviour
       
       _currentHead.RollOut();
       TutorialStep++;
-      TriggerAfterBattle = true;
    }
 
 
@@ -171,7 +179,7 @@ public class TutorialManager : MonoBehaviour
       BattleManager.Instance.Engines[2].gameObject.SetActive(false);
       BattleManager.Instance.NumEngines = 1;
 
-      _currentHead = Utils.GenerateTalkingHead();
+      _currentHead = Utils.GenerateTalkingHead(GameObject.Find("MainCanvas").transform);
 
       _currentHead.CharacterName = "Hugo";
       _currentHead.Dialogue = "Whoa! I hit him!";
@@ -262,16 +270,225 @@ public class TutorialManager : MonoBehaviour
       
       yield return new WaitUntil(AdvanceText);
       
-      _currentHead.Dialogue = "With the right equipment, color=blue>Aether</color>" +
+      _currentHead.Dialogue = "With the right equipment, <color=blue>Aether</color>" +
                               Utils.ReplaceWithSymbols("aether ") + "can be cultivated to perform even more "+
                               "arcane and powerful spells, and amplify your potential skills to new levels.";
       
       yield return new WaitUntil(AdvanceText);
+      
+      _currentHead.CharacterName = "Hugo";
+      _currentHead.Dialogue = "But if I'm focusing on making aether, isn't that thing gonna hurt me?";
+      
+      yield return new WaitUntil(AdvanceText);
+      
+      _currentHead.CharacterName = "Sir Wolff";
+      _currentHead.Dialogue = "True. But that is the price of progress.";
+      
+      yield return new WaitUntil(AdvanceText);
+      
+      _currentHead.Dialogue = "Now let's load the engine with these aether cards.";
+      
+      yield return new WaitUntil(AdvanceText);
+
+      
+      _currentHead.RollOut();
+      yield return null;
+      TutorialStep++;
+   }
+
+   private IEnumerator Step3()
+   {
+      List<string> tutDeck = new List<string>();
+      tutDeck.Add("railcharge");
+
+      BuyManager.Instance.LoadNewCatalog(tutDeck);
+      BuyManager.Instance.DealAmt = 1;
+
+      _currentHead = Utils.GenerateTalkingHead(GameObject.Find("BuyScreen").transform);
+
+      _currentHead.CharacterName = "Hugo";
+      _currentHead.Dialogue = "Yeowch! That stings!";
+
+      yield return new WaitUntil(AdvanceText);
+
+      _currentHead.CharacterName = "Sir John";
+      _currentHead.Dialogue = "Pain is in the mind!";
+
+      yield return new WaitUntil(AdvanceText);
+
+      Tween fadeTween = _currentHead.BG.DOFade(0f, 0.1f);
+
+      yield return fadeTween.WaitForCompletion();
+
+      _currentHead.CharacterName = "Sir Wolff";
+      _currentHead.Dialogue = "...yes. Either way, you can use the <color=blue>Aether</color>" +
+                              Utils.ReplaceWithSymbols("aether ") + "you channeled to transmute a new card.";
+                              
+      yield return new WaitUntil(AdvanceText);
+      
+      _currentHead.Dialogue = "Please note that this is not a permanent transmutation. After this encounter you'll forget about it like you never learned it!";
+
+
+      _currentHead.Dialogue = "You have 3 <color=blue>Aether</color>" +
+                              Utils.ReplaceWithSymbols("aether, ") + "so go ahead and buy that Rail Charge.";
+      yield return new WaitUntil(() => DeckManager.Instance.InDiscardCount() == 4);
+
+      _currentHead.Dialogue = "Transmutation Complete! Now let's see that new skill in action!";
+      
+      yield return new WaitUntil(AdvanceText);
+
+      _currentHead.RollOut();
+      TutorialStep++;
+   }
+
+   private IEnumerator Step4()
+   {
+      List<string> tutDeck = new List<string>();
+      tutDeck.Add("strike");
+      tutDeck.Add("strike");
+      tutDeck.Add("railcharge");
+
+      DeckManager.Instance.LoadDeck(tutDeck);
+
+      DeckManager.Instance.DealAmt = 3;
+      BattleManager.Instance.Engines[1].gameObject.SetActive(false);
+      BattleManager.Instance.Engines[2].gameObject.SetActive(false);
+      BattleManager.Instance.NumEngines = 1;
+
+      DeckManager.Instance.DealHand();
+
+      yield return new WaitUntil(() => DeckManager.Instance.CardsToBeSorted.Count == 3);
+      
+      _currentHead = Utils.GenerateTalkingHead(GameObject.Find("MainCanvas").transform);
+
+      _currentHead.CharacterName = "Sir John";
+      _currentHead.Dialogue = "Oh yeah! I like what's gonna happen here! Give him hell, kid!";
+
+      yield return new WaitUntil(AdvanceText); 
+      
+      Tween fadeTween = _currentHead.BG.DOFade(0f, 0.1f);
+      _currentHead.RollOut();
+      TutorialStep++;
    }
    
+   private IEnumerator Step5()
+   {
+      List<string> tutDeck = new List<string>();
+      tutDeck.Add("allaboard");
+      tutDeck.Add("strike");
+      tutDeck.Add("tinylittlelaserbeam");
+
+      DeckManager.Instance.LoadDeck(tutDeck);
+
+      DeckManager.Instance.DealAmt = 3;
+      BattleManager.Instance.Engines[1].gameObject.SetActive(false);
+      BattleManager.Instance.Engines[2].gameObject.SetActive(false);
+      BattleManager.Instance.NumEngines = 1;
+
+    
+      _currentHead = Utils.GenerateTalkingHead(GameObject.Find("MainCanvas").transform);
+
+      _currentHead.CharacterName = "Sir Wolff";
+      _currentHead.Dialogue = "Now do you see the value of Aether transmutation?";
+
+      yield return new WaitUntil(AdvanceText);
+      
+      _currentHead.CharacterName = "Hugo";
+      _currentHead.Dialogue = "Oh yeah! Did you see how powerful I was?";
+
+      yield return new WaitUntil(AdvanceText);
+      
+      _currentHead.CharacterName = "Sir Wolff";
+      _currentHead.Dialogue = "I feel that I have one more thing to tell you about before we let you loose: <color=yellow>Ranged</color> Tactics!";
+
+      yield return new WaitUntil(AdvanceText);
+      
+      _currentHead.Dialogue = "You see, you won't always be able to simply remain in the same spot and take a beating from some ne'er-do-well." +
+                              " You'll often want to <color=yellow>Move</color>" + Utils.ReplaceWithSymbols("move ") + "around to dodge, plan, and retreat!";
+
+      yield return new WaitUntil(AdvanceText);
+      
+      _currentHead.CharacterName = "Sir John";
+      _currentHead.Dialogue = "Retreat?! Never! But you will need to get back up in the enemy's face if they get away from you, that's true.";
+
+      yield return new WaitUntil(AdvanceText);
+
+      _currentHead.Dialogue = "And of course, there's the matter of lining up a nicely timed <color=yellow>Ranged</color> attack.";
+
+      yield return new WaitUntil(AdvanceText);
+      
+      _currentHead.CharacterName = "Sir Wolff";
+      _currentHead.Dialogue = "A shockingly salient point coming from you, John.";
+
+      yield return new WaitUntil(AdvanceText);
+      
+      _currentHead.Dialogue = "Try this hand of cards:";
+
+      yield return new WaitUntil(AdvanceText);
+      
+      DeckManager.Instance.DealHand();
+
+      yield return new WaitUntil(() => DeckManager.Instance.CardsToBeSorted.Count == 3);
+      
+      Tween fadeTween = _currentHead.BG.DOFade(0f, 0.1f);
+
+      _currentHead.Dialogue = "Two cards are of note in this hand. Your \"All Aboard\" and your \"Tiny Little Laser Beam.\"";
+
+      yield return new WaitUntil(AdvanceText);
+      
+      _currentHead.Dialogue = "The \"Tiny Little Laser Beam.\" has two range markers in the corner as you can see.";
+
+      yield return new WaitUntil(AdvanceText);
+      
+      _currentHead.Dialogue = "That means it's a <color=yellow>long range</color> attack.";
+
+      yield return new WaitUntil(AdvanceText);
+      
+      _currentHead.CharacterName = "Sir John";
+      _currentHead.Dialogue = "Let's go down the list!";
+
+      yield return new WaitUntil(AdvanceText);
+      
+      _currentHead.Dialogue = "No Range Markers: That's a <color=yellow>melee</color> attack. It only gives you power if you're right next to the enemy.";
+
+      yield return new WaitUntil(AdvanceText);
+      
+      _currentHead.Dialogue = "One Range Marker: That's a <color=yellow>short range</color> attack. It gives you power if you're next to the enemy or one car away. Any further, not gonna work.";
+
+      yield return new WaitUntil(AdvanceText);
+      
+      _currentHead.Dialogue = "Two Range Markers: That's <color=yellow>long range</color>. It's only working if you're not next to the enemy.";
+
+      yield return new WaitUntil(AdvanceText);
+
+      _currentHead.CharacterName = "Sir Wolff";
+      _currentHead.Dialogue = "So as you can see, <color=yellow>Moving</color>" + Utils.ReplaceWithSymbols("move ") + "will open up new possibilities of attack.";
+      
+      yield return new WaitUntil(AdvanceText);
+
+      _currentHead.Dialogue = "The \"All Aboard\" card you see there can either be used at melee range, or can <color=yellow>Move</color>" + Utils.ReplaceWithSymbols("move ") +"you further from our foe.";
+
+      yield return new WaitUntil(AdvanceText);
+
+      _currentHead.Dialogue = "<color=yellow>Moving</color>" + Utils.ReplaceWithSymbols("move ") +
+                              "one space away will let you use that laser beam.";
+
+      yield return new WaitUntil(AdvanceText);
+      
+      _currentHead.Dialogue = "Since the enemy is only attacking us at melee range, you'll not only dodge it's attack, but you'll have more power and win the exchange!";
+      
+      yield return new WaitUntil(AdvanceText);
+
+      _currentHead.Dialogue = "Give it a try!";
+      
+      yield return new WaitUntil(AdvanceText);
+         
+      _currentHead.RollOut();
+      TutorialStep++;
+   }
 
    private bool AdvanceText()
    {
-      return _currentHead.TextDone && Input.anyKey;
+      return (_currentHead.TextDone && _currentHead.TextTimer > 0) || (_currentHead.TextDone && Input.anyKey);
    }
 }

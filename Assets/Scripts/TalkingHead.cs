@@ -17,6 +17,7 @@ public class TalkingHead : MonoBehaviour
 
     public bool IsIdle = false;
     public bool TextDone = true;
+    public float TextTimer;
 
     private float _textSpeed = 0.01f;
     public Sprite Sprite
@@ -59,6 +60,7 @@ public class TalkingHead : MonoBehaviour
     //Print dialogue one char at a time
     private IEnumerator PrintDialogue()
     {
+        TextTimer = 0f;
         string currentText = Dialogue;
         bool tagOpen = false;
         for (int i = 0; i < currentText.Length; i++)
@@ -99,5 +101,11 @@ public class TalkingHead : MonoBehaviour
     public void SetOutOfFrame()
     {
         Destroy(gameObject);
+    }
+
+    private void Update()
+    {
+        if (TextDone)
+            TextTimer += Time.deltaTime;
     }
 }
