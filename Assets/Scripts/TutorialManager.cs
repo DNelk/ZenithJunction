@@ -46,6 +46,9 @@ public class TutorialManager : MonoBehaviour
          case 4:
             StartCoroutine(Step5());
             break;
+         case 5:
+            StartCoroutine(Step6());
+            break;
       } 
    }
 
@@ -367,6 +370,8 @@ public class TutorialManager : MonoBehaviour
       yield return new WaitUntil(AdvanceText); 
       
       Tween fadeTween = _currentHead.BG.DOFade(0f, 0.1f);
+      yield return fadeTween.WaitForCompletion();
+
       _currentHead.RollOut();
       TutorialStep++;
    }
@@ -431,6 +436,8 @@ public class TutorialManager : MonoBehaviour
       yield return new WaitUntil(() => DeckManager.Instance.CardsToBeSorted.Count == 3);
       
       Tween fadeTween = _currentHead.BG.DOFade(0f, 0.1f);
+      yield return fadeTween.WaitForCompletion();
+
 
       _currentHead.Dialogue = "Two cards are of note in this hand. Your \"All Aboard\" and your \"Tiny Little Laser Beam.\"";
 
@@ -487,8 +494,99 @@ public class TutorialManager : MonoBehaviour
       TutorialStep++;
    }
 
+   private IEnumerator Step6()
+   {
+      PlayerCollection pc = Utils.Load<PlayerCollection>("playercollection");
+      BuyManager.Instance.GenerateCatalog();
+      BuyManager.Instance.DealAmt = 5;
+      DeckManager.Instance.LoadDeck(pc.Equipped);
+
+      DeckManager.Instance.DealAmt = 9;
+      
+      _currentHead = Utils.GenerateTalkingHead(GameObject.Find("MainCanvas").transform);
+
+      _currentHead.CharacterName = "Sir Wolff";
+      _currentHead.Dialogue = "And with that, I believe you will be quite able to handle this foe on your own.";
+      
+      yield return new WaitUntil(AdvanceText); 
+      
+      _currentHead.CharacterName = "Sir John";
+      _currentHead.Dialogue = "Don't hold back. Show him what you're made of.";
+      
+      yield return new WaitUntil(AdvanceText); 
+
+      _currentHead.CharacterName = "Hugo";
+      _currentHead.Dialogue = "Alright. Here I go-";
+      
+      yield return new WaitUntil(AdvanceText);
+      
+      _currentHead.CharacterName = "...";
+      _currentHead.Dialogue = "BRRRR";
+      
+      yield return new WaitUntil(AdvanceText);
+      
+      _currentHead.CharacterName = "Hugo";
+      _currentHead.Dialogue = "Whoa... wait a second! what's happening to my arm!";
+      
+      yield return new WaitUntil(AdvanceText);
+      
+      Tween fadeTween = _currentHead.BG.DOFade(0f, 0.1f);
+      yield return fadeTween.WaitForCompletion();
+      
+      BattleManager.Instance.Engines[1].gameObject.SetActive(true);
+      BattleManager.Instance.Engines[2].gameObject.SetActive(true);
+      BattleManager.Instance.Engines[1].GetComponent<CanvasGroup>().alpha = 0;
+      BattleManager.Instance.Engines[2].GetComponent<CanvasGroup>().alpha = 0;
+
+      Sequence engineLoadTween = DOTween.Sequence();
+      engineLoadTween.Append(BattleManager.Instance.Engines[1].GetComponent<CanvasGroup>().DOFade(1f, 1f));
+      engineLoadTween.Join(BattleManager.Instance.Engines[2].GetComponent<CanvasGroup>().DOFade(1f, 1f));
+
+      BattleManager.Instance.NumEngines = 3;
+
+      yield return engineLoadTween.WaitForCompletion();
+      
+      _currentHead.CharacterName = "Sir John";
+      _currentHead.Dialogue = "I-impossible.. it's...";
+      
+      yield return new WaitUntil(AdvanceText); 
+      
+      _currentHead.CharacterName = "Sir Wolff";
+      _currentHead.Dialogue = "...The tri-engine Gauntlet!";
+      
+      yield return new WaitUntil(AdvanceText); 
+      
+      _currentHead.Dialogue = "It's been thought to be lost for years... that gauntlet is the most powerful relic of the <color=purple>Locomancers</color>.";
+      
+      yield return new WaitUntil(AdvanceText);
+      
+      _currentHead.Dialogue = "Any Knight who wields it is said to have three times the potential of an average knight.";
+      
+      yield return new WaitUntil(AdvanceText);
+      
+      _currentHead.CharacterName = "Sir John";
+      _currentHead.Dialogue = "What he's trying to say is instead of one <color=orange>Engine</color>, you can use 3 <color=orange>Engines</color>!";
+      
+      yield return new WaitUntil(AdvanceText); 
+      
+      _currentHead.Dialogue = "Kid.. if anyone can send these <color=#730901>Followers of Dran</color> back to wherever they came... it's you.";
+      
+      yield return new WaitUntil(AdvanceText);
+      
+      _currentHead.Dialogue = "You've got this!";
+
+      _currentHead.RollOut();
+      
+      DeckManager.Instance.DealHand();
+
+      yield return new WaitUntil(() => DeckManager.Instance.CardsToBeSorted.Count == 3);
+
+      
+      TutorialStep++;
+      TriggerAfterBattle = false;
+   }
    private bool AdvanceText()
    {
-      return (_currentHead.TextDone && _currentHead.TextTimer > 0) || (_currentHead.TextDone && Input.anyKey);
+      return _currentHead.TextDone && Input.anyKey;
    }
 }

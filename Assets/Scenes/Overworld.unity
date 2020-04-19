@@ -2349,7 +2349,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Node: {fileID: 1190868598}
   AllowPass: 0
-  MyScene: PrototypeBattle
+  MyScene: SlimeBattle
 --- !u!61 &1350691244
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3368,7 +3368,7 @@ PrefabInstance:
     - target: {fileID: 5334284269272677902, guid: cb2568df64b184071a348fbad7168cab,
         type: 3}
       propertyPath: MyScene
-      value: PrototypeBattle
+      value: TutorialBattle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cb2568df64b184071a348fbad7168cab, type: 3}
