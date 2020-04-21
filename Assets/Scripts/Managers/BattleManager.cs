@@ -223,7 +223,11 @@ public class BattleManager : MonoBehaviour
             _moveUI.MoveTotal = _playerAttack.MoveTotal;
             _moveUI.gameObject.SetActive(true);
 
+            BattleState = BattleStates.Moving;
+            
             yield return new WaitUntil(() => _moveUI.Confirmed);
+
+            BattleState = BattleStates.Battle;
 
             //new one
             _moveUI.gameObject.SetActive(false);
@@ -411,7 +415,8 @@ public enum BattleStates
     BuyingCards,
     Battle,
     GameOver,
-    BattleStart
+    BattleStart,
+    Moving
 }
 
 //Used for both players and enemies

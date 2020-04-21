@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
 
     //Map Stuff
     public string BattlingNode;
-    
+
     private void Awake()
     {
         if (Instance == null)

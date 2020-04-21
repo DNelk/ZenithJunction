@@ -64,6 +64,11 @@ public class Enemy : MonoBehaviour
         _enemyIntention = GameObject.Find("EnemyIntentions").GetComponent<EnemyIntentionUI>();
     }
 
+    private void Start()
+    {
+        transform.parent = GameObject.Find("SceneRoot").transform.Find("Train").transform.Find("Car1");
+    }
+
     public void PrepareAttack()
     {
         _enemyIntention.gameObject.SetActive(true);
@@ -157,6 +162,7 @@ public class Enemy : MonoBehaviour
         if(newPos >= _positions.Length)
             return -1;
         _currentPos = newPos;
+        transform.parent = transform.parent.parent.Find("Car" + (_currentPos + 1));
         Sequence move = DOTween.Sequence();
         move.Append(transform.DOMove(_positions[_currentPos].position, 0.5f));
         move.Insert(0,transform.DORotate(_positions[_currentPos].rotation.eulerAngles, 0.5f));

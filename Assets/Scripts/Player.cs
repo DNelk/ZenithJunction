@@ -31,6 +31,9 @@ public class Player : MonoBehaviour
     private void Update()
     {
         UpdateHealth();
+        /*Vector3 dir = _enemy.transform.position - transform.position;
+        Quaternion rot = Quaternion.LookRotation(dir);
+        transform.rotation = rot;*/
     }
     
     private void Awake()
@@ -53,13 +56,6 @@ public class Player : MonoBehaviour
         _currentPos = 0;
         _enemy = GameObject.FindGameObjectWithTag("Enemy").GetComponent<Enemy>();
     }
-
-    /*private void Update()
-    {
-        Vector3 dir = _enemy.transform.position - transform.position;
-        Quaternion rot = Quaternion.LookRotation(dir);
-        transform.rotation = rot;
-    }*/
 
     public void TakeDamage(int damage)
     {
@@ -90,6 +86,7 @@ public class Player : MonoBehaviour
         if(newPos >= _positions.Length)
             return -1;
         _currentPos = newPos;
+        transform.parent = transform.parent.parent.Find("Car" + (_currentPos + 1));
         Sequence move = DOTween.Sequence();
         move.Append(transform.DOMove(_positions[_currentPos].position, 0.5f));
         move.Join(transform.DORotate(_positions[_currentPos].rotation.eulerAngles, 0.5f));
