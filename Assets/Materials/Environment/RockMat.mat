@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mountain
+  m_Name: RockMat
   m_Shader: {fileID: 4800000, guid: 8c39a800339fb5a41a5be89ceed48483, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -19,6 +19,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Albedo:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -40,19 +44,23 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: c20634b0ccfd6eb4dae769a42a8b194c, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTexSide:
-        m_Texture: {fileID: 2800000, guid: 66b670b2e33150e41a5819ad828af1fd, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _NoiseTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Normal:
-        m_Texture: {fileID: 2800000, guid: c2337c830b1ab1a4f85c7c082a427cba, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -67,34 +75,60 @@ Material:
         m_Texture: {fileID: 2800000, guid: 1168d9dbb0409447ba7b8bfb1052a7c2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SpecMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ToonRamp:
+        m_Texture: {fileID: 2800000, guid: 1168d9dbb0409447ba7b8bfb1052a7c2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _ASEOutlineWidth: 0.0004
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _EdgeWidth: 0.269
+    - _EdgeWidth: 1
+    - _Gloss: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
+    - _NOISE: 0
     - _NoiseScale: 1
     - _OcclusionStrength: 1
-    - _Outline: 0.155
-    - _OutlineZ: -0.00081
+    - _Offset: 0.005
+    - _Outline: 0.009
+    - _OutlineZ: -0.001
     - _Parallax: 0.02
-    - _RimPower: 3.2
-    - _Scale: 0.35
-    - _SideScale: 0.0006
+    - _RimOffset: 1
+    - _RimPower: 1
+    - _Scale: 1
+    - _SideScale: 0.002
     - _SmoothnessTextureChannel: 0
+    - _SpecIntensity: 0
+    - _SpecTransition: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _TopSpread: 1
+    - _TopSpread: 20
     - _UVSec: 0
     - _ZWrite: 1
+    - __dirty: 0
+    - _max: 1.12
+    - _min: 1.1
     m_Colors:
-    - _Color: {r: 0.9277606, g: 0.8349056, b: 1, a: 1}
+    - _ASEOutlineColor: {r: 0.05660379, g: 0.05660379, b: 0.05660379, a: 0}
+    - _Color: {r: 0.5943396, g: 0.5943396, b: 0.5943396, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _OutlineColor: {r: 1, g: 0, b: 0, a: 1}
-    - _RimColor: {r: 0.83173925, g: 0.6933962, b: 1, a: 1}
-    - _RimColor2: {r: 0.7701409, g: 0.740566, b: 1, a: 1}
+    - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
+    - _RimColor: {r: 0.5, g: 0.17619583, b: 0, a: 1}
+    - _RimColor2: {r: 0.2830189, g: 0.08570801, b: 0, a: 1}
+    - _RimTint: {r: 0.5990566, g: 0.9495267, b: 1, a: 0}
+    - _SpecTint: {r: 1, g: 1, b: 1, a: 0}
+    - _Tint: {r: 0.75471693, g: 0.75471693, b: 0.75471693, a: 1}
