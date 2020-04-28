@@ -53,7 +53,7 @@ public class Waypoint : MonoBehaviour
         linearDist = dist;
     }
 }
-
+#if UNITY_EDITOR
 [CustomEditor(typeof(Waypoint))]
 public class DrawBezier : Editor
 {
@@ -79,3 +79,4 @@ public class DrawBezier : Editor
         SceneView.onSceneGUIDelegate -= OnSceneViewGUI; //Remove our GUI
     }
 }
+#endif

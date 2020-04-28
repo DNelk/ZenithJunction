@@ -61,7 +61,7 @@ Material:
     - _CloudColorNightMain: {r: 0.13692597, g: 0.14278883, b: 0.16037738, a: 1}
     - _CloudColorNightUnder: {r: 0.04926131, g: 0.16177176, b: 0.38679248, a: 1}
     - _DayBottomColor: {r: 0, g: 0.96835494, b: 1, a: 1}
-    - _DayTopColor: {r: 0.8113208, g: 0.4794274, b: 0.14925243, a: 1}
+    - _DayTopColor: {r: 0.3754005, g: 0.57334644, b: 0.7169812, a: 1}
     - _HorizonColorDay: {r: 1, g: 0.39462638, b: 0, a: 1}
     - _HorizonColorNight: {r: 0, g: 0.07944603, b: 0.3301887, a: 1}
     - _MoonColor: {r: 1, g: 1, b: 1, a: 1}

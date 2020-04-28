@@ -71,7 +71,7 @@ public class WaypointManager : MonoBehaviour
             w.RecalculateLinearDist();
     }
 }
-
+#if UNITY_EDITOR
 [CustomEditor(typeof(WaypointManager))]
 public class CreateBezier : Editor
 {
@@ -106,3 +106,4 @@ public class CreateBezier : Editor
             controller.RecalculateLinearDist();
     }
 }
+#endif
