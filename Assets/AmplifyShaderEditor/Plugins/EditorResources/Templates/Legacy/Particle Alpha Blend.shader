@@ -24,9 +24,14 @@ Shader /*ase_name*/ "Hidden/Templates/Legacy/Particles Alpha Blended" /*end*/
 			Pass {
 			
 				CGPROGRAM
+				#ifndef UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX
+				#define UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input)
+				#endif
+				
 				#pragma vertex vert
 				#pragma fragment frag
 				#pragma target 2.0
+				#pragma multi_compile_instancing
 				#pragma multi_compile_particles
 				#pragma multi_compile_fog
 				/*ase_pragma*/
@@ -94,6 +99,9 @@ Shader /*ase_name*/ "Hidden/Templates/Legacy/Particles Alpha Blended" /*end*/
 
 				fixed4 frag ( v2f i /*ase_frag_input*/ ) : SV_Target
 				{
+					UNITY_SETUP_INSTANCE_ID( i );
+					UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX( i );
+
 					#ifdef SOFTPARTICLES_ON
 						float sceneZ = LinearEyeDepth (SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, UNITY_PROJ_COORD(i.projPos)));
 						float partZ = i.projPos.z;

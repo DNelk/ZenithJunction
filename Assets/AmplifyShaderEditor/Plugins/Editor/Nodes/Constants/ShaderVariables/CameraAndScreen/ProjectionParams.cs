@@ -16,6 +16,7 @@ namespace AmplifyShaderEditor
 			ChangeOutputName( 3, "Far Plane" );
 			ChangeOutputName( 4, "1/Far Plane" );
 			m_value = "_ProjectionParams";
+			m_previewShaderGUID = "97ae846cb0a6b044388fad3bc03bb4c2";
 		}
 
 		public override void RefreshExternalReferences()

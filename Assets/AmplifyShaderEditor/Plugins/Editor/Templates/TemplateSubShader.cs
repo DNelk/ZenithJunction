@@ -44,7 +44,7 @@ namespace AmplifyShaderEditor
 		[SerializeField]
 		TemplateOptionsContainer m_customOptionsContainer = new TemplateOptionsContainer();
 
-		public TemplateSubShader( int subShaderIx, TemplateIdManager idManager, string uniquePrefix, TemplateSubShaderInfo subShaderInfo, ref Dictionary<string, TemplateShaderPropertyData> duplicatesHelper )
+		public TemplateSubShader(TemplateMultiPass template, int subShaderIx, TemplateIdManager idManager, string uniquePrefix, TemplateSubShaderInfo subShaderInfo, ref Dictionary<string, TemplateShaderPropertyData> duplicatesHelper )
 		{
 			m_idx = subShaderIx;
 
@@ -87,7 +87,7 @@ namespace AmplifyShaderEditor
 			int currAddedPassIdx = 0;
 			for( int passIdx = 0; passIdx < m_passAmount; passIdx++ )
 			{
-				TemplatePass newPass = new TemplatePass( this,subShaderIx, passIdx, idManager, uniquePrefix + "Pass" + passIdx, subShaderInfo.Passes[ passIdx ].GlobalStartIdx, subShaderInfo.Passes[ passIdx ], ref ownDuplicatesDict );
+				TemplatePass newPass = new TemplatePass( template, this,subShaderIx, passIdx, idManager, uniquePrefix + "Pass" + passIdx, subShaderInfo.Passes[ passIdx ].GlobalStartIdx, subShaderInfo.Passes[ passIdx ], ref ownDuplicatesDict );
 				if( newPass.AddToList )
 				{
 					if( newPass.IsMainPass && m_mainPass < 0  )

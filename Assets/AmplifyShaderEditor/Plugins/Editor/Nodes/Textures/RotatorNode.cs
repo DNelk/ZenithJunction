@@ -35,11 +35,24 @@ namespace AmplifyShaderEditor
 			PreviewMaterial.SetFloat( m_cachedUsingEditorId, (m_inputPorts[ 2 ].IsConnected ? 0 : 1 ) );
 		}
 
-		//public override void DrawProperties()
-		//{
-		//	base.DrawProperties();
-		//	EditorGUILayout.HelpBox("Rotates UVs but can also be used to rotate other Vector2 values\n\nAnchor is the rotation point in UV space from which you rotate the UVs\nTime is the amount of rotation applied [0,1], if left unconnected it will use time as the default value", MessageType.None);
-		//}
+		public override void OnInputPortConnected( int portId, int otherNodeId, int otherPortId, bool activateNode = true )
+		{
+			base.OnInputPortConnected( portId, otherNodeId, otherPortId, activateNode );
+			if( portId == 2 )
+			{
+				m_continuousPreviewRefresh = false;
+			}
+		}
+
+		public override void OnInputPortDisconnected( int portId )
+		{
+			base.OnInputPortDisconnected( portId );
+			if( portId == 2 )
+			{
+				m_continuousPreviewRefresh = true;
+			}
+		}
+
 
 		public override string GenerateShaderForOutput( int outputId, ref MasterNodeDataCollector dataCollector, bool ignoreLocalvar )
 		{

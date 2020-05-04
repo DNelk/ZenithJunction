@@ -33,11 +33,15 @@ public class CardEventManager : EventTrigger
         _hovering = false;
         _glow = transform.Find("PuffyGlow").GetComponent<ParticleSystem>();
         _glowScale = _glow.transform.localScale;
+        
+        #region set color of Particle
 
-        Color whiteSmoke = new Color(0.5f,0.8f,1);
+        /*Color whiteSmoke = new Color(0.5f,0.8f,1);
         _baseColor = new Gradient();
         _baseColor.SetKeys(new GradientColorKey[]{new GradientColorKey(whiteSmoke, 0.0f)}, 
-            new GradientAlphaKey[]{new GradientAlphaKey(0.0f, 0.0f), new GradientAlphaKey(1.0f, 0.524f), new GradientAlphaKey(0.0f, 1.0f)});
+            new GradientAlphaKey[]{new GradientAlphaKey(0.0f, 0.0f), new GradientAlphaKey(1.0f, 0.524f), new GradientAlphaKey(0.0f, 1.0f)});*/
+
+        #endregion
     }
 
     #region update event
@@ -48,7 +52,7 @@ public class CardEventManager : EventTrigger
             _pointerOverTimer += Time.deltaTime;
 
             //generateCard
-            Utils.GenerateCardPreview(_myCard);
+            if (!_myCard.ShowFullSize) Utils.GenerateCardPreview(_myCard);
             
             //for hotkey to put in engine
             if (Input.GetKeyDown(KeyCode.Alpha1) && _myCard.Engine == null && !_myCard.Purchasable)
@@ -65,10 +69,10 @@ public class CardEventManager : EventTrigger
             }
         }
 
-        if (transform.localScale.x == 0)
+        /*if (transform.localScale.x == 0)
         {
             transform.localScale = Vector3.one * 30;
-        }
+        }*/
         
         //use this to make sure the card will back to its place
         if (!_event_inSlot && _myCard._inSlot)
@@ -195,7 +199,7 @@ public class CardEventManager : EventTrigger
         if (BaseScale == Vector3.zero)
             BaseScale = transform.localScale;
 
-        //if not actually still holding it, make it bigger
+            //if not actually still holding it, make it bigger
         if (!_myCard.Dragging) transform.DOScale(BaseScale*1.5f, 0.2f);
         
         //do whatever important in battel
@@ -204,7 +208,7 @@ public class CardEventManager : EventTrigger
             transform.SetSiblingIndex(transform.GetSiblingIndex() + 8);
 
             //show the engine that available
-            if (!_myCard.Dragging)
+            if (!_myCard.Dragging && !_myCard.Purchasable)
             {
                 if (BattleManager.Instance.BattleState != BattleStates.ChoosingAction)
                 {
@@ -216,16 +220,18 @@ public class CardEventManager : EventTrigger
             }
         }
         
-        //for particle
+        //for particle and effect
         if (_myCard.Engine==null && !_myCard.Purchasable)
         {
+            _myCard.SwitchTypeAura(true); //turn on Type Aura
+            
             _glow.gameObject.SetActive(true);
-            _glow.transform.localScale = _glowScale;
+            _glow.transform.DOScale(_glowScale, 0.2f);
             if (!_glow.isPlaying) _glow.Play();
         }
         else if (_myCard.Engine != null && !_myCard.Purchasable)
         {
-            _glow.transform.localScale = _glowScale *0.6f;
+            _glow.transform.DOScale(_glowScale*0.65f, 0.2f);
         }
 
         //change hovering
@@ -246,7 +252,7 @@ public class CardEventManager : EventTrigger
         }
 
         //change hovering
-        if (!_myCard.Dragging) //prevent 
+        if (!_myCard.Dragging && !_myCard.Purchasable) //prevent 
         {
             _hovering = false;
             //show the engine that available
@@ -265,15 +271,18 @@ public class CardEventManager : EventTrigger
         //change mouse over
         _isMouseOver = false;
         
-        Utils.DestroyCardPreview(); //Make card preview go away
+        if (!_myCard.ShowFullSize) Utils.DestroyCardPreview(); //Make card preview go away
         _dontMagnifyUntilHoverAgainHack = false;
 
         //turn on/off particle based on being in engine or not
-        if (_myCard.Engine == null)
-            _glow.gameObject.SetActive(false);//_glow.Stop();
-        else
+        if (_myCard.Engine == null && !_myCard.Purchasable)
         {
-            _glow.transform.localScale = _glowScale*0.4f;
+            _glow.gameObject.SetActive(false);//_glow.Stop();
+            _myCard.SwitchTypeAura(false); //turn off Type Aura
+        }
+        else if (_myCard.Engine != null && !_myCard.Purchasable)
+        {
+            _glow.transform.DOScale(_glowScale*0.37f, 0.2f);
             _glow.gameObject.SetActive(true);
             if (!_glow.isPlaying)
                 _glow.Play();

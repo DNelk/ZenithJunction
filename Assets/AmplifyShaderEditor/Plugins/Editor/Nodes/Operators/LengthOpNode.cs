@@ -22,5 +22,20 @@ namespace AmplifyShaderEditor
 			m_inputPorts[ 0 ].ChangeType( WirePortDataType.FLOAT4, false );
 			m_autoUpdateOutputPort = false;
 		}
+		public override void SetPreviewInputs()
+		{
+			base.SetPreviewInputs();
+			switch( m_inputPorts[0].DataType )
+			{
+				case WirePortDataType.OBJECT:
+				case WirePortDataType.INT:
+				case WirePortDataType.FLOAT:
+				case WirePortDataType.UINT:m_previewMaterialPassId = 0;break;
+				case WirePortDataType.FLOAT2:m_previewMaterialPassId = 1;break;
+				case WirePortDataType.FLOAT3:m_previewMaterialPassId = 2;break;
+				case WirePortDataType.FLOAT4:
+				case WirePortDataType.COLOR:m_previewMaterialPassId = 3;break;	
+			}
+		}
 	}
 }

@@ -13,24 +13,24 @@ namespace AmplifyShaderEditor
 	{
 		private const string ZWriteFormatter = "ZWrite {0}\n";
 		private const string ZTestFormatter = "ZTest {0}\n";
-		
-		[ SerializeField]
+
+		[SerializeField]
 		private bool m_validZTest = false;
 
 		[SerializeField]
-		private InlineProperty m_zTestMode = new InlineProperty(0);
+		private InlineProperty m_zTestMode = new InlineProperty( 0 );
 
 		[SerializeField]
 		private bool m_validZWrite = false;
 
 		[SerializeField]
-		private InlineProperty m_zWriteMode = new InlineProperty(0);
+		private InlineProperty m_zWriteMode = new InlineProperty( 0 );
 
 		[SerializeField]
-		private InlineProperty m_offsetFactor = new InlineProperty(0);
+		private InlineProperty m_offsetFactor = new InlineProperty( 0 );
 
 		[SerializeField]
-		private InlineProperty m_offsetUnits = new InlineProperty(0);
+		private InlineProperty m_offsetUnits = new InlineProperty( 0 );
 
 		[SerializeField]
 		private bool m_offsetEnabled = false;
@@ -40,7 +40,7 @@ namespace AmplifyShaderEditor
 
 		public TemplateDepthModule() : base( "Depth" ) { }
 
-		public void CopyFrom( TemplateDepthModule other , bool allData )
+		public void CopyFrom( TemplateDepthModule other, bool allData )
 		{
 			if( allData )
 			{
@@ -125,7 +125,7 @@ namespace AmplifyShaderEditor
 			owner.ContainerGraph.ParentWindow.InnerWindowVariables.ExpandedDepth = foldoutValue;
 		}
 
-		public override void Draw( UndoParentNode owner , bool style = true)
+		public override void Draw( UndoParentNode owner, bool style = true )
 		{
 			bool foldout = owner.ContainerGraph.ParentWindow.InnerWindowVariables.ExpandedDepth;
 			if( style )
@@ -154,7 +154,7 @@ namespace AmplifyShaderEditor
 			GUI.color = new Color( cachedColor.r, cachedColor.g, cachedColor.b, ( EditorGUIUtility.isProSkin ? 0.5f : 0.25f ) );
 			//EditorGUILayout.BeginVertical( UIUtils.MenuItemBackgroundStyle );
 			GUI.color = cachedColor;
-			
+
 			EditorGUILayout.Separator();
 
 			if( m_validZWrite )
@@ -170,20 +170,20 @@ namespace AmplifyShaderEditor
 				if( m_offsetEnabled )
 				{
 					EditorGUI.indentLevel++;
-					m_offsetFactor.FloatField( ref owner , ZBufferOpHelper.OffsetFactorStr );
-					m_offsetUnits.FloatField( ref owner , ZBufferOpHelper.OffsetUnitsStr);
+					m_offsetFactor.FloatField( ref owner, ZBufferOpHelper.OffsetFactorStr );
+					m_offsetUnits.FloatField( ref owner, ZBufferOpHelper.OffsetUnitsStr );
 					EditorGUI.indentLevel--;
 				}
 			}
 			EditorGUILayout.Separator();
-			
+
 			//EditorGUILayout.EndVertical();
 			if( EditorGUI.EndChangeCheck() )
 			{
 				m_isDirty = true;
 			}
 		}
-		
+
 		public void ReadZWriteFromString( ref uint index, ref string[] nodeParams )
 		{
 			bool validDataOnMeta = m_validZWrite;
@@ -244,12 +244,12 @@ namespace AmplifyShaderEditor
 				}
 				else
 				{
-					m_offsetFactor.ReadFromString( ref index, ref nodeParams );
-					m_offsetUnits.ReadFromString( ref index, ref nodeParams );
+					m_offsetFactor.ReadFromString( ref index, ref nodeParams, false );
+					m_offsetUnits.ReadFromString( ref index, ref nodeParams, false );
 				}
 			}
 		}
-		
+
 		public override void ReadFromString( ref uint index, ref string[] nodeParams )
 		{
 			ReadZWriteFromString( ref index, ref nodeParams );
@@ -277,7 +277,7 @@ namespace AmplifyShaderEditor
 			if( m_validOffset )
 			{
 				IOUtils.AddFieldValueToString( ref nodeInfo, m_offsetEnabled );
-				m_offsetFactor.WriteToString(ref nodeInfo);
+				m_offsetFactor.WriteToString( ref nodeInfo );
 				m_offsetUnits.WriteToString( ref nodeInfo );
 			}
 		}
@@ -289,7 +289,7 @@ namespace AmplifyShaderEditor
 			WriteOffsetToString( ref nodeInfo );
 		}
 
-		public bool IsActive { get { return ( m_zTestMode.IsValid || m_zTestMode.IntValue != 0) || ( m_zWriteMode .IsValid || m_zWriteMode.IntValue != 0) || m_offsetEnabled; } }
+		public bool IsActive { get { return ( m_zTestMode.IsValid || m_zTestMode.IntValue != 0 ) || ( m_zWriteMode.IsValid || m_zWriteMode.IntValue != 0 ) || m_offsetEnabled; } }
 		public string CurrentZWriteMode
 		{
 			get
@@ -310,8 +310,8 @@ namespace AmplifyShaderEditor
 				if( m_zTestMode.IsValid )
 					return string.Format( ZTestFormatter, m_zTestMode.GetValueOrProperty() );
 
-				int finalZTestMode = ( m_zTestMode.IntValue == 0 )?3 : m_zTestMode.IntValue;
-				return string.Format( ZTestFormatter,  ZBufferOpHelper.ZTestModeValues[ finalZTestMode ] );
+				int finalZTestMode = ( m_zTestMode.IntValue == 0 ) ? 3 : m_zTestMode.IntValue;
+				return string.Format( ZTestFormatter, ZBufferOpHelper.ZTestModeValues[ finalZTestMode ] );
 			}
 		}
 

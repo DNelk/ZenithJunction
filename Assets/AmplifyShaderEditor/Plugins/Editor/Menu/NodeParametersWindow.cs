@@ -424,7 +424,16 @@ namespace AmplifyShaderEditor
 
 					drawElementCallback = ( Rect rect, int index, bool isActive, bool isFocused ) =>
 					{
-						EditorGUI.LabelField( rect, m_propertyReordableNodes[ index ].PropertyInspectorName );
+						var first = rect;
+						first.width *= 0.60f;
+						EditorGUI.LabelField( first, m_propertyReordableNodes[ index ].PropertyInspectorName );
+						var second = rect;
+						second.width *= 0.4f;
+						second.x += first.width;
+						if( GUI.Button( second, m_propertyReordableNodes[ index ].PropertyName, new GUIStyle( "AssetLabel Partial" ) ) )
+						{
+							UIUtils.FocusOnNode( m_propertyReordableNodes[ index ], 1, false );
+						}
 					},
 
 					onReorderCallback = ( list ) =>

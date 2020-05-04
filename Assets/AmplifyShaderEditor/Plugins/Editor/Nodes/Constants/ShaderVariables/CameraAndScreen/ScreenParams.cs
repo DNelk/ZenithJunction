@@ -16,6 +16,7 @@ namespace AmplifyShaderEditor
 			ChangeOutputName( 3, "1+1/Width" );
 			ChangeOutputName( 4, "1+1/Height" );
 			m_value = "_ScreenParams";
+			m_previewShaderGUID = "78173633b803de4419206191fed3d61e";
 		}
 
 		//public override void RefreshExternalReferences()

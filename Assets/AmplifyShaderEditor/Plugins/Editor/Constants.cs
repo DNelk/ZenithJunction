@@ -98,12 +98,28 @@ namespace AmplifyShaderEditor
 			{ TextureType.Texture2DArray,"TEXTURE2D_ARRAY({0}); SAMPLER(sampler{0});"},
 		};
 
+		public readonly static Dictionary<TextureType, string> SamplerDeclarationSRPMacros = new Dictionary<TextureType, string>
+		{
+			{ TextureType.Texture2D,"SAMPLER(sampler{0});"},
+			{ TextureType.Texture3D,"SAMPLER(sampler{0});"},
+			{ TextureType.Cube,"SAMPLER(sampler{0});"},
+			{ TextureType.Texture2DArray,"SAMPLER(sampler{0});"},
+		};
+		
+		public readonly static Dictionary<TextureType, string> TexDeclarationNoSamplerSRPMacros = new Dictionary<TextureType, string>
+		{
+			{ TextureType.Texture2D,"TEXTURE2D({0});"},
+			{ TextureType.Texture3D,"TEXTURE3D({0});"},
+			{ TextureType.Cube,"TEXTURECUBE({0});"},
+			{ TextureType.Texture2DArray,"TEXTURE2D_ARRAY({0});"},
+		};
+
 		public readonly static Dictionary<TextureType, string> TexSampleSRPMacros = new Dictionary<TextureType, string>
 		{
-			{ TextureType.Texture2D,"SAMPLE_TEXTURE2D{0}({1},sampler{1},{2})"},
-			{ TextureType.Texture3D,"SAMPLE_TEXTURE3D{0}({1},sampler{1},{2})"},
-			{ TextureType.Cube,"SAMPLE_TEXTURECUBE{0}({1},sampler{1},{2})"},
-			{ TextureType.Texture2DArray,"SAMPLE_TEXTURE2D_ARRAY{0}({1},sampler{1},{2})"},
+			{ TextureType.Texture2D,"SAMPLE_TEXTURE2D{0}({1},sampler{2},{3})"},
+			{ TextureType.Texture3D,"SAMPLE_TEXTURE3D{0}({1},sampler{2},{3})"},
+			{ TextureType.Cube,"SAMPLE_TEXTURECUBE{0}({1},sampler{2},{3})"},
+			{ TextureType.Texture2DArray,"SAMPLE_TEXTURE2D_ARRAY{0}({1},sampler{2},{3})"},
 		};
 
 		public readonly static Dictionary<TextureType, string> TexParams = new Dictionary<TextureType, string>
@@ -160,6 +176,15 @@ namespace AmplifyShaderEditor
 			{ TextureType.Texture2DArray,"UNITY_DECLARE_TEX2DARRAY({0});"}
 		};
 
+
+		public readonly static Dictionary<TextureType, string> TexDeclarationNoSamplerStandardMacros = new Dictionary<TextureType, string>
+		{
+			{ TextureType.Texture2D,"UNITY_DECLARE_TEX2D({0});"},
+			{ TextureType.Texture3D,"UNITY_DECLARE_TEX3D({0});"},
+			{ TextureType.Cube,"UNITY_DECLARE_TEXCUBE({0});"},
+			{ TextureType.Texture2DArray,"UNITY_DECLARE_TEX2DARRAY({0});"}
+		};
+
 		public readonly static Dictionary<TextureType, string> TexSampleStandardMacros = new Dictionary<TextureType, string>
 		{
 			{ TextureType.Texture2D,"UNITY_SAMPLE_TEX2D{0}({1},{2})"},
@@ -199,6 +224,7 @@ namespace AmplifyShaderEditor
 		public readonly static string UnityAutoLightLib = "AutoLight.cginc";
 		public readonly static string UnityBRDFLib = "UnityStandardBRDF.cginc";
 		public readonly static string LocalValueDecWithoutIdent = "{0} {1} = {2};";
+		public readonly static string CustomTypeLocalValueDecWithoutIdent = "{0} {1} =({0}){2};";
 		public readonly static string LocalValueDefWithoutIdent = "{0} {1} {2};";
 		public readonly static string TilingOffsetFormat = "{0} * {1} + {2}";
 		public static string InvalidPostProcessDatapath = "__DELETED_GUID_Trash";
@@ -277,7 +303,7 @@ namespace AmplifyShaderEditor
 
 		public readonly static Color PortTextColor = new Color( 1f, 1f, 1f, 0.5f );
 		public readonly static Color PortLockedTextColor = new Color( 1f, 1f, 1f, 0.35f );
-		public readonly static Color BoxSelectionColor = new Color( 1f, 1f, 1f, 0.5f );
+		public readonly static Color BoxSelectionColor = new Color( 0.5f, 0.75f, 1f, 0.33f );
 		public readonly static Color SpecialRegisterLocalVarSelectionColor = new Color( 0.27f, 0.52f, 1.0f, 1f );
 		public readonly static Color SpecialGetLocalVarSelectionColor = new Color( 0.2f, 0.8f, 0.4f, 1f );
 		public readonly static Color NodeSelectedColor = new Color( 0.85f, 0.56f, 0f, 1f );

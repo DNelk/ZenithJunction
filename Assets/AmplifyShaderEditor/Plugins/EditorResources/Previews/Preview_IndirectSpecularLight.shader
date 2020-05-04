@@ -42,7 +42,7 @@ Shader "Hidden/IndirectSpecularLight"
 			ENDCG
 		}
 
-		Pass // connected
+		Pass // connected tangent
 		{
 			CGPROGRAM
 			#pragma vertex vert_img
@@ -85,6 +85,38 @@ Shader "Hidden/IndirectSpecularLight"
 				float3 tangentNormal = tex2D(_A, sphereUVs).xyz;
 
 				worldRefl = reflect( worldRefl, half3( dot( tSpace0.xyz, tangentNormal ), dot( tSpace1.xyz, tangentNormal ), dot( tSpace2.xyz, tangentNormal ) ) );
+
+				float3 sky = texCUBElod( _Skybox, float4(worldRefl, (1-saturate(tex2D(_B,i.uv).r)) * 6) ).rgb;
+
+				return float4(sky * tex2D(_C,i.uv).r, 1);
+			}
+			ENDCG
+		}
+
+		Pass // connected world
+		{
+			CGPROGRAM
+			#pragma vertex vert_img
+			#pragma fragment frag
+			#include "UnityCG.cginc"
+			#include "Lighting.cginc"
+			#include "UnityPBSLighting.cginc"
+
+			uniform samplerCUBE _Skybox;
+			sampler2D _A;
+			sampler2D _B;
+			sampler2D _C;
+
+			float4 frag(v2f_img i) : SV_Target
+			{
+				float2 xy = 2 * i.uv - 1;
+				float z = -sqrt(1-saturate(dot(xy,xy)));
+				float3 vertexPos = float3(xy, z);
+				float3 normal = normalize(vertexPos);
+				float3 worldNormal = tex2D( _A, i.uv );
+				float3 worldViewDir = normalize(float3(0,0,-5) - vertexPos);
+				
+				float3 worldRefl = reflect( -worldViewDir, worldNormal );
 
 				float3 sky = texCUBElod( _Skybox, float4(worldRefl, (1-saturate(tex2D(_B,i.uv).r)) * 6) ).rgb;
 

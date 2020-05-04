@@ -22,6 +22,8 @@ public class BuyManager : MonoBehaviour
     private Transform _cardParent;
     private RectTransform[] _positions;
     public bool Previewing;
+    private GameObject[] _magicCircle = new GameObject[2];
+    private GameObject _coreFilled;
     
     //Vars
     private List<GameObject> _activeCardObjects;
@@ -70,8 +72,13 @@ public class BuyManager : MonoBehaviour
         ShuffleShopDeck();
         _cg = GetComponent<CanvasGroup>();
         _leaveButton = bg.Find("LeaveShop").GetComponent<Button>();
-        _aetherText = bg.Find("Text").transform.Find("AetherText").GetComponent<TMP_Text>();
+        _aetherText = bg.Find("AetherCount").transform.Find("AetherText").GetComponent<TMP_Text>();
         _cardParent = bg.Find("CardPositions");
+
+        _magicCircle[0] = transform.Find("MagicCircle_Back").gameObject;
+        _magicCircle[1] = transform.Find("MagicCircle_Front").gameObject;
+        _coreFilled = bg.Find("AetherCount").transform.Find("Filled").gameObject;
+        
         var positions = _cardParent.GetComponentsInChildren<RectTransform>();
         _positions = new RectTransform[positions.Length];
         int j = 0;
@@ -120,12 +127,17 @@ public class BuyManager : MonoBehaviour
 
         if (BuysRemaining != -1)
             BuysRemaining--;
+        
+        updateStatus();
     }
 
     public void LoadShop()
-    { 
-        if(TutorialManager.Instance != null && TutorialManager.Instance.TutorialStep == 2)
+    {
+        if (TutorialManager.Instance != null && TutorialManager.Instance.TutorialStep == 2)
             TutorialManager.Instance.Step();
+        
+        updateStatus();
+
         StartCoroutine(LoadBuyMenu());
     }
 
@@ -218,6 +230,8 @@ public class BuyManager : MonoBehaviour
         activeCard.Purchasable = true;
         activeCard.ShowFullSize = true;
         _activeCards.Add(activeCard);
+
+        activeCardGO.GetComponent<CardEventManager>().enabled = false;
             
         _activeCardObjects.Add(activeCardGO);
         
@@ -230,6 +244,7 @@ public class BuyManager : MonoBehaviour
         dealTween.Join(activeCardGO.transform.DOScale(CurrentCardPos(_activeCardObjects.Count-1).localScale, 0.5f));
 
         yield return dealTween.WaitForCompletion();
+        activeCardGO.GetComponent<CardEventManager>().enabled = true;
     }
 
     private void ShuffleShopDeck()
@@ -268,7 +283,7 @@ public class BuyManager : MonoBehaviour
     }
     private void Update()
     {
-        _aetherText.text = "Aether Remaining: " + BattleManager.Instance.CurrentAether;
+        _aetherText.text = BattleManager.Instance.CurrentAether.ToString();
         
         if (BuysRemaining != -1)
             _aetherText.text += "\nBuys Remaining: " + BuysRemaining;
@@ -317,5 +332,25 @@ public class BuyManager : MonoBehaviour
     {
         _catalog = catalog;
         ShuffleShopDeck();
+    }
+
+    private void updateStatus()
+    {
+        if (BattleManager.Instance.CurrentAether > 0)
+        {
+            for (int i = 0; i < _magicCircle.Length; i++)
+            {
+                _magicCircle[i].SetActive(true);
+            }
+            _coreFilled.SetActive(true);
+        }
+        else
+        {
+            for (int i = 0; i < _magicCircle.Length; i++)
+            {
+                _magicCircle[i].SetActive(false);
+            }
+            _coreFilled.SetActive(false);
+        }
     }
 }

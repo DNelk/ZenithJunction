@@ -6,7 +6,7 @@ using System;
 namespace AmplifyShaderEditor
 {
 	[Serializable]
-	[NodeAttributes( "Remainder", "Math Operators", "Remainder between two variables" )]
+	[NodeAttributes( "Remainder", "Math Operators", "Remainder between two int variables",tags:"modulo fmod" )]
 	public sealed class SimpleRemainderNode : DynamicTypeNode
 	{
 		private const string VertexFragRemainder = "( {0} % {1} )";
@@ -29,7 +29,11 @@ namespace AmplifyShaderEditor
 				return m_outputPorts[ 0 ].LocalValue( dataCollector.PortCategory );
 
 			base.BuildResults( outputId, ref dataCollector, ignoreLocalvar );
+#if UNITY_2018_1_OR_NEWER
+			string opMode = VertexFragRemainder;
+#else
 			string opMode = dataCollector.IsTemplate ? VertexFragRemainder : SurfaceRemainder;
+#endif
 			string result = string.Empty;
 			switch( m_outputPorts[ 0 ].DataType )
 			{

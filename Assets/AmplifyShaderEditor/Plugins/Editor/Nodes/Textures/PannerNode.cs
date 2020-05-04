@@ -12,16 +12,9 @@ namespace AmplifyShaderEditor
 	{
 		private const string _speedXStr = "Speed X";
 		private const string _speedYStr = "Speed Y";
-		//[SerializeField]
-		//private float m_speedX = 1f;
-
-		//[SerializeField]
-		//private float m_speedY = 1f;
-
+		
 		private int m_cachedUsingEditorId = -1;
-		//private int m_cachedSpeedXId = -1;
-		//private int m_cachedSpeedYId = -1;
-
+		
 		protected override void CommonInit( int uniqueId )
 		{
 			base.CommonInit( uniqueId );
@@ -30,19 +23,11 @@ namespace AmplifyShaderEditor
 			AddInputPort( WirePortDataType.FLOAT, false, "Time", -1, MasterNodePortCategory.Fragment, 1 );
 			AddOutputPort( WirePortDataType.FLOAT2, "Out" );
 			m_textLabelWidth = 70;
-		//	m_autoWrapProperties = true;
 			m_useInternalPortData = true;
 			m_previewShaderGUID = "6f89a5d96bdad114b9bbd0c236cac622";
 			m_inputPorts[ 2 ].FloatInternalData = 1;
+			m_continuousPreviewRefresh = true;
 		}
-
-		//public override void DrawProperties()
-		//{
-		//	base.DrawProperties();
-
-		//	m_speedX = EditorGUILayoutFloatField( _speedXStr, m_speedX );
-		//	m_speedY = EditorGUILayoutFloatField( _speedYStr, m_speedY );
-		//}
 
 		public override void SetPreviewInputs()
 		{
@@ -51,16 +36,25 @@ namespace AmplifyShaderEditor
 			if ( m_cachedUsingEditorId == -1 )
 				m_cachedUsingEditorId = Shader.PropertyToID( "_UsingEditor" );
 
-			//if ( m_cachedSpeedXId == -1 )
-			//	m_cachedSpeedXId = Shader.PropertyToID( "_SpeedX" );
-
-			//if ( m_cachedSpeedYId == -1 )
-			//	m_cachedSpeedYId = Shader.PropertyToID( "_SpeedY" );
-
-
 			PreviewMaterial.SetFloat( m_cachedUsingEditorId, ( m_inputPorts[ 2 ].IsConnected ? 0 : 1 ) );
-			//PreviewMaterial.SetFloat( m_cachedSpeedXId, m_speedX );
-			//PreviewMaterial.SetFloat( m_cachedSpeedYId, m_speedY );
+		}
+
+		public override void OnInputPortConnected( int portId, int otherNodeId, int otherPortId, bool activateNode = true )
+		{
+			base.OnInputPortConnected( portId, otherNodeId, otherPortId, activateNode );
+			if( portId == 1 )
+			{
+				m_continuousPreviewRefresh = false;
+			}
+		}
+
+		public override void OnInputPortDisconnected( int portId )
+		{
+			base.OnInputPortDisconnected( portId );
+			if( portId == 1 )
+			{
+				m_continuousPreviewRefresh = true;
+			}
 		}
 
 		public override string GenerateShaderForOutput( int outputId, ref MasterNodeDataCollector dataCollector, bool ignoreLocalvar )
@@ -107,11 +101,10 @@ namespace AmplifyShaderEditor
 				m_inputPorts[ 2 ].FloatInternalData = 1;
 			}
 		}
+
 		public override void WriteToString( ref string nodeInfo, ref string connectionsInfo )
 		{
 			base.WriteToString( ref nodeInfo, ref connectionsInfo );
-			//IOUtils.AddFieldValueToString( ref nodeInfo, m_speedX );
-			//IOUtils.AddFieldValueToString( ref nodeInfo, m_speedY );
 		}
 	}
 }

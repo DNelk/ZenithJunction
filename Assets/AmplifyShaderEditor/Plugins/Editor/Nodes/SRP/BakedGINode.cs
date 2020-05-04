@@ -8,7 +8,7 @@ using UnityEngine;
 namespace AmplifyShaderEditor
 {
 	[Serializable]
-	[NodeAttributes( "Baked GI", "Miscellaneous", "Gets Baked GI info." )]
+	[NodeAttributes( "SRP Baked GI", "Miscellaneous", "Gets Baked GI info." )]
 	public sealed class BakedGINode : ParentNode
 	{
 		private const string HDBakedGIHeader = "ASEBakedGI( {0}, {1}, {2}, {3} )";

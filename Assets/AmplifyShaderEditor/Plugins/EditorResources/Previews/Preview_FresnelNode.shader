@@ -37,7 +37,7 @@ Shader "Hidden/FresnelNode"
 
 				float fresnel = 0;
 				if(_FresnelType == 0)
-					fresnel = (b + s*pow(s - dot( worldNormal, worldViewDir ) , pw));
+					fresnel = (b + s*pow(1 - dot( worldNormal, worldViewDir ) , pw));
 				else if(_FresnelType == 1)
 					fresnel = (b + (1-b) * pow(1 - dot( worldNormal, worldViewDir ) , 5));
 				else if(_FresnelType == 2)
@@ -77,7 +77,7 @@ Shader "Hidden/FresnelNode"
 
 				float fresnel = 0;
 				if(_FresnelType == 0)
-					fresnel = (b + s*pow(s - dot( worldNormal, worldViewDir ) , pw));
+					fresnel = (b + s*pow(1 - dot( worldNormal, worldViewDir ) , pw));
 				else if(_FresnelType == 1)
 					fresnel = (b + (1-b) * pow(1 - dot( worldNormal, worldViewDir ) , 5));
 				else if(_FresnelType == 2)
@@ -134,7 +134,7 @@ Shader "Hidden/FresnelNode"
 
 				float fresnel = 0;
 				if(_FresnelType == 0)
-					fresnel = (b + s*pow(s - dot( worldNormal, worldViewDir ) , pw));
+					fresnel = (b + s*pow(1 - dot( worldNormal, worldViewDir ) , pw));
 				else if(_FresnelType == 1)
 					fresnel = (b + (1-b) * pow(1 - dot( worldNormal, worldViewDir ) , 5));
 				else if(_FresnelType == 2)
@@ -175,7 +175,7 @@ Shader "Hidden/FresnelNode"
 
 				float fresnel = 0;
 				if(_FresnelType == 0)
-					fresnel = (b + s*pow(s - dot( halfVector, worldViewDir ) , pw));
+					fresnel = (b + s*pow(1 - dot( halfVector, worldViewDir ) , pw));
 				else if(_FresnelType == 1)
 					fresnel = (b + (1-b) * pow(1 - dot( halfVector, worldViewDir ) , 5));
 				else if(_FresnelType == 2)
@@ -216,7 +216,7 @@ Shader "Hidden/FresnelNode"
 				
 				float fresnel = 0;
 				if(_FresnelType == 0)
-					fresnel = (b + s*pow(s - dot( worldNormal, worldViewDir ) , pw));
+					fresnel = (b + s*pow(1 - dot( worldNormal, worldViewDir ) , pw));
 				else if(_FresnelType == 1)
 					fresnel = (b + (1-b) * pow(1 - dot( worldNormal, worldViewDir ) , 5));
 				else if(_FresnelType == 2)
@@ -258,7 +258,7 @@ Shader "Hidden/FresnelNode"
 
 				float fresnel = 0;
 				if(_FresnelType == 0)
-					fresnel = (b + s*pow(s - dot( worldNormal, lightDir ) , pw));
+					fresnel = (b + s*pow(1 - dot( worldNormal, lightDir ) , pw));
 				else if(_FresnelType == 1)
 					fresnel = (b + (1-b) * pow(1 - dot( worldNormal, lightDir ) , 5));
 				else if(_FresnelType == 2)
@@ -300,7 +300,7 @@ Shader "Hidden/FresnelNode"
 				
 				float fresnel = 0;
 				if(_FresnelType == 0)
-					fresnel = (b + s*pow(s - dot( worldNormal, worldViewDir ) , pw));
+					fresnel = (b + s*pow(1 - dot( worldNormal, worldViewDir ) , pw));
 				else if(_FresnelType == 1)
 					fresnel = (b + (1-b) * pow(1 - dot( worldNormal, worldViewDir ) , 5));
 				else if(_FresnelType == 2)
@@ -342,7 +342,7 @@ Shader "Hidden/FresnelNode"
 
 				float fresnel = 0;
 				if(_FresnelType == 0)
-					fresnel = (b + s*pow(s - dot( halfVector, worldViewDir ) , pw));
+					fresnel = (b + s*pow(1 - dot( halfVector, worldViewDir ) , pw));
 				else if(_FresnelType == 1)
 					fresnel = (b + (1-b) * pow(1 - dot( halfVector, worldViewDir ) , 5));
 				else if(_FresnelType == 2)

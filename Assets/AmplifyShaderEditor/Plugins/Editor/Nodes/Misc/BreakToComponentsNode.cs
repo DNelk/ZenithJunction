@@ -7,7 +7,7 @@ using UnityEngine;
 namespace AmplifyShaderEditor
 {
 	[Serializable]
-	[NodeAttributes( "Break To Components", "Vector Operators", "Breaks the input data into its individual components", null, KeyCode.B )]
+	[NodeAttributes( "Break To Components", "Vector Operators", "Breaks the input data into its individual components", null, KeyCode.B, tags: "split" )]
 	public sealed class BreakToComponentsNode : ParentNode
 	{
 		private WirePortDataType m_currentType = WirePortDataType.FLOAT;
@@ -61,7 +61,7 @@ namespace AmplifyShaderEditor
 		{
 			get
 			{
-				return m_inputPorts[ 0 ].InputPreviewTexture;
+				return m_inputPorts[ 0 ].InputPreviewTexture( ContainerGraph );
 			}
 		}
 

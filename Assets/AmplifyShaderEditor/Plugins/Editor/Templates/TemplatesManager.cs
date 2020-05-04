@@ -349,10 +349,11 @@ namespace AmplifyShaderEditor
 		public static readonly string TemplatePragmaTag = "/*ase_pragma*/";
 		public static readonly string TemplatePassTag = "/*ase_pass*/";
 		public static readonly string TemplatePassesEndTag = "/*ase_pass_end*/";
+		public static readonly string TemplateLODsTag = "/*ase_lod*/";
 		//public static readonly string TemplatePassTagPattern = @"\s\/\*ase_pass\*\/";
 		public static readonly string TemplatePassTagPattern = @"\s\/\*ase_pass[:\*]+";
-		public static readonly string TemplatePropertyTag = "/*ase_props*/\n";
-		public static readonly string TemplateGlobalsTag = "/*ase_globals*/\n";
+		public static readonly string TemplatePropertyTag = "/*ase_props*/";
+		public static readonly string TemplateGlobalsTag = "/*ase_globals*/";
 		public static readonly string TemplateSRPBatcherTag = "/*ase_srp_batcher*/\n";
 		public static readonly string TemplateInterpolatorBeginTag = "/*ase_interp(";
 		public static readonly string TemplateVertexDataTag = "/*ase_vdata:";
@@ -402,7 +403,8 @@ namespace AmplifyShaderEditor
 																new TemplateTagData( TemplatePragmaTag,true),
 																new TemplateTagData( TemplatePassTag,true),
 																new TemplateTagData( TemplateInputsVertParamsTag,false),
-																new TemplateTagData( TemplateInputsFragParamsTag,false)
+																new TemplateTagData( TemplateInputsFragParamsTag,false),
+																new TemplateTagData( TemplateLODsTag,true)
 																//new TemplateTagData( TemplateCullModeTag,false),
 																//new TemplateTagData( TemplateBlendModeTag,false),
 																//new TemplateTagData( TemplateBlendOpTag,false),
@@ -411,6 +413,12 @@ namespace AmplifyShaderEditor
 																};
 		public static string LightweigthPBRGUID = "1976390536c6c564abb90fe41f6ee334";
 		public static string LightweigthUnlitGUID = "e2514bdcf5e5399499a9eb24d175b9db";
+		public static string UniversalPBRGUID = "94348b07e5e8bab40bd6c8a1e3df54cd";
+		public static string UniversalUnlitGUID = "2992e84f91cbeb14eab234972e07ea9d";
+
+		public static string HDNewLitGUID = "53b46d85872c5b24c8f4f0a1c3fe4c87";
+		public static string HDNewPBRGUID = "41e04be03f2c20941bc749271be1c937";
+		public static string HDNewUnlitGUID = "7f5cb9c3ea6481f469fdd856555439ef";
 		public static string HDLitGUID = "091c43ba8bd92c9459798d59b089ce4e";
 		public static string HDPBRGUID = "bb308bce79762c34e823049efce65141";
 		public static string HDUnlitGUID = "dfe2f27ac20b08c469b2f95c236be0c3";
@@ -423,6 +431,8 @@ namespace AmplifyShaderEditor
 			{ "32120270d1b3a8746af2aca8bc749736","Legacy/Custom RT Update"},
 			{ LightweigthPBRGUID,"LW/PBR"},
 			{ LightweigthUnlitGUID,"LW/Unlit"},
+			{ UniversalPBRGUID,"Universal/PBR"},
+			{ UniversalUnlitGUID,"Universal/Unlit"},
 			{ "53b46d85872c5b24c8f4f0a1c3fe4c87","HD/Lit"},
 			{ HDLitGUID,"Deprecated/HD/Lit"},
 			{ HDPBRGUID,"Deprecated/HD/PBR"},
@@ -516,10 +526,40 @@ namespace AmplifyShaderEditor
 			}
 		}
 
+		//[MenuItem( "Window/Amplify Shader Editor/Create Menu Items", false, 1000 )]
+		//public static void ForceCreateTemplateMenuItems()
+		//{
+		//	UIUtils.CurrentWindow.TemplatesManagerInstance.CreateTemplateMenuItems();
+		//}
+
 		public void CreateTemplateMenuItems()
 		{
 			if( m_sortedTemplates == null || m_sortedTemplates.Count == 0 )
 				return;
+
+			// change names for duplicates
+			for( int i = 0; i < m_sortedTemplates.Count; i++ )
+			{
+				for( int j = 0; j < i; j++ )
+				{
+					if( m_sortedTemplates[ i ].Name == m_sortedTemplates[ j ].Name )
+					{
+						var match = Regex.Match( m_sortedTemplates[ i ].Name, @".+(\d+)" );
+						if( match.Success )
+						{
+							string strNumber = match.Groups[ 1 ].Value;
+							int number = int.Parse( strNumber ) + 1;
+							string firstPart = m_sortedTemplates[ i ].Name.Substring( 0, match.Groups[ 1 ].Index );
+							string secondPart = m_sortedTemplates[ i ].Name.Substring( match.Groups[ 1 ].Index + strNumber.Length );
+							m_sortedTemplates[ i ].Name = firstPart + number + secondPart;
+						}
+						else
+						{
+							m_sortedTemplates[ i ].Name += " 1";
+						}
+					}
+				}
+			}
 
 			System.Text.StringBuilder fileContents = new System.Text.StringBuilder();
 			fileContents.Append( "// Amplify Shader Editor - Visual Shader Editing Tool\n" );
@@ -534,9 +574,11 @@ namespace AmplifyShaderEditor
 			for( int i = 0; i < m_sortedTemplates.Count; i++ )
 			{
 				fileContents.AppendFormat( "\t\t[MenuItem( \"Assets/Create/Amplify Shader/{0}\", false, {1} )]\n", m_sortedTemplates[ i ].Name, fixedPriority );
-				fileContents.AppendFormat( "\t\tpublic static void ApplyTemplate{0}()\n", i );
+				string itemName = UIUtils.RemoveInvalidCharacters( m_sortedTemplates[ i ].Name );
+				fileContents.AppendFormat( "\t\tpublic static void ApplyTemplate{0}()\n", itemName/*i*/ );
 				fileContents.Append( "\t\t{\n" );
-				fileContents.AppendFormat( "\t\t\tAmplifyShaderEditorWindow.CreateNewTemplateShader( \"{0}\" );\n", m_sortedTemplates[ i ].GUID );
+				//fileContents.AppendFormat( "\t\t\tAmplifyShaderEditorWindow.CreateNewTemplateShader( \"{0}\" );\n", m_sortedTemplates[ i ].GUID );
+				fileContents.AppendFormat( "\t\t\tAmplifyShaderEditorWindow.CreateConfirmationTemplateShader( \"{0}\" );\n", m_sortedTemplates[ i ].GUID );
 				fileContents.Append( "\t\t}\n" );
 			}
 			fileContents.Append( "\t}\n" );

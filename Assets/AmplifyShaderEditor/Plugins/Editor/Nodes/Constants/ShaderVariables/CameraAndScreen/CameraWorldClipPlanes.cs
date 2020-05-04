@@ -28,7 +28,7 @@ namespace AmplifyShaderEditor
 		private const string ValueStr = "unity_CameraWorldClipPlanes";
 
 		private UpperLeftWidgetHelper m_upperLeftWidget = new UpperLeftWidgetHelper();
-
+		private int m_planeId;
 		protected override void CommonInit( int uniqueId )
 		{
 			base.CommonInit( uniqueId );
@@ -37,6 +37,13 @@ namespace AmplifyShaderEditor
 			m_autoWrapProperties = true;
 			m_hasLeftDropdown = true;
 			SetAdditonalTitleText( string.Format( Constants.SubTitleTypeFormatStr, m_selectedType ) );
+			m_previewShaderGUID = "6afe5a4ad7bbd0e4ab352c758f543a09";
+		}
+
+		public override void OnEnable()
+		{
+			base.OnEnable();
+			m_planeId = Shader.PropertyToID( "_PlaneId" );
 		}
 
 		public override void AfterCommonInit()
@@ -79,7 +86,13 @@ namespace AmplifyShaderEditor
 				SetSaveIsDirty();
 			}
 		}
-		
+
+		public override void SetPreviewInputs()
+		{
+			base.SetPreviewInputs();
+			PreviewMaterial.SetInt( m_planeId, (int)m_selectedType );
+		}
+
 		public override string GenerateShaderForOutput( int outputId, ref MasterNodeDataCollector dataCollector, bool ignoreLocalvar )
 		{
 			base.GenerateShaderForOutput( outputId, ref dataCollector, ignoreLocalvar );

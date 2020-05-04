@@ -47,9 +47,12 @@ Shader /*ase_name*/ "Hidden/Templates/Unlit" /*end*/
 			struct v2f
 			{
 				float4 vertex : SV_POSITION;
+#ifdef ASE_NEEDS_FRAG_WORLD_POSITION
+				float3 worldPos : TEXCOORD0;
+#endif
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				UNITY_VERTEX_OUTPUT_STEREO
-				/*ase_interp(0,):sp=sp.xyzw*/
+				/*ase_interp(1,):sp=sp.xyzw;wp=tc0*/
 			};
 
 			/*ase_globals*/
@@ -73,6 +76,10 @@ Shader /*ase_name*/ "Hidden/Templates/Unlit" /*end*/
 				v.vertex.xyz += vertexValue;
 				#endif
 				o.vertex = UnityObjectToClipPos(v.vertex);
+
+#ifdef ASE_NEEDS_FRAG_WORLD_POSITION
+				o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
+#endif
 				return o;
 			}
 			
@@ -81,6 +88,9 @@ Shader /*ase_name*/ "Hidden/Templates/Unlit" /*end*/
 				UNITY_SETUP_INSTANCE_ID(i);
 				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
 				fixed4 finalColor;
+#ifdef ASE_NEEDS_FRAG_WORLD_POSITION
+				/*ase_local_var:wp*/float3 WorldPosition = i.worldPos;
+#endif
 				/*ase_frag_code:i=v2f*/
 				
 				finalColor = /*ase_frag_out:Frag Color;Float4*/fixed4(1,1,1,1)/*end*/;

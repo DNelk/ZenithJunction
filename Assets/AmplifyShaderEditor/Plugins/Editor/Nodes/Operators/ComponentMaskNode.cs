@@ -64,7 +64,7 @@ namespace AmplifyShaderEditor
 				lastIndex++;
 				singularId = 2;
 			}
-			if( m_selection[ 3 ] && datatype == WirePortDataType.FLOAT4 )
+			if( m_selection[ 3 ] && ( datatype == WirePortDataType.FLOAT4 || datatype == WirePortDataType.COLOR ) )
 			{
 				order.Set( order.x, order.y, order.z, lastIndex );
 				lastIndex++;

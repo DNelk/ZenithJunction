@@ -1,10 +1,10 @@
-using UnityEngine;
+// Amplify Shader Editor - Visual Shader Editing Tool
+// Copyright (c) Amplify Creations, Lda <info@amplify.pt>
+
 using UnityEditor;
 using UnityEditor.ProjectWindowCallback;
 namespace AmplifyShaderEditor
 {
-
-	//Callback on asset creation to open window after finishing renaming the asset
 	public class DoCreateFunction : EndNameEditAction
 	{
 		public override void Action( int instanceId, string pathName, string resourceFile )

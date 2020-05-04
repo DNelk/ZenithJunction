@@ -27,6 +27,8 @@ namespace AmplifyShaderEditor
 														WirePortDataType.FLOAT4,
 														WirePortDataType.COLOR ,
 														WirePortDataType.INT);
+
+			m_previewShaderGUID = "1fca7774f364aee4d8c64e8634ef4be4";
 		}
 
 		public override void OnInputPortConnected( int portId, int otherNodeId, int otherPortId, bool activateNode = true )
@@ -91,7 +93,7 @@ namespace AmplifyShaderEditor
 			if( dataCollector.PortCategory == MasterNodePortCategory.Vertex ||
 				dataCollector.PortCategory == MasterNodePortCategory.Tessellation )
 			{
-				UIUtils.ShowMessage( "Clip can only be used in fragment functions", MessageSeverity.Warning );
+				UIUtils.ShowMessage( UniqueId, "Clip can only be used in fragment functions", MessageSeverity.Warning );
 				return GenerateErrorValue();
 			}
 

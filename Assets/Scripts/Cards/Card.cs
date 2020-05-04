@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -106,6 +107,7 @@ public class Card : MonoBehaviour
     protected TMP_Text u_cardName;
     protected Image u_rarity;
     protected TMP_Text u_type;
+    protected Image u_TypeAura;
     protected Image u_type_color;
     protected TMP_Text u_buyCost;
     protected GameObject u_attackValue;
@@ -150,11 +152,13 @@ public class Card : MonoBehaviour
     protected void Init()
     {
         Transform parent;
-
+        
+        //determine if small card or fullsize card
         if (_fullSize)
         {
             parent = transform.Find("FullSize");
             transform.Find("Minimized").gameObject.SetActive(false);
+            u_TypeAura = null;
             
             //get cheat IMG
             MyCheatImg = parent.transform.Find("CheatImg").gameObject;
@@ -163,11 +167,14 @@ public class Card : MonoBehaviour
         {
             parent = transform.Find("Minimized");
             transform.Find("FullSize").gameObject.SetActive(false);
+            u_TypeAura = parent.Find("Aura").GetComponent<Image>();
             
             //get cheat IMG
             MyCheatImg = parent.transform.Find("CheatImg").gameObject;
             MyCheatImg.SetActive(false);
         }
+        
+        //assign other UI
         parent.gameObject.SetActive(true);
         u_cardBackground = parent.Find("Back").GetComponent<Image>();
         u_cardName = parent.Find("NameBanner").transform.Find("CardName").GetComponent<TMP_Text>();
@@ -251,35 +258,54 @@ public class Card : MonoBehaviour
         }
         else
         {
+            Color typeColor = new Color(0, 0, 0);
+            
+            //typeAura mat
+            u_TypeAura.material = new Material(u_TypeAura.material);
+            int auraID = Shader.PropertyToID("Aura_Color");
+            Color auraColor = new Color(0,0,0);
+            
+            //typeParticle Mat
+            ParticleSystemRenderer particleRend = u_particle.GetComponent<ParticleSystemRenderer>();
+            particleRend.material = new Material(particleRend.material);
+
             switch (CardType)
             {
                 case CardTypes.Attack:
-                    u_particleColor = new Color(0.752f, 0.098f, 0);
-                    u_type_color.color = new Color(0.752f, 0.098f, 0);
+                    typeColor = new Color(0.752f, 0.098f, 0);
+                    auraColor = new Color(0.9f,0,0);
+                    particleRend.material.mainTexture = Resources.Load<Texture>("Sprites/CardParticle/Particle_Atk");
                     break;
                 case CardTypes.Aether:
-                    u_particleColor = new Color(0.2f, 0.18f, 0.58f);
-                    u_type_color.color = new Color(0.2f, 0.18f, 0.58f);
+                    typeColor = new Color(0.2f, 0.18f, 0.58f);
+                    auraColor = new Color(0,0.35f,1f);
+                    particleRend.material.mainTexture = Resources.Load<Texture>("Sprites/CardParticle/Particle_Mana");
                     break;
                 case CardTypes.Special:
-                    u_particleColor = new Color(0.658f,0.282f,0.627f);
-                    u_type_color.color = new Color(0.658f,0.282f,0.627f);
+                    typeColor = new Color(0.658f,0.282f,0.627f);
+                    auraColor = new Color(0.8f,0,0.8f);
+                    particleRend.material.mainTexture = Resources.Load<Texture>("Sprites/CardParticle/Particle_Special");
                     break;
                 case CardTypes.Movement:
-                    u_particleColor = new Color(0.956f,0.749f,0.031f);
-                    u_type_color.color = new Color(0.956f,0.749f,0.031f);
+                    typeColor = new Color(0.956f,0.749f,0.031f);
+                    auraColor = new Color(0.8f,0.7f,0);
+                    particleRend.material.mainTexture = Resources.Load<Texture>("Sprites/CardParticle/Particle_Move");
                     break;
                 default:
                     break;
             }
+
+            u_particleColor = typeColor;
+            u_type_color.color = typeColor;
+            u_TypeAura.material.SetColor(auraID, auraColor);
         }
         
-        Gradient _inEngineColor = new Gradient();
+        /*Gradient _inEngineColor = new Gradient();
         _inEngineColor.SetKeys(new GradientColorKey[]{new GradientColorKey(u_particleColor, 0.0f)}, 
             new GradientAlphaKey[]{new GradientAlphaKey(0.0f, 0.0f), new GradientAlphaKey(1.0f, 0.524f),new GradientAlphaKey(1.0f, 0.75f), new GradientAlphaKey(0.0f, 1.0f)});
 
         var smoke = u_particle.colorOverLifetime;
-        smoke.color = _inEngineColor;
+        smoke.color = _inEngineColor;*/
 
         //check rarity
         if(_fullSize)
@@ -521,6 +547,11 @@ public class Card : MonoBehaviour
                 break;
         }
         return true;
+    }
+
+    public void SwitchTypeAura(bool turn)
+    {
+        u_TypeAura.gameObject.SetActive(turn);
     }
 }
 

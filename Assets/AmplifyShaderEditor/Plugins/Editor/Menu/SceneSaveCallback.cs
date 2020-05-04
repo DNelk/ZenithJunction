@@ -21,7 +21,7 @@ namespace AmplifyShaderEditor
 				for ( int i = 0; i < paths.Length; i++ )
 				{
 					// Only save shader when saving scenes
-					if ( paths[ i ].Contains( UnityStr ) )
+					if ( !string.IsNullOrEmpty( paths[ i ] ) && paths[ i ].Contains( UnityStr ) )
 					{
 						canSave = true;
 						break;

@@ -16,6 +16,7 @@ namespace AmplifyShaderEditor
 			ChangeOutputName( 3, "-1/(End-Start)" );
 			ChangeOutputName( 4, "End/(End-Start))" );
 			m_value = "unity_FogParams";
+			m_previewShaderGUID = "42abde3281b1848438c3b53443c91a1e";
 		}
 
 		public override void RefreshExternalReferences()

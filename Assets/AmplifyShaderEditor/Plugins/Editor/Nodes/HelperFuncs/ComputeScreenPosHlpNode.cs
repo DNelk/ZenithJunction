@@ -25,6 +25,13 @@ namespace AmplifyShaderEditor
 			m_outputPorts[ 0 ].ChangeType( WirePortDataType.FLOAT4, false );
 			m_outputPorts[ 0 ].Name = "XYZW";
 			m_autoWrapProperties = true;
+			m_previewShaderGUID = "97bd4895d847d764eb21d2bf7aa13671";
+		}
+
+		public override void SetPreviewInputs()
+		{
+			base.SetPreviewInputs();
+			m_previewMaterialPassId = m_normalize ? 1 : 0;
 		}
 
 		protected override void OnUniqueIDAssigned()

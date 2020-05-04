@@ -514,7 +514,7 @@ namespace AmplifyShaderEditor
 				if( dataCollector.IsTemplate )
 				{
 					string propertyHelperVar = propertyName + "_ST";
-					dataCollector.AddToUniforms( UniqueId, "float4", propertyHelperVar );
+					dataCollector.AddToUniforms( UniqueId, "float4", propertyHelperVar, dataCollector.IsSRP );
 					string uvName = string.Empty;
 					if( dataCollector.TemplateDataCollectorInstance.HasUV( m_textureCoordSet ) )
 					{
@@ -532,11 +532,11 @@ namespace AmplifyShaderEditor
 						string lodLevel = "0";
 
 						value = "float4( " + value + ", 0 , " + lodLevel + " )";
-						dataCollector.AddLocalVariable( UniqueId, m_currentPrecisionType, WirePortDataType.FLOAT4, uvChannelName, value );
+						dataCollector.AddLocalVariable( UniqueId, CurrentPrecisionType, WirePortDataType.FLOAT4, uvChannelName, value );
 					}
 					else
 					{
-						dataCollector.AddLocalVariable( UniqueId, m_currentPrecisionType, WirePortDataType.FLOAT2, uvChannelName, string.Format( Constants.TilingOffsetFormat, uvName, propertyHelperVar + ".xy", propertyHelperVar + ".zw" ) );
+						dataCollector.AddLocalVariable( UniqueId, CurrentPrecisionType, WirePortDataType.FLOAT2, uvChannelName, string.Format( Constants.TilingOffsetFormat, uvName, propertyHelperVar + ".xy", propertyHelperVar + ".zw" ) );
 					}
 				}
 				else
@@ -629,7 +629,7 @@ namespace AmplifyShaderEditor
 				}
 				else
 				{
-					UIUtils.ShowMessage( "Substance not found ", MessageSeverity.Error );
+					UIUtils.ShowMessage( UniqueId, "Substance not found ", MessageSeverity.Error );
 				}
 			}
 		}
@@ -1164,7 +1164,7 @@ namespace AmplifyShaderEditor
 				if( dataCollector.IsTemplate )
 				{
 					string propertyHelperVar = propertyName + "_ST";
-					dataCollector.AddToUniforms( UniqueId, "float4", propertyHelperVar );
+					dataCollector.AddToUniforms( UniqueId, "float4", propertyHelperVar, dataCollector.IsSRP );
 					string uvName = string.Empty;
 					if( dataCollector.TemplateDataCollectorInstance.HasUV( m_textureCoordSet ) )
 					{
