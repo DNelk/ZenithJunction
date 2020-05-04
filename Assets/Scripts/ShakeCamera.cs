@@ -21,6 +21,8 @@ public class ShakeCamera : MonoBehaviour
     
     private IEnumerator Shake(float dur, float mag)
     {
+        BattleStates temp = BattleManager.Instance.BattleState;
+        BattleManager.Instance.BattleState = BattleStates.Moving;
         _shaking = true;
         
         Vector3 initPos = transform.position;
@@ -39,5 +41,6 @@ public class ShakeCamera : MonoBehaviour
 
         _shaking = false;
         transform.position = initPos;
+        BattleManager.Instance.BattleState = temp;
     }
 }
