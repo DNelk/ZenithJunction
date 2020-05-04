@@ -173,7 +173,8 @@ public class CardEventManager : EventTrigger
             }
             else if (_myCard.Engine != null && !_myCard.Purchasable && !_myCard.Dragging && Input.GetMouseButtonUp(1))
             {
-                BattleManager.Instance.GetNextOpenEngine().RemoveCard(_myCard, true);
+                //BattleManager.Instance.GetNextOpenEngine().RemoveCard(_myCard, true);
+                _myCard.Engine.RemoveCard(_myCard, true);
             }
         }
 
