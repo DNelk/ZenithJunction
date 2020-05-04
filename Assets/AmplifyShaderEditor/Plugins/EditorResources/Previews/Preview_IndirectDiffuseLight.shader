@@ -31,7 +31,7 @@ Shader "Hidden/IndirectDiffuseLight"
 			ENDCG
 		}
 
-		Pass
+		Pass // connected tangent
 		{
 			CGPROGRAM
 			#pragma vertex vert_img
@@ -72,6 +72,33 @@ Shader "Hidden/IndirectDiffuseLight"
 				float4 back = lerp(float4(0.4117,0.3843,0.3647,1),float4(0.4117,0.5059,0.6470,1),worldNormal.y * 0.5 + 0.5);
 
 				return float4(GammaToLinearSpace(back.rgb * _Intensity),1);
+			}
+			ENDCG
+		}
+
+		Pass // connected world
+		{
+			CGPROGRAM
+			#pragma vertex vert_img
+			#pragma fragment frag
+			#include "UnityCG.cginc"
+			#include "Lighting.cginc"
+			#include "UnityPBSLighting.cginc"
+
+			float _Intensity;
+			sampler2D _A;
+
+			float4 frag( v2f_img i ) : SV_Target
+			{
+				float2 xy = 2 * i.uv - 1;
+				float z = -sqrt( 1 - saturate( dot( xy,xy ) ) );
+				float3 vertexPos = float3( xy, z );
+				float3 normal = normalize( vertexPos );
+				float3 worldNormal = tex2D( _A, i.uv );
+
+				float4 back = lerp( float4( 0.4117,0.3843,0.3647,1 ),float4( 0.4117,0.5059,0.6470,1 ),worldNormal.y * 0.5 + 0.5 );
+
+				return float4( GammaToLinearSpace( back.rgb * _Intensity ),1 );
 			}
 			ENDCG
 		}

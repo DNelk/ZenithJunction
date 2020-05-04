@@ -117,6 +117,7 @@ namespace AmplifyShaderEditor
 			else
 				m_currentSelectedInput = Mathf.Clamp( newValue, 0, m_maxAmountInputs - 1 );
 			m_outputPorts[ 0 ].ChangeType( m_inputPorts[ m_currentSelectedInput ].DataType, false );
+			PreviewIsDirty = true;
 			ChangeSignalPropagation();
 		}
 
@@ -145,7 +146,8 @@ namespace AmplifyShaderEditor
 			}
 			else
 			{
-				UIUtils.RegisterFunctionSwitchNode( this );
+				if( ContainerGraph.ParentWindow.CustomGraph != null )
+					UIUtils.RegisterFunctionSwitchNode( this );
 				UIUtils.RegisterFunctionSwitchCopyNode( this );
 			}
 		}
@@ -371,6 +373,7 @@ namespace AmplifyShaderEditor
 				m_refMaxInputs = m_functionSwitchReference.m_maxAmountInputs;
 				m_refOptionLabel = m_functionSwitchReference.OptionLabel;
 				m_refSelectedInput = m_functionSwitchReference.GetCurrentSelectedInput();
+				OrderIndex = m_functionSwitchReference.OrderIndex;
 
 				SetCurrentSelectedInput( m_functionSwitchReference.GetCurrentSelectedInput(), m_currentSelectedInput );
 			}
@@ -388,13 +391,15 @@ namespace AmplifyShaderEditor
 			{
 				if( m_referenceType == TexReferenceType.Object )
 				{
-					UIUtils.UnregisterFunctionSwitchCopyNode( this );
-					//UIUtils.RegisterFunctionSwitchNode( this );
+					if( ContainerGraph.ParentWindow.CustomGraph == null )
+						UIUtils.UnregisterFunctionSwitchCopyNode( this );
+					UIUtils.RegisterFunctionSwitchNode( this );
 					ResetToSelf();
 				}
 				else
 				{
-					//UIUtils.UnregisterFunctionSwitchNode( this );
+					if( ContainerGraph.ParentWindow.CustomGraph == null )
+						UIUtils.UnregisterFunctionSwitchNode( this );
 					UIUtils.RegisterFunctionSwitchCopyNode( this );
 				}
 			}
@@ -800,16 +805,18 @@ namespace AmplifyShaderEditor
 				m_referenceType = (TexReferenceType)Enum.Parse( typeof( TexReferenceType ), GetCurrentParam( ref nodeParams ) );
 				m_referenceUniqueId = Convert.ToInt32( GetCurrentParam( ref nodeParams ) );
 
-				if( m_referenceType == TexReferenceType.Instance )
+				if( m_referenceType == TexReferenceType.Object )
 				{
-					//UIUtils.UnregisterFunctionSwitchNode( this );
+					if( ContainerGraph.ParentWindow.CustomGraph == null )
+						UIUtils.UnregisterFunctionSwitchCopyNode( this );
 					UIUtils.RegisterFunctionSwitchNode( this );
-					UIUtils.RegisterFunctionSwitchCopyNode( this );
+					ResetToSelf();
 				}
 				else
 				{
-					//UIUtils.UnregisterFunctionSwitchCopyNode( this );
-					UIUtils.RegisterFunctionSwitchNode( this );
+					if( ContainerGraph.ParentWindow.CustomGraph == null )
+						UIUtils.UnregisterFunctionSwitchNode( this );
+					UIUtils.RegisterFunctionSwitchCopyNode( this );
 				}
 			}
 		}

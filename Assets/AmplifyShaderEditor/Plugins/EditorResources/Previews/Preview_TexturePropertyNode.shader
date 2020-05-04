@@ -19,14 +19,7 @@ Shader "Hidden/TexturePropertyNode"
 			#pragma exclude_renderers d3d9 
 			#pragma target 3.5
 			#include "UnityCG.cginc"
-
-			UNITY_DECLARE_TEX2DARRAY( _Array );
-			samplerCUBE _Cube;
-			sampler2D _Sampler;
-			sampler3D _Sampler3D;
 			int _Default;
-			int _Type;
-
 			float4 frag( v2f_img i ) : SV_Target
 			{
 				if(_Default == 1)
@@ -45,16 +38,44 @@ Shader "Hidden/TexturePropertyNode"
 				{
 					return float4(0.5,0.5,1,1);
 				}
-				else 
+
+				return 1;
+			}
+			ENDCG
+		}
+
+		Pass
+		{
+			CGPROGRAM
+			#pragma vertex vert_img
+			#pragma fragment frag
+			#pragma exclude_renderers d3d9 
+			#pragma target 3.5
+			#include "UnityCG.cginc"
+
+			UNITY_DECLARE_TEX2DARRAY (_Array);
+			samplerCUBE _Cube;
+			sampler2D _Sampler;
+			sampler3D _Sampler3D;
+			int _Type;
+
+			float4 frag (v2f_img i) : SV_Target
+			{
+				if (_Type == 4)
 				{
-					if( _Type == 4 )
-						return UNITY_SAMPLE_TEX2DARRAY( _Array, float3( i.uv, 0 ) );
-					else if( _Type == 3 )
-						return texCUBE( _Cube, float3(i.uv,0) );
-					else if( _Type == 2 )
-						return tex3D( _Sampler3D, float3(i.uv,0) );
-					else
-						return tex2D( _Sampler, i.uv);
+					return UNITY_SAMPLE_TEX2DARRAY (_Array, float3(i.uv, 0));
+				}
+				else if (_Type == 3)
+				{
+					return texCUBE (_Cube, float3(i.uv,0));
+				}
+				else if (_Type == 2)
+				{
+					return tex3D (_Sampler3D, float3(i.uv,0));
+				}
+				else
+				{
+					return tex2D (_Sampler, i.uv);
 				}
 			}
 			ENDCG

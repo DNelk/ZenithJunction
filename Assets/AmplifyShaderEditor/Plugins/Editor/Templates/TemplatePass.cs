@@ -63,7 +63,7 @@ namespace AmplifyShaderEditor
 		[SerializeField]
 		TemplateOptionsContainer m_customOptionsContainer = new TemplateOptionsContainer();
 #endif
-		public TemplatePass( TemplateSubShader subShader,  int subshaderIdx, int passIdx, TemplateIdManager idManager, string uniquePrefix, int offsetIdx, TemplatePassInfo passInfo, ref Dictionary<string, TemplateShaderPropertyData> duplicatesHelper )
+		public TemplatePass( TemplateMultiPass template, TemplateSubShader subShader,  int subshaderIdx, int passIdx, TemplateIdManager idManager, string uniquePrefix, int offsetIdx, TemplatePassInfo passInfo, ref Dictionary<string, TemplateShaderPropertyData> duplicatesHelper )
 		{
 			m_idx = passIdx;
 
@@ -122,7 +122,7 @@ namespace AmplifyShaderEditor
 			TemplateHelperFunctions.CreateShaderGlobalsList( passInfo.Data, ref m_availableShaderGlobals, ref ownDuplicatesDict );
 
 			// Vertex and Interpolator data
-			FetchVertexAndInterpData( subShader.Modules, offsetIdx, passInfo.Data );
+			FetchVertexAndInterpData( template, subShader.Modules, offsetIdx, passInfo.Data );
 			if( m_vertexDataContainer != null )
 				idManager.RegisterId( m_vertexDataContainer.VertexDataStartIdx, uniquePrefix + m_vertexDataContainer.VertexDataId, m_vertexDataContainer.VertexDataId );
 
@@ -282,7 +282,7 @@ namespace AmplifyShaderEditor
 			}
 		}
 
-		void FetchVertexAndInterpData( TemplateModulesData subShaderModule, int offsetIdx, string body )
+		void FetchVertexAndInterpData(TemplateMultiPass template, TemplateModulesData subShaderModule, int offsetIdx, string body )
 		{
 			// Vertex Data
 			try
@@ -329,6 +329,10 @@ namespace AmplifyShaderEditor
 					else if( subShaderModule.ShaderModel.IsValid )
 					{
 						interpolatorAmount = subShaderModule.ShaderModel.InterpolatorAmount;
+					}
+					else if( template.GlobalShaderModel.IsValid )
+					{
+						interpolatorAmount = template.GlobalShaderModel.InterpolatorAmount;
 					}
 
 					m_interpolatorDataContainer = TemplateHelperFunctions.CreateInterpDataList( interpData, interpDataId, interpolatorAmount );

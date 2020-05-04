@@ -62,6 +62,9 @@ namespace AmplifyShaderEditor
 
 	public static class IOUtils
 	{
+		public delegate void OnShaderAction( Shader shader, bool isTemplate, string type );
+		public static OnShaderAction OnShaderSavedEvent;
+		public static OnShaderAction OnShaderTypeChangedEvent;
 
 		public static readonly string ShaderCopywriteMessage = "// Made with Amplify Shader Editor\n// Available at the Unity Asset Store - http://u3d.as/y3X \n";
 		public static readonly string GrabPassEmpty = "\t\tGrabPass{ }\n";
@@ -254,7 +257,7 @@ namespace AmplifyShaderEditor
 		}
 
 		////////////////////////////////////////////////////////////////////////////
-		private static void SetAmplifyDefineSymbolOnBuildTargetGroup( BuildTargetGroup targetGroup )
+		public static void SetAmplifyDefineSymbolOnBuildTargetGroup( BuildTargetGroup targetGroup )
 		{
 			string currData = PlayerSettings.GetScriptingDefineSymbolsForGroup( targetGroup );
 			if ( !currData.Contains( AmplifyShaderEditorDefineSymbol ) )
@@ -275,12 +278,25 @@ namespace AmplifyShaderEditor
 			}
 		}
 
+		public static void RemoveAmplifyDefineSymbolOnBuildTargetGroup( BuildTargetGroup targetGroup )
+		{
+			string currData = PlayerSettings.GetScriptingDefineSymbolsForGroup( targetGroup );
+			if( currData.Contains( AmplifyShaderEditorDefineSymbol ) )
+			{
+				currData = currData.Replace( AmplifyShaderEditorDefineSymbol + ";", "" );
+				currData = currData.Replace( ";" + AmplifyShaderEditorDefineSymbol, "" );
+				currData = currData.Replace( AmplifyShaderEditorDefineSymbol, "" );
+				PlayerSettings.SetScriptingDefineSymbolsForGroup( targetGroup, currData );
+			}
+		}
+
 		public static void Init()
 		{
 			if ( !Initialized )
 			{
 				Initialized = true;
-				SetAmplifyDefineSymbolOnBuildTargetGroup( EditorUserBuildSettings.selectedBuildTargetGroup );
+				if( EditorPrefs.GetBool( Preferences.PrefDefineSymbol, true ) )
+					SetAmplifyDefineSymbolOnBuildTargetGroup( EditorUserBuildSettings.selectedBuildTargetGroup );
 				//Array BuildTargetGroupValues = Enum.GetValues( typeof(  BuildTargetGroup ));
 				//for ( int i = 0; i < BuildTargetGroupValues.Length; i++ )
 				//{

@@ -48,9 +48,16 @@ namespace AmplifyShaderEditor
 			base.SetPreviewInputs();
 
 			if( m_inputPorts[ 0 ].IsConnected )
-				m_previewMaterialPassId = 1;
+			{
+				if( m_normalSpace == ViewSpace.Tangent )
+					m_previewMaterialPassId = 1;
+				else
+					m_previewMaterialPassId = 2;
+			}
 			else
+			{
 				m_previewMaterialPassId = 0;
+			}
 		}
 
 		public override void DrawProperties()
@@ -102,7 +109,7 @@ namespace AmplifyShaderEditor
 					if( m_inputPorts[ 0 ].IsConnected )
 					{
 						if( m_normalSpace == ViewSpace.Tangent )
-							worldNormal = dataCollector.TemplateDataCollectorInstance.GetWorldNormal( UniqueId, m_currentPrecisionType, m_inputPorts[ 0 ].GeneratePortInstructions( ref dataCollector ), OutputId );
+							worldNormal = dataCollector.TemplateDataCollectorInstance.GetWorldNormal( UniqueId, CurrentPrecisionType, m_inputPorts[ 0 ].GeneratePortInstructions( ref dataCollector ), OutputId );
 						else
 							worldNormal = m_inputPorts[ 0 ].GeneratePortInstructions( ref dataCollector );
 					}
@@ -132,7 +139,7 @@ namespace AmplifyShaderEditor
 					dataCollector.AddLocalVariable( UniqueId, "#endif //specdataif1" );
 
 					dataCollector.AddLocalVariable( UniqueId, "Unity_GlossyEnvironmentData g" + OutputId + " = UnityGlossyEnvironmentSetup( " + tempsmoothness + ", " + worldViewDir + ", " + worldNormal + ", float3(0,0,0));" );
-					dataCollector.AddLocalVariable( UniqueId, m_currentPrecisionType, WirePortDataType.FLOAT3, "indirectSpecular" + OutputId, "UnityGI_IndirectSpecular( data, " + tempocclusion + ", " + worldNormal + ", g" + OutputId + " )" );
+					dataCollector.AddLocalVariable( UniqueId, CurrentPrecisionType, WirePortDataType.FLOAT3, "indirectSpecular" + OutputId, "UnityGI_IndirectSpecular( data, " + tempocclusion + ", " + worldNormal + ", g" + OutputId + " )" );
 					return "indirectSpecular" + OutputId;
 				}
 				else
@@ -144,7 +151,7 @@ namespace AmplifyShaderEditor
 						if( m_inputPorts[ 0 ].IsConnected )
 						{
 							if( m_normalSpace == ViewSpace.Tangent )
-								worldNormal = dataCollector.TemplateDataCollectorInstance.GetWorldNormal( UniqueId, m_currentPrecisionType, m_inputPorts[ 0 ].GeneratePortInstructions( ref dataCollector ), OutputId );
+								worldNormal = dataCollector.TemplateDataCollectorInstance.GetWorldNormal( UniqueId, CurrentPrecisionType, m_inputPorts[ 0 ].GeneratePortInstructions( ref dataCollector ), OutputId );
 							else
 								worldNormal = m_inputPorts[ 0 ].GeneratePortInstructions( ref dataCollector );
 						}
@@ -162,19 +169,19 @@ namespace AmplifyShaderEditor
 					}
 					else if( dataCollector.CurrentSRPType == TemplateSRPType.HD )
 					{
-						UIUtils.ShowMessage( "Indirect Specular Light node currently not supported on HDRP" );
-						return "float3(0,0,0)";
+						UIUtils.ShowMessage( UniqueId, "Indirect Specular Light node currently not supported on HDRP" );
+						return m_outputPorts[0].ErrorValue;
 					}
 				}
 			}
 
 			if( dataCollector.GenType == PortGenType.NonCustomLighting || dataCollector.CurrentCanvasMode != NodeAvailability.CustomLighting )
-				return "float3(0,0,0)";
+				return m_outputPorts[0].ErrorValue;
 
 			string normal = string.Empty;
 			if( m_inputPorts[ 0 ].IsConnected )
 			{
-				dataCollector.AddToInput( UniqueId, SurfaceInputs.WORLD_NORMAL, m_currentPrecisionType );
+				dataCollector.AddToInput( UniqueId, SurfaceInputs.WORLD_NORMAL, CurrentPrecisionType );
 				dataCollector.AddToInput( UniqueId, SurfaceInputs.INTERNALDATA, addSemiColon: false );
 				dataCollector.ForceNormal = true;
 
@@ -189,7 +196,7 @@ namespace AmplifyShaderEditor
 			{
 				if( dataCollector.IsFragmentCategory )
 				{
-					dataCollector.AddToInput( UniqueId, SurfaceInputs.WORLD_NORMAL, m_currentPrecisionType );
+					dataCollector.AddToInput( UniqueId, SurfaceInputs.WORLD_NORMAL, CurrentPrecisionType );
 					if( dataCollector.DirtyNormal )
 					{
 						dataCollector.AddToInput( UniqueId, SurfaceInputs.INTERNALDATA, addSemiColon: false );
@@ -228,7 +235,7 @@ namespace AmplifyShaderEditor
 			}
 
 			dataCollector.AddLocalVariable( UniqueId, "Unity_GlossyEnvironmentData g" + OutputId + " = UnityGlossyEnvironmentSetup( " + smoothness + ", " + viewDir + ", " + normal + ", float3(0,0,0));" );
-			dataCollector.AddLocalVariable( UniqueId, m_currentPrecisionType, WirePortDataType.FLOAT3, "indirectSpecular" + OutputId, "UnityGI_IndirectSpecular( data, " + occlusion + ", " + normal + ", g" + OutputId + " )" );
+			dataCollector.AddLocalVariable( UniqueId, CurrentPrecisionType, WirePortDataType.FLOAT3, "indirectSpecular" + OutputId, "UnityGI_IndirectSpecular( data, " + occlusion + ", " + normal + ", g" + OutputId + " )" );
 
 			return "indirectSpecular" + OutputId;
 		}
@@ -243,7 +250,7 @@ namespace AmplifyShaderEditor
 			{
 				m_errorMessageTooltip = "Smoothness port was previously being used as Roughness, please check if you are correctly using it and save to confirm.";
 				m_upgradeMessage = true;
-				UIUtils.ShowMessage( "Indirect Specular Light node: Smoothness port was previously being used as Roughness, please check if you are correctly using it and save to confirm." );
+				UIUtils.ShowMessage( UniqueId, "Indirect Specular Light node: Smoothness port was previously being used as Roughness, please check if you are correctly using it and save to confirm." );
 			}
 
 			UpdatePort();

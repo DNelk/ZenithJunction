@@ -1,5 +1,8 @@
 using UnityEditor;
 using UnityEngine;
+using System;
+using System.Collections;
+using UnityEngine.Networking;
 
 namespace AmplifyShaderEditor
 {
@@ -43,8 +46,67 @@ namespace AmplifyShaderEditor
 				window.maxSize = new Vector2( 502, 265 );
 				window.Show();
 			}
+
+			EditorApplication.update += Update;
 		}
-		
+
+		static void Update()
+		{
+			EditorApplication.update -= Update;
+
+			if( !EditorApplication.isPlayingOrWillChangePlaymode )
+			{
+				Preferences.ShowOption show = Preferences.ShowOption.Never;
+				if( !EditorPrefs.HasKey( Preferences.PrefStartUp ) )
+				{
+					show = Preferences.ShowOption.Always;
+					EditorPrefs.SetInt( Preferences.PrefStartUp, 0 );
+				}
+				else
+				{
+					if( Time.realtimeSinceStartup < 10 )
+					{
+						show = (Preferences.ShowOption) EditorPrefs.GetInt( Preferences.PrefStartUp, 0 );
+						// check version here
+						if( show == Preferences.ShowOption.OnNewVersion )
+						{
+							ASEStartScreen.StartBackgroundTask( StartRequest( ASEStartScreen.ChangelogURL, () =>
+							{
+								var changeLog = ChangeLogInfo.CreateFromJSON( www.downloadHandler.text );
+								if( changeLog != null )
+								{
+									if( changeLog.Version > VersionInfo.FullNumber )
+										ASEStartScreen.Init();
+								}
+							} ) );
+						}
+					}
+				}
+
+				if( show == Preferences.ShowOption.Always )
+					ASEStartScreen.Init();
+			}
+		}
+
+		static UnityWebRequest www;
+
+		static IEnumerator StartRequest( string url, Action success = null )
+		{
+			using( www = UnityWebRequest.Get( url ) )
+			{
+#if UNITY_5_6_OR_NEWER
+				yield return www.SendWebRequest();
+#else
+				yield return www.Send();
+#endif
+
+				while( www.isDone == false )
+					yield return null;
+
+				if( success != null )
+					success();
+			}
+		}
 
 		public static void CleanInvalidData()
 		{

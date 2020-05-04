@@ -1,4 +1,5 @@
 // Amplify Texture Editor - Visual Texture Editing Tool
+// Amplify Texture Editor - Visual Texture Editing Tool
 // Copyright (c) Amplify Creations, Lda <info@amplify.pt>
 
 using System;
@@ -8,7 +9,7 @@ using UnityEngine;
 namespace AmplifyShaderEditor
 {
 	[Serializable]
-	[NodeAttributes( "Voronoi", "Miscellaneous", "Voronoi" )]
+	[NodeAttributes( "Voronoi", "Miscellaneous", "Voronoi", Tags = "noise" )]
 	public sealed class VoronoiNode : ParentNode
 	{
 		// Unity Voronoi
@@ -56,9 +57,11 @@ namespace AmplifyShaderEditor
 			"return frac( sin( p ) *43758.5453);" };
 
 
-		private const string VoronoiHeader = "float voronoi{0}( float2 v, inout float2 id )";
-		private const string VoronoiFunc = "voronoi{1}( {0}, {2} )";
-		private string[] VoronoiBody = { "float2 n = floor( v );",
+		private const string VoronoiHeader = "float voronoi{0}( float2 v, float time, inout float2 id, float smoothness )";
+		private const string VoronoiFunc = "voronoi{0}( {1}, {2},{3}, {4} )";
+		private string[] VoronoiBody = 
+		{
+			"float2 n = floor( v );",
 			"float2 f = frac( v );",
 			"float F1 = 8.0;",
 			"float F2 = 8.0; float2 mr = 0; float2 mg = 0;",
@@ -70,12 +73,12 @@ namespace AmplifyShaderEditor
 			" \t\tfloat2 o = voronoihash{0}( n + g );",
 			" \t\tfloat2 r = g - f + (sin(0 + o * 6.2831)*0.5 + 0.5);",
 			" \t\tfloat d = dot( r, r );",
-			" \t\tif( d<F1 ) {",
-			" \t\t\tF2 = F1;",
-			" \t\t\tF1 = d; mg = g; mr = r; id = o;",
-			" \t\t} else if( d<F2 ) {",
-			" \t\t\tF2 = d;",
-			" \t\t}",
+			" \t\tif( d<F1 ) {",//12
+			" \t\t\tF2 = F1;",//13
+			" \t\t\tF1 = d; mg = g; mr = r; id = o;",//14
+			" \t\t} else if( d<F2 ) {",//15
+			" \t\t\tF2 = d;",//16
+			" \t\t}",//17
 			" \t}",
 			"}",
 			"return F1;"
@@ -117,6 +120,9 @@ namespace AmplifyShaderEditor
 		[SerializeField]
 		private bool m_useUnity = false;
 
+		[SerializeField]
+		private bool m_calculateSmoothValue = false;
+
 		private const string FunctionTypeStr = "Method";//"Function Type";
 		private readonly string[] m_functionTypeStr = { "Cells", "Crystal", "Glass", "Caustic", "Distance" };
 
@@ -136,6 +142,7 @@ namespace AmplifyShaderEditor
 		private const string MethodTypeStr = "_MethodType";
 		private const string SearchQualityStr = "_SearchQuality";
 		private const string OctavesStr = "_Octaves";
+		private const string UseSmoothnessStr = "_UseSmoothness";
 
 		private int m_UseTileScaleId;
 		private int m_TileScaleId;
@@ -144,6 +151,7 @@ namespace AmplifyShaderEditor
 		private int m_MethodTypeId;
 		private int m_SearchQualityId;
 		private int m_OctavesId;
+		private int m_UseSmoothnessId;
 
 		protected override void CommonInit( int uniqueId )
 		{
@@ -151,6 +159,8 @@ namespace AmplifyShaderEditor
 			AddInputPort( WirePortDataType.FLOAT2, false, "UV" );
 			AddInputPort( WirePortDataType.FLOAT, false, "Angle" );
 			AddInputPort( WirePortDataType.FLOAT, false, "Scale" );
+			AddInputPort( WirePortDataType.FLOAT, false, "Smoothness" );
+
 			m_inputPorts[ 2 ].FloatInternalData = 1;
 
 			AddOutputPort( WirePortDataType.FLOAT, "Out" );
@@ -160,6 +170,13 @@ namespace AmplifyShaderEditor
 			m_autoWrapProperties = true;
 			m_previewShaderGUID = "bc1498ccdade442479038b24982fc946";
 			ChangePorts();
+			ChechSmoothPorts();
+		}
+
+		void ChechSmoothPorts()
+		{
+			m_inputPorts[ 3 ].Visible = !m_useUnity && m_calculateSmoothValue && (m_functionType == 0) ;
+			m_sizeIsDirty = true;
 		}
 
 		void ChangePorts()
@@ -177,6 +194,7 @@ namespace AmplifyShaderEditor
 			m_MethodTypeId = Shader.PropertyToID( MethodTypeStr );
 			m_SearchQualityId = Shader.PropertyToID( SearchQualityStr );
 			m_OctavesId = Shader.PropertyToID( OctavesStr );
+			m_UseSmoothnessId = Shader.PropertyToID( UseSmoothnessStr );
 		}
 
 		public override void SetPreviewInputs()
@@ -201,6 +219,8 @@ namespace AmplifyShaderEditor
 				}
 
 				PreviewMaterial.SetInt( m_MethodTypeId, m_functionType );
+				int smoothnessValue = m_calculateSmoothValue ? 1 : 0;
+				PreviewMaterial.SetInt( m_UseSmoothnessId, smoothnessValue );
 
 				PreviewMaterial.SetFloat( m_UseTileScaleId, m_tileable ? 1.0f : 0.0f );
 
@@ -238,43 +258,70 @@ namespace AmplifyShaderEditor
 			RenderTexture.active = temp;
 
 			PreviewIsDirty = m_continuousPreviewRefresh;
+
+			FinishPreviewRender = true;
 		}
 
 		public override void DrawProperties()
 		{
 			base.DrawProperties();
-
-			EditorGUI.BeginDisabledGroup( m_useUnity );
+			EditorGUI.BeginChangeCheck();
 			{
-				m_functionType = EditorGUILayoutPopup( FunctionTypeStr, m_functionType, m_functionTypeStr );
-				EditorGUI.BeginDisabledGroup( m_functionType == 4 );
-				m_distanceFunction = EditorGUILayoutPopup( DistanceFunctionLabelStr, m_distanceFunction, m_distanceFunctionStr );
-				if( m_distanceFunction == 4 )
+				EditorGUI.BeginDisabledGroup( m_useUnity );
 				{
-					m_minkowskiPower = EditorGUILayoutSlider( "Minkowski Power", m_minkowskiPower, 1, 5 );
+					EditorGUI.BeginChangeCheck();
+					m_functionType = EditorGUILayoutPopup( FunctionTypeStr, m_functionType, m_functionTypeStr );
+					if( EditorGUI.EndChangeCheck() )
+					{
+						ChechSmoothPorts();
+					}
+
+					EditorGUI.BeginDisabledGroup( m_functionType == 4 );
+					m_distanceFunction = EditorGUILayoutPopup( DistanceFunctionLabelStr, m_distanceFunction, m_distanceFunctionStr );
+					if( m_distanceFunction == 4 )
+					{
+						m_minkowskiPower = EditorGUILayoutSlider( "Minkowski Power", m_minkowskiPower, 1, 5 );
+					}
+					EditorGUI.EndDisabledGroup();
+
+					m_searchQuality = EditorGUILayoutPopup( SearchQualityLabelStr, m_searchQuality, m_searchQualityStr );
+					m_octaves = EditorGUILayoutIntSlider( "Octaves", m_octaves, 1, 8 );
+					m_tileable = EditorGUILayoutToggle( "Tileable", m_tileable );
+					EditorGUI.BeginDisabledGroup( !m_tileable );
+					m_tileScale = EditorGUILayoutIntField( "Tile Scale", m_tileScale );
+					EditorGUI.EndDisabledGroup();
+
+					//Only smoothing cells type for now
+					if( m_functionType == 0 )
+					{
+						EditorGUI.BeginChangeCheck();
+						m_calculateSmoothValue = EditorGUILayoutToggle( "Smooth", m_calculateSmoothValue );
+						if( EditorGUI.EndChangeCheck() )
+						{
+							ChechSmoothPorts();
+						}
+					}
 				}
 				EditorGUI.EndDisabledGroup();
 
-				m_searchQuality = EditorGUILayoutPopup( SearchQualityLabelStr, m_searchQuality, m_searchQualityStr );
-				m_octaves = EditorGUILayoutIntSlider( "Octaves", m_octaves, 1, 8 );
-				m_tileable = EditorGUILayoutToggle( "Tileable", m_tileable );
-				EditorGUI.BeginDisabledGroup( !m_tileable );
-				m_tileScale = EditorGUILayoutIntField( "Tile Scale", m_tileScale );
-				EditorGUI.EndDisabledGroup();
+				EditorGUI.BeginChangeCheck();
+				m_useUnity = EditorGUILayoutToggle( "Unity's Voronoi", m_useUnity );
+				if( EditorGUI.EndChangeCheck() )
+				{
+					ChangePorts();
+					ChechSmoothPorts();
+				}
 			}
-			EditorGUI.EndDisabledGroup();
-
-			EditorGUI.BeginChangeCheck();
-			m_useUnity = EditorGUILayoutToggle( "Unity's Voronoi", m_useUnity );
 			if( EditorGUI.EndChangeCheck() )
 			{
-				ChangePorts();
+				PreviewIsDirty = true;
 			}
+			
 		}
 
-		void ChangeFunction( string scale, string time = "0" )
+		void ChangeFunction( string scale )
 		{
-			VoronoiBody[ 10 ] = "\t\to = ( sin( " + time + " + o * 6.2831 ) * 0.5 + 0.5 ); float2 r = g - f + o;";
+			VoronoiBody[ 10 ] = "\t\to = ( sin( time + o * 6.2831 ) * 0.5 + 0.5 ); float2 r = g - f + o;";
 			int q = m_searchQuality + 1;
 			VoronoiBody[ 4 ] = "for ( int j = -" + q + "; j <= " + q + "; j++ )";
 			VoronoiBody[ 6 ] = "\tfor ( int i = -" + q + "; i <= " + q + "; i++ )";
@@ -299,6 +346,39 @@ namespace AmplifyShaderEditor
 				case 4:
 				VoronoiBody[ 11 ] = "\t\tfloat d = " + ( 1 / Mathf.Pow( 2, 1 / m_minkowskiPower ) ).ToString( "n3" ) + " * pow( ( pow( abs( r.x ), " + m_minkowskiPower + " ) + pow( abs( r.y ), " + m_minkowskiPower + " ) ), " + ( 1 / m_minkowskiPower ).ToString( "n3" ) + " );";
 				break;
+			}
+
+			if( m_functionType == 0 )
+			{
+				if( m_calculateSmoothValue )
+				{
+					VoronoiBody[ 12 ] = " //\t\tif( d<F1 ) {";
+					VoronoiBody[ 13 ] = " //\t\t\tF2 = F1;";
+					VoronoiBody[ 14 ] = " \t\t\tfloat h = smoothstep(0.0, 1.0, 0.5 + 0.5 * (F1 - d) / smoothness); F1 = lerp(F1, d, h) - smoothness * h * (1.0 - h);mg = g; mr = r; id = o;";
+					VoronoiBody[ 15 ] = " //\t\t} else if( d<F2 ) {";
+					VoronoiBody[ 16 ] = " //\t\t\tF2 = d;";
+					VoronoiBody[ 17 ] = " //\t\t}";
+				}
+				else
+				{
+					VoronoiBody[ 12 ] = " \t\tif( d<F1 ) {";
+					VoronoiBody[ 13 ] = " \t\t\tF2 = F1;";
+					VoronoiBody[ 14 ] = " \t\t\tF1 = d; mg = g; mr = r; id = o;";
+					VoronoiBody[ 15 ] = " \t\t} else if( d<F2 ) {";
+					VoronoiBody[ 16 ] = " \t\t\tF2 = d;";
+					VoronoiBody[ 17 ] = " \t\t}";
+				}
+				
+				
+			}
+			else
+			{
+				VoronoiBody[ 12 ] = " \t\tif( d<F1 ) {";
+				VoronoiBody[ 13 ] = " \t\t\tF2 = F1;";
+				VoronoiBody[ 14 ] = " \t\t\tF1 = d; mg = g; mr = r; id = o;";
+				VoronoiBody[ 15 ] = " \t\t} else if( d<F2 ) {";
+				VoronoiBody[ 16 ] = " \t\t\tF2 = d;";
+				VoronoiBody[ 17 ] = " \t\t}";
 			}
 
 			switch( m_functionType )
@@ -347,7 +427,7 @@ namespace AmplifyShaderEditor
 				dataCollector.AddFunction( UnityVoroniNoiseFunctionsBody[ 0 ], UnityVoroniNoiseFunctionsBody, false );
 				string varName = "unityVoronoy" + OutputId;
 				string varValue = string.Format( UnityVoronoiNoiseFunc, uvValue, angleOffset, cellDensity );
-				dataCollector.AddLocalVariable( UniqueId, m_currentPrecisionType, WirePortDataType.FLOAT2, varName, varValue );
+				dataCollector.AddLocalVariable( UniqueId, CurrentPrecisionType, WirePortDataType.FLOAT2, varName, varValue );
 				m_outputPorts[ 0 ].SetLocalValue( varName + ".x", dataCollector.PortCategory );
 				m_outputPorts[ 1 ].SetLocalValue( varName + ".y", dataCollector.PortCategory );
 				return m_outputPorts[ outputId ].LocalValue( dataCollector.PortCategory );
@@ -357,8 +437,11 @@ namespace AmplifyShaderEditor
 
 				string scaleValue = m_inputPorts[ 2 ].GeneratePortInstructions( ref dataCollector );
 
-				string time = m_inputPorts[ 1 ].GeneratePortInstructions( ref dataCollector );
-				ChangeFunction( scaleValue, time );
+				string timeVarValue = m_inputPorts[ 1 ].GeneratePortInstructions( ref dataCollector );
+				string timeVarName = "time" + OutputId;
+				dataCollector.AddLocalVariable( UniqueId, CurrentPrecisionType, WirePortDataType.FLOAT, timeVarName, timeVarValue );
+
+				ChangeFunction( scaleValue );
 
 				string voronoiHashFunc = string.Empty;
 				string VoronoiHashHeaderFormatted = string.Format( VoronoiHashHeader, OutputId );
@@ -370,8 +453,16 @@ namespace AmplifyShaderEditor
 				IOUtils.CloseFunctionBody( ref voronoiHashFunc );
 				dataCollector.AddFunction( VoronoiHashHeaderFormatted, voronoiHashFunc );
 
+				string smoothnessName = "0";
+				if( m_calculateSmoothValue )
+				{
+					smoothnessName = "voronoiSmooth" + outputId;
+					string smoothnessValue = m_inputPorts[ 3 ].GeneratePortInstructions( ref dataCollector );
+					dataCollector.AddLocalVariable( UniqueId, CurrentPrecisionType, WirePortDataType.FLOAT, smoothnessName, smoothnessValue );
+				}
+
 				string voronoiFunc = string.Empty;
-				IOUtils.AddFunctionHeader( ref voronoiFunc, string.Format( VoronoiHeader, UniqueId ) );
+				IOUtils.AddFunctionHeader( ref voronoiFunc, string.Format( VoronoiHeader, OutputId ) );
 				for( int i = 0; i < VoronoiBody.Length; i++ )
 				{
 					if( i == 9 )
@@ -384,32 +475,41 @@ namespace AmplifyShaderEditor
 					}
 				}
 				IOUtils.CloseFunctionBody( ref voronoiFunc );
-				dataCollector.AddFunction( string.Format( VoronoiHeader, UniqueId ), voronoiFunc );
+				dataCollector.AddFunction( string.Format( VoronoiHeader, OutputId ), voronoiFunc );
 
 				string uvs = string.Empty;
 				if( m_inputPorts[ 0 ].IsConnected )
 					uvs = m_inputPorts[ 0 ].GeneratePortInstructions( ref dataCollector );
 				else
-					uvs = GeneratorUtils.GenerateAutoUVs( ref dataCollector, UniqueId, 0 );
+				{
+					if( dataCollector.IsTemplate )
+					{
+						uvs = dataCollector.TemplateDataCollectorInstance.GenerateAutoUVs( 0 );
+					}
+					else
+					{
+						uvs = GeneratorUtils.GenerateAutoUVs( ref dataCollector, UniqueId, 0 );
+					}
+				}
 
 				dataCollector.AddLocalVariable( UniqueId, string.Format( "float2 coords{0} = {1} * {2};", OutputId, uvs, scaleValue ) );
 				dataCollector.AddLocalVariable( UniqueId, string.Format( "float2 id{0} = 0;", OutputId ) );
 
 				if( m_octaves == 1 )
 				{
-					dataCollector.AddLocalVariable( UniqueId, string.Format( "float voroi{0} = {1};", OutputId, string.Format( VoronoiFunc, "coords" + OutputId, OutputId, "id"+ OutputId ) ) );
+					dataCollector.AddLocalVariable( UniqueId, string.Format( "float voroi{0} = {1};", OutputId, string.Format( VoronoiFunc, OutputId, "coords" + OutputId,timeVarName, "id"+ OutputId,smoothnessName ) ) );
 				}
 				else
 				{
 					dataCollector.AddLocalVariable( UniqueId, string.Format( "float fade{0} = 0.5;", OutputId ) );
 					dataCollector.AddLocalVariable( UniqueId, string.Format( "float voroi{0} = 0;", OutputId ) );
 					dataCollector.AddLocalVariable( UniqueId, string.Format( "float rest{0} = 0;", OutputId ) );
-					dataCollector.AddLocalVariable( UniqueId, "for( int it = 0; it <"+ m_octaves + "; it++ ){"  );
-					dataCollector.AddLocalVariable( UniqueId, string.Format( "voroi{0} += fade{0} * voronoi{0}( coords{0}, id{0} );", OutputId ) );
+					dataCollector.AddLocalVariable( UniqueId, string.Format( "for( int it{0} = 0; it{0} <" + m_octaves + "; it{0}++ ){{", OutputId)  );
+					dataCollector.AddLocalVariable( UniqueId, string.Format( "voroi{0} += fade{0} * voronoi{0}( coords{0}, time{0}, id{0},{1} );", OutputId, smoothnessName ) );
 					dataCollector.AddLocalVariable( UniqueId, string.Format( "rest{0} += fade{0};", OutputId ) );
 					dataCollector.AddLocalVariable( UniqueId, string.Format( "coords{0} *= 2;", OutputId ) );
 					dataCollector.AddLocalVariable( UniqueId, string.Format( "fade{0} *= 0.5;", OutputId ) );
-					dataCollector.AddLocalVariable( UniqueId, "}" );
+					dataCollector.AddLocalVariable( UniqueId, "}" + "//Voronoi" + OutputId );
 					dataCollector.AddLocalVariable( UniqueId, string.Format( "voroi{0} /= rest{0};", OutputId ) );
 				}
 				m_outputPorts[ 0 ].SetLocalValue( "voroi" + OutputId, dataCollector.PortCategory );
@@ -429,7 +529,13 @@ namespace AmplifyShaderEditor
 			m_tileable = Convert.ToBoolean( GetCurrentParam( ref nodeParams ) );
 			m_tileScale = Convert.ToInt32( GetCurrentParam( ref nodeParams ) );
 			m_useUnity = Convert.ToBoolean( GetCurrentParam( ref nodeParams ) );
+			if( UIUtils.CurrentShaderVersion() > 17402 )
+			{
+				m_calculateSmoothValue = Convert.ToBoolean( GetCurrentParam( ref nodeParams ) );
+			}
+
 			ChangePorts();
+			ChechSmoothPorts();
 		}
 
 		public override void WriteToString( ref string nodeInfo, ref string connectionsInfo )
@@ -443,6 +549,7 @@ namespace AmplifyShaderEditor
 			IOUtils.AddFieldValueToString( ref nodeInfo, m_tileable.ToString() );
 			IOUtils.AddFieldValueToString( ref nodeInfo, m_tileScale );
 			IOUtils.AddFieldValueToString( ref nodeInfo, m_useUnity );
+			IOUtils.AddFieldValueToString( ref nodeInfo, m_calculateSmoothValue );
 		}
 	}
 }

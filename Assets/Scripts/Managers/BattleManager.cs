@@ -84,7 +84,7 @@ public class BattleManager : MonoBehaviour
         _mainCanvas = GameObject.Find("MainCanvas").transform;
         Transform posPanel = _mainCanvas.Find("PositionsPanel");
         //get move set
-        GameObject moveSet = posPanel.transform.Find("BackLayer").transform.Find("MoveButton").gameObject;
+        GameObject moveSet = posPanel.transform.Find("MoveButton").gameObject;
         _moveUI = moveSet.GetComponent<MovePlayerDialog>();
         //get enemyPos
         enemyPos = posPanel.transform.Find("EnemyPos").GetComponent<EnemyPosition>();

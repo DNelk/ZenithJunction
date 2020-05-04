@@ -41,6 +41,7 @@ namespace AmplifyShaderEditor
 			m_textLabelWidth = 50;
 			m_autoWrapProperties = true;
 			m_hasLeftDropdown = true;
+			m_previewShaderGUID = "937c7bde062f0f942b600d9950d2ebb2";
 		}
 
 		public override void AfterCommonInit()
@@ -52,6 +53,12 @@ namespace AmplifyShaderEditor
 				if( PaddingTitleRight == 0 )
 					PaddingTitleRight = Constants.PropertyPickerWidth + Constants.IconsLeftRightMargin;
 			}
+		}
+
+		public override void SetPreviewInputs()
+		{
+			base.SetPreviewInputs();
+			m_previewMaterialPassId = (int)m_selectedType;
 		}
 
 		public override void Destroy()
@@ -86,6 +93,20 @@ namespace AmplifyShaderEditor
 		public override string GenerateShaderForOutput( int outputId, ref MasterNodeDataCollector dataCollector, bool ignoreLocalvar )
 		{
 			base.GenerateShaderForOutput( outputId, ref dataCollector, ignoreLocalvar );
+			if( dataCollector.IsTemplate && dataCollector.CurrentSRPType == TemplateSRPType.HD )
+			{
+				switch( m_selectedType )
+				{
+					case BuiltInFogAndAmbientColors.unity_AmbientSky:
+					return "_Ambient_ColorSky";
+					case BuiltInFogAndAmbientColors.unity_AmbientEquator:
+					return "_Ambient_Equator";
+					case BuiltInFogAndAmbientColors.unity_AmbientGround:
+					return "_Ambient_Ground";
+					case BuiltInFogAndAmbientColors.unity_FogColor:
+					return "_FogColor";
+				}
+			}
 			return m_selectedType.ToString();
 		}
 

@@ -50,6 +50,9 @@ namespace AmplifyShaderEditor
 		[SerializeField]
 		private bool m_normalizeVectors = false;
 
+		[SerializeField]
+		private bool m_safePower = false;
+
 		private InputPort m_normalVecPort;
 		private InputPort m_viewVecPort;
 		private InputPort m_biasPort;
@@ -129,6 +132,7 @@ namespace AmplifyShaderEditor
 				m_powerPort.FloatInternalData = EditorGUILayoutFloatField( m_powerPort.Name, m_powerPort.FloatInternalData );
 
 			m_normalizeVectors = EditorGUILayoutToggle( "Normalize Vectors", m_normalizeVectors );
+			m_safePower = EditorGUILayoutToggle(  PowerNode.SafePowerLabel, m_safePower );
 		}
 
 		private void UpdatePort()
@@ -206,7 +210,7 @@ namespace AmplifyShaderEditor
 				if( m_viewVecPort.IsConnected )
 					viewdir = m_viewVecPort.GeneratePortInstructions( ref dataCollector );
 				else
-					viewdir = GeneratorUtils.GenerateWorldLightDirection( ref dataCollector, UniqueId, m_currentPrecisionType );
+					viewdir = GeneratorUtils.GenerateWorldLightDirection( ref dataCollector, UniqueId, CurrentPrecisionType );
 			}
 
 			string normal = string.Empty;
@@ -224,12 +228,12 @@ namespace AmplifyShaderEditor
 						{
 							if( dataCollector.IsTemplate )
 							{
-								normal = dataCollector.TemplateDataCollectorInstance.GetWorldNormal( UniqueId, m_currentPrecisionType, normal, OutputId );
+								normal = dataCollector.TemplateDataCollectorInstance.GetWorldNormal( UniqueId, CurrentPrecisionType, normal, OutputId );
 							}
 							else
 							{
-								normal = GeneratorUtils.GenerateWorldNormal( ref dataCollector, UniqueId, m_currentPrecisionType, normal, OutputId );
-								dataCollector.AddToInput( UniqueId, SurfaceInputs.WORLD_NORMAL, m_currentPrecisionType );
+								normal = GeneratorUtils.GenerateWorldNormal( ref dataCollector, UniqueId, CurrentPrecisionType, normal, OutputId );
+								dataCollector.AddToInput( UniqueId, SurfaceInputs.WORLD_NORMAL, CurrentPrecisionType );
 								dataCollector.ForceNormal = true;
 							}
 						}
@@ -243,7 +247,7 @@ namespace AmplifyShaderEditor
 					{
 						if( m_normalType == NormalType.TangentNormal )
 						{
-							string wtMatrix = GeneratorUtils.GenerateWorldToTangentMatrix( ref dataCollector, UniqueId, m_currentPrecisionType );
+							string wtMatrix = GeneratorUtils.GenerateWorldToTangentMatrix( ref dataCollector, UniqueId, CurrentPrecisionType );
 							normal = "mul( " + normal + "," + wtMatrix + " )";
 						}
 					}
@@ -252,13 +256,13 @@ namespace AmplifyShaderEditor
 				{
 					if( dataCollector.IsFragmentCategory )
 					{
-						dataCollector.AddToInput( UniqueId, SurfaceInputs.WORLD_NORMAL, m_currentPrecisionType );
+						dataCollector.AddToInput( UniqueId, SurfaceInputs.WORLD_NORMAL, CurrentPrecisionType );
 						if( dataCollector.DirtyNormal )
 							dataCollector.AddToInput( UniqueId, SurfaceInputs.INTERNALDATA, addSemiColon: false );
 					}
 
 					if( dataCollector.IsTemplate )
-						normal = dataCollector.TemplateDataCollectorInstance.GetWorldNormal( m_currentPrecisionType, normalize: ( dataCollector.DirtyNormal && m_normalizeVectors ) );
+						normal = dataCollector.TemplateDataCollectorInstance.GetWorldNormal( CurrentPrecisionType, normalize: ( dataCollector.DirtyNormal && m_normalizeVectors ) );
 					else
 						normal = GeneratorUtils.GenerateWorldNormal( ref dataCollector, UniqueId, ( dataCollector.DirtyNormal && m_normalizeVectors ) );
 
@@ -274,9 +278,9 @@ namespace AmplifyShaderEditor
 				if( !m_normalVecPort.IsConnected )
 				{
 					string halfView = GeneratorUtils.GenerateViewDirection( ref dataCollector, UniqueId, ViewSpace.World );
-					string halfLight = GeneratorUtils.GenerateWorldLightDirection( ref dataCollector, UniqueId, m_currentPrecisionType );
+					string halfLight = GeneratorUtils.GenerateWorldLightDirection( ref dataCollector, UniqueId, CurrentPrecisionType );
 					normal = "halfVector" + OutputId;
-					dataCollector.AddLocalVariable( UniqueId, m_currentPrecisionType, WirePortDataType.FLOAT3, normal, "normalize( " + halfView + " + " + halfLight + " )" );
+					dataCollector.AddLocalVariable( UniqueId, CurrentPrecisionType, WirePortDataType.FLOAT3, normal, "normalize( " + halfView + " + " + halfLight + " )" );
 				}
 				else
 				{
@@ -292,7 +296,7 @@ namespace AmplifyShaderEditor
 
 			string fresnelNDotVLocalValue = "dot( " + normal + ", " + viewdir + " )";
 			string fresnelNDotVLocalVar = "fresnelNdotV" + OutputId;
-			dataCollector.AddLocalVariable( UniqueId, m_currentPrecisionType, WirePortDataType.FLOAT, fresnelNDotVLocalVar, fresnelNDotVLocalValue );
+			dataCollector.AddLocalVariable( UniqueId, CurrentPrecisionType, WirePortDataType.FLOAT, fresnelNDotVLocalVar, fresnelNDotVLocalValue );
 
 			string fresnelFinalVar = FresnedFinalVar + OutputId;
 
@@ -302,22 +306,32 @@ namespace AmplifyShaderEditor
 				default:
 				case FresnelType.Standard:
 				{
-					result = string.Format( "( {0} + {1} * pow( 1.0 - {2}, {3} ) )", bias, scale, fresnelNDotVLocalVar, power );
+					string powOp = m_safePower?	string.Format( "pow( max( 1.0 - {0} , 0.0001 ), {1} )", fresnelNDotVLocalVar, power ):
+												string.Format( "pow( 1.0 - {0}, {1} )", fresnelNDotVLocalVar, power );
+					result = string.Format( "( {0} + {1} * {2} )", bias, scale, powOp );
 				}
 				break;
 				case FresnelType.Schlick:
 				{
 					string f0VarName = "f0" + OutputId;
-					dataCollector.AddLocalVariable( UniqueId, m_currentPrecisionType, WirePortDataType.FLOAT, f0VarName, bias );
-					result = string.Format( "( {0} + ( 1.0 - {0} ) * pow( 1.0 - {1}, 5 ) )", f0VarName, fresnelNDotVLocalVar );
+					dataCollector.AddLocalVariable( UniqueId, CurrentPrecisionType, WirePortDataType.FLOAT, f0VarName, bias );
+					string powOp = m_safePower? string.Format( "pow( max( 1.0 - {0} , 0.0001 ), 5 )", fresnelNDotVLocalVar ) :
+												string.Format( "pow( 1.0 - {0}, 5 )", fresnelNDotVLocalVar );
+					result = string.Format( "( {0} + ( 1.0 - {0} ) * {1} )", f0VarName, powOp );
 				}
 				break;
 				case FresnelType.SchlickIOR:
 				{
 					string iorVarName = "ior" + OutputId;
-					dataCollector.AddLocalVariable( UniqueId, m_currentPrecisionType, WirePortDataType.FLOAT, iorVarName, scale );
-					dataCollector.AddLocalVariable( UniqueId, iorVarName +" = pow( ( 1-"+ iorVarName +" )/( 1+"+iorVarName+" ), 2 );");
-					result = string.Format( "( {0} + ( 1.0 - {0} ) * pow( 1.0 - {1}, 5 ) )", iorVarName, fresnelNDotVLocalVar );
+					dataCollector.AddLocalVariable( UniqueId, CurrentPrecisionType, WirePortDataType.FLOAT, iorVarName, scale );
+					string iorPowOp = m_safePower?	string.Format( "pow( max( ( 1 - {0} ) / ( 1 + {0} ) , 0.0001 ), 2 )", iorVarName ):
+													string.Format( "pow( ( 1 - {0} ) / ( 1 + {0} ), 2 )", iorVarName );
+
+					dataCollector.AddLocalVariable( UniqueId, iorVarName +" = "+ iorPowOp + ";");
+
+					string fresnelPowOp = m_safePower?	string.Format( "pow( max( 1.0 - {0} , 0.0001 ), 5 )", fresnelNDotVLocalVar ):
+														string.Format( "pow( 1.0 - {0}, 5 )", fresnelNDotVLocalVar );
+					result = string.Format( "( {0} + ( 1.0 - {0} ) * {1} )", iorVarName, fresnelPowOp );
 				}
 				break;
 			}
@@ -343,6 +357,8 @@ namespace AmplifyShaderEditor
 				m_normalType = (NormalType)Enum.Parse( typeof( NormalType ), GetCurrentParam( ref nodeParams ) );
 				m_viewType = (ViewType)Enum.Parse( typeof( ViewType ), GetCurrentParam( ref nodeParams ) );
 				m_normalizeVectors = Convert.ToBoolean( GetCurrentParam( ref nodeParams ) );
+				if( UIUtils.CurrentShaderVersion() > 17502 )
+					m_safePower = Convert.ToBoolean( GetCurrentParam( ref nodeParams ) );
 			}
 			else
 			{
@@ -371,6 +387,7 @@ namespace AmplifyShaderEditor
 			IOUtils.AddFieldValueToString( ref nodeInfo, m_normalType );
 			IOUtils.AddFieldValueToString( ref nodeInfo, m_viewType );
 			IOUtils.AddFieldValueToString( ref nodeInfo, m_normalizeVectors );
+			IOUtils.AddFieldValueToString( ref nodeInfo, m_safePower );
 		}
 	}
 }

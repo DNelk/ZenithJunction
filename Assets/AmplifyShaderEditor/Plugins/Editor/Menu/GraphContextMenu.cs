@@ -4,6 +4,7 @@
 using UnityEngine;
 using UnityEditor;
 using System;
+using System.Text;
 using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
@@ -178,7 +179,7 @@ namespace AmplifyShaderEditor
 					NodeAttributes attribute = new NodeAttributes( allFunctions[ i ].FunctionName, allFunctions[ i ].CustomNodeCategory, allFunctions[ i ].Description, KeyCode.None, true, 0, int.MaxValue, typeof( AmplifyShaderFunction ) );
 					System.Type type = typeof( FunctionNode );
 
-					ContextMenuItem newItem = new ContextMenuItem( attribute, type, attribute.Name, attribute.Tags, attribute.Category, attribute.Description, allFunctions[ i ], attribute.ShortcutKey );
+					ContextMenuItem newItem = new ContextMenuItem( attribute, type, AddSpacesToSentence( attribute.Name, true ), attribute.Tags, attribute.Category, attribute.Description, allFunctions[ i ], attribute.ShortcutKey );
 					m_items.Add( newItem );
 					m_itemFunctions.Add( newItem );
 				}
@@ -221,6 +222,24 @@ namespace AmplifyShaderEditor
 			m_shortcutTypes.Clear();
 			m_shortcutTypes = null;
 
+		}
+
+		string AddSpacesToSentence( string text, bool preserveAcronyms )
+		{
+			if( string.IsNullOrEmpty( text ) )
+				return string.Empty;
+			StringBuilder newText = new StringBuilder( text.Length * 2 );
+			newText.Append( text[ 0 ] );
+			for( int i = 1; i < text.Length; i++ )
+			{
+				if( char.IsUpper( text[ i ] ) )
+					if( ( text[ i - 1 ] != ' ' && text[ i - 1 ] != '-' && text[ i - 1 ] != '_' && !char.IsUpper( text[ i - 1 ] ) ) ||
+						( preserveAcronyms && char.IsUpper( text[ i - 1 ] ) &&
+						 i < text.Length - 1 && !char.IsUpper( text[ i + 1 ] ) && text[ i + 1 ] != ' ' && text[ i + 1 ] != '-' && text[ i + 1 ] != '_' ) )
+						newText.Append( ' ' );
+				newText.Append( text[ i ] );
+			}
+			return newText.ToString();
 		}
 
 		public NodeAttributes GetNodeAttributesForType( System.Type type )

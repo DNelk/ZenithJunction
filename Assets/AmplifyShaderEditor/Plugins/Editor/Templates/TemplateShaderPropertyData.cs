@@ -16,11 +16,13 @@ namespace AmplifyShaderEditor
 		public int Index;
 		public string FullValue;
 		public string ReplacementValueHelper;
+		public string Identation;
 
-		public TemplateShaderPropertyData(  int index, string fullValue, string propertyInspectorName, string propertyName, WirePortDataType propertyDataType , PropertyType propertyType )
+		public TemplateShaderPropertyData(  int index, string fullValue,string identation, string propertyInspectorName, string propertyName, WirePortDataType propertyDataType , PropertyType propertyType )
 		{
-			FullValue = fullValue;
 			Index = index;
+			FullValue = fullValue;
+			Identation = identation;
 			PropertyInspectorName = string.IsNullOrEmpty( propertyInspectorName )?propertyName: propertyInspectorName;
 			PropertyName = propertyName;
 			PropertyDataType = propertyDataType;
@@ -31,7 +33,7 @@ namespace AmplifyShaderEditor
 
 		public string CreatePropertyForValue( string value )
 		{
-			return ReplacementValueHelper + value;
+			return value.Contains( PropertyName ) ? Identation + value : ReplacementValueHelper + value;
 		}
 
 		public override string ToString()

@@ -22,7 +22,7 @@ namespace AmplifyShaderEditor
 	}
 
 	[Serializable]
-	[NodeAttributes( "Append", "Vector Operators", "Append channels to create a new component", null, KeyCode.V )]
+	[NodeAttributes( "Append", "Vector Operators", "Append channels to create a new component", null, KeyCode.V, tags: "combine" )]
 	public sealed class DynamicAppendNode : ParentNode
 	{
 		private const string OutputTypeStr = "Output type";
@@ -300,7 +300,7 @@ namespace AmplifyShaderEditor
 			}
 
 			result = string.Format( OutputFormatStr,
-									UIUtils.FinalPrecisionWirePortToCgType( m_currentPrecisionType, m_selectedOutputType ),
+									UIUtils.PrecisionWirePortToCgType( CurrentPrecisionType, m_selectedOutputType ),
 									result );
 
 			RegisterLocalVariable( 0, result, ref dataCollector, "appendResult" + OutputId );
@@ -455,7 +455,7 @@ namespace AmplifyShaderEditor
 				m_previewMaterialPassId = 0;
 				if( DebugConsoleWindow.DeveloperMode )
 				{
-					UIUtils.ShowMessage( "Could not find pass ID for append" , MessageSeverity.Error );
+					UIUtils.ShowMessage( UniqueId, "Could not find pass ID for append" , MessageSeverity.Error );
 				}
 			}
 		}

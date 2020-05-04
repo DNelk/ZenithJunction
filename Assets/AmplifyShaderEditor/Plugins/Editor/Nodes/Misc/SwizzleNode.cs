@@ -130,7 +130,7 @@ namespace AmplifyShaderEditor
 				m_previewMaterialPassId = 0;
 				if( DebugConsoleWindow.DeveloperMode )
 				{
-					UIUtils.ShowMessage( "Could not find pass ID for swizzle", MessageSeverity.Error );
+					UIUtils.ShowMessage( UniqueId, "Could not find pass ID for swizzle", MessageSeverity.Error );
 				}
 			}
 		}

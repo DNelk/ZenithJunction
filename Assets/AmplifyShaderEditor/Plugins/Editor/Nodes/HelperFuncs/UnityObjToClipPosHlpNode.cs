@@ -22,6 +22,7 @@ namespace AmplifyShaderEditor
 			AddOutputPort( WirePortDataType.FLOAT, "Y" );
 			AddOutputPort( WirePortDataType.FLOAT, "Z" );
 			AddOutputPort( WirePortDataType.FLOAT, "W" );
+			m_previewShaderGUID = "14ec765a147a53340877b489e73f1c9f";
 		}
 
 		protected override void OnUniqueIDAssigned()

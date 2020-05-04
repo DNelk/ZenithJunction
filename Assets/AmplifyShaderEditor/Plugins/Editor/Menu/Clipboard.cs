@@ -72,6 +72,16 @@ namespace AmplifyShaderEditor
 					masterNodes[ i ].FullReadFromString( ref nodeParams );
 				}
 			}
+
+			for( int i = 0; i < templatesAmount; i++ )
+			{
+				if( m_multiPassMasterNodeData.ContainsKey( masterNodes[ i ].PassUniqueName ) )
+				{
+					masterNodes[ i ].SetReadOptions();
+					masterNodes[ i ].ForceOptionsRefresh();
+				}
+			}
+
 			m_multiPassMasterNodeData.Clear();
 		}
 

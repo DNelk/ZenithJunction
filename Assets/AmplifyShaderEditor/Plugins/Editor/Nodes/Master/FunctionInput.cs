@@ -4,6 +4,7 @@
 using UnityEngine;
 using UnityEditor;
 using System;
+using System.Collections.Generic;
 
 namespace AmplifyShaderEditor
 {
@@ -29,6 +30,9 @@ namespace AmplifyShaderEditor
 		private int m_selectedInputTypeInt = 1;
 
 		private WirePortDataType m_selectedInputType = WirePortDataType.FLOAT;
+
+		[SerializeField]
+		private FunctionNode m_functionNode;
 
 		[SerializeField]
 		private string m_inputName = "Input";
@@ -76,8 +80,43 @@ namespace AmplifyShaderEditor
 
 		public override void SetPreviewInputs()
 		{
+			if( Fnode == null )
+			{
+				m_ignoreConnection = false;
+				CheckSpherePreview();
+			}
+			else
+			{
+				var input = Fnode.GetInput( this );
+				if( input != null && ( !InputPorts[ 0 ].IsConnected || input.IsConnected ) )
+				{
+					m_ignoreConnection = true;
+					InputPorts[ 0 ].PreparePortCacheID();
+					Fnode.SetPreviewInput( input );
+					if( input.ExternalReferences.Count > 0 )
+					{
+						SpherePreview = Fnode.ContainerGraph.GetNode( input.ExternalReferences[ 0 ].NodeId ).SpherePreview;
+					}
+					else
+					{
+						SpherePreview = false;
+					}
+					PreviewMaterial.SetTexture( InputPorts[ 0 ].CachedPropertyId, input.InputPreviewTexture( Fnode.ContainerGraph ) );
+				}
+				else
+				{
+					m_ignoreConnection = false;
+					CheckSpherePreview();
+				}
+			}
+
 			if( !m_ignoreConnection )
 				base.SetPreviewInputs();
+
+			for( int i = 0; i < OutputPorts[ 0 ].ExternalReferences.Count; i++ )
+			{
+				ContainerGraph.GetNode( OutputPorts[ 0 ].ExternalReferences[ i ].NodeId ).OnNodeChange();
+			}
 
 			if( m_typeId == -1 )
 				m_typeId = Shader.PropertyToID( "_Type" );
@@ -91,6 +130,57 @@ namespace AmplifyShaderEditor
 			else
 				PreviewMaterial.SetInt( m_typeId, 0 );
 
+		}
+
+		public override bool RecursivePreviewUpdate( Dictionary<string, bool> duplicatesDict = null )
+		{
+			if( duplicatesDict == null )
+			{
+				duplicatesDict = ContainerGraph.ParentWindow.VisitedChanged;
+			}
+
+			for( int i = 0; i < InputPorts.Count; i++ )
+			{
+				ParentNode outNode = null;
+				if( Fnode != null )
+				{
+					var input = Fnode.GetInput( this );
+					if( input.ExternalReferences.Count > 0 )
+					{
+						outNode = Fnode.ContainerGraph.GetNode( input.ExternalReferences[ 0 ].NodeId );
+					} 
+					else if( InputPorts[ i ].ExternalReferences.Count > 0 )
+					{
+						outNode = ContainerGraph.GetNode( InputPorts[ i ].ExternalReferences[ 0 ].NodeId );
+					}
+				}
+				else
+				{
+					if( InputPorts[ i ].ExternalReferences.Count > 0 )
+					{
+						outNode = ContainerGraph.GetNode( InputPorts[ i ].ExternalReferences[ 0 ].NodeId );
+					}
+				}
+				if( outNode != null )
+				{
+					if( !duplicatesDict.ContainsKey( outNode.OutputId ) )
+					{
+						bool result = outNode.RecursivePreviewUpdate();
+						if( result )
+							PreviewIsDirty = true;
+					}
+					else if( duplicatesDict[ outNode.OutputId ] )
+					{
+						PreviewIsDirty = true;
+					}
+				}
+			}
+
+			bool needsUpdate = PreviewIsDirty;
+			RenderNodePreview();
+			if( !duplicatesDict.ContainsKey( OutputId ) )
+				duplicatesDict.Add( OutputId, needsUpdate );
+			return needsUpdate;
 		}
 
 		protected override void OnUniqueIDAssigned()
@@ -422,6 +512,12 @@ namespace AmplifyShaderEditor
 		{
 			get { return m_autoCast; }
 			set { m_autoCast = value; }
+		}
+
+		public FunctionNode Fnode
+		{
+			get { return m_functionNode; }
+			set { m_functionNode = value; }
 		}
 	}
 }

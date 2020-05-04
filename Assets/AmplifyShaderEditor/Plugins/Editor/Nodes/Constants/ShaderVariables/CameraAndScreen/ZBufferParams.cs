@@ -16,6 +16,7 @@ namespace AmplifyShaderEditor
 			ChangeOutputName( 3, "[0]/far" );
 			ChangeOutputName( 4, "[1]/far" );
 			m_value = "_ZBufferParams";
+			m_previewShaderGUID = "56c42c106bcb497439187f5bb6b6f94d";
 		}
 		public override void RefreshExternalReferences()
 		{

@@ -40,8 +40,10 @@ namespace AmplifyShaderEditor
 		private readonly string OutlineBodyStructDefault = "\thalf filler;";
 		private readonly string OutlineBodyStructEnd = "};";
 
-		private readonly string OutlineDefaultUniformColor = "uniform half4 _ASEOutlineColor;";
-		private readonly string OutlineDefaultUniformWidth = "uniform half _ASEOutlineWidth;";
+		private readonly string OutlineDefaultUniformColor = "half4 _ASEOutlineColor;";
+		private readonly string OutlineDefaultUniformWidth = "half _ASEOutlineWidth;";
+		private readonly string OutlineDefaultUniformColorInstanced = "UNITY_DEFINE_INSTANCED_PROP( half4, _ASEOutlineColor )";
+		private readonly string OutlineDefaultUniformWidthInstanced = "UNITY_DEFINE_INSTANCED_PROP( half, _ASEOutlineWidth )";
 
 		private readonly string OutlineDefaultVertexHeader = "void outlineVertexDataFunc( inout appdata_full v, out Input o )\n\t\t{";
 		private readonly string OutlineTessVertexHeader = "void outlineVertexDataFunc( inout appdata_full v )\n\t\t{";
@@ -50,6 +52,11 @@ namespace AmplifyShaderEditor
 
 		private readonly string[] OutlineSurfBody = {
 														"\to.Emission = _ASEOutlineColor.rgb;",
+														"\to.Alpha = 1;"
+		};
+
+		private readonly string[] OutlineSurfBodyInstanced = {
+														"\to.Emission = UNITY_ACCESS_INSTANCED_PROP(_ASEOutlineColor).rgb;",
 														"\to.Alpha = 1;"
 		};
 
@@ -64,23 +71,23 @@ namespace AmplifyShaderEditor
 														"ENDCG",
 														"\n"};
 
-		private const string OutlineInstancedHeader = "#pragma multi_compile_instancing";
+		//private const string OutlineInstancedHeader = "#pragma multi_compile_instancing";
 
-		private readonly string[] OutlineBodyInstancedBegin = {
-														"UNITY_INSTANCING_CBUFFER_START({0})",
-														"\tUNITY_DEFINE_INSTANCED_PROP( half4, _ASEOutlineColor )",
-														"\tUNITY_DEFINE_INSTANCED_PROP(half, _ASEOutlineWidth)",
-														"UNITY_INSTANCING_CBUFFER_END",
-														"void outlineVertexDataFunc( inout appdata_full v, out Input o )",
-														"{",
-														"\tUNITY_INITIALIZE_OUTPUT( Input, o );"};
+		//private readonly string[] OutlineBodyInstancedBegin = {
+		//												"UNITY_INSTANCING_CBUFFER_START({0})",
+		//												"\tUNITY_DEFINE_INSTANCED_PROP( half4, _ASEOutlineColor )",
+		//												"\tUNITY_DEFINE_INSTANCED_PROP(half, _ASEOutlineWidth)",
+		//												"UNITY_INSTANCING_CBUFFER_END",
+		//												"void outlineVertexDataFunc( inout appdata_full v, out Input o )",
+		//												"{",
+		//												"\tUNITY_INITIALIZE_OUTPUT( Input, o );"};
 
-		private readonly string[] OutlineBodyInstancedEnd = {
-														"}",
-														"inline half4 LightingOutline( SurfaceOutput s, half3 lightDir, half atten ) { return half4 ( 0,0,0, s.Alpha); }",
-														"void outlineSurf( Input i, inout SurfaceOutput o ) { o.Emission = UNITY_ACCESS_INSTANCED_PROP( _ASEOutlineColor ).rgb; o.Alpha = 1; }",
-														"ENDCG",
-														"\n"};
+		//private readonly string[] OutlineBodyInstancedEnd = {
+		//												"}",
+		//												"inline half4 LightingOutline( SurfaceOutput s, half3 lightDir, half atten ) { return half4 ( 0,0,0, s.Alpha); }",
+		//												"void outlineSurf( Input i, inout SurfaceOutput o ) { o.Emission = UNITY_ACCESS_INSTANCED_PROP( _ASEOutlineColor ).rgb; o.Alpha = 1; }",
+		//												"ENDCG",
+		//												"\n"};
 
 		private const string WidthVariableAccessInstanced = "UNITY_ACCESS_INSTANCED_PROP( _ASEOutlineWidth )";
 
@@ -93,6 +100,12 @@ namespace AmplifyShaderEditor
 
 		private const string ColorPropertyName = "_ASEOutlineColor";
 		private const string WidthPropertyName = "_ASEOutlineWidth";
+
+
+		private const string WidthPropertyNameInstanced = "UNITY_ACCESS_INSTANCED_PROP(_ASEOutlineWidth)";
+
+
+		
 		private const string ColorPropertyDec = "_ASEOutlineColor( \"Outline Color\", Color ) = ({0})";
 		private const string OutlinePropertyDec = "_ASEOutlineWidth( \"Outline Width\", Float ) = {0}";
 
@@ -125,6 +138,8 @@ namespace AmplifyShaderEditor
 		private List<PropertyDataCollector> m_inputList = new List<PropertyDataCollector>();
 		private string m_uniforms = string.Empty;
 		private List<PropertyDataCollector> m_uniformList = new List<PropertyDataCollector>();
+		private List<PropertyDataCollector> m_instancedPropertiesList = new List<PropertyDataCollector>();
+		private string m_instancedProperties = string.Empty;
 		private string m_instructions = string.Empty;
 		private string m_functions = string.Empty;
 		private string m_includes = string.Empty;
@@ -272,7 +287,7 @@ namespace AmplifyShaderEditor
 			}
 
 		}
-		public string[] OutlineFunctionBody( ref MasterNodeDataCollector dataCollector, bool instanced, bool isShadowCaster, string shaderName, string[] billboardInfo, ref TessellationOpHelper tessOpHelper, string target )
+		public string[] OutlineFunctionBody( ref MasterNodeDataCollector dataCollector, bool instanced, bool isShadowCaster, string shaderName, string[] billboardInfo, ref TessellationOpHelper tessOpHelper, string target, PrecisionType precision )
 		{
 			List<string> body = new List<string>();
 			body.Add( ModeTags[ dataCollector.CustomOutlineSelectedAlpha ] );
@@ -317,10 +332,10 @@ namespace AmplifyShaderEditor
 				AddMultibodyString( m_pragmas, body );
 			}
 
-			if( instanced )
-			{
-				body.Add( OutlineInstancedHeader );
-			}
+			//if( instanced )
+			//{
+			//	body.Add( OutlineInstancedHeader );
+			//}
 
 			if( customOutline )
 			{
@@ -353,9 +368,91 @@ namespace AmplifyShaderEditor
 
 			if( instanced )
 			{
-				for( int i = 0; i < OutlineBodyInstancedBegin.Length; i++ )
+				//for( int i = 0; i < OutlineBodyInstancedBegin.Length; i++ )
+				//{
+				//	body.Add( ( i == 0 ) ? string.Format( OutlineBodyInstancedBegin[ i ], shaderName ) : OutlineBodyInstancedBegin[ i ] );
+				//}
+
+				//if( (object)billboardInfo != null )
+				//{
+				//	for( int j = 0; j < billboardInfo.Length; j++ )
+				//	{
+				//		body.Add( string.Format( BillboardInstructionFormat, billboardInfo[ j ] ) );
+				//	}
+				//}
+
+				//switch( outlineMode )
+				//{
+				//	case 0: body.Add( string.Format( OutlineVertexOffsetMode, WidthVariableAccessInstanced ) ); break;
+				//	case 1: body.Add( string.Format( OutlineVertexScaleMode, WidthVariableAccessInstanced ) ); break;
+				//	case 2: body.Add( string.Format( OutlineVertexCustomMode, WidthVariableAccessInstanced ) ); break;
+				//}
+				//for( int i = 0; i < OutlineBodyInstancedEnd.Length; i++ )
+				//{
+				//	body.Add( OutlineBodyInstancedEnd[ i ] );
+				//}
+				bool openCBuffer = true;
+				if( customOutline )
 				{
-					body.Add( ( i == 0 ) ? string.Format( OutlineBodyInstancedBegin[ i ], shaderName ) : OutlineBodyInstancedBegin[ i ] );
+					if( isShadowCaster )
+					{
+						for( int i = 0; i < UniformList.Count; i++ )
+						{
+							dataCollector.AddToUniforms( UniformList[ i ].NodeId, UniformList[ i ].PropertyName );
+						}
+
+						foreach( KeyValuePair<string, string> kvp in m_localFunctions )
+						{
+							dataCollector.AddFunction( kvp.Key, kvp.Value );
+						}
+					}
+					else
+					{
+						if( !string.IsNullOrEmpty( Uniforms ) )
+							body.Add( Uniforms.Trim( '\t', '\n' ) );
+
+						openCBuffer = false;
+						body.Add( string.Format( IOUtils.InstancedPropertiesBegin, shaderName ));
+						if( !string.IsNullOrEmpty( InstancedProperties ) )
+							body.Add( InstancedProperties.Trim( '\t', '\n' ) );
+					}
+				}
+
+				if( openCBuffer)
+					body.Add( string.Format( IOUtils.InstancedPropertiesBegin, shaderName ) );
+
+				if( !dataCollector.UsingCustomOutlineColor )
+					body.Add( precision == PrecisionType.Float ? OutlineDefaultUniformColorInstanced.Replace( "half", "float" ) : OutlineDefaultUniformColorInstanced );
+
+				if( !dataCollector.UsingCustomOutlineWidth )
+					body.Add( precision == PrecisionType.Float ? OutlineDefaultUniformWidthInstanced.Replace( "half", "float" ) : OutlineDefaultUniformWidthInstanced );
+
+				body.Add( IOUtils.InstancedPropertiesEnd );
+
+				//Functions
+				if( customOutline && !isShadowCaster )
+					body.Add( Functions );
+
+				if( tessOpHelper.EnableTesselation && !isShadowCaster )
+				{
+					body.Add( tessOpHelper.Uniforms().TrimStart( '\t' ) );
+					body.Add( tessOpHelper.GetCurrentTessellationFunction.Trim( '\t', '\n' ) + "\n" );
+				}
+
+				if( tessOpHelper.EnableTesselation )
+				{
+					body.Add( OutlineTessVertexHeader );
+				}
+				else
+				{
+					body.Add( OutlineDefaultVertexHeader );
+					body.Add( OutlineDefaultVertexOutputDeclaration );
+				}
+
+				if( customOutline )
+				{
+					if( !string.IsNullOrEmpty( VertexData ) )
+						body.Add( "\t" + VertexData.Trim( '\t', '\n' ) );
 				}
 
 				if( (object)billboardInfo != null )
@@ -368,13 +465,30 @@ namespace AmplifyShaderEditor
 
 				switch( outlineMode )
 				{
-					case 0: body.Add( string.Format( OutlineVertexOffsetMode, WidthVariableAccessInstanced ) ); break;
-					case 1: body.Add( string.Format( OutlineVertexScaleMode, WidthVariableAccessInstanced ) ); break;
-					case 2: body.Add( string.Format( OutlineVertexCustomMode, WidthVariableAccessInstanced ) ); break;
+					case 0: body.Add( string.Format( OutlineVertexOffsetMode, dataCollector.UsingCustomOutlineWidth ? "outlineVar" : WidthPropertyNameInstanced ) ); break;
+					case 1: body.Add( string.Format( OutlineVertexScaleMode, dataCollector.UsingCustomOutlineWidth ? "outlineVar" : WidthPropertyNameInstanced ) ); break;
+					case 2: body.Add( string.Format( OutlineVertexCustomMode, dataCollector.UsingCustomOutlineWidth ? "outlineVar" : WidthPropertyNameInstanced ) ); break;
 				}
-				for( int i = 0; i < OutlineBodyInstancedEnd.Length; i++ )
+
+				for( int i = 0; i < OutlineBodyDefaultSurfBegin.Length; i++ )
 				{
-					body.Add( OutlineBodyInstancedEnd[ i ] );
+					body.Add( OutlineBodyDefaultSurfBegin[ i ] );
+				}
+				if( dataCollector.UsingCustomOutlineColor || dataCollector.CustomOutlineSelectedAlpha > 0 )
+				{
+					body.Add( "\t" + Instructions.Trim( '\t', '\n' ) );
+				}
+				else
+				{
+					for( int i = 0; i < OutlineSurfBodyInstanced.Length; i++ )
+					{
+						body.Add( OutlineSurfBodyInstanced[ i ] );
+					}
+				}
+
+				for( int i = 0; i < OutlineBodyDefaultSurfEnd.Length; i++ )
+				{
+					body.Add( OutlineBodyDefaultSurfEnd[ i ] );
 				}
 			}
 			else
@@ -401,10 +515,10 @@ namespace AmplifyShaderEditor
 				}
 
 				if( !dataCollector.UsingCustomOutlineColor )
-					body.Add( OutlineDefaultUniformColor );
+					body.Add( precision == PrecisionType.Float ? OutlineDefaultUniformColor.Replace( "half", "float" ) : OutlineDefaultUniformColor );
 
 				if( !dataCollector.UsingCustomOutlineWidth )
-					body.Add( OutlineDefaultUniformWidth );
+					body.Add( precision == PrecisionType.Float ? OutlineDefaultUniformWidth.Replace( "half", "float" ) : OutlineDefaultUniformWidth );
 
 				//Functions
 				if( customOutline && !isShadowCaster )
@@ -479,6 +593,7 @@ namespace AmplifyShaderEditor
 		{
 			m_inputList = null;
 			m_uniformList = null;
+			m_instancedPropertiesList = null;
 			m_localFunctions = null;
 		}
 
@@ -492,6 +607,7 @@ namespace AmplifyShaderEditor
 		public CullMode OutlineCullMode { get { return m_cullMode; } set { m_cullMode = value; } }
 		public string Inputs { get { return m_inputs; } set { m_inputs = value; } }
 		public string Uniforms { get { return m_uniforms; } set { m_uniforms = value; } }
+		public string InstancedProperties { get { return m_instancedProperties; } set { m_instancedProperties = value; } }
 		public string Instructions { get { return m_instructions; } set { m_instructions = value; } }
 		public string Functions { get { return m_functions; } set { m_functions = value; } }
 		public string Includes { get { return m_includes; } set { m_includes = value; } }
@@ -501,6 +617,8 @@ namespace AmplifyShaderEditor
 		public string GrabPasses { get { return m_grabPasses; } set { m_grabPasses = value; } }
 		public List<PropertyDataCollector> InputList { get { return m_inputList; } set { m_inputList = value; } }
 		public List<PropertyDataCollector> UniformList { get { return m_uniformList; } set { m_uniformList = value; } }
+		public List<PropertyDataCollector> InstancedPropertiesList { get { return m_instancedPropertiesList; } set { m_instancedPropertiesList = value; } }
+
 		public Dictionary<string, string> LocalFunctions { get { return m_localFunctions; } set { m_localFunctions = value; } }
 		public bool DirtyInput { get { return m_dirtyInput; } set { m_dirtyInput = value; } }
 

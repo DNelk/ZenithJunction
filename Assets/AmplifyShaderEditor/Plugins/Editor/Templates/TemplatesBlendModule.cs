@@ -718,7 +718,7 @@ namespace AmplifyShaderEditor
 			}
 		}
 
-		public int CurrentAlphaIndex { get { return m_currentAlphaIndex; } }
+		public int CurrentAlphaIndex { get { return m_currentAlphaIndex; } set { m_currentAlphaIndex = value; } }
 
 		public AvailableBlendFactor SourceFactorAlpha
 		{

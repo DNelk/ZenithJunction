@@ -368,7 +368,7 @@ namespace AmplifyShaderEditor
 						hasEmptyConnections = true;
 					}
 					if( showError )
-						m_containerGraph.ParentWindow.ShowMessage( "Matrix operations are only valid for the first two inputs to prevent errors" );
+						m_containerGraph.ParentWindow.ShowMessage( UniqueId, "Matrix operations are only valid for the first two inputs to prevent errors" );
 				}
 				else
 				{
@@ -376,7 +376,7 @@ namespace AmplifyShaderEditor
 					{
 						if( m_inputPorts[ i ].DataType == WirePortDataType.FLOAT3x3 || m_inputPorts[ i ].DataType == WirePortDataType.FLOAT4x4 )
 						{
-							m_containerGraph.ParentWindow.ShowMessage( "Matrix operations are only valid for the first two inputs to prevent errors" );
+							m_containerGraph.ParentWindow.ShowMessage( UniqueId, "Matrix operations are only valid for the first two inputs to prevent errors" );
 							m_inputPorts[ i ].FullDeleteConnections();
 							hasEmptyConnections = true;
 						}
@@ -464,12 +464,12 @@ namespace AmplifyShaderEditor
 			m_inputA = m_inputPorts[ 0 ].GeneratePortInstructions( ref dataCollector );
 			if( m_inputPorts[ 0 ].DataType != m_mainDataType )
 			{
-				m_inputA = UIUtils.CastPortType( ref dataCollector, m_currentPrecisionType, new NodeCastInfo( UniqueId, outputId ), m_inputA, m_inputPorts[ 0 ].DataType, m_mainDataType, m_inputA );
+				m_inputA = UIUtils.CastPortType( ref dataCollector, CurrentPrecisionType, new NodeCastInfo( UniqueId, outputId ), m_inputA, m_inputPorts[ 0 ].DataType, m_mainDataType, m_inputA );
 			}
 			m_inputB = m_inputPorts[ 1 ].GeneratePortInstructions( ref dataCollector );
 			if( m_inputPorts[ 1 ].DataType != m_mainDataType )
 			{
-				m_inputB = UIUtils.CastPortType( ref dataCollector, m_currentPrecisionType, new NodeCastInfo( UniqueId, outputId ), m_inputB, m_inputPorts[ 1 ].DataType, m_mainDataType, m_inputB );
+				m_inputB = UIUtils.CastPortType( ref dataCollector, CurrentPrecisionType, new NodeCastInfo( UniqueId, outputId ), m_inputB, m_inputPorts[ 1 ].DataType, m_mainDataType, m_inputB );
 			}
 		}
 
@@ -481,7 +481,7 @@ namespace AmplifyShaderEditor
 				m_extensibleInputResults.Add( m_inputPorts[ i ].GeneratePortInstructions( ref dataCollector ) );
 				if( m_inputPorts[ i ].DataType != m_mainDataType && m_inputPorts[ i ].DataType != WirePortDataType.FLOAT && m_inputPorts[ i ].DataType != WirePortDataType.INT )
 				{
-					m_extensibleInputResults[ i ] = UIUtils.CastPortType( ref dataCollector, m_currentPrecisionType, new NodeCastInfo( UniqueId, outputId ), m_extensibleInputResults[ i ], m_inputPorts[ i ].DataType, m_mainDataType, m_extensibleInputResults[ i ] );
+					m_extensibleInputResults[ i ] = UIUtils.CastPortType( ref dataCollector, CurrentPrecisionType, new NodeCastInfo( UniqueId, outputId ), m_extensibleInputResults[ i ], m_inputPorts[ i ].DataType, m_mainDataType, m_extensibleInputResults[ i ] );
 				}
 			}
 		}

@@ -411,7 +411,7 @@ namespace AmplifyShaderEditor
 				m_previousNodeCount = count;
 				for ( int i = 0; i < count; i++ )
 				{
-					if ( nodes[ i ].TitleContent.text.IndexOf( m_searchBarValue, StringComparison.CurrentCultureIgnoreCase ) >= 0 )
+					if ( nodes[ i ].CheckFindText( m_searchBarValue ) )
 					{
 						m_searchResultNodes.Add( nodes[ i ] );
 					}

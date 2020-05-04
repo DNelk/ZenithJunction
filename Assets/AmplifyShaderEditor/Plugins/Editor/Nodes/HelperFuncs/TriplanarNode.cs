@@ -76,11 +76,16 @@ namespace AmplifyShaderEditor
 		private InputPort m_scalePort;
 		private InputPort m_posPort;
 
+		
 		private readonly string m_functionCall = "TriplanarSampling{0}( {1} )";
 		private readonly string m_functionHeader = "inline {0} TriplanarSampling{1}( {2}float3 worldPos, float3 worldNormal, float falloff, float2 tiling, float3 normalScale, float3 index )";
 
-		private readonly string m_singularTexture = "sampler2D topTexMap, ";
-		private readonly string m_topmidbotTexture = "sampler2D topTexMap, sampler2D midTexMap, sampler2D botTexMap, ";
+		private readonly string m_singularTextureRegular = "sampler2D topTexMap, ";
+		private readonly string m_topmidbotTextureRegular = "sampler2D topTexMap, sampler2D midTexMap, sampler2D botTexMap, ";
+
+		private readonly string m_singularTextureSRP = "TEXTURE2D_PARAM( topTexMap, samplertopTexMap), ";
+		private readonly string m_topmidbotTextureSRP = "TEXTURE2D_PARAM( topTexMap, samplertopTexMap), TEXTURE2D_PARAM( midTexMap , samplermidTexMap), TEXTURE2D_PARAM( botTexMap , samplerbotTexMap), ";
+
 
 		private readonly string m_singularArrayTextureStandard = "UNITY_ARGS_TEX2DARRAY( topTexMap ), ";
 		private readonly string m_topmidbotArrayTextureStandard = "UNITY_ARGS_TEX2DARRAY( topTexMap ), UNITY_ARGS_TEX2DARRAY( midTexMap ), UNITY_ARGS_TEX2DARRAY( botTexMap ), ";
@@ -396,7 +401,7 @@ namespace AmplifyShaderEditor
 
 			if( m_topTexPort.IsConnected )
 			{
-				PreviewMaterial.SetTexture( "_A", m_topTexPort.InputPreviewTexture );
+				PreviewMaterial.SetTexture( "_A", m_topTexPort.InputPreviewTexture( ContainerGraph ) );
 			}
 			else
 			{
@@ -405,11 +410,11 @@ namespace AmplifyShaderEditor
 			if( m_selectedTriplanarType == TriplanarType.Cylindrical && m_midTexture != null )
 			{
 				if( m_midTexPort.IsConnected )
-					PreviewMaterial.SetTexture( "_B", m_midTexPort.InputPreviewTexture );
+					PreviewMaterial.SetTexture( "_B", m_midTexPort.InputPreviewTexture( ContainerGraph ) );
 				else
 					PreviewMaterial.SetTexture( "_B", m_midTexture.Value );
 				if( m_botTexPort.IsConnected )
-					PreviewMaterial.SetTexture( "_C", m_botTexPort.InputPreviewTexture );
+					PreviewMaterial.SetTexture( "_C", m_botTexPort.InputPreviewTexture( ContainerGraph ) );
 				else
 					PreviewMaterial.SetTexture( "_C", m_botTexture.Value );
 			}
@@ -608,6 +613,7 @@ namespace AmplifyShaderEditor
 		{
 			if( m_midTexture == null )
 				return;
+
 			EditorGUI.BeginChangeCheck();
 			m_midTexture.ShowPropertyInspectorNameGUI();
 			m_midTexture.ShowPropertyNameGUI( true );
@@ -685,6 +691,7 @@ namespace AmplifyShaderEditor
 
 			m_topTexture.CheckDelayedDirtyProperty();
 			m_topTexture.CheckPropertyFromInspector();
+			m_topTexture.CheckDuplicateProperty();
 
 			if( m_selectedTriplanarType == TriplanarType.Cylindrical )
 			{
@@ -696,6 +703,7 @@ namespace AmplifyShaderEditor
 
 				m_midTexture.CheckDelayedDirtyProperty();
 				m_midTexture.CheckPropertyFromInspector();
+				m_midTexture.CheckDuplicateProperty();
 
 				if( m_botTexture.ReRegisterName )
 				{
@@ -705,6 +713,7 @@ namespace AmplifyShaderEditor
 
 				m_botTexture.CheckDelayedDirtyProperty();
 				m_botTexture.CheckPropertyFromInspector();
+				m_botTexture.CheckDuplicateProperty();
 			}
 		}
 
@@ -1021,23 +1030,31 @@ namespace AmplifyShaderEditor
 
 		public override string GenerateShaderForOutput( int outputId, ref MasterNodeDataCollector dataCollector, bool ignoreLocalvar )
 		{
+			bool sampleThroughMacros = UIUtils.CurrentWindow.OutsideGraph.SamplingThroughMacros;
 			//ConfigureFunctions();
 			if( dataCollector.IsSRP )
 			{
 				if( m_arraySupport )
 				{
-					dataCollector.AddToMisc( Constants.CustomASEStandardSamplerParams );
+					dataCollector.AddToDirectives( Constants.CustomASEStandardSamplerParams );
 					for( int i = 0; i < Constants.CustomASESRPTextureArrayMacros.Length; i++ )
-						dataCollector.AddToMisc( Constants.CustomASESRPTextureArrayMacros[ i ] );
+						dataCollector.AddToDirectives( Constants.CustomASESRPTextureArrayMacros[ i ] );
 				}
 				else
 				{
-					dataCollector.AddToMisc( Constants.CustomASEStandardSamplerParams );
+					if( sampleThroughMacros )
+					{
+						dataCollector.AddToDirectives( Constants.CustomASESRPSamplerParams );
+					}
+					else
+					{
+						dataCollector.AddToDirectives( Constants.CustomASEStandardSamplerParams );
+					}
 				}
 			}
 			else
 			{
-				dataCollector.AddToMisc( Constants.CustomASEStandardSamplerParams );
+				dataCollector.AddToDirectives( Constants.CustomASEStandardSamplerParams );
 			}
 			dataCollector.AddPropertyNode( m_topTexture );
 			dataCollector.AddPropertyNode( m_midTexture );
@@ -1064,6 +1081,12 @@ namespace AmplifyShaderEditor
 			{
 				texMid = texTop;
 				texBot = texTop;
+
+				if( sampleThroughMacros )
+				{
+					dataCollector.AddToUniforms( UniqueId, string.Format( Constants.SamplerDeclarationSRPMacros[ TextureType.Texture2D ], texTop ) );
+					texTop = string.Format( "TEXTURE2D_ARGS({0},sampler{0})", texTop );
+				}
 			}
 			else
 			{
@@ -1088,12 +1111,22 @@ namespace AmplifyShaderEditor
 					dataCollector.AddToProperties( UniqueId, m_botTexture.GetTexture2DPropertyValue(), m_botTexture.OrderIndex );
 					texBot = m_botTexture.PropertyName;
 				}
+
+				if( sampleThroughMacros )
+				{
+					dataCollector.AddToUniforms( UniqueId, string.Format( Constants.SamplerDeclarationSRPMacros[ TextureType.Texture2D ], texTop ) );
+					texTop = string.Format( "TEXTURE2D_ARGS({0},sampler{0})", texTop );
+					dataCollector.AddToUniforms( UniqueId, string.Format( Constants.SamplerDeclarationSRPMacros[ TextureType.Texture2D ], texMid ) );
+					texMid = string.Format( "TEXTURE2D_ARGS({0},sampler{0})", texMid );
+					dataCollector.AddToUniforms( UniqueId, string.Format( Constants.SamplerDeclarationSRPMacros[ TextureType.Texture2D ], texBot ) );
+					texBot = string.Format( "TEXTURE2D_ARGS({0},sampler{0})", texBot );
+				}
 			}
 
 			if( !isVertex )
 			{
 				dataCollector.AddToInput( UniqueId, SurfaceInputs.WORLD_POS );
-				dataCollector.AddToInput( UniqueId, SurfaceInputs.WORLD_NORMAL, m_currentPrecisionType );
+				dataCollector.AddToInput( UniqueId, SurfaceInputs.WORLD_NORMAL, CurrentPrecisionType );
 				dataCollector.AddToInput( UniqueId, SurfaceInputs.INTERNALDATA, addSemiColon: false );
 				dataCollector.ForceNormal = true;
 			}
@@ -1122,7 +1155,7 @@ namespace AmplifyShaderEditor
 			bool scaleNormals = false;
 			if( m_scalePort.IsConnected || ( m_scalePort.IsConnected && ( m_scalePort.Vector3InternalData == Vector3.one || m_scalePort.FloatInternalData == 1 ) ) )
 				scaleNormals = true;
-
+			
 			string samplingTriplanar = string.Empty;
 			string headerID = string.Empty;
 			string header = string.Empty;
@@ -1135,7 +1168,7 @@ namespace AmplifyShaderEditor
 			if( m_selectedTriplanarType == TriplanarType.Spherical )
 			{
 				headerID += "S";
-				samplers = m_arraySupport ? ( dataCollector.IsSRP ? m_singularArrayTextureSRP : m_singularArrayTextureStandard ) : m_singularTexture;
+				samplers = m_arraySupport ? ( dataCollector.IsSRP ? m_singularArrayTextureSRP : m_singularArrayTextureStandard ) : (sampleThroughMacros? m_singularTextureSRP : m_singularTextureRegular);
 
 				triplanarBody.AddRange( m_functionSamplingBodySampSphere );
 
@@ -1162,7 +1195,7 @@ namespace AmplifyShaderEditor
 			else
 			{
 				headerID += "C";
-				samplers = m_arraySupport ? ( dataCollector.IsSRP ? m_topmidbotArrayTextureSRP : m_topmidbotArrayTextureStandard ) : m_topmidbotTexture;
+				samplers = m_arraySupport ? ( dataCollector.IsSRP ? m_topmidbotArrayTextureSRP : m_topmidbotArrayTextureStandard ) :( sampleThroughMacros? m_topmidbotTextureSRP: m_topmidbotTextureRegular);
 				extraArguments = ", {7}, {8}";
 				triplanarBody.AddRange( m_functionSamplingBodyNegProj );
 
@@ -1206,8 +1239,9 @@ namespace AmplifyShaderEditor
 				else
 				{
 					headerID += "V";
+					string sampleFunc = sampleThroughMacros ? "SAMPLE_TEXTURE2DLOD" : "tex2Dlod";
 					for( int i = 0; i < triplanarBody.Count; i++ )
-						triplanarBody[ i ] = string.Format( triplanarBody[ i ], "tex2Dlod", "float4( ", ", 0, 0 )", ", 0, 0 )", ", 0, 0 )" );
+						triplanarBody[ i ] = string.Format( triplanarBody[ i ], sampleFunc, "float4( ", ", 0, 0 )", ", 0, 0 )", ", 0, 0 )" );
 				}
 			}
 			else
@@ -1222,8 +1256,12 @@ namespace AmplifyShaderEditor
 				else
 				{
 					headerID += "F";
+					string sampleFunc = sampleThroughMacros ? "SAMPLE_TEXTURE2D" : "tex2D";
 					for( int i = 0; i < triplanarBody.Count; i++ )
-						triplanarBody[ i ] = string.Format( triplanarBody[ i ], "tex2D", "", "", "", "" );
+					{
+						triplanarBody[ i ] = string.Format( triplanarBody[ i ], sampleFunc, "", "", "", "" );
+						
+					}
 				}
 			}
 
@@ -1240,15 +1278,15 @@ namespace AmplifyShaderEditor
 			string norm = GeneratorUtils.GenerateWorldNormal( ref dataCollector, UniqueId );
 			string worldToTangent = string.Empty;
 			if( m_normalCorrection )
-				worldToTangent = GeneratorUtils.GenerateWorldToTangentMatrix( ref dataCollector, UniqueId, m_currentPrecisionType );
+				worldToTangent = GeneratorUtils.GenerateWorldToTangentMatrix( ref dataCollector, UniqueId, CurrentPrecisionType );
 
 			if( m_selectedTriplanarSpace == TriplanarSpace.Object )
 			{
 				if( m_normalCorrection )
 				{
-					string vt = GeneratorUtils.GenerateVertexTangent( ref dataCollector, UniqueId, m_currentPrecisionType, WirePortDataType.FLOAT3 );
-					string vbt = GeneratorUtils.GenerateVertexBitangent( ref dataCollector, UniqueId, m_currentPrecisionType );
-					norm = GeneratorUtils.GenerateVertexNormal( ref dataCollector, UniqueId, m_currentPrecisionType );
+					string vt = GeneratorUtils.GenerateVertexTangent( ref dataCollector, UniqueId, CurrentPrecisionType, WirePortDataType.FLOAT3 );
+					string vbt = GeneratorUtils.GenerateVertexBitangent( ref dataCollector, UniqueId, CurrentPrecisionType );
+					norm = GeneratorUtils.GenerateVertexNormal( ref dataCollector, UniqueId, CurrentPrecisionType );
 					dataCollector.AddLocalVariable( UniqueId, "float3x3 objectToTangent = float3x3("+ vt + ", "+ vbt + ", "+ norm + ");" );
 					pos = GeneratorUtils.GenerateVertexPosition( ref dataCollector, UniqueId, WirePortDataType.FLOAT3 );
 					worldToTangent = "objectToTangent";
@@ -1256,7 +1294,7 @@ namespace AmplifyShaderEditor
 				else
 				{
 					pos = GeneratorUtils.GenerateVertexPosition( ref dataCollector, UniqueId, WirePortDataType.FLOAT3 );
-					norm = GeneratorUtils.GenerateVertexNormal( ref dataCollector, UniqueId, m_currentPrecisionType );
+					norm = GeneratorUtils.GenerateVertexNormal( ref dataCollector, UniqueId, CurrentPrecisionType );
 				}
 			}
 
@@ -1342,16 +1380,19 @@ namespace AmplifyShaderEditor
 			if( material.HasProperty( m_topTexture.PropertyName ) )
 			{
 				m_topTexture.MaterialValue = material.GetTexture( m_topTexture.PropertyName );
+				PreviewIsDirty = true;
 			}
 
 			if( material.HasProperty( m_midTexture.PropertyName ) )
 			{
 				m_midTexture.MaterialValue = material.GetTexture( m_midTexture.PropertyName );
+				PreviewIsDirty = true;
 			}
 
 			if( material.HasProperty( m_botTexture.PropertyName ) )
 			{
 				m_botTexture.MaterialValue = material.GetTexture( m_botTexture.PropertyName );
+				PreviewIsDirty = true;
 			}
 		}
 

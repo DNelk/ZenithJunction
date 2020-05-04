@@ -1,4 +1,590 @@
 Release Notes:
+v1.8.0 rev 00:
+* New Shader Functions:
+    * Bacteria
+    * Bricks Pattern
+    * Dots Pattern
+    * Grid
+    * Herringbone
+    * Hex Lattice
+    * Houndstooth
+    * Smooth Wave
+    * Spiral
+    * Stripes
+    * Truchet
+    * Whirl
+    * Zig Zag
+
+* Improvements:
+    * Updated some shader functions to expose their internal data
+
+* Fixes:
+    * Fixed default value for start screen option
+    * Fixed context menu showing shader templates not yet imported on first install
+    * Fixed drawing issues with slider in 'Float' node in the new Unity UI
+
+v1.7.9 rev 02:
+* Improvements:
+    * Added Refraction option with respective ports to URP that works like the built-in Refraction port
+    * Added versioning to templates so that they can track changes and import new versions if necessary
+
+* Fixes:
+    * Fixed issue with start screen showing the wrong change log
+    * Fixed issue with start screen not always respecting the selected option
+    * Fixed issue with 'Fresnel' node when loading a shader from an older version of ASE
+    * Fixed loop detection check for 'Get' node in certain situations
+    * Fixed menu listing for templates with duplicated names
+    * Fixed 'VertexID' node for HDRP causing errors due to motion vectors
+    * Fixed inline properties being broken on certain template internal pass ordering
+
+v1.7.9 rev 01:
+* Improvements:
+    * Start screen option is now a dropdown to allow for more control of how it behaves
+    * Added more options to the preference window
+        * Option to prevent automatic import of SRP templates
+        * Option to force the use of Unity's macros for sampling
+        * Option to allow or prevent the use of ASE define symbol
+
+* Fixes:
+    * Included missing files for 'Diffusion Profile' node from last release which prevented the use of the new default inspector option
+    * Fixed issue with 'Gradient Sample' node that was not generating the component channel correctly
+
+v1.7.9 rev 00:
+* New Start Screen:
+    * New window that will popup when on a new session starts and/or if a new version is released (can be dismissed)
+    * Provides easy start up links for the wiki and contact channels
+    * Streamlines the process of importing ASE samples for each rendering pipeline
+    * Automatically tracks the release of new versions
+
+* New Preferences Entry:
+    * Currently only controls the start screen settings but in the future it will contain many more options that are currently hidden
+
+* New Shader Function:
+    * Random Range
+        * Returns random value between a minimum and maximum range values
+
+* Improvements:
+    * Removed alpha to coverage alpha test check for consistency between pipeline and setups
+    * Added check to custom shader inspector and updated missing features like keywords popups and other small changes that came with unity 2019.3
+    * Added new option to 'Diffusion Profile' node to be able to create the unity default profile inspector for users that need to share their shaders
+    * Changed the color of Int ports to white for proper differentiation between Float and Int
+
+* Fixes:
+    * Depth texture is now uses proper macros even when using global texture samplers to prevent duplication errors
+    * Added infinite loop detection to 'Get Local Var' nodes to prevent the case where you can change the 'Get Local Var' node reference to itself
+    * Fixed Issue with diffusion profile drawer not being able to change profiles if ASE window wasn't open
+    * Fixed issue with outline in surface shaders not respecting the selected precision type
+
+v1.7.8 rev 02:
+* New Property Attributes:
+    * Remap Sliders attribute for Vector2 node that creates a min-max slider in the 0-1 range
+    * Single Line Texture attribute for texture properties nodes that minimizes texture object field into single line fields
+
+* Fixes:
+    * Fixed fog color and ambient color node values in HDRP
+    * Fixed issue with Fabric and Hair HDRP templates not correctly writing to depth offset in all shader passes
+    * Fixed custom expression precision types that didn't respect the selected choice in all cases and added a new Inherit option
+    * Fixed possible issue with saving files when path is null
+
+* Improvements:
+    * Improved loading of shaders by preventing unnecessary loads of other types of assets
+    * Added warning with fix button to diffusion profile property drawer for when profile isn't present in the profile list
+    * Shader functions names now have automatic spacing when searched in the palette
+    * Added a direct dependency check for shader function files that allows to search which shaders and shader function are currently directly using it
+    * Templates context entry generation is now done by name to prevent random sorting
+
+v1.7.8 rev 01:
+* New HDRP Templates:
+    * Hair
+    * Fabric
+
+* New Shader Function:
+    * Inverse Lerp
+        * Inverse operation of the 'Lerp' node
+
+* Improvements:
+    * Update HD templates to v.7.1.8 and above 
+
+* Fixes:
+    * Fixed issue with 'Component Mask' node preview not correctly showing alpha channel in all situations
+
+v1.7.8 rev 00:
+* Fixes:
+    * Fixed issues with 'Function Switch' node incorrectly displaying reference nodes and not properly ordering when in Reference mode
+
+v1.7.7 rev 06:
+* Fixes:
+    * Fixed 'Parallax Occlusion Mapping' node texture array sampling in LW/URP
+    * Fixed issue with 'Light Attenuation' node not taking into account vertex offset in URP templates
+
+* Improvements:
+    * Added extra pre pass option for Lightweight and Universal RP that allows for custom outline passes
+    * World position dependent nodes will now take vertex offset into account over LW templates
+
+v1.7.7 rev 05:
+* Fixes:
+    * Fixed issues when reading shader over updated template
+    * Fixed 'Light Attenuation' issue on URP 7.2.X which was causing rendering errors
+
+* Improvements:
+    * World position dependent nodes will now take vertex offset into account over default Unlit and URP templates
+    * Improved Diffusion Profile support in HDRP 7.2.X
+
+v1.7.7 rev 04:
+* Fixes:
+    * Fixed compatibility issues with HDRP v7.2.0 and above
+    * Fixed issue with 'Indirect Diffuse Light' node on Normal port not properly working over Lightweight RP
+
+v1.7.7 rev 03:
+* Fixes:
+    * Fixed issue on Unity ignoring Emission channel values set over Debug Port
+    * Fixed issue with multiple uses of 'Voronoi' node over a graph
+    * Fixed helper window colors in personal skin
+    * Fixed emission contribution on baked lighting
+    * Fixed GUID conflicts between Lightweight and Universal samples
+
+v1.7.7 rev 02:
+* Fixes:
+    * Fixed incorrect values given by time related nodes
+    * Fixed shadow compilation issue on HD Lit template
+    * Added null checks on updating shader over master node to prevent saving issues
+
+* Improvements:
+    * Decode Directional Lightmap shader function now compatible with all pipelines
+    * Added events that can be registered externally which indicate shader type change and shader save (API)
+        * IOUtils.OnShaderSavedEvent called when shader is saved
+        * IOUtils.OnShaderTypeChangedEvent called when shader 
+        * Registered functions must receive three arguments
+            * Shader shader: Current shader being modified 
+            * bool isTemplate: Current shader type is template based
+            * string type: GUID of template in use or string.empty if Standard Surface
+
+v1.7.7 rev 01:
+* Improvements:
+    * Some adjustments were made to the Decode Lightmap's Instructions port
+        * Port is set be only visible when on SRP
+        * ASE automatically sets Unity's default instruction values if no value is connected to it
+
+v1.7.7 rev 00:
+* Fixes:
+    * Fixed multiple connections on Wire node when Alt + dragging nodes from it
+    * Fixed issue with normal map usage over URP PBR
+
+* Improvements:
+    * Added new previews:
+        * Heightmap Texture Blend
+        * Parallax Offset
+        * Clip Planes
+        * Fog and Ambient Colors
+        * Fog Params
+        * Instance ID
+        * Object To Clip
+        * Object To View
+        * Shade Vertex Lights
+
+v1.7.6 rev 02:
+* Fixes:
+    * Assured latest fix for time related nodes over SRP is only applied on latest versions
+    * Fixed issue on declaring variables inside CBuffer that are already on native template
+
+v1.7.6 rev 01:
+* Fixes:
+    * Fixed usage of legacy variables over SRP on time related nodes
+        * Time
+        * Time Parameters
+        * Sin Time
+        * Cos Time
+    * Fixed issue on HD Unlit Vertex Offset input code not being set on all passes
+
+v1.7.6 rev 00:
+* New Shader Function:
+    * SRP Additional Light
+        * Returns SRP's additional lights information calculated with a selected lighting mode
+
+* Improvements:
+    * 'Light Attenuation' node on Lightweight/Universal now outputs only the attenuation of the main light
+        * Before it outputted the sum of all light attenuations which didn't have a practical use
+
+v1.7.5 rev 03:
+* New Templates:
+    * Universal Experimental 2D Lit
+    * Universal Experimental 2D Unlit
+
+* Fixes:
+    * Fixed issue on incorrectly setting a wrong instanced block name on non-main passes when using GPU Instancing over templates
+    * Added Safe Power option into both 'Power' and 'Fresnel' nodes
+        * Ensures base for power operation is always greater than zero to prevent NaN over the result
+    * Fixed 'Indirect Diffuse Light' and 'Indirect Specular Light' nodes preview when Normal Space option is set to World
+    * Fixed 'Fresnel' node preview as it wasn't showing the correct result when scale was different than 1
+    * Fixed Alpha Clip issue across multiple Unlit Lightweight and Universal template versions
+
+* Improvements:
+    * Improved mouse focus behavior when ASE is not focused
+    * Migrated Lightweight samples into Universal RP
+
+v1.7.5 rev 02:
+* Fixes:
+    * Fixed issue with incorrect _ST variable declaration on templates over 'Texture Array' node
+    * Fixed issue on 'Grab Screen Color' node creating a default Grab Pass when using the default grab name with Custom Grab Pass activated
+    * Fixed issue on 'Texture Transform' node giving incorrect values on certain connections
+    * Fixed node preview update for missing shader functions
+    * Fixed issue on 'Static Switch' node using in-existent keyword indices
+    * Fixed 'Static Switch' reordering issues when in Reference mode
+
+* Improvements:
+    * Added missing previews to nodes
+        * Ortho Param
+        * Projection Param
+        * Screen Param
+        * ZBuffer Param
+        * Clip
+        * Compute Screen Pos
+        * Texel Size
+        * Texture Transform
+    * Tweaked 'Texture Object' and 'Texture Sampler' node previews to avoid recent for AMD crashes
+
+v1.7.5 rev 01:
+* Fixes:
+    * Fixed 'Color Space Double' node issue in SRP
+    * Fixed 'Texture Array' node ordering issue in the material inspector when on Reference mode
+    * Fixed issue with references lost over 'Texture Sample' on shader functions
+    * Small fixes and optimizations to the URP unlit template
+    * Fixed texture fields not being modifiable on 'Texture Sample' nodes when ASE window was not focused
+
+* Improvements:
+    * Updated 'Flow' shader function to make Strength a Vector2 input
+    * Improved registered local variables usage on templates
+    * Removed hard-code directives declaration on LWRP and added them as Port options on templates
+
+v1.7.5 rev 00:
+* New Nodes:
+    * Inverse Projection Matrix
+    * Inverse View Projection Matrix
+
+* New Shader Functions:
+    * Noise Sine Wave
+        * Creates a sine wave from a given input with an added pseudo-random value
+    * Sawtooth Wave
+        * Creates a saw-tooth wave from a given input
+    * Square Wave
+        * Creates a square wave from a given input
+    * Triangle Wave
+        * Creates a triangle wave from a given input
+    * Checkerboard
+        * Created a checkerboard pattern with given colors where Frequency controls its tiling
+    * Ellipse
+        * Creates an ellipse based on given uv and dimensions
+    * Polygon
+        * Creates a polygon shape with a specified amount of sides
+    * Rectangle
+        * Creates a rectangle shape with a specified size
+    * Rounded Rectangle
+        * Creates a round rectangle shape from a given size and radius
+
+* Improvements:
+    * Added new Smooth toggle option to 'Voronoi' node
+        * Only available under the Cells Method
+    * Improved selection box inside the editor graph to match Unity's and not be version dependent
+    * Ported terrain sample to Universal Rendering Pipeline
+        * Packed inside Examples > Universal SRP Samples.unitypackage
+
+* Fixes:
+    * Fixed multiple issues regarding using instanced properties over 'Outline' node
+    * Fixed hard-crash when modifying pass amount over template (API)
+    * Fixed Native Directives display over Templates in Unity 2019.3
+    * Fixed GPU instancing on Particles Alpha Blended template
+    * Removed Clip from From option over 'Transform Position' and 'Transform Direction' nodes
+        * Transform matrix was incorrect and there's no viable replacement over those nodes context
+
+v1.7.4 rev 02:
+* New Shader Functions:
+    * Flow
+        * Creates a flow effect which can be given from a flow map.
+    * Twirl
+        * Sets a twirl effect to a given input UV. Created by The C.reator @cayou66
+    * Normal From Height
+        * Extrapolate a normal vector from an height value
+
+* New Sample:
+    * Scale Independent Tile
+
+* Improvements:
+    * Added new Rotation Independent Scale option into 'Object Scale' node
+    * Tweaked 'Remainder' node to always use the % operator on Unity 2018.1 and above
+
+* Fixes:
+    * Fixed issue on loading multipass multi visible master nodes losing their names
+    * Fixed issue with point lights not working with instanced terrain shaders
+    * Fixed issue on terrain getting black when drawn instanced
+    * Fixed alpha test issues over deprecated HDRP Lit
+    * Fixed issue where not setting pass name on port options lead to incorrect option behavior (API)
+    * Fixed previews not updating correctly in shader functions
+
+v1.7.4 rev 01:
+* New Template:
+    * Unlit for HD SRPv6.x.x
+
+* New Node:
+    * Luminance
+
+* Fixes:
+    * Fixed alpha-clip issues with legacy HD templates
+    * Fixed issue on incorrectly initializing custom type variables on 'Custom Expression' node
+    * Fixed nodes preview getting lost on loading scenes
+    * Fixed preview issue on 'Noise Generator' node
+    * Fixed preview issue on 'Panner' node
+    * Fixed preview issue on 'Rotator' node
+    * Fixed issue on ignored Passes over SubShader options appearing on both shader reload hot code reload
+    * Fixed issue with 'Parallax Occlusion Mapping' node when used on shader functions 
+    * Fixed issue with setting directly the property name over its textfield wouldn't trigger the duplicates prevention system
+
+* Improvements:
+    * Updated 6.9.2 Lightweight templates to includes the same options as URP templates
+
+v1.7.4 rev 00:
+* Fixes:
+    * Fixed critical error where users could not create a surface shader if no ASE window was opened
+
+v1.7.3 rev 00:
+* Fixes:
+    * Fixed preview issues on multiple nodes
+    * Fixed incorrect template reload when multiple shaders using the same template are opened
+    * Fixed Ignore Rotation issues on 'Billboard' node over Lightweight RP
+    * Fixed issue on not importing latest SRP templates when an unregistered version is detected
+    * HDRP templates no longer throw console errors on Unity 2019.3
+    * Fixed Alpha Clip issue on deprecated HDRPLit template
+    * Fixed issue on incorrectly resetting port internal data on load with matrices types
+
+* Improvement:
+    * Minor renaming on 'Baked GI' node name to 'SRP Baked GI'
+    * Updated URP templates to include a Baked GI port similarly to HDRP
+
+v1.7.2 rev 03:
+* Fixes:
+    * Fixed issue on templates not capturing properties with certain attributes
+    * Fixed issue on templates inline properties not being properly set on modules if main master node wasn't the first pass
+
+* Improvements:
+    * Added Builtin Fog toggle option into Lightweight PBR template
+
+v1.7.2 rev 02:
+* Fixes:
+    * Fixed issue on 'Toggle Switch' node
+    * Fixed abnormal behavior when reading template with more interpolators than the ones allowed by its Shader Model (API)
+
+* Improvements:
+    * Template can now read Shader Model from area outside SubShader (API)
+
+v1.7.2 rev 01:
+* Fixes:
+    * Fixed issues on generating incorrect precision inputs on both 'Screen Position' and 'World Position' node
+    * Fixed issue on multi-pass master nodes not setting correct given shader name when created from file
+    * Fixed issue on WaterSample shader
+    * Fixed issue on 'Custom Expression' node not generating correct function code without a return statement
+
+* Improvements:
+    * Users can, like on Shader Functions, immediately name shader when creating it
+    * Adding Instanced option into 'Texture Transform' node
+        * Determines if the _ST texture transform variable is created as an instanced property
+
+v1.7.2 rev 00:
+* Improvements:
+    * 'Toggle Switch' node now uses a ternary operator to prevent incorrect results on NaN inputs
+
+v1.7.1 rev 13:
+* Fixes:
+    * Fixed issue duplicating certain nodes
+
+v1.7.1 rev 12:
+* Fixes:
+    * Fixed issue when using more than one Octave on 'Voronoi' node
+    * Fixed issue on Motion Vectors pass over HD templates
+    * Fixed issue on generating incorrect keyword value on 'Static Switch' node using Reference Mode
+
+v1.7.1 rev 11:
+* Fixes:
+    * Fixed issue on registering/unregistering internal template generated nodes over the reorder node event
+    * Fixed multiple issues on 'Custom Expression' node
+    * Fixed issue on using 'Voronoi' node over shader functions
+
+v1.7.1 rev 09/10:
+* New Node:
+    * HD Emission
+
+* Fixes:
+    * Fixed issue when reading shader with missing shader function
+    * Fixed issue when duplicating property nodes on Fetch mode would reset property name
+    * Fixed issue on 'Parallax Occlusion Mapping' node incorrectly generating instanced _ST vars outside the CBuffer
+    * Fixed alpha cutoff issues on HD Lit templates v5.7.2 and v5.16.1
+    * Fixed issue on not declaring both BakedGI and BakedBackGI on Lit template
+    * Fixed issue on not setting some ports with graph data over templates
+
+* Improvements:
+    * Listing on nodes is now alphabetically ordered
+        * Get Local Var
+        * Grab Screen Color
+        * Static Switch
+        * Texture Array
+        * Texture Sample
+    * Node search bar text now takes property name and inspector name into account
+
+v1.7.1 rev 08:
+* Fixes:
+    * Fixed issue on 'Register Local Var' not allowing to reset name to loaded one
+    * Fixed Console Log issues with Personal Skin
+    * Fixed issue on overwriting Render Type custom values over a template(API)
+    * Fixed issue on local variables generation over the 'Unpack Scale Normal' node 
+    * Fixed issue with setting special tags over template options (API)
+
+* Improvements:
+    * Added more flexibility to 'Static Switch' node
+        * Can have empty property names when Material Toggle is toggled off
+        * It no longer modifies keywords ( setting to upper, adding _ON, etc ) if Material Toggle is toggled off
+        * Tweaked visible options when on Fetch mode
+    * Added hot-fix to 2019.2 Lit template in order to generate shaders without errors when used on HDRP v7.x.x
+
+v1.7.1 rev 07:
+* New Shader Functions:
+    * Derive Tangent Basis
+    * Height-based Blending
+
+* Improvements:
+    * Clicking on node specific messages over ASE log now jumps to which node generated it
+    * Changing ports types to matrix now sets the identity matrix into its internal data
+        * Relevant on nodes like 'Custom Expression'
+
+* Fixes:
+    * Fixed issue on incorrectly adding 0 to W channel when creating position vectors
+    * Fixed issue on not auto-importing templates correctly over Unity 2019
+    * Fixed multiple issues regarding shader function previews
+    * Fixed compilation issue when using unreferenced 'Get Local Var' nodes
+    * Fixed issue on changing 'Static Switch' name not being reflected on referenced list
+    * Fixed issues with 'Texture Coordinates' and 'Texture Sampler' nodes with 'Relay' or 'Wire' nodes on Tex port
+
+v1.7.1 rev 06:
+* Fixes:
+    * Fixed new and old shader templates for HDRP 6.9.X so the diffusion profile value is passed around correctly
+    * Fixed issue on 'Texture Coordinates' node not correctly swizzling data on template vertex functions
+    * Prevented Additional Directives reference lost when saving certain shader functions
+
+v1.7.1 rev 05:
+* Fixes:
+    * Fixed issue on getting incorrect inline properties on templates
+
+v1.7.1 rev 04:
+* Fixes:
+    * Fixed 'Diffusion Profile' node issues on SRP v6.9.X
+    * Fixed multiple issues regarding shader functions Additional Directives usage
+
+v1.7.1 rev 02/03:
+* Fixes:
+    * Fixed issue both on creating duplicate texture ST constants and being declared out of the cbuffer
+    * Fixed possible issues on 'Texture Transform' node over SRP
+    * Fixed baked lighmap issues over Lightweight/Universal PBR templates
+    * Fixed SimpleTerrain sample water shader which was broken due to recent 'Screen Depth' node changes
+    * Fixed compilation errors on 'Voronoi' node
+    * Fixed issue on registering duplicate instanced variables which are already on template as non-instanced
+
+v1.7.1 rev 01:
+* Fixes:
+    * Removed unused variable warning
+    * Broadened up Shader Function versions to apply serialized fix on Origin field
+
+v1.7.1 rev 00:
+* Fixes:
+    * Fixed issue with Face related nodes not working in HDRP v6.9.0 due to bad version handling
+    * Fixed retro-compatibility issue with incorrectly reading Shader Function Custom Directives as Native
+
+* Improvements:
+    * Tweaked 'Get Local Var' node message thrown when no Reference is selected
+    * Natives UI listing is now locked on Unity 2019.3 to prevent incorrect behaviors on new UI system
+
+v1.7.0 rev 09:
+* Improvements:
+    * Changing Variable Mode from Fetch to Create no longer rewrites property name on Property Nodes
+    * Improved property renaming when duplicating Property nodes
+    * Added property name to items on Material Properties list 
+        * Can be clicked to focus on specified node
+
+v1.7.0 rev 08:
+* Fixes:
+    * Fixed issue on HD Lit Diffusion Profile port being incorrectly set as type Int
+        * Multi Pass Master Nodes no longer reads/writes input port meta data as this must always be given by template
+
+v1.7.0 rev 07:
+* Fixes:
+    * Fixed issue with the 'Diffusion Profile' node not updating from and to the material inspector
+
+* Improvements:
+    * Added new internal console inside shader canvas to more easily check ASE related messages
+
+v1.7.0 rev 06:
+* New Shader Function:
+    * Non Stereo Screen Pos
+        * Converts a VR screen position into a non-VR one
+
+* Fixes:
+    * Fixed issue with both 'Gradient' and 'Gradient Sample' nodes on Lightweight/Universal 
+    * Fixed 'Voronoi' node issue over templates
+    * 'Reconstruct World Position From Depth' now correctly works on VR
+
+* Improvements
+    * Tweaked Lightweight and Universal templates
+        * Pragma tag now after native includes
+        * Removed unused _MainTex_ST variable from Meta pass
+    * Shader Properties can now be fully rewritten through template options(API)
+    * Added Vulkan to Standard Surface Rendering Platforms
+
+v1.7.0 rev 05:
+* New Templates:
+    * Added templates for Universal Rendering Pipeline
+        * Packed inside AmplifyShaderEditor\Plugins\EditorResources\Templates\USRPTemplates.unitypackage
+
+* Fixes:
+    * Fixed multiple issues with Lit HDRP template
+    * Fixed issue on not taking the 'Int' node as SRP compatible
+    * Fixed both 'Transform Direction' and 'Transform Position' nodes issues regarding Tangent space
+    * Fixed multiple issues regarding template options
+    * Fixed issue on incorrect reading over Depth Offset values from shader
+    * Minor fix on templates post-processor to prevent null pointer exceptions
+
+* Improvements: 
+    * Unity global variables used as inline properties on templates are now registered so they can be correctly maintained over the final shaders
+    * Added LOD Cross Fade into Lightweight RP templates
+    * Added Inherit type into precision popup and made sure most nodes can now compile with the proper precision type
+        * Some nodes have a specific precision on purpose
+    * Improved 'Diffusion Profile' node behavior
+        * Added material property attribute 
+        * Updated source code able to create profile properties in HDRP 7.X
+
+v1.7.0 rev 04:
+* Improvements:
+    * When switching between shader type the connections with the same port name are kept intact
+    * Custom inspector for SRP 7.X is now detected automatically and upgraded from previous versions
+    * Templates master nodes now display the shader name in their title for better consistency
+* Fixes:
+    * Fixed issue in SRP 7.X where certain auto defines were overriding the selected options
+    * Fixed issue in templates system where in certain situations defines would be set forever
+    * Fixed stencil options in HDRP 7.X
+    * Thickness port in HDRP 7.X is now always visible
+    * Some properties in HDRP 7.X are now override-able
+
+v1.7.0 rev 03:
+* Improvements:
+    * Added support for pragma options to the template system
+* Fixes:
+    * Fixed issue where dependent template options would be visible when it's dependency was off in some situations
+    * Fixed issue with wrong connection types on creation of new nodes when dragging from ports
+    * Fixed issue with detecting LOD parameter in templates
+
+v1.7.0 rev 02:
+* Fixes:
+    * Fixed issue when selecting a shader that contains errors in 2019.3 would generate inspector errors
+
+v1.7.0 rev 01:
+* Fixes:
+    * Fixed issue on incorrect initial node setup from previously saved options
+
 v1.7.0 rev 00:
 * New Node:
     * Voronoi

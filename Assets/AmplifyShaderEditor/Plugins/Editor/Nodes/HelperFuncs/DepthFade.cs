@@ -54,7 +54,7 @@ namespace AmplifyShaderEditor
 				{
 					//dataCollector.AddToUniforms( UniqueId, Constants.CameraDepthTextureSRPVar );
 					//dataCollector.AddToUniforms( UniqueId, Constants.CameraDepthTextureSRPSampler );
-					dataCollector.AddToDefines( UniqueId, Constants.CameraDepthTextureLWEnabler );
+					dataCollector.AddToDirectives( Constants.CameraDepthTextureLWEnabler, -1, AdditionalLineType.Define );
 				}
 				else
 				{
@@ -70,7 +70,7 @@ namespace AmplifyShaderEditor
 			{
 				string vertexPosVar = "vertexPos" + OutputId;
 				GenerateInputInVertex( ref dataCollector, 1, vertexPosVar, false );
-				screenPosNorm = GeneratorUtils.GenerateScreenPositionNormalizedForValue( vertexPosVar, OutputId, ref dataCollector, UniqueId, m_currentPrecisionType, !dataCollector.UsingCustomScreenPos );
+				screenPosNorm = GeneratorUtils.GenerateScreenPositionNormalizedForValue( vertexPosVar, OutputId, ref dataCollector, UniqueId, CurrentPrecisionType, !dataCollector.UsingCustomScreenPos );
 			}
 			else
 			{
@@ -79,7 +79,7 @@ namespace AmplifyShaderEditor
 					string ppsScreenPos = string.Empty;
 					if( !dataCollector.TemplateDataCollectorInstance.GetCustomInterpolatedData( TemplateInfoOnSematics.SCREEN_POSITION_NORMALIZED, WirePortDataType.FLOAT4, PrecisionType.Float, ref ppsScreenPos, true, MasterNodePortCategory.Fragment ) )
 					{
-						screenPosNorm = GeneratorUtils.GenerateScreenPositionNormalized( ref dataCollector, UniqueId, m_currentPrecisionType, !dataCollector.UsingCustomScreenPos );
+						screenPosNorm = GeneratorUtils.GenerateScreenPositionNormalized( ref dataCollector, UniqueId, CurrentPrecisionType, !dataCollector.UsingCustomScreenPos );
 					}
 					else
 					{
@@ -88,7 +88,7 @@ namespace AmplifyShaderEditor
 				}
 				else
 				{
-					screenPosNorm = GeneratorUtils.GenerateScreenPositionNormalized( ref dataCollector, UniqueId, m_currentPrecisionType, !dataCollector.UsingCustomScreenPos );
+					screenPosNorm = GeneratorUtils.GenerateScreenPositionNormalized( ref dataCollector, UniqueId, CurrentPrecisionType, !dataCollector.UsingCustomScreenPos );
 				}
 			}
 
@@ -126,7 +126,7 @@ namespace AmplifyShaderEditor
 				finalVarValue = string.Format( "saturate( {0} )", finalVarValue );
 			}
 
-			dataCollector.AddLocalVariable( UniqueId, m_currentPrecisionType, WirePortDataType.FLOAT, finalVarName, finalVarValue );
+			dataCollector.AddLocalVariable( UniqueId, CurrentPrecisionType, WirePortDataType.FLOAT, finalVarName, finalVarValue );
 			m_outputPorts[ 0 ].SetLocalValue( finalVarName, dataCollector.PortCategory );
 			return GetOutputColorItem( 0, outputId, finalVarName );
 		}

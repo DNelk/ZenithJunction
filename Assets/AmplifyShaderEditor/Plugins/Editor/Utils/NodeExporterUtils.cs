@@ -44,6 +44,7 @@ namespace AmplifyShaderEditor
 
 
 		private string m_pathname;
+
 		public NodeExporterUtils( AmplifyShaderEditorWindow window )
 		{
 			m_window = window;
@@ -64,8 +65,9 @@ namespace AmplifyShaderEditor
 			//shaderutilType.InvokeMember( "OpenCompiledShader", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.InvokeMethod, null, null, new object[] { shader, mode, customPlatformsMask, includeAllVariants } );
 		}
 
-		public void ActivateAutoScreenShot( string pathname )
+		public void ActivateAutoScreenShot( string pathname, int from, int to )
 		{
+
 			m_pathname = pathname;
 			if( !System.IO.Directory.Exists( m_pathname ) )
 			{
@@ -90,8 +92,27 @@ namespace AmplifyShaderEditor
 
 			m_takingShots = true;
 			m_screenShotState = DebugScreenShotNodeState.CreateNode;
+
 		}
 
+		public void ActivateNodesURL( int from , int to )
+		{
+			m_window.CurrentPaletteWindow.FillList( ref m_screenshotList, true );
+			
+			if( to < 0 || to > m_screenshotList.Count )
+				to  = m_screenshotList.Count;
+
+			if( from >= to )
+				return;
+
+			for( int i = from; i < to; i++ )
+			{
+				if( m_screenshotList[ i ].NodeType != typeof( FunctionNode ) )
+				{
+					Application.OpenURL( m_screenshotList[ i ].NodeAttributes.NodeUrl );
+				}
+			}
+		}
 
 		public void ActivateAutoUndo()
 		{
@@ -189,6 +210,8 @@ namespace AmplifyShaderEditor
 						m_node = m_window.CreateNode( m_screenshotList[ 0 ].NodeType, Vector2.zero, null, false );
 						m_node.RefreshExternalReferences();
 						m_screenShotState = DebugScreenShotNodeState.FocusOnNode;
+
+						
 					}
 					break;
 					case DebugScreenShotNodeState.FocusOnNode:

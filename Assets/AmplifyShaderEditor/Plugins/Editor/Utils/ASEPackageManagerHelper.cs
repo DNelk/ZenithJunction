@@ -13,25 +13,35 @@ namespace AmplifyShaderEditor
 {
 	public enum ASESRPVersions
 	{
-		ASE_SRP_RECENT = 000000,
-		ASE_SRP_3_0_0 = 030000,
-		ASE_SRP_3_1_0 = 030100,
-		ASE_SRP_3_3_0 = 030300,
-		ASE_SRP_4_1_0 = 040100,
-		ASE_SRP_4_2_0 = 040200,
-		ASE_SRP_4_3_0 = 040300,
-		ASE_SRP_4_6_0 = 040600,
-		ASE_SRP_4_8_0 = 040800,
-		ASE_SRP_4_9_0 = 040900,
-		ASE_SRP_4_10_0 = 041000,
-		ASE_SRP_5_7_2 = 050702,
-		ASE_SRP_5_8_2 = 050802,
-		ASE_SRP_5_9_0 = 050900,
-		ASE_SRP_5_10_0 = 051000,
-		ASE_SRP_5_13_0 = 051300,
-		ASE_SRP_5_16_1 = 051601,
-		ASE_SRP_6_9_0 = 060900,
-		ASE_SRP_6_9_1 = 060901,
+		ASE_SRP_3_0_0 =		030000,
+		ASE_SRP_3_1_0 =		030100,
+		ASE_SRP_3_3_0 =		030300,
+		ASE_SRP_4_1_0 =		040100,
+		ASE_SRP_4_2_0 =		040200,
+		ASE_SRP_4_3_0 =		040300,
+		ASE_SRP_4_6_0 =		040600,
+		ASE_SRP_4_8_0 =		040800,
+		ASE_SRP_4_9_0 =		040900,
+		ASE_SRP_4_10_0 =	041000,
+		ASE_SRP_5_7_2 =		050702,
+		ASE_SRP_5_8_2 =		050802,
+		ASE_SRP_5_9_0 =		050900,
+		ASE_SRP_5_10_0 =	051000,
+		ASE_SRP_5_13_0 =	051300,
+		ASE_SRP_5_16_1 =	051601,
+		ASE_SRP_6_9_0 =		060900,
+		ASE_SRP_6_9_1 =		060901,
+		ASE_SRP_6_9_2 =		060902,
+		ASE_SRP_7_0_1 =		070001,
+		ASE_SRP_7_1_1 =		070101,
+		ASE_SRP_7_1_2 =		070102,
+		ASE_SRP_7_1_5 =		070105,
+		ASE_SRP_7_1_6 =		070106,
+		ASE_SRP_7_1_7 =		070107,
+		ASE_SRP_7_1_8 =		070108,
+		ASE_SRP_7_2_0 =		070200,
+		ASE_SRP_7_2_1 =		070201,
+		ASE_SRP_RECENT =	999999
 	}
 
 	public enum ASEImportState
@@ -65,8 +75,12 @@ namespace AmplifyShaderEditor
 
 		private static string HDPackageId = "com.unity.render-pipelines.high-definition";
 		private static string LWPackageId = "com.unity.render-pipelines.lightweight";
+		private static string UniversalPackageId = "com.unity.render-pipelines.universal";
 		private static string HDEditorPrefsId = "ASEHDEditorPrefsId";
 		private static string LWEditorPrefsId = "ASELightweigthEditorPrefsId ";
+
+		private static string URPTemplateVersion = "ASEURPtemplate" + Application.productName;
+		private static string HDRPTemplateVersion = "ASEHDRPtemplate" + Application.productName;
 
 		private static string SPKeywordFormat = "ASE_SRP_VERSION {0}";
 		private static ListRequest m_packageListRequest = null;
@@ -102,8 +116,11 @@ namespace AmplifyShaderEditor
 		private static ASEImportState m_importingPackage = ASEImportState.None;
 
 
-		private static ASESRPVersions m_currentHDVersion = ASESRPVersions.ASE_SRP_6_9_1;
-		private static ASESRPVersions m_currentLWVersion = ASESRPVersions.ASE_SRP_6_9_1;
+		private static ASESRPVersions m_currentHDVersion = ASESRPVersions.ASE_SRP_RECENT;
+		private static ASESRPVersions m_currentLWVersion = ASESRPVersions.ASE_SRP_RECENT;
+
+		private static int m_urpTemplateVersion = 1;
+		private static int m_hdrpTemplateVersion = 1;
 
 		private static Dictionary<string, ASESRPVersions> m_srpVersionConverter = new Dictionary<string, ASESRPVersions>()
 		{
@@ -133,6 +150,26 @@ namespace AmplifyShaderEditor
 			{"6.9.0-preview",   ASESRPVersions.ASE_SRP_6_9_0},
 			{"6.9.1",           ASESRPVersions.ASE_SRP_6_9_1},
 			{"6.9.1-preview",   ASESRPVersions.ASE_SRP_6_9_1},
+			{"6.9.2",           ASESRPVersions.ASE_SRP_6_9_2},
+			{"6.9.2-preview",   ASESRPVersions.ASE_SRP_6_9_2},
+			{"7.0.1",           ASESRPVersions.ASE_SRP_7_0_1},
+			{"7.0.1-preview",   ASESRPVersions.ASE_SRP_7_0_1},
+			{"7.1.1",           ASESRPVersions.ASE_SRP_7_1_1},
+			{"7.1.1-preview",   ASESRPVersions.ASE_SRP_7_1_1},
+			{"7.1.2",           ASESRPVersions.ASE_SRP_7_1_2},
+			{"7.1.2-preview",   ASESRPVersions.ASE_SRP_7_1_2},
+			{"7.1.5",           ASESRPVersions.ASE_SRP_7_1_5},
+			{"7.1.5-preview",   ASESRPVersions.ASE_SRP_7_1_5},
+			{"7.1.6",           ASESRPVersions.ASE_SRP_7_1_6},
+			{"7.1.6-preview",   ASESRPVersions.ASE_SRP_7_1_6},
+			{"7.1.7",           ASESRPVersions.ASE_SRP_7_1_7},
+			{"7.1.7-preview",   ASESRPVersions.ASE_SRP_7_1_7},
+			{"7.1.8",           ASESRPVersions.ASE_SRP_7_1_8},
+			{"7.1.8-preview",   ASESRPVersions.ASE_SRP_7_1_8},
+			{"7.2.0",           ASESRPVersions.ASE_SRP_7_2_0},
+			{"7.2.0-preview",   ASESRPVersions.ASE_SRP_7_2_0},
+			{"7.2.1",           ASESRPVersions.ASE_SRP_7_2_1},
+			{"7.2.1-preview",   ASESRPVersions.ASE_SRP_7_2_1},
 		};
 
 
@@ -157,7 +194,17 @@ namespace AmplifyShaderEditor
 			{ASESRPVersions.ASE_SRP_5_16_1, "4c816894a3147d343891060451241bfe"},
 			{ASESRPVersions.ASE_SRP_6_9_0,	"4c816894a3147d343891060451241bfe"},
 			{ASESRPVersions.ASE_SRP_6_9_1,  "4c816894a3147d343891060451241bfe"},
-			{ASESRPVersions.ASE_SRP_RECENT, "4c816894a3147d343891060451241bfe"}
+			{ASESRPVersions.ASE_SRP_6_9_2,  "4c816894a3147d343891060451241bfe"},
+			{ASESRPVersions.ASE_SRP_7_0_1,  "57fcea0ed8b5eb347923c4c21fa31b57"},
+			{ASESRPVersions.ASE_SRP_7_1_1,  "57fcea0ed8b5eb347923c4c21fa31b57"},
+			{ASESRPVersions.ASE_SRP_7_1_2,  "57fcea0ed8b5eb347923c4c21fa31b57"},
+			{ASESRPVersions.ASE_SRP_7_1_5,  "57fcea0ed8b5eb347923c4c21fa31b57"},
+			{ASESRPVersions.ASE_SRP_7_1_6,  "57fcea0ed8b5eb347923c4c21fa31b57"},
+			{ASESRPVersions.ASE_SRP_7_1_7,  "57fcea0ed8b5eb347923c4c21fa31b57"},
+			{ASESRPVersions.ASE_SRP_7_1_8,  "57fcea0ed8b5eb347923c4c21fa31b57"},
+			{ASESRPVersions.ASE_SRP_7_2_0,  "57fcea0ed8b5eb347923c4c21fa31b57"},
+			{ASESRPVersions.ASE_SRP_7_2_1,  "57fcea0ed8b5eb347923c4c21fa31b57"},
+			{ASESRPVersions.ASE_SRP_RECENT, "57fcea0ed8b5eb347923c4c21fa31b57"}
 		};
 
 		private static Dictionary<ASESRPVersions, string> m_srpToASEPackageHD = new Dictionary<ASESRPVersions, string>()
@@ -178,8 +225,18 @@ namespace AmplifyShaderEditor
 			{ASESRPVersions.ASE_SRP_5_10_0, "2d7fe4f7c19e90f41b893bc01fc17230"},
 			{ASESRPVersions.ASE_SRP_5_13_0, "2d7fe4f7c19e90f41b893bc01fc17230"},
 			{ASESRPVersions.ASE_SRP_5_16_1, "2d7fe4f7c19e90f41b893bc01fc17230"},
-			{ASESRPVersions.ASE_SRP_6_9_0,	"9a5e61a8b3421b944863d0946e32da0a"},
-			{ASESRPVersions.ASE_SRP_6_9_1,	"9a5e61a8b3421b944863d0946e32da0a"},
+			{ASESRPVersions.ASE_SRP_6_9_0,  "e137dba02f4d0f542ab09dcedea27314"},
+			{ASESRPVersions.ASE_SRP_6_9_1,	"e137dba02f4d0f542ab09dcedea27314"},
+			{ASESRPVersions.ASE_SRP_6_9_2,  "e137dba02f4d0f542ab09dcedea27314"},
+			{ASESRPVersions.ASE_SRP_7_0_1,  "e137dba02f4d0f542ab09dcedea27314"},
+			{ASESRPVersions.ASE_SRP_7_1_1,  "e137dba02f4d0f542ab09dcedea27314"},
+			{ASESRPVersions.ASE_SRP_7_1_2,  "e137dba02f4d0f542ab09dcedea27314"},
+			{ASESRPVersions.ASE_SRP_7_1_5,  "e137dba02f4d0f542ab09dcedea27314"},
+			{ASESRPVersions.ASE_SRP_7_1_6,  "e137dba02f4d0f542ab09dcedea27314"},
+			{ASESRPVersions.ASE_SRP_7_1_7,  "e137dba02f4d0f542ab09dcedea27314"},
+			{ASESRPVersions.ASE_SRP_7_1_8,  "9a5e61a8b3421b944863d0946e32da0a"},
+			{ASESRPVersions.ASE_SRP_7_2_0,  "9a5e61a8b3421b944863d0946e32da0a"},
+			{ASESRPVersions.ASE_SRP_7_2_1,  "9a5e61a8b3421b944863d0946e32da0a"},
 			{ASESRPVersions.ASE_SRP_RECENT, "9a5e61a8b3421b944863d0946e32da0a"}
 		};
 
@@ -214,10 +271,16 @@ namespace AmplifyShaderEditor
 
 		public static void StartImporting( string packagePath )
 		{
+			if( !Preferences.GlobalAutoSRP )
+			{
+				m_importingPackage = ASEImportState.None;
+				return;
+			}
 			AssetDatabase.importPackageCancelled += CancelledPackageImport;
 			AssetDatabase.importPackageCompleted += CompletedPackageImport;
 			AssetDatabase.importPackageFailed += FailedPackageImport;
-			AssetDatabaseEX.ImportPackageImmediately( packagePath );
+			AssetDatabase.ImportPackage( packagePath, false );
+			//AssetDatabaseEX.ImportPackageImmediately( packagePath );
 		}
 
 		public static void FinishImporter()
@@ -237,6 +300,7 @@ namespace AmplifyShaderEditor
 
 		public static void LateShaderOpener()
 		{
+			Preferences.LoadDefaults();
 			Update();
 			if( IsProcessing )
 			{
@@ -258,6 +322,7 @@ namespace AmplifyShaderEditor
 
 		public static void LateMaterialOpener()
 		{
+			Preferences.LoadDefaults();
 			Update();
 			if( IsProcessing )
 			{
@@ -279,6 +344,7 @@ namespace AmplifyShaderEditor
 
 		public static void LateShaderFunctionOpener()
 		{
+			Preferences.LoadDefaults();
 			Update();
 			if( IsProcessing )
 			{
@@ -328,53 +394,114 @@ namespace AmplifyShaderEditor
 						{
 							m_currentLWVersion = ASESRPVersions.ASE_SRP_RECENT;
 							m_lwPackageInfo = pi;
+							ASESRPVersions oldVersion = (ASESRPVersions)EditorPrefs.GetInt( LWEditorPrefsId );
 							if( m_srpVersionConverter.ContainsKey( pi.version ) )
 							{
-								ASESRPVersions oldVersion = (ASESRPVersions)EditorPrefs.GetInt( LWEditorPrefsId );
 								m_currentLWVersion = m_srpVersionConverter[ pi.version ];
-								EditorPrefs.SetInt( LWEditorPrefsId, (int)m_currentLWVersion );
-								bool foundNewVersion = oldVersion != m_currentLWVersion;
-								if( !File.Exists( AssetDatabase.GUIDToAssetPath( TemplatesManager.LightweigthPBRGUID ) ) ||
-									!File.Exists( AssetDatabase.GUIDToAssetPath( TemplatesManager.LightweigthUnlitGUID ) ) ||
-									foundNewVersion
-									)
-								{
-									if( foundNewVersion )
-										Debug.Log( LightweightNewVersionDetected );
-
-									m_importingPackage = ASEImportState.Lightweight;
-									string guid = m_srpToASEPackageLW.ContainsKey( m_currentLWVersion ) ? m_srpToASEPackageLW[ m_currentLWVersion ] : m_srpToASEPackageLW[ ASESRPVersions.ASE_SRP_RECENT ];
-									string packagePath = AssetDatabase.GUIDToAssetPath( guid );
-									StartImporting( packagePath );
-								}
 							}
+							else
+							{
+								m_currentLWVersion = ASESRPVersions.ASE_SRP_RECENT;
+							}
+
+							EditorPrefs.SetInt( LWEditorPrefsId, (int)m_currentLWVersion );
+							bool foundNewVersion = oldVersion != m_currentLWVersion;
+							if( !File.Exists( AssetDatabase.GUIDToAssetPath( TemplatesManager.LightweigthPBRGUID ) ) ||
+								!File.Exists( AssetDatabase.GUIDToAssetPath( TemplatesManager.LightweigthUnlitGUID ) ) ||
+								foundNewVersion
+								)
+							{
+								if( foundNewVersion )
+									Debug.Log( LightweightNewVersionDetected );
+
+								m_importingPackage = ASEImportState.Lightweight;
+								string guid = m_srpToASEPackageLW.ContainsKey( m_currentLWVersion ) ? m_srpToASEPackageLW[ m_currentLWVersion ] : m_srpToASEPackageLW[ ASESRPVersions.ASE_SRP_RECENT ];
+								string packagePath = AssetDatabase.GUIDToAssetPath( guid );
+								StartImporting( packagePath );
+							}
+						}
+
+						if( pi.name.Equals( UniversalPackageId ) )
+						{
+							m_currentLWVersion = ASESRPVersions.ASE_SRP_RECENT;
+							m_lwPackageInfo = pi;
+							ASESRPVersions oldVersion = (ASESRPVersions)EditorPrefs.GetInt( LWEditorPrefsId );
+							if( m_srpVersionConverter.ContainsKey( pi.version ) )
+							{
+								m_currentLWVersion = m_srpVersionConverter[ pi.version ];
+							}
+							else
+							{
+								m_currentLWVersion = ASESRPVersions.ASE_SRP_RECENT;
+							}
+
+							EditorPrefs.SetInt( LWEditorPrefsId, (int)m_currentLWVersion );
+							bool foundNewVersion = oldVersion != m_currentLWVersion;
+
+							int urpVersion = EditorPrefs.GetInt( URPTemplateVersion, m_urpTemplateVersion );
+							if( urpVersion < m_urpTemplateVersion )
+								foundNewVersion = true;
+							EditorPrefs.SetInt( URPTemplateVersion, m_urpTemplateVersion );
+
+							if( !File.Exists( AssetDatabase.GUIDToAssetPath( TemplatesManager.UniversalPBRGUID ) ) ||
+								!File.Exists( AssetDatabase.GUIDToAssetPath( TemplatesManager.UniversalUnlitGUID ) ) ||
+								foundNewVersion
+								)
+							{
+								if( foundNewVersion )
+									Debug.Log( LightweightNewVersionDetected );
+
+								m_importingPackage = ASEImportState.Lightweight;
+								string guid = m_srpToASEPackageLW.ContainsKey( m_currentLWVersion ) ? m_srpToASEPackageLW[ m_currentLWVersion ] : m_srpToASEPackageLW[ ASESRPVersions.ASE_SRP_RECENT ];
+								string packagePath = AssetDatabase.GUIDToAssetPath( guid );
+								StartImporting( packagePath );
+							}
+							
 						}
 
 						if( pi.name.Equals( HDPackageId ) )
 						{
 							m_currentHDVersion = ASESRPVersions.ASE_SRP_RECENT;
 							m_hdPackageInfo = pi;
+							ASESRPVersions oldVersion = (ASESRPVersions)EditorPrefs.GetInt( HDEditorPrefsId );
 							if( m_srpVersionConverter.ContainsKey( pi.version ) )
 							{
-								ASESRPVersions oldVersion = (ASESRPVersions)EditorPrefs.GetInt( HDEditorPrefsId );
 								m_currentHDVersion = m_srpVersionConverter[ pi.version ];
-								EditorPrefs.SetInt( HDEditorPrefsId, (int)m_currentHDVersion );
-								bool foundNewVersion = oldVersion != m_currentHDVersion;
-								if( !File.Exists( AssetDatabase.GUIDToAssetPath( TemplatesManager.HDLitGUID ) ) ||
-									!File.Exists( AssetDatabase.GUIDToAssetPath( TemplatesManager.HDPBRGUID ) ) ||
-									!File.Exists( AssetDatabase.GUIDToAssetPath( TemplatesManager.HDUnlitGUID ) ) ||
-									foundNewVersion
-									)
-								{
-									if( foundNewVersion )
-										Debug.Log( HDNewVersionDetected );
-
-									m_importingPackage = m_importingPackage == ASEImportState.Lightweight ? ASEImportState.Both : ASEImportState.HD;
-									string guid = m_srpToASEPackageHD.ContainsKey( m_currentHDVersion ) ? m_srpToASEPackageHD[ m_currentHDVersion ] : m_srpToASEPackageHD[ ASESRPVersions.ASE_SRP_RECENT ];
-									string packagePath = AssetDatabase.GUIDToAssetPath( guid );
-									StartImporting( packagePath );
-								}
 							}
+							else
+							{
+								m_currentHDVersion = ASESRPVersions.ASE_SRP_RECENT;
+							}
+
+							EditorPrefs.SetInt( HDEditorPrefsId, (int)m_currentHDVersion );
+							bool foundNewVersion = oldVersion != m_currentHDVersion;
+
+							int hdrpVersion = EditorPrefs.GetInt( HDRPTemplateVersion, m_hdrpTemplateVersion );
+							if( hdrpVersion < m_hdrpTemplateVersion )
+								foundNewVersion = true;
+							EditorPrefs.SetInt( HDRPTemplateVersion, m_hdrpTemplateVersion );
+
+#if UNITY_2019_3_OR_NEWER
+							if( !File.Exists( AssetDatabase.GUIDToAssetPath( TemplatesManager.HDNewLitGUID ) ) ||
+								!File.Exists( AssetDatabase.GUIDToAssetPath( TemplatesManager.HDNewPBRGUID ) ) ||
+								!File.Exists( AssetDatabase.GUIDToAssetPath( TemplatesManager.HDNewUnlitGUID ) ) ||
+#else
+							if( !File.Exists( AssetDatabase.GUIDToAssetPath( TemplatesManager.HDLitGUID ) ) ||
+								!File.Exists( AssetDatabase.GUIDToAssetPath( TemplatesManager.HDPBRGUID ) ) ||
+								!File.Exists( AssetDatabase.GUIDToAssetPath( TemplatesManager.HDUnlitGUID ) ) ||
+#endif
+								foundNewVersion
+								)
+							{
+								if( foundNewVersion )
+									Debug.Log( HDNewVersionDetected );
+
+								m_importingPackage = m_importingPackage == ASEImportState.Lightweight ? ASEImportState.Both : ASEImportState.HD;
+								string guid = m_srpToASEPackageHD.ContainsKey( m_currentHDVersion ) ? m_srpToASEPackageHD[ m_currentHDVersion ] : m_srpToASEPackageHD[ ASESRPVersions.ASE_SRP_RECENT ];
+								string packagePath = AssetDatabase.GUIDToAssetPath( guid );
+								StartImporting( packagePath );
+							}
+							
 						}
 					}
 				}
@@ -383,12 +510,13 @@ namespace AmplifyShaderEditor
 
 		public static void SetSRPInfoOnDataCollector( ref MasterNodeDataCollector dataCollector )
 		{
+			Preferences.LoadDefaults();
 			if( m_requireUpdateList )
 				Update();
 
 			if( dataCollector.CurrentSRPType == TemplateSRPType.HD )
 			{
-				dataCollector.AddToDefines( -1, string.Format( SPKeywordFormat, (int)m_currentHDVersion ) );
+				dataCollector.AddToDirectives( string.Format( SPKeywordFormat, (int)m_currentHDVersion ) ,-1, AdditionalLineType.Define );
 				if( m_currentHDVersion < ASESRPVersions.ASE_SRP_4_9_0 )
 				{
 					dataCollector.AddFunction( GetNormalWSFunc[ 0 ], GetNormalWSFunc, false );
@@ -401,7 +529,7 @@ namespace AmplifyShaderEditor
 			}
 
 			if( dataCollector.CurrentSRPType == TemplateSRPType.Lightweight )
-				dataCollector.AddToDefines( -1, string.Format( SPKeywordFormat, (int)m_currentLWVersion ) );
+				dataCollector.AddToDirectives( string.Format( SPKeywordFormat, (int)m_currentLWVersion ), -1, AdditionalLineType.Define );
 		}
 		public static ASESRPVersions CurrentHDVersion { get { return m_currentHDVersion; } }
 		public static ASESRPVersions CurrentLWVersion { get { return m_currentLWVersion; } }

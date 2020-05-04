@@ -63,6 +63,12 @@ namespace AmplifyShaderEditor
 		[SerializeField]
 		private CustomTemplatePropertyUIEnum m_customTemplatePropertyUI = CustomTemplatePropertyUIEnum.None;
 
+		[SerializeField]
+		private int m_lodInjectorId = -1;
+
+		[SerializeField]
+		TemplateShaderModelData m_globalShaderModel = new TemplateShaderModelData();
+
 		private Dictionary<string, TemplateUniquePassData> m_passUniqueIdData = new Dictionary<string, TemplateUniquePassData>();
 
 
@@ -113,6 +119,26 @@ namespace AmplifyShaderEditor
 				}
 			}
 
+
+			// Detect if template has LOD tag, if not, insert one
+			// It will be read and processed over the TemplateSubShader constructor
+			{
+				Match match = Regex.Match( shaderBody, TemplateHelperFunctions.SubShaderLODPattern );
+				if( match == null || ( match != null && !match.Success ) )
+				{
+					MatchCollection subShaderMatch = Regex.Matches( shaderBody, TemplatesManager.TemplateMPSubShaderTag );
+
+					int subShaderAmount = subShaderMatch.Count;
+
+					for( int i = subShaderAmount - 1; i > -1; i-- )
+					{
+						if( subShaderMatch[ i ].Success )
+						{
+							shaderBody = shaderBody.Insert( subShaderMatch[ i ].Index + subShaderMatch[ i ].Length, "\n\t\t\tLOD 0\n" );
+						}
+					}
+				}
+			}
 			m_shaderData = TemplateShaderInfoUtil.CreateShaderData( shaderBody );
 			if( m_shaderData == null )
 			{
@@ -178,6 +204,9 @@ namespace AmplifyShaderEditor
 				m_templateProperties.AddId( new TemplateProperty( m_fallbackContainer.Id, m_fallbackContainer.Id.Substring( 0, index ), true ) );
 				m_templateIdManager.RegisterId( m_fallbackContainer.Index, m_fallbackContainer.Id, m_fallbackContainer.Id );
 			}
+
+			m_lodInjectorId = m_shaderBody.IndexOf( TemplatesManager.TemplateLODsTag );
+
 			// Shader body may have been changed to inject inexisting tags like fallback
 			m_templateIdManager.ShaderBody = m_shaderBody;
 
@@ -204,9 +233,31 @@ namespace AmplifyShaderEditor
 			m_templateIdManager.RegisterTag( TemplatesManager.TemplatePassesEndTag );
 			m_templateIdManager.RegisterTag( TemplatesManager.TemplateMainPassTag );
 
+			//SHADER MODEL
+			{
+				Match shaderModelMatch = Regex.Match( m_shaderData.Properties, TemplateHelperFunctions.ShaderModelPattern );
+				if( shaderModelMatch != null && shaderModelMatch.Success )
+				{
+					if( TemplateHelperFunctions.AvailableInterpolators.ContainsKey( shaderModelMatch.Groups[ 1 ].Value ) )
+					{
+						m_globalShaderModel.Id = shaderModelMatch.Groups[ 0 ].Value;
+						m_globalShaderModel.StartIdx = shaderModelMatch.Index;
+						m_globalShaderModel.Value = shaderModelMatch.Groups[ 1 ].Value;
+						m_globalShaderModel.InterpolatorAmount = TemplateHelperFunctions.AvailableInterpolators[ shaderModelMatch.Groups[ 1 ].Value ];
+						m_globalShaderModel.DataCheck = TemplateDataCheck.Valid;
+					}
+					else
+					{
+						m_globalShaderModel.DataCheck = TemplateDataCheck.Invalid;
+					}
+				}
+			}
+			//
+
+
 			for( int i = 0; i < subShaderCount; i++ )
 			{
-				TemplateSubShader subShader = new TemplateSubShader( i, m_templateIdManager, "SubShader" + i, m_shaderData.SubShaders[ i ], ref duplicatesHelper );
+				TemplateSubShader subShader = new TemplateSubShader(this, i, m_templateIdManager, "SubShader" + i, m_shaderData.SubShaders[ i ], ref duplicatesHelper );
 
 				if( subShader.FoundMainPass )
 				{
@@ -240,9 +291,11 @@ namespace AmplifyShaderEditor
 
 			for( int subShaderIdx = 0; subShaderIdx < subShaderCount; subShaderIdx++ )
 			{
+				m_subShaders[ subShaderIdx ].Modules.RegisterInternalUnityInlines( ref m_availableShaderProperties , ref duplicatesHelper );
 				int passCount = m_subShaders[ subShaderIdx ].Passes.Count;
 				for( int passIdx = 0; passIdx < passCount; passIdx++ )
 				{
+					m_subShaders[ subShaderIdx ].Passes[ passIdx ].Modules.RegisterInternalUnityInlines( ref m_availableShaderProperties, ref duplicatesHelper );
 					m_subShaders[ subShaderIdx ].Passes[ passIdx ].IsMainPass = ( mainSubShaderIdx == subShaderIdx && mainPassIdx == passIdx );
 				}
 			}
@@ -855,12 +908,19 @@ namespace AmplifyShaderEditor
 		public void SetPassInputData( int subShaderId, int passId, int inputId, string text )
 		{
 			if( subShaderId >= m_subShaders.Count ||
-				passId >= m_subShaders[ subShaderId ].Passes.Count ||
-				inputId >= m_subShaders[ subShaderId ].Passes[ passId ].InputDataList.Count )
+				passId >= m_subShaders[ subShaderId ].Passes.Count )
 				return;
 
 			string prefix = m_subShaders[ subShaderId ].Passes[ passId ].UniquePrefix;
-			m_templateIdManager.SetReplacementText( prefix + m_subShaders[ subShaderId ].Passes[ passId ].InputDataFromId( inputId ).TagId, text );
+			TemplateInputData inputData = m_subShaders[ subShaderId ].Passes[ passId ].InputDataFromId( inputId );
+			if( inputData != null )
+			{
+				m_templateIdManager.SetReplacementText( prefix + inputData.TagId, text );
+			}
+			else
+			{
+				Debug.LogErrorFormat( "Unable to find input data for port with id {0} on subshader {1} pass {2}", inputId, subShaderId, passId );
+			}
 		}
 
 		public void SetPassInputDataByArrayIdx( int subShaderId, int passId, int inputId, string text )
@@ -1109,6 +1169,11 @@ namespace AmplifyShaderEditor
 					{
 						if( m_subShaders[ subShaderIdx ].Passes[ passIdx ].Modules.HasPassUniqueName )
 						{
+							if( m_passUniqueIdData.ContainsKey( m_subShaders[ subShaderIdx ].Passes[ passIdx ].Modules.PassUniqueName ) )
+							{
+								Debug.LogErrorFormat( "Found duplicate pass name '{0}' over template. Please fix template as it will result in multiple errors.", m_subShaders[ subShaderIdx ].Passes[ passIdx ].Modules.PassUniqueName );
+								return false;
+							}
 							m_passUniqueIdData.Add( m_subShaders[ subShaderIdx ].Passes[ passIdx ].Modules.PassUniqueName, new TemplateUniquePassData() { PassIdx = passIdx, SubShaderIdx = subShaderIdx } );
 						}
 					}
@@ -1144,5 +1209,7 @@ namespace AmplifyShaderEditor
 		public bool IsSinglePass { get { return m_isSinglePass; } }
 		public int MasterNodesRequired { get { return m_masterNodesRequired; } }
 		public CustomTemplatePropertyUIEnum CustomTemplatePropertyUI { get { return m_customTemplatePropertyUI; } }
+		public bool CanAddLODs { get { return m_lodInjectorId > -1; } }
+		public TemplateShaderModelData GlobalShaderModel { get { return m_globalShaderModel; } }
 	}
 }

@@ -3,6 +3,7 @@
 
 using System;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace AmplifyShaderEditor
@@ -217,7 +218,7 @@ namespace AmplifyShaderEditor
 
 			//ALPHA TO MASK
 			{
-				Match alphaToMaskMatch = Regex.Match( subBody, TemplateHelperFunctions.ALphaToMaskPattern );
+				Match alphaToMaskMatch = Regex.Match( subBody, TemplateHelperFunctions.AlphaToMaskPattern );
 				if( alphaToMaskMatch.Success )
 				{
 					m_blendData.ValidAlphaToMask = true;
@@ -437,6 +438,47 @@ namespace AmplifyShaderEditor
 				if( !m_shaderModel.IsValid )
 					m_shaderModel.SetAllModulesDefault();
 			}
+		}
+
+		public void TestPropertyInternalName( string name, ref List<TemplateShaderPropertyData> availableShaderProperties, ref Dictionary<string, TemplateShaderPropertyData> duplicatesHelper )
+		{
+			if( !string.IsNullOrEmpty( name ) && !duplicatesHelper.ContainsKey( name ))
+			{
+				TemplateShaderPropertyData newData = new TemplateShaderPropertyData( -1, string.Empty, string.Empty, name, name, WirePortDataType.INT, PropertyType.Property );
+				availableShaderProperties.Add( newData );
+				duplicatesHelper.Add( newData.PropertyName , newData );
+			}
+		}
+
+		public void RegisterInternalUnityInlines( ref List<TemplateShaderPropertyData> availableShaderProperties, ref Dictionary<string, TemplateShaderPropertyData> duplicatesHelper )
+		{
+			TestPropertyInternalName( m_depthData.ZWriteInlineValue, ref availableShaderProperties , ref duplicatesHelper);
+			TestPropertyInternalName( m_depthData.ZTestInlineValue, ref availableShaderProperties, ref duplicatesHelper );
+			TestPropertyInternalName( m_depthData.OffsetFactorInlineValue, ref availableShaderProperties, ref duplicatesHelper );
+			TestPropertyInternalName( m_depthData.OffsetUnitsInlineValue, ref availableShaderProperties, ref duplicatesHelper );		
+
+			TestPropertyInternalName( m_blendData.SourceFactorRGBInline, ref availableShaderProperties, ref duplicatesHelper );
+			TestPropertyInternalName( m_blendData.DestFactorRGBInline, ref availableShaderProperties, ref duplicatesHelper );
+			TestPropertyInternalName( m_blendData.SourceFactorAlphaInline, ref availableShaderProperties, ref duplicatesHelper );
+			TestPropertyInternalName( m_blendData.DestFactorAlphaInline, ref availableShaderProperties, ref duplicatesHelper );
+			TestPropertyInternalName( m_blendData.BlendOpRGBInline, ref availableShaderProperties, ref duplicatesHelper );
+			TestPropertyInternalName( m_blendData.BlendOpAlphaInline, ref availableShaderProperties, ref duplicatesHelper );
+
+			TestPropertyInternalName( m_stencilData.ReferenceInline, ref availableShaderProperties, ref duplicatesHelper );
+			TestPropertyInternalName( m_stencilData.ReadMaskInline, ref availableShaderProperties, ref duplicatesHelper );
+			TestPropertyInternalName( m_stencilData.WriteMaskInline, ref availableShaderProperties, ref duplicatesHelper );
+			TestPropertyInternalName( m_stencilData.ComparisonFrontInline, ref availableShaderProperties, ref duplicatesHelper );
+			TestPropertyInternalName( m_stencilData.PassFrontInline, ref availableShaderProperties, ref duplicatesHelper );
+			TestPropertyInternalName( m_stencilData.FailFrontInline, ref availableShaderProperties, ref duplicatesHelper );
+			TestPropertyInternalName( m_stencilData.ZFailFrontInline, ref availableShaderProperties, ref duplicatesHelper );
+			TestPropertyInternalName( m_stencilData.ComparisonBackInline, ref availableShaderProperties, ref duplicatesHelper );
+			TestPropertyInternalName( m_stencilData.PassBackInline, ref availableShaderProperties, ref duplicatesHelper );
+			TestPropertyInternalName( m_stencilData.FailBackInline, ref availableShaderProperties, ref duplicatesHelper );
+			TestPropertyInternalName( m_stencilData.ZFailBackInline, ref availableShaderProperties, ref duplicatesHelper );
+
+			TestPropertyInternalName( m_cullModeData.InlineData, ref availableShaderProperties, ref duplicatesHelper );
+
+			TestPropertyInternalName( m_colorMaskData.InlineData, ref availableShaderProperties, ref duplicatesHelper );
 		}
 
 		public void SetPassUniqueNameIfUndefined( string value )

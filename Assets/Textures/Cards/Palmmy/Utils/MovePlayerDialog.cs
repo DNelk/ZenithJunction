@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,11 +20,13 @@ public class MovePlayerDialog : MonoBehaviour
 
     //player pos
     private Transform _playerPos;
+
+    private PositionAura posAura;
     //car pos
     private Image[] _car;
     private Sprite[] _carSprite = new Sprite[2];
     
-    private void Start()
+    private void Awake()
     {
         Button[] moveButton = transform.GetComponentsInChildren<Button>();
         
@@ -38,13 +41,15 @@ public class MovePlayerDialog : MonoBehaviour
         _confirmButton = moveButton[2];
         
         //get player pos
-        Transform positionPanel = transform.parent.transform.parent;
+        Transform positionPanel = transform.parent;
         _playerPos = positionPanel.Find("PlayerPos");
-        
+        posAura = _playerPos.Find("AuraBack").GetComponent<PositionAura>();
+
         //car
         _car = positionPanel.Find("Car").GetComponentsInChildren<Image>();
         _carSprite[0] = Resources.Load<Sprite>("Sprites/CarUI/TrainCar_Blank"); //blank
         _carSprite[1] = Resources.Load<Sprite>("Sprites/CarUI/TrainCar_Pos"); //pos
+        
         
         AssignListeners();
         AssignMoveNumber();
@@ -54,6 +59,12 @@ public class MovePlayerDialog : MonoBehaviour
     private void OnEnable()
     {
         AssignMoveNumber();
+        posAura.animate();
+    }
+
+    private void OnDisable()
+    {
+        posAura.stopAnimate();
     }
 
     private IEnumerator Move(int n)
@@ -151,9 +162,15 @@ public class MovePlayerDialog : MonoBehaviour
         Player player = BattleManager.Instance.Player;
         int pos =  player.Position + posChange;
         float y_Pos = _playerPos.localPosition.y;
+        float car_Xpos_Local = _car[pos].transform.localPosition.x;
+
+        //_playerPos.localPosition = new Vector3(_car[pos].transform.localPosition.x, y_Pos, 0);
+
+        _playerPos.DOLocalMove(new Vector3(car_Xpos_Local, y_Pos, 0), 0.3f);
         
-        _playerPos.localPosition = new Vector3(_car[pos].transform.localPosition.x, y_Pos, 0);
-        transform.position = new Vector3(_playerPos.position.x, transform.position.y, 0);
+        //transform.position = new Vector3(_playerPos.position.x, transform.position.y, 0);
+        
+        transform.DOLocalMove(new Vector3(car_Xpos_Local, transform.localPosition.y, 0), 0.3f);
 
         for (int i = 0; i < _car.Length; i++)
         {

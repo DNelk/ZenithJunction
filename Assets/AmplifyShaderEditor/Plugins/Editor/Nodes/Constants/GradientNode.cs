@@ -64,7 +64,7 @@ namespace AmplifyShaderEditor
 			}
 			else
 			{
-				dataCollector.AddToIncludes( UniqueId, "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphFunctions.hlsl" );
+				dataCollector.AddToIncludes( UniqueId, "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl" );
 			}
 
 			string[] colors = new string[ 8 ];

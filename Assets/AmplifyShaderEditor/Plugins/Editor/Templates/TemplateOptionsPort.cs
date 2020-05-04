@@ -48,7 +48,7 @@ namespace AmplifyShaderEditor
 					{
 						case AseOptionsActionType.SetDefine:
 						{
-							List<TemplateMultiPassMasterNode> nodes = owner.ContainerGraph.MultiPassMasterNodes.NodesList;
+							List<TemplateMultiPassMasterNode> nodes = owner.ContainerGraph.GetMultiPassMasterNodes( owner.LODIndex );
 							int count = nodes.Count;
 							for( int nodeIdx = 0; nodeIdx < count; nodeIdx++ )
 							{
@@ -59,13 +59,23 @@ namespace AmplifyShaderEditor
 						break;
 						case AseOptionsActionType.SetUndefine:
 						{
-							List<TemplateMultiPassMasterNode> nodes = owner.ContainerGraph.MultiPassMasterNodes.NodesList;
+							List<TemplateMultiPassMasterNode> nodes = owner.ContainerGraph.GetMultiPassMasterNodes( owner.LODIndex );
 							int count = nodes.Count;
 							for( int nodeIdx = 0; nodeIdx < count; nodeIdx++ )
 							{
 								nodes[ nodeIdx ].OptionsDefineContainer.AddDefine( "#undef " + m_options.ActionsPerOption[ optionId ][ i ].ActionData, false );
 							}
 							//dataCollector.AddToDefines( -1, m_options.ActionsPerOption[ optionId ][ i ].ActionData, false );
+						}
+						break;
+						case AseOptionsActionType.SetShaderProperty:
+						{
+							TemplateShaderPropertyData data = owner.CurrentTemplate.GetShaderPropertyData( m_options.ActionsPerOption[ optionId ][ i ].ActionData );
+							if( data != null )
+							{
+								string newPropertyValue = data.CreatePropertyForValue( m_options.ActionsPerOption[ optionId ][ i ].ActionBuffer );
+								owner.CurrentTemplate.IdManager.SetReplacementText( data.FullValue, newPropertyValue );
+							}
 						}
 						break;
 					}
@@ -76,7 +86,11 @@ namespace AmplifyShaderEditor
 		public void SubShaderFillDataCollector( TemplateMultiPassMasterNode owner, ref MasterNodeDataCollector dataCollector )
 		{
 
-			TemplateMultiPassMasterNode targetNode = string.IsNullOrEmpty(m_options.Id) ? owner:owner.ContainerGraph.GetMasterNodeOfPass( m_options.Id );
+			//TemplateMultiPassMasterNode targetNode = string.IsNullOrEmpty(m_options.Id) ? owner:owner.ContainerGraph.GetMasterNodeOfPass( m_options.Id , owner.LODIndex );
+			TemplateMultiPassMasterNode targetNode = string.IsNullOrEmpty( m_options.Id ) ?
+														owner.ContainerGraph.GetMainMasterNodeOfLOD( owner.LODIndex ) :
+														owner.ContainerGraph.GetMasterNodeOfPass( m_options.Id , owner.LODIndex );
+
 			InputPort port = null;
 			if( m_portId > -1 )
 			{
@@ -87,7 +101,6 @@ namespace AmplifyShaderEditor
 				port = targetNode.InputPorts.Find( x => x.Name.Equals( m_options.Name ) );
 			}
 
-			
 			if( port != null )
 			{
 				int optionId = port.HasOwnOrLinkConnection ? 0 : 1;
@@ -106,6 +119,16 @@ namespace AmplifyShaderEditor
 							case AseOptionsActionType.SetUndefine:
 							{
 								owner.OptionsDefineContainer.AddDefine( "#undef " + m_options.ActionsPerOption[ optionId ][ i ].ActionData, true );
+							}
+							break;
+							case AseOptionsActionType.SetShaderProperty:
+							{
+								TemplateShaderPropertyData data = owner.CurrentTemplate.GetShaderPropertyData( m_options.ActionsPerOption[ optionId ][ i ].ActionData );
+								if( data != null )
+								{
+									string newPropertyValue = data.CreatePropertyForValue( m_options.ActionsPerOption[ optionId ][ i ].ActionBuffer );
+									owner.CurrentTemplate.IdManager.SetReplacementText( data.FullValue, newPropertyValue );
+								}
 							}
 							break;
 						}

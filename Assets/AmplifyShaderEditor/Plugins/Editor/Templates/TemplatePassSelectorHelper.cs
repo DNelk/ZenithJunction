@@ -30,6 +30,14 @@ namespace AmplifyShaderEditor
 		[SerializeField]
 		private int m_mainPassId;
 
+		public void CopyFrom( TemplatePassSelectorHelper from )
+		{
+			for( int i = 0; i < from.AvailablePasses.Length; i++ )
+			{
+				SetPassVisible( from.AvailablePasses[ i ].Name, from.AvailablePasses[ i ].Visible );
+			}
+		}
+
 		public void Setup( TemplateSubShader subShader )
 		{
 			if( m_currentPasses == null )
@@ -67,7 +75,7 @@ namespace AmplifyShaderEditor
 			m_currentPassesDict = null;
 		}
 
-		public void Draw( UndoParentNode owner )
+		public void Draw( TemplateMultiPassMasterNode owner )
 		{
 			if( m_currentPasses.Length < 2 )
 				return;
@@ -80,7 +88,7 @@ namespace AmplifyShaderEditor
 					m_currentPasses[ i ].Visible = owner.EditorGUILayoutToggleLeft( m_currentPasses[ i ].Name, m_currentPasses[ i ].Visible );
 					if( EditorGUI.EndChangeCheck() )
 					{
-						owner.ContainerGraph.MultiPassMasterNodes.NodesList[ m_currentPasses[ i ].Idx ].IsInvisible = !m_currentPasses[ i ].Visible;
+						owner.ContainerGraph.GetMultiPassMasterNodes( owner.LODIndex)[ m_currentPasses[ i ].Idx ].IsInvisible = !m_currentPasses[ i ].Visible;
 					}
 
 				}
@@ -136,6 +144,7 @@ namespace AmplifyShaderEditor
 				m_currentPassesDict[ passName ].Visible = visible;
 			}
 		}
+
 		public int LastActivePass
 		{
 			get
@@ -153,6 +162,6 @@ namespace AmplifyShaderEditor
 			}
 		}
 		public bool IsVisible( int passId ) { return m_currentPasses[ passId ].Visible; }
-
+		private PassVisibleOptionsItems[] AvailablePasses { get { return m_currentPasses; } }
 	}
 }

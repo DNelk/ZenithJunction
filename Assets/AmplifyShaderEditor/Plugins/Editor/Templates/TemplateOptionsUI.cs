@@ -40,6 +40,15 @@ namespace AmplifyShaderEditor
 			m_invertActionOnDeselection = options.Setup == AseOptionItemSetup.InvertActionOnDeselection;
 		}
 
+		public void CopyValuesFrom( TemplateOptionUIItem origin )
+		{
+			m_isVisible = origin.IsVisible;
+			m_wasVisible = origin.WasVisible;
+			m_currentOption = origin.CurrentOption;
+			m_checkOnExecute = origin.CheckOnExecute;
+			m_invertActionOnDeselection = origin.InvertActionOnDeselection;
+		}
+
 		public void Draw( UndoParentNode owner )
 		{
 			if( m_isVisible )
@@ -69,26 +78,43 @@ namespace AmplifyShaderEditor
 						OnActionPerformedEvt( false, false, this, m_options.ActionsPerOption[ m_currentOption ] );
 					}
 				}
-
 			}
 		}
 
-		public void CheckDisable()
+		public void CheckEnDisable()
 		{
-			//Debug.Log( "-- Check --" );
+			//string deb = string.Empty;// "-- Checked --" + m_options.Name+" "+ m_isVisible + " "+ m_wasVisible;
 			if( m_isVisible )
 			{
 				if( !m_wasVisible )
 				{
-					//Debug.Log( "-- Enable --" );
-					Refresh();
+					//deb = "-- Enable --" + m_options.Name;
+					//Debug.Log( deb );
+					if( OnActionPerformedEvt != null )
+					{
+						if( m_invertActionOnDeselection )
+						{
+							for( int i = 0; i < m_options.Count; i++ )
+							{
+								if( i != m_currentOption && i != m_options.DisableIdx )
+								{
+									OnActionPerformedEvt( false, true, this, m_options.ActionsPerOption[ i ] );
+								}
+							}
+						}
+
+						OnActionPerformedEvt( false, false, this, m_options.ActionsPerOption[ m_currentOption ] );
+						//if( !m_isVisible )
+							//OnActionPerformedEvt( isRefreshing, false, this, m_options.ActionsPerOption[ m_options.DisableIdx ] );
+					}
 				}
 
 				m_wasVisible = true;
 			}
 			else if( m_wasVisible )
 			{
-				//Debug.Log( "-- Disable --" );
+				//deb = "-- Disable --" + m_options.Name;
+				//Debug.Log( deb );
 				m_wasVisible = false;
 
 				if( OnActionPerformedEvt != null )
@@ -129,16 +155,14 @@ namespace AmplifyShaderEditor
 				{
 					for( int i = 0; i < m_options.Count; i++ )
 					{
-						if( i != m_currentOption )
+						if( i != m_currentOption && i != m_options.DisableIdx )
 						{
-							OnActionPerformedEvt( true, i != m_options.DisableIdx, this, m_options.ActionsPerOption[ i ] );
+							OnActionPerformedEvt( true, true, this, m_options.ActionsPerOption[ i ] );
 						}
 					}
 				}
 
 				OnActionPerformedEvt( true, false, this, m_options.ActionsPerOption[ m_currentOption ] );
-				if( !m_isVisible )
-					OnActionPerformedEvt( false, false, this, m_options.ActionsPerOption[ m_options.DisableIdx ] );
 			}
 		}
 
@@ -155,6 +179,12 @@ namespace AmplifyShaderEditor
 			set { m_isVisible = value; }
 		}
 
+		public bool WasVisible
+		{
+			get { return m_wasVisible; }
+			set { m_wasVisible = value; }
+		}
+
 		public bool CheckOnExecute
 		{
 			get { return m_checkOnExecute; }
@@ -167,7 +197,8 @@ namespace AmplifyShaderEditor
 			set
 			{
 				m_currentOption = Mathf.Clamp( value, 0, m_options.Options.Length - 1 );
-				Refresh();
+				// why refreshing here?
+				//Refresh();
 			}
 		}
 
@@ -186,5 +217,6 @@ namespace AmplifyShaderEditor
 				return m_options.ActionsPerOption.Rows[m_currentOption];
 			}
 		}
+		public bool InvertActionOnDeselection { get { return m_invertActionOnDeselection; } }
 	}
 }

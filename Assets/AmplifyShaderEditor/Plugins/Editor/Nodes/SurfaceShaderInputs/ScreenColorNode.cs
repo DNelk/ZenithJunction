@@ -116,6 +116,18 @@ namespace AmplifyShaderEditor
 			base.OnUniqueIDAssigned();
 			if( m_referenceType == TexReferenceType.Object )
 				UIUtils.RegisterScreenColorNode( this );
+
+			if( UniqueId > -1 )
+				ContainerGraph.ScreenColorNodes.OnReorderEventComplete += OnReorderEventComplete;
+
+		}
+
+		private void OnReorderEventComplete()
+		{
+			if( m_referenceType == TexReferenceType.Instance && m_referenceNode != null )
+			{
+				m_referenceArrayId = ContainerGraph.ScreenColorNodes.GetNodeRegisterIdx( m_referenceNode.UniqueId );
+			}
 		}
 
 		void UpdateHeaderColor()
@@ -327,7 +339,7 @@ namespace AmplifyShaderEditor
 			{
 				for( int i = 0; i < ASEDeclareMacro.Length; i++ )
 				{
-					dataCollector.AddToMisc( ASEDeclareMacro[ i ]);
+					dataCollector.AddToDirectives( ASEDeclareMacro[ i ]);
 				}
 			}
 #endif
@@ -335,7 +347,7 @@ namespace AmplifyShaderEditor
 #if !UNITY_2018_3_OR_NEWER
 			if( dataCollector.IsTemplate && dataCollector.CurrentSRPType == TemplateSRPType.HD )
 			{
-				UIUtils.ShowMessage( "GrabPasses are not supported on Unity HD Scriptable Rendering Pipeline old versions." );
+				UIUtils.ShowMessage( UniqueId, "GrabPasses are not supported on Unity HD Scriptable Rendering Pipeline old versions." );
 				return GetOutputColorItem( 0, outputId, "(0).xxxx" );
 			}
 #endif
@@ -350,11 +362,11 @@ namespace AmplifyShaderEditor
 				dataCollector.AddToUniforms( UniqueId, DeclareOpaqueTextureSampler );
 #endif
 				valueName = FetchVarName + OutputId;
-				dataCollector.AddToDefines( UniqueId, OpaqueTextureDefine );
+				dataCollector.AddToDirectives( OpaqueTextureDefine, -1 , AdditionalLineType.Define);
 				string uvCoords = GetUVCoords( ref dataCollector, ignoreLocalVar, false );
 				if( dataCollector.TemplateDataCollectorInstance.IsLWRP )
 				{
-					dataCollector.AddLocalVariable( UniqueId, m_currentPrecisionType, WirePortDataType.FLOAT4, valueName, string.Format( LWFetchOpaqueTexture, uvCoords ) );
+					dataCollector.AddLocalVariable( UniqueId, CurrentPrecisionType, WirePortDataType.FLOAT4, valueName, string.Format( LWFetchOpaqueTexture, uvCoords ) );
 				}
 				else
 				{
@@ -377,13 +389,21 @@ namespace AmplifyShaderEditor
 				base.GenerateShaderForOutput( outputId, ref dataCollector, ignoreLocalVar );
 				string propertyName = CurrentPropertyReference;
 				OnPropertyNameChanged();
-				bool emptyName = string.IsNullOrEmpty( m_propertyInspectorName ) || propertyName == GrabTextureDefault;
+				//bool emptyName = string.IsNullOrEmpty( m_propertyInspectorName ) || propertyName == GrabTextureDefault;
+				bool emptyName = string.IsNullOrEmpty( m_propertyInspectorName ) || !m_useCustomGrab;
 				dataCollector.AddGrabPass( emptyName ? string.Empty : propertyName );
 				valueName = SetFetchedData( ref dataCollector, ignoreLocalVar );
 			}
 
 			m_outputPorts[ 0 ].SetLocalValue( valueName, dataCollector.PortCategory );
 			return GetOutputColorItem( 0, outputId, valueName );
+		}
+
+
+		public override void OnPropertyNameChanged()
+		{
+			base.OnPropertyNameChanged();
+			UIUtils.UpdateScreenColorDataNode( UniqueId, DataToArray );
 		}
 
 		public string SetFetchedData( ref MasterNodeDataCollector dataCollector, bool ignoreLocalVar )
@@ -414,7 +434,7 @@ namespace AmplifyShaderEditor
 #else
 			string samplerOp = SamplerType + ( isProjecting ? "proj" : "" ) + "( " + propertyName + ", " + uvValue + " )";
 #endif
-			dataCollector.AddLocalVariable( UniqueId, UIUtils.PrecisionWirePortToCgType( m_currentPrecisionType, m_outputPorts[ 0 ].DataType ) + " " + ScreenColorStr + OutputId + " = " + samplerOp + ";" );
+			dataCollector.AddLocalVariable( UniqueId, UIUtils.PrecisionWirePortToCgType( CurrentPrecisionType, m_outputPorts[ 0 ].DataType ) + " " + ScreenColorStr + OutputId + " = " + samplerOp + ";" );
 			return ScreenColorStr + OutputId;
 		}
 
@@ -431,12 +451,12 @@ namespace AmplifyShaderEditor
 				string customScreenPos = null;
 
 				if( dataCollector.IsTemplate )
-					customScreenPos = dataCollector.TemplateDataCollectorInstance.GetScreenPos();
+					customScreenPos = dataCollector.TemplateDataCollectorInstance.GetScreenPos( CurrentPrecisionType );
 
 				if( isProjecting )
-					result = GeneratorUtils.GenerateGrabScreenPosition( ref dataCollector, UniqueId, m_currentPrecisionType, !dataCollector.UsingCustomScreenPos, customScreenPos );
+					result = GeneratorUtils.GenerateGrabScreenPosition( ref dataCollector, UniqueId, CurrentPrecisionType, !dataCollector.UsingCustomScreenPos, customScreenPos );
 				else
-					result = GeneratorUtils.GenerateGrabScreenPositionNormalized( ref dataCollector, UniqueId, m_currentPrecisionType, !dataCollector.UsingCustomScreenPos, customScreenPos );
+					result = GeneratorUtils.GenerateGrabScreenPositionNormalized( ref dataCollector, UniqueId, CurrentPrecisionType, !dataCollector.UsingCustomScreenPos, customScreenPos );
 			}
 
 			if( isProjecting && !dataCollector.IsSRP )
@@ -456,6 +476,8 @@ namespace AmplifyShaderEditor
 			{
 				UIUtils.UnregisterScreenColorNode( this );
 			}
+			if( UniqueId > -1 )
+				ContainerGraph.ScreenColorNodes.OnReorderEventComplete -= OnReorderEventComplete;
 		}
 
 		public bool SoftValidReference
@@ -539,6 +561,11 @@ namespace AmplifyShaderEditor
 			if( UIUtils.CurrentShaderVersion() > 14102 )
 			{
 				m_normalize = Convert.ToBoolean( GetCurrentParam( ref nodeParams ) );
+			}
+			
+			if( !m_isNodeBeingCopied && m_referenceType == TexReferenceType.Object )
+			{
+				ContainerGraph.ScreenColorNodes.UpdateDataOnNode( UniqueId, DataToArray );
 			}
 		}
 
