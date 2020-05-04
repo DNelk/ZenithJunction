@@ -73,13 +73,6 @@ public class CardEventManager : EventTrigger
         {
             transform.localScale = Vector3.one * 30;
         }*/
-        
-        //use this to make sure the card will back to its place
-        if (!_event_inSlot && _myCard._inSlot)
-        {
-            DeckManager.Instance.moveCardsToTray(_myCard.MyIndex, 0.3f);
-            _event_inSlot = true;
-        }
     }
     #endregion
 
@@ -173,7 +166,8 @@ public class CardEventManager : EventTrigger
             }
             else if (_myCard.Engine != null && !_myCard.Purchasable && !_myCard.Dragging && Input.GetMouseButtonUp(1))
             {
-                BattleManager.Instance.GetNextOpenEngine().RemoveCard(_myCard, true);
+                //BattleManager.Instance.GetNextOpenEngine().RemoveCard(_myCard, true);
+                _myCard.Engine.RemoveCard(_myCard, true);
             }
         }
 
@@ -319,6 +313,13 @@ public class CardEventManager : EventTrigger
             if (other.gameObject.CompareTag("TabZone"))
             {
                 if (_myCard.Engine == null) _myCard._inSlot = true;
+                
+                //use this to make sure the card will back to its place
+                if (!_event_inSlot && _myCard._inSlot && _myCard.Engine == null && !_myCard.Dragging)
+                {
+                    DeckManager.Instance.moveCardsToTray(_myCard.MyIndex, 0.3f);
+                    _event_inSlot = true;
+                }
             }
         }
     }

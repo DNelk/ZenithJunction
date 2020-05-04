@@ -1219,6 +1219,8 @@
               <e p="EnemyPosition.cs" t="Include" />
               <e p="EngineEventManager.cs" t="Include" />
               <e p="LockAuraAnim.cs" t="Include" />
+              <e p="Map_Hovering.cs" t="Include" />
+              <e p="Map_nonUIHovering.cs" t="Include" />
               <e p="PositionAura.cs" t="Include" />
               <e p="Rotating_Around.cs" t="Include" />
               <e p="Rotating_Self.cs" t="Include" />

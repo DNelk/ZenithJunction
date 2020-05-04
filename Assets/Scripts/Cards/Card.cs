@@ -551,7 +551,7 @@ public class Card : MonoBehaviour
 
     public void SwitchTypeAura(bool turn)
     {
-        u_TypeAura.gameObject.SetActive(turn);
+        if (!_fullSize) u_TypeAura.gameObject.SetActive(turn);
     }
 }
 
