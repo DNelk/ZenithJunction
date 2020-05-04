@@ -208,7 +208,7 @@ public class CardEventManager : EventTrigger
             transform.SetSiblingIndex(transform.GetSiblingIndex() + 8);
 
             //show the engine that available
-            if (!_myCard.Dragging)
+            if (!_myCard.Dragging && !_myCard.Purchasable)
             {
                 if (BattleManager.Instance.BattleState != BattleStates.ChoosingAction)
                 {
@@ -252,7 +252,7 @@ public class CardEventManager : EventTrigger
         }
 
         //change hovering
-        if (!_myCard.Dragging) //prevent 
+        if (!_myCard.Dragging && !_myCard.Purchasable) //prevent 
         {
             _hovering = false;
             //show the engine that available
