@@ -98,7 +98,8 @@ public class TutorialManager : MonoBehaviour
       Tween fadeTween = _currentHead.BG.DOFade(0f, 0.1f);
 
       yield return fadeTween.WaitForCompletion();
-      
+
+      _currentHead.BG.raycastTarget = false;
       DeckManager.Instance.DealHand();
 
       yield return new WaitUntil(() => DeckManager.Instance.CardsToBeSorted.Count == 3);
@@ -248,7 +249,8 @@ public class TutorialManager : MonoBehaviour
       Tween fadeTween = _currentHead.BG.DOFade(0f, 0.1f);
 
       yield return fadeTween.WaitForCompletion();
-      
+      _currentHead.BG.raycastTarget = false;
+
       DeckManager.Instance.DealHand();
 
       yield return new WaitUntil(() => DeckManager.Instance.CardsToBeSorted.Count == 3);
@@ -322,6 +324,7 @@ public class TutorialManager : MonoBehaviour
       Tween fadeTween = _currentHead.BG.DOFade(0f, 0.1f);
 
       yield return fadeTween.WaitForCompletion();
+      _currentHead.BG.raycastTarget = false;
 
       _currentHead.CharacterName = "Sir Wolff";
       _currentHead.Dialogue = "...yes. Either way, you can use the <color=blue>Aether</color>" +
@@ -370,6 +373,8 @@ public class TutorialManager : MonoBehaviour
       yield return new WaitUntil(AdvanceText); 
       
       Tween fadeTween = _currentHead.BG.DOFade(0f, 0.1f);
+      _currentHead.BG.raycastTarget = false;
+
       yield return fadeTween.WaitForCompletion();
 
       _currentHead.RollOut();
@@ -437,6 +442,7 @@ public class TutorialManager : MonoBehaviour
       
       Tween fadeTween = _currentHead.BG.DOFade(0f, 0.1f);
       yield return fadeTween.WaitForCompletion();
+      _currentHead.BG.raycastTarget = false;
 
 
       _currentHead.Dialogue = "Two cards are of note in this hand. Your \"All Aboard\" and your \"Tiny Little Laser Beam.\"";
@@ -532,7 +538,8 @@ public class TutorialManager : MonoBehaviour
       
       Tween fadeTween = _currentHead.BG.DOFade(0f, 0.1f);
       yield return fadeTween.WaitForCompletion();
-      
+      _currentHead.BG.raycastTarget = false;
+
       BattleManager.Instance.Engines[1].gameObject.SetActive(true);
       BattleManager.Instance.Engines[2].gameObject.SetActive(true);
       BattleManager.Instance.Engines[1].GetComponent<CanvasGroup>().alpha = 0;
