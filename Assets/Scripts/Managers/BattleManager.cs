@@ -227,6 +227,8 @@ public class BattleManager : MonoBehaviour
             
             yield return new WaitUntil(() => _moveUI.Confirmed);
 
+            _moveUI.Confirmed = false;
+            
             BattleState = BattleStates.Battle;
 
             //new one

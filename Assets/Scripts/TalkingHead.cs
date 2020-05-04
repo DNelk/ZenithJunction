@@ -19,7 +19,9 @@ public class TalkingHead : MonoBehaviour
     public bool TextDone = true;
     public float TextTimer;
 
-    private float _textSpeed = 0.01f;
+    private float _textSpeed = 0.02f;
+
+    public Sprite[] Portraits;
     public Sprite Sprite
     {
         get => _characterSprite.sprite;
@@ -29,9 +31,27 @@ public class TalkingHead : MonoBehaviour
     public string CharacterName
     {
         get => _characterName.text;
-        set => _characterName.text = value;
+        set
+        {
+            _characterName.text = value;
+            switch (_characterName.text)
+            {
+                case "Hugo":
+                    Sprite = Portraits[0];
+                    break;
+                case "Sir John":
+                    Sprite = Portraits[1];
+                    break;
+                case "Sir Wolff":
+                    Sprite = Portraits[2];
+                    break;
+                default:
+                    Sprite = null;
+                    break;
+            }
+        }
     }
-    
+
     public string Dialogue
     {
         get => _dialogue.text;

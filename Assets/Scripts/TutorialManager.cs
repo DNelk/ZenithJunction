@@ -103,12 +103,12 @@ public class TutorialManager : MonoBehaviour
 
       yield return new WaitUntil(() => DeckManager.Instance.CardsToBeSorted.Count == 3);
 
-      _currentHead.name = "Hugo";
+      _currentHead.CharacterName = "Hugo";
       _currentHead.Dialogue = "Uuurrahh!";
       
       yield return new WaitUntil(AdvanceText);
 
-      _currentHead.name = "Sir John";
+      _currentHead.CharacterName = "Sir John";
       _currentHead.Dialogue = "There you go. Each of those strikes will give you one <color=red>Power</color>" + Utils.ReplaceWithSymbols("power") + ".";
 
       yield return new WaitUntil(AdvanceText);
