@@ -1040,6 +1040,7 @@
           </e>
           <e p="Readme.txt" t="Include" />
         </e>
+        <e p="AudioManager.cs" t="Include" />
         <e p="Coffee" t="Include">
           <e p="UIExtensions" t="Include">
             <e p="SoftMaskForUGUI" t="Include">
@@ -1100,7 +1101,9 @@
             <e p="BasicAnime.shader" t="Include" />
             <e p="Glow.shader" t="Include" />
             <e p="KeijiroTriplanar.shader" t="Include" />
+            <e p="MATriplanarOutline.shader" t="Include" />
             <e p="MinionsArtSkybox.shader" t="Include" />
+            <e p="MinionsArtTriplanar.shader" t="Include" />
             <e p="PalmmyUIShader" t="Include">
               <e p="CardGlowEffect.shader" t="Include" />
             </e>
@@ -1316,6 +1319,7 @@
             </e>
           </e>
         </e>
+        <e p="TrainController.cs" t="Include" />
         <e p="UIParticle_Demo" t="Include">
           <e p="Coffee.UIParticle.Demo.asmdef" t="Include" />
           <e p="UIParticle_Demo.cs" t="Include" />
@@ -1336,6 +1340,8 @@
             </e>
           </e>
         </e>
+        <e p="Waypoint.cs" t="Include" />
+        <e p="WaypointManager.cs" t="Include" />
       </e>
       <e p="Coffee.SoftMaskForUGUI.csproj" t="IncludeRecursive" />
       <e p="Coffee.SoftMaskForUGUI.Editor.csproj" t="IncludeRecursive" />

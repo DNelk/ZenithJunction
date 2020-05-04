@@ -14,6 +14,7 @@ TagManager:
   - OverworldTracks
   - CardPos
   - TabZone
+  - Tooltip
   layers:
   - Default
   - TransparentFX
@@ -23,9 +24,9 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
+  - PlayerLighting
+  - EnemyLighting
+  - PostPro
   - 
   - 
   - 

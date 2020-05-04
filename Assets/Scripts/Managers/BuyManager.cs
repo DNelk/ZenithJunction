@@ -319,7 +319,7 @@ public class BuyManager : MonoBehaviour
     }
 
     //TODO: Actually Implement this, card selection can be different based on level of enemy, area, etc
-    private void GenerateCatalog()
+    public void GenerateCatalog()
     {
         _catalog = new List<string>();
         for (int i = 0; i < 20; i++)
