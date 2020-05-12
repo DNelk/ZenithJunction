@@ -133,7 +133,7 @@ public class DeckManager : MonoBehaviour
         if (totalCardsNum < DealAmt)
             DealAmt = totalCardsNum;
         
-        for (int i = 0; i < totalCardsNum; i++)
+        for (int i = 0; i < DealAmt; i++)
         {
             if(_deck.Count == 0)
                 ShuffleDeck();
@@ -242,6 +242,10 @@ public class DeckManager : MonoBehaviour
         _counts[1].text = InDiscardCount().ToString();
         _counts[2].text = InTrashCount().ToString();*/
 
+        if (Input.GetKeyDown(KeyCode.R) && BattleManager.Instance.BattleState == BattleStates.MakingEngines)
+        {
+            StartCoroutine(RandomizeEngines());
+        }
     }
 
     public void Reset()
@@ -348,6 +352,16 @@ public class DeckManager : MonoBehaviour
         foreach (var c in deck)
         {
             _deck.Push(c);
+        }
+    }
+
+    private IEnumerator RandomizeEngines()
+    {
+        foreach (var c in _activeCards)
+        {
+            if(c.Engine == null) 
+                BattleManager.Instance.GetNextOpenEngine().AddCard(c);
+            yield return new WaitForSeconds(0.1f);
         }
     }
 }

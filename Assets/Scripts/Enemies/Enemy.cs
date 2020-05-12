@@ -69,6 +69,16 @@ public class Enemy : MonoBehaviour
         transform.parent = GameObject.Find("SceneRoot").transform.Find("Train").transform.Find("Car1");
     }
 
+    private void Update()
+    {
+        if (BattleManager.Instance.Player != null)
+        {
+            Vector3 dir = BattleManager.Instance.Player.transform.position - transform.position;
+            Quaternion rot = Quaternion.LookRotation(dir);
+            transform.rotation = rot;
+        }
+    }
+
     public void PrepareAttack()
     {
         _enemyIntention.gameObject.SetActive(true);

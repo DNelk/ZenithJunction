@@ -35,7 +35,7 @@ public class CustomizeManager : MonoBehaviour
         _cardsOnScreen = new List<Card>();
         _equippedCardIcons = new List<EquippedCardIcon>();
         
-        if (!File.Exists(Application.persistentDataPath + "playercollection.save"))
+        if (!File.Exists(Application.persistentDataPath + "/playercollection.save"))
         {
             GameManager.Instance.ResetPlayerSave();
         }
