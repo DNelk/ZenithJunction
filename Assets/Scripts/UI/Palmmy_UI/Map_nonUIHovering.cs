@@ -23,6 +23,8 @@ public class Map_nonUIHovering : MonoBehaviour
 
     private void OnMouseOver()
     {
+        if(GameManager.Instance.State == GameState.Customizing)
+            return;
         if (_mySpr.Length != 0) _mySpriteRenderer.sprite = _mySpr[1];
 
         if (_gear != null)

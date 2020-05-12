@@ -24,6 +24,6 @@ public class EnemyPosition : MonoBehaviour
     {
         int pos = _enemy.Position;
         
-        transform.DOLocalMove(new Vector3(_car[pos].transform.localPosition.x, transform.localPosition.y, 0), 0.3f);
+        transform.DOLocalMove(new Vector3(_car[pos].transform.localPosition.x *.8f, transform.localPosition.y, 0), 0.3f);
     }
 }

@@ -5,6 +5,13 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using DG.Tweening;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class MovePlayerDialog : MonoBehaviour
 {
@@ -162,7 +169,7 @@ public class MovePlayerDialog : MonoBehaviour
         Player player = BattleManager.Instance.Player;
         int pos =  player.Position + posChange;
         float y_Pos = _playerPos.localPosition.y;
-        float car_Xpos_Local = _car[pos].transform.localPosition.x;
+        float car_Xpos_Local = _car[pos].transform.localPosition.x * _car[pos].transform.parent.localScale.x + _car[pos].transform.parent.localPosition.x;
 
         //_playerPos.localPosition = new Vector3(_car[pos].transform.localPosition.x, y_Pos, 0);
 

@@ -132,5 +132,6 @@ public class CustomizeManager : MonoBehaviour
         
         Utils.Save(pc, "playercollection");
         gameObject.SetActive(false);
+        GameManager.Instance.State = GameState.WorldMap;
     }
 }
