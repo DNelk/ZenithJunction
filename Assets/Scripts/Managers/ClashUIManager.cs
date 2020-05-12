@@ -53,12 +53,12 @@ public class ClashUIManager : MonoBehaviour
         if (playerDamage == 0)
             _playerBanner.Text = "0";
         else
-            _playerBanner.Text = playerDamage + " power";
+            _playerBanner.Text = playerDamage + "";
         
         if (enemyDamage == 0)
             _enemyBanner.Text = "0";
         else
-            _enemyBanner.Text = enemyDamage + " power";
+            _enemyBanner.Text = enemyDamage + "";
         
         if (playerDamage > enemyDamage)
         {
