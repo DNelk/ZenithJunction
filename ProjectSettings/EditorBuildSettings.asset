@@ -5,31 +5,22 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/StartScreen.unity
     guid: 8f5097fe66a1842dea32d84dc45f119c
   - enabled: 1
     path: Assets/Scenes/Overworld.unity
     guid: ac8b43df3cca4483eb0e68cfa49c31a0
-  - enabled: 1
-    path: Assets/Scenes/TutorialBattle.unity
-    guid: 38bd0bd5fcd23b548bc6890743d41828
   - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
+    path: Assets/__DELETED_GUID_Trash/38bd0bd5fcd23b548bc6890743d41828
+    guid: 38bd0bd5fcd23b548bc6890743d41828
   - enabled: 1
     path: Assets/Scenes/PrototypeBattle.unity
     guid: 3fb9aec95514c004988ceea46403367e
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/SlimeBattle.unity
+    guid: b6400f804bd9cc24f87fc6bdd08ebaf1
+  - enabled: 1
+    path: Assets/Scenes/TutorialBattle.unity
+    guid: 1d50b9cc183f01f46b5174fe5554b9a5
   m_configObjects: {}

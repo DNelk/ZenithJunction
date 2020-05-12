@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 using DG.Tweening;
@@ -513,9 +514,9 @@ public class Engine : MonoBehaviour
             u_Circle.GetComponent<Image>().enabled = false;
         }
         
-        if (Input.GetKeyDown(KeyCode.A)) turnedEngineOff();
+        /*if (Input.GetKeyDown(KeyCode.A)) turnedEngineOff();
         if (Input.GetKeyDown(KeyCode.S)) prepareEngine();
-        if (Input.GetKeyDown(KeyCode.D)) turnOnEngine();
+        if (Input.GetKeyDown(KeyCode.D)) turnOnEngine();*/
     }
 
     public void UpdateUICounts(bool setToZero = false)

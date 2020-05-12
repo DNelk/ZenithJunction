@@ -231,6 +231,8 @@ public class CardEventManager : EventTrigger
         //change hovering
         _hovering = true;
         
+        AudioManager.Instance.PlayClip("hover");
+        
         //change mouse over
         _isMouseOver = true;
     }

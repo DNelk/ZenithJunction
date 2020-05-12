@@ -19,7 +19,7 @@ public class TalkingHead : MonoBehaviour
     public bool TextDone = true;
     public float TextTimer;
 
-    private float _textSpeed = 0.02f;
+    private float _textSpeed = 0.00001f;
 
     public Sprite[] Portraits;
     public Sprite Sprite

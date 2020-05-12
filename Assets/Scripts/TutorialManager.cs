@@ -22,6 +22,31 @@ public class TutorialManager : MonoBehaviour
          Destroy(gameObject);
    }
 
+   private void Update()
+   {
+      if (Input.GetKey(KeyCode.Q) && Input.GetKey(KeyCode.W) && Input.GetKeyDown(KeyCode.E))
+      {
+         PlayerCollection pc = Utils.Load<PlayerCollection>("playercollection");
+         BuyManager.Instance.GenerateCatalog();
+         BuyManager.Instance.DealAmt = 5;
+         DeckManager.Instance.LoadDeck(pc.Equipped);
+
+         DeckManager.Instance.DealAmt = 9;  
+         
+         BattleManager.Instance.Engines[1].gameObject.SetActive(true);
+         BattleManager.Instance.Engines[2].gameObject.SetActive(true);
+         BattleManager.Instance.Engines[1].GetComponent<CanvasGroup>().alpha = 1;
+         BattleManager.Instance.Engines[2].GetComponent<CanvasGroup>().alpha = 1;
+         
+         BattleManager.Instance.NumEngines = 3;
+
+         DeckManager.Instance.DealHand();
+
+         _currentHead.RollOut();
+         Destroy(this);
+      }
+   }
+
    private void Start()
    {
       

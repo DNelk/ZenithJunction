@@ -24,7 +24,7 @@ public class MapManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (!File.Exists(Application.persistentDataPath + "mapdata.save"))
+        if (!File.Exists(Application.persistentDataPath + "/mapdata.save"))
         {
             SaveMap();
         }

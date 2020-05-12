@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\ps380\.Rider2019.2\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\ps380\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_ThesisPrototype.-1163176802.00" t="ExcludeRecursive" />
-    <e p="C:\Users\ps380\Desktop\DeckBuildingThesis\ThesisPrototype" t="IncludeRecursive">
+    <e p="C:\Users\stink\.Rider2019.2\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\stink\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_ThesisPrototype.-1993333385.00" t="ExcludeRecursive" />
+    <e p="D:\Documents\Unity Projects\ThesisPrototype" t="IncludeRecursive">
       <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
@@ -1041,6 +1041,7 @@
           <e p="Readme.txt" t="Include" />
         </e>
         <e p="AudioManager.cs" t="Include" />
+        <e p="BGMManager.cs" t="Include" />
         <e p="Coffee" t="Include">
           <e p="UIExtensions" t="Include">
             <e p="SoftMaskForUGUI" t="Include">
@@ -1096,9 +1097,11 @@
             <e p="Readme.txt" t="Include" />
           </e>
         </e>
+        <e p="IKController.cs" t="Include" />
         <e p="Materials" t="Include">
           <e p="Shaders" t="Include">
             <e p="BasicAnime.shader" t="Include" />
+            <e p="DoubleSided.shader" t="Include" />
             <e p="Glow.shader" t="Include" />
             <e p="KeijiroTriplanar.shader" t="Include" />
             <e p="MATriplanarOutline.shader" t="Include" />

@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
         
         if(CardDirectory.CardsByName.Count == 0)
             CardDirectory.LoadDirectory();
-        if (!File.Exists(Application.persistentDataPath + "playercollection.save"))
+        if (!File.Exists(Application.persistentDataPath + "/playercollection.save"))
         {
             ResetPlayerSave();
         }
@@ -36,6 +36,18 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         
+    }
+
+    private int capnum = 0;
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            Debug.Log("capture get");
+            capnum++;
+            ScreenCapture.CaptureScreenshot(Application.persistentDataPath+"/Screencap"+capnum+".png");
+        }
+            
     }
 
     public void StartBattle()
@@ -56,10 +68,14 @@ public class GameManager : MonoBehaviour
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
 
+        GameObject loading = Instantiate(Resources.Load<GameObject>("Prefabs/UI/Loading"), GameObject.Find("MainCanvas").transform);
+        
         while (!asyncLoad.isDone)
         {
             yield return null;
         }
+        
+        Destroy(loading);
     }
 
     public void ResetPlayerSave()

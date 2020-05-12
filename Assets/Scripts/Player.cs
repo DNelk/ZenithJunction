@@ -31,9 +31,9 @@ public class Player : MonoBehaviour
     private void Update()
     {
         UpdateHealth();
-        /*Vector3 dir = _enemy.transform.position - transform.position;
+        Vector3 dir = _enemy.transform.position - transform.position;
         Quaternion rot = Quaternion.LookRotation(dir);
-        transform.rotation = rot;*/
+        transform.rotation = rot;
     }
     
     private void Awake()
@@ -86,7 +86,7 @@ public class Player : MonoBehaviour
         if(newPos >= _positions.Length)
             return -1;
         _currentPos = newPos;
-        transform.parent = transform.parent.parent.Find("Car" + (_currentPos + 1));
+        transform.parent = transform.parent.parent.parent.Find("Car" + (_currentPos + 1)).transform.Find("train").transform;
         Sequence move = DOTween.Sequence();
         move.Append(transform.DOMove(_positions[_currentPos].position, 0.5f));
         move.Join(transform.DORotate(_positions[_currentPos].rotation.eulerAngles, 0.5f));
