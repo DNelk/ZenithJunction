@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ClashUIManager : MonoBehaviour
 {
@@ -13,10 +15,12 @@ public class ClashUIManager : MonoBehaviour
     private PowerBanner _enemyBanner;
     private PowerMeter _playerMeter;
     private PowerMeter _enemyMeter;
+    private Image _crashBG;
 
     private Animator _anim;
 
     private TMP_Text _result;
+    private TMP_FontAsset[] _damageNumberFont = new TMP_FontAsset[3];
 
     //For determining animation that will play
     private string _animTrigger = "";
@@ -25,6 +29,21 @@ public class ClashUIManager : MonoBehaviour
     
     //Other vars
     private ShakeCamera _cameraShaker;
+
+    private void Update()
+    {
+        /*//just for debug
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            _anim.SetTrigger("StartClash");
+            _anim.SetTrigger("PlayerWinSmall");
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            _anim.SetTrigger("StartClash");
+            _anim.SetTrigger("PlayerWinBig");
+        }*/
+    }
     
     // Start is called before the first frame update
     private void Awake()
@@ -38,10 +57,16 @@ public class ClashUIManager : MonoBehaviour
         _enemyBanner = transform.Find("EnemyPowerBanner").GetComponent<PowerBanner>();
         _playerMeter = transform.Find("PlayerPowerMeter").GetComponent<PowerMeter>();
         _enemyMeter = transform.Find("EnemyPowerMeter").GetComponent<PowerMeter>();
+
+        _crashBG = transform.Find("BG").GetComponent<Image>();
+        _crashBG.color = new Color(0,0,0,0);
         
         _anim = GetComponent<Animator>();
 
         _result = transform.Find("Result").GetComponentInChildren<TMP_Text>();
+        _damageNumberFont[0] = Resources.Load<TMP_FontAsset>("Fonts/Palmmy/Soviet_Enumber");
+        _damageNumberFont[1] = Resources.Load<TMP_FontAsset>("Fonts/Palmmy/Soviet_Dnumber");
+        _damageNumberFont[2] = Resources.Load<TMP_FontAsset>("Fonts/Palmmy/Soviet_Draw");
 
         _cameraShaker = Camera.main.GetComponent<ShakeCamera>();
     }
@@ -49,6 +74,7 @@ public class ClashUIManager : MonoBehaviour
     public void TriggerClash(int playerDamage, int enemyDamage)
     {
         int dmg = 0;
+        _crashBG.DOColor(new Color(0, 0, 0, 0.8f), 0.5f);
 
         if (playerDamage == 0)
             _playerBanner.Text = "0";
@@ -63,7 +89,7 @@ public class ClashUIManager : MonoBehaviour
         if (playerDamage > enemyDamage)
         {
             dmg = playerDamage - enemyDamage;
-            _result.text = "You deal " + playerDamage + " damage!";
+            _result.text = "" + playerDamage + "";
             if (playerDamage >= 2 * enemyDamage)
                 _animTrigger = "PlayerWinBig";
             else
@@ -72,7 +98,7 @@ public class ClashUIManager : MonoBehaviour
         else if (enemyDamage > playerDamage)
         {
             dmg = playerDamage - enemyDamage;
-            _result.text = "The enemy deals " + enemyDamage + " damage!";
+            _result.text = "" + enemyDamage + "";
             
             if (enemyDamage >= 2 * playerDamage)
                 _animTrigger = "EnemyWinBig";
@@ -82,7 +108,7 @@ public class ClashUIManager : MonoBehaviour
         else if (playerDamage != 0)
         {
             _animTrigger = "Draw";
-            _result.text = "Draw!";
+            _result.text = "Draw";
         }
         
         _anim.SetTrigger("StartClash");
@@ -101,6 +127,7 @@ public class ClashUIManager : MonoBehaviour
     public void ClashDone()
     {
         _anim.SetTrigger("EndClash");
+        _crashBG.DOColor(new Color(0, 0, 0, 0), 0.5f);
     }
 
     public void PlaySpark(AnimationEvent evt)
@@ -155,5 +182,15 @@ public class ClashUIManager : MonoBehaviour
     public void ShakeCamera()
     {
         _cameraShaker.CameraShake(.3f, 20f);
+    }
+
+    private void changeResultFont(int font)
+    {
+        _result.font = _damageNumberFont[font];
+    }
+
+    private void changeResultSize(int fontSize)
+    {
+        _result.fontSize = fontSize;
     }
 }
