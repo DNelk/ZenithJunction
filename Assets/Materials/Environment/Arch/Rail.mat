@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Rail
-  m_Shader: {fileID: 4800000, guid: 8c39a800339fb5a41a5be89ceed48483, type: 3}
+  m_Shader: {fileID: 4800000, guid: 34d0d470e723d43e48caf4f328bd9150, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -19,6 +19,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Albedo:
+        m_Texture: {fileID: 2800000, guid: 0815be37bdde715479c7b4cd172c8f82, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -67,12 +71,26 @@ Material:
         m_Texture: {fileID: 2800000, guid: 54f7d2d29edbf4204be2a33fed570ab9, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SpecMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ToonRamp:
+        m_Texture: {fileID: 2800000, guid: 54f7d2d29edbf4204be2a33fed570ab9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _ASEOutlineWidth: 0.0001
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EdgeWidth: 1
+    - _Gloss: 0.2
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -81,17 +99,27 @@ Material:
     - _NoiseScale: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _RimOffset: 1
     - _RimPower: 1.6
     - _Scale: 1
     - _SideScale: 0.02
     - _SmoothnessTextureChannel: 0
+    - _SpecIntensity: 0
+    - _SpecTransition: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _TopSpread: 20
     - _UVSec: 0
     - _ZWrite: 1
+    - __dirty: 0
+    - _max: 1.12
+    - _min: 1.1
     m_Colors:
+    - _ASEOutlineColor: {r: 0.5566038, g: 0.09277667, b: 0.018378438, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _RimColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _RimColor2: {r: 0.9629528, g: 0.8479441, b: 0.9716981, a: 1}
+    - _RimTint: {r: 1, g: 1, b: 1, a: 0}
+    - _SpecTint: {r: 1, g: 1, b: 1, a: 0}
+    - _Tint: {r: 1, g: 1, b: 1, a: 1}
