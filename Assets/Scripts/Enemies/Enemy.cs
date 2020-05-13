@@ -69,13 +69,21 @@ public class Enemy : MonoBehaviour
         transform.parent = GameObject.Find("SceneRoot").transform.Find("Train").transform.Find("Car1");
     }
 
+    private Quaternion _prevRot;
+    private bool _isRotating;
     private void Update()
     {
         if (BattleManager.Instance.Player != null)
         {
             Vector3 dir = BattleManager.Instance.Player.transform.position - transform.position;
             Quaternion rot = Quaternion.LookRotation(dir);
-            transform.rotation = rot;
+            if (_prevRot == null)
+                _prevRot = rot;
+            if (rot != _prevRot && !_isRotating)
+            {
+                _isRotating = true;
+                transform.DORotate(rot.eulerAngles, 0.5f).OnComplete(() => _isRotating = false);
+            }
         }
     }
 

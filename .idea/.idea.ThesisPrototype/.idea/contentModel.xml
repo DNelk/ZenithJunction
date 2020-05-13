@@ -1097,6 +1097,8 @@
             <e p="Readme.txt" t="Include" />
           </e>
         </e>
+        <e p="DranLegionnaire.cs" t="Include" />
+        <e p="Emitter.cs" t="Include" />
         <e p="IKController.cs" t="Include" />
         <e p="Materials" t="Include">
           <e p="Shaders" t="Include">

@@ -43,6 +43,8 @@ public class BuyManager : MonoBehaviour
     private Card _endlessAether;
     private List<GameObject> _soldOutMarkers;
     
+    //Debug
+    public bool OverrideStore = false;
     private void Awake()
     {
         if (Instance == null)
@@ -321,7 +323,11 @@ public class BuyManager : MonoBehaviour
     //TODO: Actually Implement this, card selection can be different based on level of enemy, area, etc
     public void GenerateCatalog()
     {
+        if (OverrideStore)
+            return;
+        
         _catalog = new List<string>();
+        
         for (int i = 0; i < 20; i++)
         {
             _catalog.Add(CardDirectory.GetRandomCard(Utils.GetRandomArchetype(), Utils.GetRandomRarity(), true));

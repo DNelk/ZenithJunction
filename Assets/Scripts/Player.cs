@@ -27,13 +27,22 @@ public class Player : MonoBehaviour
     //Stats
     public Dictionary<StatType, Stat> ActiveStats = new Dictionary<StatType, Stat>();
     public Dictionary<StatType, Stat> BaseStats = new Dictionary<StatType, Stat>();
-    
+
+    private Quaternion _prevRot;
+    private bool _isRotating;
     private void Update()
     {
         UpdateHealth();
+        
         Vector3 dir = _enemy.transform.position - transform.position;
         Quaternion rot = Quaternion.LookRotation(dir);
-        transform.rotation = rot;
+        if (_prevRot == null)
+            _prevRot = rot;
+        if (rot != _prevRot && !_isRotating)
+        {
+            _isRotating = true;
+            transform.DORotate(rot.eulerAngles, 0.5f).OnComplete(() => _isRotating = false);
+        }
     }
     
     private void Awake()
