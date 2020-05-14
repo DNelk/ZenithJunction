@@ -22,10 +22,14 @@ public class BattleManager : MonoBehaviour
     private int _clashingDamage;
     //UI
     public Button ConfirmButton;
-    private TMP_Text _confirmButtonText;
+    private ConfirmButtonEventManager _confirmEvent;
+    private Image _confirmButtonText;
+    private Sprite[] _confirmButtonSprite = new Sprite[2];
     public int NumEngines = 3;
 
     private Image _confirmCore;
+
+    private Animator _commenceAnim;
     //private UIPopIn _playerText;
     //private UIPopIn _enemyText;
     //private UIPopIn _resultText;
@@ -60,11 +64,15 @@ public class BattleManager : MonoBehaviour
         
         
         ConfirmButton = GameObject.Find("ConfirmButton").GetComponent<Button>();
-        _confirmButtonText = ConfirmButton.GetComponentInChildren<TMP_Text>();
-        _confirmCore = ConfirmButton.transform.parent.transform.Find("Core").GetComponent<Image>();
+        _confirmEvent = ConfirmButton.transform.GetComponent<ConfirmButtonEventManager>();
+        _confirmButtonText = ConfirmButton.GetComponentsInChildren<Image>()[1];
+        //_confirmCore = ConfirmButton.transform.parent.transform.Find("Core").GetComponent<Image>();
         ConfirmButton.onClick.AddListener(ConfirmEngines);
         ConfirmButton.gameObject.SetActive(false);
-        
+        _commenceAnim = ConfirmButton.transform.parent.GetComponent<Animator>();
+        _confirmButtonSprite[0] = Resources.Load<Sprite>("Sprites/Core/Gear");
+        _confirmButtonSprite[1] = Resources.Load<Sprite>("Sprites/Core/Gear2");
+
         //_playerText = GameObject.Find("PlayerText").GetComponent<UIPopIn>();
         //_enemyText = GameObject.Find("EnemyText").GetComponent<UIPopIn>();
         //_resultText = GameObject.Find("ResultText").GetComponent<UIPopIn>();
@@ -112,6 +120,8 @@ public class BattleManager : MonoBehaviour
             default:
                 break;
         }
+        
+        
     }
 
     private void MakingEnginesUpdate()
@@ -122,18 +132,16 @@ public class BattleManager : MonoBehaviour
             if (e.PendingCount > 3 || e.PendingCount < 3 && DeckManager.Instance.CardsToBeSorted.Count != 0)
             {
                 enginesDone = false;
-                _confirmCore.sprite = Resources.Load<Sprite>("Sprites/Core/CommenceCore_Off");
-                _confirmCore.SetNativeSize();
-                _confirmButtonText.color = new Color(1,1,1,0);
+                _commenceAnim.SetBool("TurnOn", false);
+                _confirmButtonText.sprite = _confirmButtonSprite[0];
+                ConfirmButton.gameObject.SetActive(false);
             }
         }
 
         if (enginesDone)
         {
             ConfirmButton.gameObject.SetActive(true);
-            _confirmCore.sprite = Resources.Load<Sprite>("Sprites/Core/CommenceCore_On");
-            _confirmCore.SetNativeSize();
-            _confirmButtonText.color = Color.yellow;
+            _commenceAnim.SetBool("TurnOn", true);
         }
 
         if (Input.GetKeyDown(KeyCode.Return))
@@ -156,8 +164,11 @@ public class BattleManager : MonoBehaviour
             CurrentEnemy.PrintNext3();
             //_clashText.Alpha = 0;
             _clashingDamage = 0;
+            //_confirmEvent.turnOff();
+            //_confirmEvent.reset();
             BattleState = BattleStates.MakingEngines;
-            _confirmButtonText.text = "Confirm Engines";
+            //_confirmButtonText.text = "Confirm Engines";
+            _commenceAnim.SetBool("TurnOn", false);
             ConfirmButton.onClick.RemoveAllListeners();
             ConfirmButton.onClick.AddListener(ConfirmEngines);
             ConfirmButton.gameObject.SetActive(false);
@@ -209,7 +220,7 @@ public class BattleManager : MonoBehaviour
         BattleState = BattleStates.Battle;
         CurrentEnemy.HideIntentions();
         Utils.DestroyCardPreview();
-        _confirmButtonText.text = "";
+        //_confirmButtonText.text = "";
         
         /***Player go***/
         _playerAttack.StartCoroutine(_playerAttack.ExecuteStack());
@@ -271,7 +282,7 @@ public class BattleManager : MonoBehaviour
         _playerAttack = null;
         BattleDelegateHandler.ApplyAfterDamageEffects();
         
-        _confirmButtonText.text = "Select an Engine";
+        //_confirmButtonText.text = "Select an Engine";
         
         //Load Buy Manager
         if ((CurrentAether > 0 ||
@@ -282,6 +293,8 @@ public class BattleManager : MonoBehaviour
         else
         {
             BattleState = BattleStates.ChoosingAction;
+            _confirmButtonText.sprite = _confirmButtonSprite[1];
+            _confirmEvent.turnOn();
             BuyManager.Instance.RotateRow();
             BuyManager.Instance.BuysRemaining = -1;
             BuyManager.Instance.FreeBuysRemaining = 0;
@@ -345,6 +358,9 @@ public class BattleManager : MonoBehaviour
         BattleState = BattleStates.ChoosingAction;
         DeckManager.Instance.lockTab();
         DeckManager.Instance.playLockTabParticle();
+        _confirmButtonText.sprite = _confirmButtonSprite[1];
+        _confirmEvent.setTrigger();
+        _commenceAnim.SetTrigger("CoreTrigger");
         OrganizeEngines();
         LoadEnemyAttack();
     }
@@ -361,7 +377,7 @@ public class BattleManager : MonoBehaviour
             e.StackCards();
         }
 
-        _confirmButtonText.text = "Select an Engine";
+        //_confirmButtonText.text = "Select an Engine";
         ConfirmButton.onClick.RemoveAllListeners();
     }
 
@@ -391,7 +407,9 @@ public class BattleManager : MonoBehaviour
 
     public void EngineSelected()
     {
-        _confirmButtonText.text = "Confirm Engine";
+        //_confirmButtonText.text = "Confirm Engine";\
+        _confirmButtonText.sprite = _confirmButtonSprite[0]; 
+        _confirmEvent.setTrigger();
         ConfirmButton.onClick.AddListener(ConfirmAction);
     }
     
@@ -406,7 +424,15 @@ public class BattleManager : MonoBehaviour
             return;
         }
         ConfirmButton.onClick.RemoveAllListeners();
+        _confirmEvent.turnOff();
+        _commenceAnim.SetTrigger("CoreTrigger");
         StartCoroutine(ProcessAttacks());
+    }
+    
+    public void SetConfirmOn()
+    {
+        _confirmButtonText.sprite = _confirmButtonSprite[1];
+        _confirmEvent.turnOn();
     }
 }
 

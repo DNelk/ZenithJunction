@@ -153,7 +153,7 @@ Shader "CardAuraEffectShader"
 }
 /*ASEBEGIN
 Version=18000
-0;0;1536;843;3041.845;103.8231;2.144335;True;False
+0;5.6;1536;838;2394.312;110.912;1.660933;True;False
 Node;AmplifyShaderEditor.RangedFloatNode;27;-2532.554,757.8603;Inherit;False;Constant;_ClockWise;ClockWise;6;0;Create;True;0;0;False;0;-1;0;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleTimeNode;18;-2541.054,669.2797;Inherit;False;1;0;FLOAT;2.5;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;26;-2253.554,697.8603;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
@@ -162,12 +162,12 @@ Node;AmplifyShaderEditor.RotatorNode;16;-2063.04,567.1217;Inherit;False;3;0;FLOA
 Node;AmplifyShaderEditor.BreakToComponentsNode;17;-1860.676,574.1158;Inherit;False;FLOAT2;1;0;FLOAT2;0,0;False;16;FLOAT;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT;5;FLOAT;6;FLOAT;7;FLOAT;8;FLOAT;9;FLOAT;10;FLOAT;11;FLOAT;12;FLOAT;13;FLOAT;14;FLOAT;15
 Node;AmplifyShaderEditor.PiNode;13;-2364.824,842.9982;Inherit;False;1;0;FLOAT;1;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;12;-1569.713,585.545;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SamplerNode;28;-1255.934,852.7682;Inherit;True;Property;_Aura_Back;Aura_Back;0;0;Create;True;0;0;False;0;-1;None;f4fef23702ecb0946be4557f7efa889c;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;6;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SamplerNode;28;-1255.934,852.7682;Inherit;True;Property;_Aura_Back;Aura_Back;0;0;Create;True;0;0;False;0;-1;None;92b5e7c4952696e408b22211480a8f8c;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;6;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SinOpNode;15;-1346.745,591.1009;Inherit;True;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.ColorNode;29;-1218.434,1048.811;Inherit;False;Global;Aura_Color;Aura_Color;2;0;Create;True;0;0;False;0;1,1,1,1;0,0,0,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.ColorNode;32;-1218.433,53.32566;Inherit;False;Constant;_Color0;Color 0;3;0;Create;True;0;0;False;0;1,1,1,1;0,0,0,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.RangedFloatNode;19;-1185.854,425.5455;Inherit;False;Constant;_Opacity;Opacity;6;0;Create;True;0;0;False;0;1;0;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.SamplerNode;21;-1263.492,226.6381;Inherit;True;Property;_Aura;Aura;1;0;Create;True;0;0;False;0;-1;None;35ec55aee4918a54584278832608db85;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;6;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SamplerNode;21;-1263.492,226.6381;Inherit;True;Property;_Aura;Aura;1;0;Create;True;0;0;False;0;-1;None;92b5e7c4952696e408b22211480a8f8c;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;6;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.ColorNode;29;-1218.434,1048.811;Inherit;False;Global;Aura_Color;Aura_Color;2;0;Create;True;0;0;False;0;1,1,1,1;0,0,0,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;14;-831.7092,265.8752;Inherit;True;6;6;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;4;COLOR;0,0,0,0;False;5;FLOAT;0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;30;-790.5869,825.495;Inherit;True;6;6;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;4;COLOR;0,0,0,0;False;5;FLOAT;0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SimpleAddOpNode;34;-482.74,447.5469;Inherit;True;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
@@ -202,4 +202,4 @@ WireConnection;36;0;37;0
 WireConnection;36;1;35;0
 WireConnection;25;0;36;0
 ASEEND*/
-//CHKSM=6955F7B8CAFA575866FD692DECA9DA5543C93DE5
+//CHKSM=0A7828F860AF66701820068BA1FC521EF236B87C
