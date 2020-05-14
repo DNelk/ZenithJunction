@@ -32,6 +32,7 @@ public class Engine : MonoBehaviour
     private Image u_aetherCore;
     private Image[] u_move;
     private Image u_selectedAura;
+    private Image[] u_slotFilledAura;
 
     //animator
     private Animator slotAuraAnim;
@@ -105,6 +106,7 @@ public class Engine : MonoBehaviour
         u_CircleGlowMat = Instantiate(u_Circle.GetComponent<Image>().material);
         u_Circle.GetComponent<Image>().material = u_CircleGlowMat;
         u_selectedAura = transform.Find("SelectedAura").GetComponent<Image>();
+        u_slotFilledAura = transform.Find("CardSlot_FilledAura").GetComponentsInChildren<Image>();
 
         //u_EngineImg = transform.Find("EngineImg").gameObject;
         //u_EngineImgAnim = u_EngineImg.GetComponent<Animator>();
@@ -168,6 +170,8 @@ public class Engine : MonoBehaviour
         
         //turn on the circle
         MagicCircle();
+        //update slot light
+        updateSlotFilled();
     }
 
     public void RemoveCard(Card c, bool isClick)
@@ -191,6 +195,8 @@ public class Engine : MonoBehaviour
         
         //turn off magic circle
         MagicCircle();
+        //update slot light
+        updateSlotFilled();
         
         if(cInd == _pending.Count)
             return;
@@ -698,6 +704,21 @@ public class Engine : MonoBehaviour
         //transform.DOScale(_baseScale, 0.2f); //return size
         transform.DOScale(_baseScale, 0.2f); //return size
         u_selectedAura.color = new Color(1,1,1,0); //turn off Aura for selected
+    }
+
+    private void updateSlotFilled()
+    {
+        for (int i = 0; i < u_slotFilledAura.Length; i++)
+        {
+            if (i < _pending.Count)
+            {
+                u_slotFilledAura[i].color = Color.white;
+            }
+            else
+            {
+                u_slotFilledAura[i].color = new Color(1,1,1,0);
+            }
+        }
     }
 }
 

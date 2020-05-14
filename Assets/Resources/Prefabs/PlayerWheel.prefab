@@ -61,7 +61,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 05d07c10874494c45abe74e230e06000, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -136,7 +136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 09f987cf3e6ac46ca87113facf4d0716, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -163,11 +163,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Sparks
-      objectReference: {fileID: 0}
-    - target: {fileID: 4919018507644425122, guid: 5d3b74deb98634b84a91d255c91b9612,
-        type: 3}
-      propertyPath: ShapeModule.angle
-      value: 24.820004
       objectReference: {fileID: 0}
     - target: {fileID: 32581799251482579, guid: 5d3b74deb98634b84a91d255c91b9612,
         type: 3}
@@ -288,6 +283,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.8937144
+      objectReference: {fileID: 0}
+    - target: {fileID: 4919018507644425122, guid: 5d3b74deb98634b84a91d255c91b9612,
+        type: 3}
+      propertyPath: ShapeModule.angle
+      value: 24.820004
       objectReference: {fileID: 0}
     - target: {fileID: 87582893433200215, guid: 5d3b74deb98634b84a91d255c91b9612,
         type: 3}
