@@ -15,7 +15,7 @@ MonoBehaviour:
   _cardName: Eagle Eye
   _cardType: 0
   _cardRarities: 2
-  _cardImage: {fileID: 21300000, guid: d6482dde7a06d074197078d31c5c27e4, type: 3}
+  _cardImage: {fileID: 21300000, guid: e5dcc679f2bf9fc4480df5a87dace78e, type: 3}
   _buyCost: 5
   _aetherCost: 0
   _cardText: 'All your attacks are Long range until end of turn. '
@@ -30,11 +30,16 @@ MonoBehaviour:
   EnemyStatModifer: 0
   XValue: 0
   TrashThis: 0
+  _inSlot: 0
   _priority: 4
   _purchasable: 0
   Tweening: 0
   IsPreview: 0
   Dragging: 0
+  MyIndex: 0
+  InActive: 0
+  MyCol: {fileID: 0}
+  MyCheatImg: {fileID: 0}
   _fullSize: 0
 --- !u!1001 &6528631935351761020
 PrefabInstance:

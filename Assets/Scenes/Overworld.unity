@@ -3449,7 +3449,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Node: {fileID: 1190868598}
   AllowPass: 0
-  MyScene: PrototypeBattle
+  MyScene: GarlicBattle
 --- !u!61 &1765410063
 BoxCollider2D:
   m_ObjectHideFlags: 0
