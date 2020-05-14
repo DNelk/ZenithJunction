@@ -197,6 +197,7 @@ public class BuyManager : MonoBehaviour
             _lastState = BattleStates.ChoosingAction;
             Tween rotate = _activeCards[0].transform.DOMoveX(-200, 0.5f);
             yield return rotate.WaitForCompletion();
+            BattleManager.Instance.SetConfirmOn();
             RotateRow();
         }
         

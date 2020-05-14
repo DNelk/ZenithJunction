@@ -428,6 +428,12 @@ public class BattleManager : MonoBehaviour
         _commenceAnim.SetTrigger("CoreTrigger");
         StartCoroutine(ProcessAttacks());
     }
+    
+    public void SetConfirmOn()
+    {
+        _confirmButtonText.sprite = _confirmButtonSprite[1];
+        _confirmEvent.turnOn();
+    }
 }
 
 public enum BattleStates
