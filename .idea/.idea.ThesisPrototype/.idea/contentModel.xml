@@ -1111,6 +1111,7 @@
             <e p="MinionsArtTriplanar.shader" t="Include" />
             <e p="PalmmyUIShader" t="Include">
               <e p="CardGlowEffect.shader" t="Include" />
+              <e p="CoreAura.shader" t="Include" />
             </e>
             <e p="RotateTexture.shader" t="Include" />
           </e>
@@ -1220,6 +1221,8 @@
             <e p="EnemyIntentionUI.cs" t="Include" />
             <e p="Palmmy_UI" t="Include">
               <e p="BattleUI_Hover.cs" t="Include" />
+              <e p="CommenceCore.cs" t="Include" />
+              <e p="ConfirmButtonEventManager.cs" t="Include" />
               <e p="DummyIntention.cs" t="Include" />
               <e p="EnemyPosition.cs" t="Include" />
               <e p="EngineEventManager.cs" t="Include" />
