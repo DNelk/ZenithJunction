@@ -24,7 +24,7 @@ public class TrainController : MonoBehaviour
 
     private void Update()
     {
-        if(BattleManager.Instance.BattleState == BattleStates.Moving)
+        if(BattleManager.Instance != null && BattleManager.Instance.BattleState == BattleStates.Moving)
             return;
         _dist = Time.deltaTime * Speed;
         _per = CurrentWP.GetPercentageByDistance(_dist);
@@ -46,6 +46,6 @@ public class TrainController : MonoBehaviour
         Vector3 placeOnTrack = CurrentWP.GetPositionOnPath(_t); //Where are we on the curve
         _lastPos = transform.position; //Save position
         transform.position = placeOnTrack; //Move cam
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation((placeOnTrack - _lastPos), Vector3.up), 0.05f );
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation((placeOnTrack - _lastPos), Vector3.up), 1f );
     }
 }

@@ -1042,6 +1042,8 @@
         </e>
         <e p="AudioManager.cs" t="Include" />
         <e p="BGMManager.cs" t="Include" />
+        <e p="CamSceneController.cs" t="Include" />
+        <e p="Cardbrowser.cs" t="Include" />
         <e p="Coffee" t="Include">
           <e p="UIExtensions" t="Include">
             <e p="SoftMaskForUGUI" t="Include">
@@ -1099,6 +1101,7 @@
         </e>
         <e p="DranLegionnaire.cs" t="Include" />
         <e p="Emitter.cs" t="Include" />
+        <e p="FlyingCam.cs" t="Include" />
         <e p="IKController.cs" t="Include" />
         <e p="Materials" t="Include">
           <e p="Shaders" t="Include">

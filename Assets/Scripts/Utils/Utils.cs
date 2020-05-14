@@ -86,7 +86,7 @@ public static class Utils
         return txtWSymbols;
     }
 
-    public static string[] Shuffle(string[] toShuffle)
+    public static T[] Shuffle<T>(T[] toShuffle)
     {
         Random rng = new Random();
         int i = toShuffle.Length;
@@ -94,7 +94,7 @@ public static class Utils
         {
             i--;
             int k = rng.Next(i + 1);
-            String tempC = toShuffle[k];
+            var tempC = toShuffle[k];
             toShuffle[k] = toShuffle[i];
             toShuffle[i] = tempC;
         }
