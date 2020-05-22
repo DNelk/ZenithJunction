@@ -23,7 +23,8 @@ public class EnemyPosition : MonoBehaviour
     public void UpdatePosition()
     {
         int pos = _enemy.Position;
+        Transform parent = _car[pos].transform.parent;
         
-        transform.DOLocalMove(new Vector3(_car[pos].transform.localPosition.x *.8f, transform.localPosition.y, 0), 0.3f);
+        transform.DOLocalMove(new Vector3(_car[pos].transform.localPosition.x + parent.localPosition.x, transform.localPosition.y, 0), 0.3f);
     }
 }

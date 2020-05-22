@@ -33,6 +33,9 @@ public class Engine : MonoBehaviour
     private Image[] u_move;
     private Image u_selectedAura;
     private Image[] u_slotFilledAura;
+    
+    private Transform[] u_AttackOnPosition = new Transform[3];
+    private TMP_Text[] u_AttackOnPosNumber = new TMP_Text[3];
 
     //animator
     private Animator slotAuraAnim;
@@ -61,6 +64,8 @@ public class Engine : MonoBehaviour
         get => _powerTotal;
         set => _powerTotal = value;
     }
+
+    private int[] _attackPower = new int[3];
     
     //Total aether this round
     private int _aetherTotal;
@@ -107,6 +112,15 @@ public class Engine : MonoBehaviour
         u_Circle.GetComponent<Image>().material = u_CircleGlowMat;
         u_selectedAura = transform.Find("SelectedAura").GetComponent<Image>();
         u_slotFilledAura = transform.Find("CardSlot_FilledAura").GetComponentsInChildren<Image>();
+
+        Transform posPanel = transform.parent.transform.parent.transform.Find("PositionsPanel").transform.Find("AttackRange");
+        u_AttackOnPosition[0] = posPanel.transform.Find("Range_1");
+        u_AttackOnPosNumber[0] = u_AttackOnPosition[0].GetComponentInChildren<TMP_Text>();
+        u_AttackOnPosition[1] = posPanel.transform.Find("Range_2");
+        u_AttackOnPosNumber[1] = u_AttackOnPosition[1].GetComponentInChildren<TMP_Text>();
+        u_AttackOnPosition[2] = posPanel.transform.Find("Range_3");
+        u_AttackOnPosNumber[2] = u_AttackOnPosition[2].GetComponentInChildren<TMP_Text>();
+        
 
         //u_EngineImg = transform.Find("EngineImg").gameObject;
         //u_EngineImgAnim = u_EngineImg.GetComponent<Animator>();
@@ -375,7 +389,7 @@ public class Engine : MonoBehaviour
         if (EngineState == EngineState.Stacking)
             StackCardsForPreview();
         
-        
+        _attackPower = new int[3];
 
         foreach (var c in Stack)
         {
@@ -385,6 +399,22 @@ public class Engine : MonoBehaviour
             }
 
             c.Execute();
+            
+            switch (c.Range)
+            {
+                case AttackRange.Melee:
+                    _attackPower[0] += c.PowerTotal;
+                    break;
+                case AttackRange.Short:
+                    _attackPower[0] += c.PowerTotal;
+                    _attackPower[1] += c.PowerTotal;
+                    _attackPower[2] += (int) (c.PowerTotal * 0.5f);
+                    break;
+                case AttackRange.Long:
+                    _attackPower[1] += c.PowerTotal;
+                    _attackPower[2] += c.PowerTotal;
+                    break;
+            }
 
             _powerTotal += c.CalculateAttackTotalWithPosition();
             _aetherTotal += c.AetherTotal;
@@ -544,10 +574,17 @@ public class Engine : MonoBehaviour
         _moveTotal = 0;
         tempInRange = _inRange;
         _inRange = true;
-        
-        if(setToZero)
+
+        if (setToZero)
+        {
             tempPow = tempAet = tempMove = tempCost = 0;
-        
+
+            for (int i = 0; i < _attackPower.Length; i++)
+            {
+                _attackPower[i] = 0;
+            }
+        }
+
         //set TotalPower
         u_powerNumber.text = tempPow.ToString();
         u_aetherNumber.text = tempAet.ToString();
@@ -589,6 +626,7 @@ public class Engine : MonoBehaviour
             u_aetherCore.sprite = Resources.Load<Sprite>("Sprites/Core/ManaCore_Off");
             u_aetherCore.SetNativeSize();
         }
+        
         //u_rarity.sprite = Resources.Load<Sprite>("Sprites/Rarity_Common");
     }
 
@@ -718,6 +756,39 @@ public class Engine : MonoBehaviour
             {
                 u_slotFilledAura[i].color = new Color(1,1,1,0);
             }
+        }
+    }
+
+    public void attackOnPositionPreviewOn()
+    {
+        for (int i = 0; i < u_AttackOnPosition.Length ; i++)
+        {
+            switch (Mathf.Abs(i - BattleManager.Instance.Player.Position))
+            {
+                case 0 :
+                    if (_attackPower[0] > 0) u_AttackOnPosition[i].GetComponent<Animator>().SetBool("TurnOn", true);
+
+                    u_AttackOnPosNumber[i].text = _attackPower[0].ToString();
+                    break;
+                case 1 :
+                    if (_attackPower[1] > 0) u_AttackOnPosition[i].GetComponent<Animator>().SetBool("TurnOn", true);
+                    u_AttackOnPosNumber[i].text = _attackPower[1].ToString();
+                    break;
+                case 2 :
+                    if (_attackPower[2] > 0) u_AttackOnPosition[i].GetComponent<Animator>().SetBool("TurnOn", true);
+                    u_AttackOnPosNumber[i].text = _attackPower[2].ToString();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    public void attackOnPositionPreviewOff()
+    {
+        for (int i = 0; i < u_AttackOnPosition.Length; i++)
+        {
+            if (u_AttackOnPosition[i].GetComponent<Animator>().GetBool("TurnOn")) u_AttackOnPosition[i].GetComponent<Animator>().SetBool("TurnOn", false);
         }
     }
 }
