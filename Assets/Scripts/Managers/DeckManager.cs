@@ -160,7 +160,7 @@ public class DeckManager : MonoBehaviour
             //_cardPositions[i].GetComponent<BoxCollider2D>().enabled = true;
 
             activeCardGO.transform.localScale = _cardPositions[i].localScale*0.975f;
-            yield return dealTween.WaitForCompletion();
+            
         }
 
         yield return new WaitForSeconds(0.1f);

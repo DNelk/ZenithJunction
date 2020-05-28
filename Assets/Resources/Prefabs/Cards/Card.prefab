@@ -969,6 +969,7 @@ MonoBehaviour:
   EnemyStatModifer: 0
   XValue: 0
   TrashThis: 0
+  pendingEngine: {fileID: 0}
   _inSlot: 0
   _priority: 0
   _purchasable: 0
@@ -979,6 +980,7 @@ MonoBehaviour:
   InActive: 0
   MyCol: {fileID: 0}
   MyCheatImg: {fileID: 0}
+  MyEngineIndex: 0
   _fullSize: 0
 --- !u!61 &6964687361830319079
 BoxCollider2D:
@@ -1024,7 +1026,7 @@ Rigidbody2D:
   m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
-  m_SleepingMode: 1
+  m_SleepingMode: 0
   m_CollisionDetection: 0
   m_Constraints: 0
 --- !u!114 &6419771467541205590
@@ -1040,7 +1042,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Delegates: []
-  _hovering: 0
+  hovering: 0
   BaseScale: {x: 0, y: 0, z: 0}
 --- !u!225 &3736888068461158887
 CanvasGroup:

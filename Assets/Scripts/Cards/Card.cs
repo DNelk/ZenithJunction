@@ -59,6 +59,8 @@ public class Card : MonoBehaviour
 
     //Engines
     protected Engine _myEngine;
+    public Engine pendingEngine;
+    
     public Engine Engine
     {
         get => _myEngine;
@@ -81,8 +83,9 @@ public class Card : MonoBehaviour
     }
     
     //Events & UX
+    //Events & UX
     private Vector3 _initialScale;
-    private CardEventManager _eventManager;
+    [HideInInspector] public CardEventManager _eventManager;
     [HideInInspector] public bool Tweening = false;
     [HideInInspector] public bool IsPreview = false;
     [HideInInspector] public bool Dragging = false;
@@ -90,6 +93,7 @@ public class Card : MonoBehaviour
     [HideInInspector] public bool InActive = false;
     [HideInInspector] public Collider2D MyCol;
     [HideInInspector] public GameObject MyCheatImg;
+    [HideInInspector] public int MyEngineIndex = 0;
     
     private bool _equipped = false;
     public bool Equipped
@@ -121,7 +125,7 @@ public class Card : MonoBehaviour
     protected Image u_glow;
     protected CanvasGroup u_cg;
     private ParticleSystem u_particle;
-    private Color u_particleColor;
+    //private Color u_particleColor;
 
     //Fullsize
     [SerializeField] protected bool _fullSize = false;
@@ -295,7 +299,7 @@ public class Card : MonoBehaviour
                     break;
             }
 
-            u_particleColor = typeColor;
+            //u_particleColor = typeColor;
             u_type_color.color = typeColor;
             u_TypeAura.material.SetColor(auraID, auraColor);
         }
@@ -449,32 +453,61 @@ public class Card : MonoBehaviour
         MoveTotal = _moveValue;
     }
 
-    public void SetEngine(Transform parent, Vector3 position, float scale)
+    public void SetEngine(Transform parent, Vector3 position)
     {
-        // u_glow.color = glowColor;
-        transform.SetParent(parent);
-        transform.DOScale( _eventManager.BaseScale * scale, 0.5f);
-        /*if (_eventManager.BaseScale != Vector3.zero)
-            _eventManager.BaseScale = _initialScale;
-        else
-            transform.localScale = _initialScale;*/
+        ParticleSystem cardGlow = _eventManager.Glow;
         
-        Tweening = true;
-        transform.DOMove(position, 0.5f).OnComplete(() => Tweening = false);
+        //state of card
+        transform.SetParent(parent); //change parent
+        _inSlot = false; //not in deck slot anymore
+        
+        //turn on the aura
+        if (!u_TypeAura.gameObject.activeSelf) SwitchTypeAura(true); 
+        if (!cardGlow.gameObject.activeSelf) cardGlow.gameObject.SetActive(true);
+        if (!cardGlow.isPlaying) cardGlow.Play();
 
-        _eventManager.BaseScale = _eventManager.BaseScale * scale;
+        //change scale to small in case of being drag
+        if (_eventManager.hovering)
+        {
+            transform.DOScale( _eventManager.InEngineScale * 1.5f, 0.2f); //change card size
+            _eventManager.setParticleGlowSize(0.65f); //set particle size
+        }
+        else
+        {
+            transform.DOScale( _eventManager.InEngineScale, 0.2f); //change card size
+            _eventManager.setParticleGlowSize(0.37f); //set particle size
+        }
+
+        Tweening = true;
+        transform.DOLocalMove(position, 0.5f).OnComplete(() => Tweening = false);
+        _eventManager.BaseScale = _eventManager.InEngineScale;
+
+        //set other available engine off
+        for (int i = 0; i < BattleManager.Instance.Engines.Length; i++)
+        {
+            if (BattleManager.Instance.Engines[i] != Engine) BattleManager.Instance.Engines[i].disselectGear();
+        }
+        
+        //turn on myCheatImageForRaycastCheck
+        Engine.turnMyCheatImageForRayCastCheck(true);
+        
     }
     
     //use this function to put the card off engine back to its original hierachy
-    public void OffEngine(Transform parent, float scale)
+    public void OffEngine(Transform parent)
     {
-        if (Dragging) transform.DOScale( _eventManager.BaseScale * scale * 1.5f, 0.1f);
+        //change of card
+        if (Dragging) 
+        {
+            transform.DOScale( _eventManager.OutEngineScale * 1.5f, 0.3f); //change while still dragging
+        }
         else
         {
-            transform.DOScale( _eventManager.BaseScale * scale, 0.1f);
+            transform.DOScale( _eventManager.OutEngineScale, 0.1f); //change back to original
+            _eventManager.setParticleGlowSize(1f);
         }
         transform.SetParent(parent);
-        _eventManager.BaseScale = _eventManager.BaseScale * scale;
+        _eventManager.BaseScale = _eventManager.OutEngineScale;
     }
 
     //Pay aether cost for spells
@@ -552,6 +585,11 @@ public class Card : MonoBehaviour
     public void SwitchTypeAura(bool turn)
     {
         if (!_fullSize) u_TypeAura.gameObject.SetActive(turn);
+    }
+
+    public void turnCheatImageRaycast(bool turn)
+    {
+        MyCheatImg.GetComponent<Image>().raycastTarget = turn;
     }
 }
 
