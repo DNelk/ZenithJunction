@@ -18,22 +18,27 @@ public class CardEventManager : EventTrigger
 
     //Card Previews
     private float _pointerOverTimer;
-    public bool _hovering; //conceptual state of hovering tied to mouse click and other effects
+    public bool hovering; //conceptual state of hovering tied to mouse click and other effects
     private bool _isMouseOver; //literal state of hovering helping to prevent bugs
     public Vector3 BaseScale = Vector3.zero;
+    public Vector3 OutEngineScale = Vector3.zero; //use this scale when being out of engine
+    public Vector3 InEngineScale = Vector3.zero; //use this scale when being in engine
     private bool _dontMagnifyUntilHoverAgainHack = false;
 
-    private ParticleSystem _glow;
-    private Vector3 _glowScale = Vector3.zero;
+    //particle stuff
+    public ParticleSystem Glow;
+    public Vector3 GlowScale = Vector3.zero;
     private Gradient _inEngineColor, _baseColor;
 
     private void Start()
     {
         _myCard = GetComponent<Card>();
-        _hovering = false;
-        _glow = transform.Find("PuffyGlow").GetComponent<ParticleSystem>();
-        _glowScale = _glow.transform.localScale;
+        hovering = false;
         
+        //set up all glow related variable
+        Glow = transform.Find("PuffyGlow").GetComponent<ParticleSystem>();
+        GlowScale = Glow.transform.localScale;
+
         #region set color of Particle
 
         /*Color whiteSmoke = new Color(0.5f,0.8f,1);
@@ -47,7 +52,7 @@ public class CardEventManager : EventTrigger
     #region update event
     private void Update()
     {
-        if (_hovering)
+        if (hovering)
         {
             _pointerOverTimer += Time.deltaTime;
 
@@ -79,33 +84,42 @@ public class CardEventManager : EventTrigger
     #region Mouse Click Event
     public override void OnPointerDown(PointerEventData eventData)
     {
+        BattleManager.Instance.isMouseDragging = true; //make mouseDagFalse
+        
         if(GameManager.Instance.State == GameState.Battle)
         {
             if (_myCard.Engine != null && _myCard.Engine.EngineState == EngineState.Stacked && BattleManager.Instance.BattleState == BattleStates.ChoosingAction)
-            {
-                _myCard.Engine.Select();
-            }
-            else if (_myCard.Purchasable)
+                return; //if this is choosing action state, dont do any shit;
+            
+            if (_myCard.Purchasable)
             {
                 BuyManager.Instance.BuyCard(_myCard);
+                BattleManager.Instance.isMouseDragging = false;
             }
             else
             {
                 CalcOffset();
-                transform.SetSiblingIndex(transform.GetSiblingIndex() + 8);
                 _myCard.Dragging = true;
+
+                //put it in front of everything again if got click in engine
+                if (_myCard.Engine != null)
+                {
+                    transform.SetParent(DeckManager.Instance.transform.parent); //put in front
+                    transform.DOScale(OutEngineScale * 1.5f, 0.2f); //change size to normal hover
+                    setParticleGlowSize(1f);//change particle saize to normal hover
+                }
+                
+                //prevent when dragging card too fast it hover over card
+                if (_myCard.InActive)
+                {
+                    DeckManager.Instance.turnOffOtherRaycast(_myCard.MyIndex);
+                }
             }
         }
 
         if (GameManager.Instance.State == GameState.Customizing)
         {
             //Check if in deck, if not add to deck and add highlight
-        }
-        
-        //prevent when dragging card too fast it hover over card
-        if (_myCard.InActive && _myCard.Engine == null)
-        {
-            DeckManager.Instance.turnOffOtherRaycast(_myCard.MyIndex);
         }
     }
 
@@ -117,20 +131,36 @@ public class CardEventManager : EventTrigger
 
     public override void OnPointerUp(PointerEventData eventData)
     {
-        _myCard.Dragging = false;
-        if (_myCard.Engine == null && _myCard._inSlot == true)
-        {
-            DeckManager.Instance.moveCardsToTray(_myCard.MyIndex, 0.3f);
-        }
+        BattleManager.Instance.isMouseDragging = false; //make mnouseDrag false
 
-        //turn on raycast other card raycast
-        if (_myCard.InActive && _myCard.Engine == null) DeckManager.Instance.turnOnRaycast();
-        
-        //change size of card in case of fast hovering
-        if (!_isMouseOver && _hovering)
+        if (GameManager.Instance.State == GameState.Battle)
         {
-            _hovering = false;
-            transform.DOScale(BaseScale, 0.2f);
+            if (_myCard.Engine != null && _myCard.Engine.EngineState == EngineState.Stacked && BattleManager.Instance.BattleState == BattleStates.ChoosingAction)
+                return; //if this is choosing action state, dont do any shit;
+            
+            _myCard.Dragging = false;
+            if (_myCard.Engine == null && _myCard._inSlot == true)
+            {
+                DeckManager.Instance.moveCardsToTray(_myCard.MyIndex, 0.2f);
+            }
+            else if (_myCard.Engine != null)
+            {
+                //move card back to Enigne Slot
+                transform.DOScale(BaseScale * 1.5f, 0.1f);
+                _myCard.turnCheatImageRaycast(false);
+                StartCoroutine(_myCard.Engine.moveCardToEngineSlot(_myCard.MyEngineIndex, 0.2f));
+                setParticleGlowSize(0.37f);
+            }
+
+            //turn on raycast other card raycast
+            if (_myCard.InActive) DeckManager.Instance.turnOnRaycast();
+        
+            //change size of card in case of fast hovering
+            if (!_isMouseOver && hovering)
+            {
+                hovering = false;
+                transform.DOScale(BaseScale, 0.2f);
+            }
         }
     }
 
@@ -159,10 +189,21 @@ public class CardEventManager : EventTrigger
     {
         if(GameManager.Instance.State == GameState.Battle)
         {
-            if (_myCard.Engine == null && !_myCard.Purchasable && !_myCard.Dragging && Input.GetMouseButtonUp(1))
+            if (_myCard.Engine != null && _myCard.Engine.EngineState == EngineState.Stacked && BattleManager.Instance.BattleState == BattleStates.ChoosingAction && Input.GetMouseButtonUp(0))
+            {
+                _myCard.Engine.Select();
+            }
+            else if (_myCard.Engine == null && !_myCard.Purchasable && !_myCard.Dragging && Input.GetMouseButtonUp(1))
             {
                 //Find an empty engine
                 BattleManager.Instance.GetNextOpenEngine().AddCard(_myCard);
+                
+                //trun off Engine highlight after assign engine
+                foreach (var Engine in BattleManager.Instance.Engines)
+                {
+                    Engine.disselectGear();
+                }
+                
             }
             else if (_myCard.Engine != null && !_myCard.Purchasable && !_myCard.Dragging && Input.GetMouseButtonUp(1))
             {
@@ -190,10 +231,14 @@ public class CardEventManager : EventTrigger
     #region Mouse Over Event
     public override void OnPointerEnter(PointerEventData eventData)
     {
-        if (BaseScale == Vector3.zero)
+        if (BaseScale == Vector3.zero) //set all the scale the first time pointer touch the card
+        {
             BaseScale = transform.localScale;
+            OutEngineScale = BaseScale;
+            InEngineScale = BaseScale * 0.7f;
+        }
 
-            //if not actually still holding it, make it bigger
+        //if not actually still holding it, make it bigger
         if (!_myCard.Dragging) transform.DOScale(BaseScale*1.5f, 0.2f);
         
         //do whatever important in battel
@@ -202,7 +247,7 @@ public class CardEventManager : EventTrigger
             transform.SetSiblingIndex(transform.GetSiblingIndex() + 8);
 
             //show the engine that available
-            if (!_myCard.Dragging && !_myCard.Purchasable)
+            if (!_myCard.Dragging && !_myCard.Purchasable && _myCard.Engine == null)
             {
                 if (BattleManager.Instance.BattleState != BattleStates.ChoosingAction)
                 {
@@ -219,17 +264,17 @@ public class CardEventManager : EventTrigger
         {
             _myCard.SwitchTypeAura(true); //turn on Type Aura
             
-            _glow.gameObject.SetActive(true);
-            _glow.transform.DOScale(_glowScale, 0.2f);
-            if (!_glow.isPlaying) _glow.Play();
+            Glow.gameObject.SetActive(true);
+            setParticleGlowSize(1f);
+            if (!Glow.isPlaying) Glow.Play();
         }
         else if (_myCard.Engine != null && !_myCard.Purchasable)
         {
-            _glow.transform.DOScale(_glowScale*0.65f, 0.2f);
+            setParticleGlowSize(0.65f); //make hovering glow size
         }
 
         //change hovering
-        _hovering = true;
+        hovering = true;
         
         AudioManager.Instance.PlayClip("hover");
         
@@ -250,16 +295,15 @@ public class CardEventManager : EventTrigger
         //change hovering
         if (!_myCard.Dragging && !_myCard.Purchasable) //prevent 
         {
-            _hovering = false;
+            hovering = false;
             //show the engine that available
-            if (GameManager.Instance.State == GameState.Battle)
+            if (GameManager.Instance.State == GameState.Battle
+                && BattleManager.Instance.BattleState != BattleStates.ChoosingAction
+                && _myCard.Engine == null)
             {
-                if (BattleManager.Instance.BattleState != BattleStates.ChoosingAction)
+                foreach (var Engine in BattleManager.Instance.Engines)
                 {
-                    foreach (var Engine in BattleManager.Instance.Engines)
-                    {
-                        Engine.disselectGear();
-                    }
+                    Engine.disselectGear();
                 }
             }
         }
@@ -273,15 +317,16 @@ public class CardEventManager : EventTrigger
         //turn on/off particle based on being in engine or not
         if (_myCard.Engine == null && !_myCard.Purchasable)
         {
-            _glow.gameObject.SetActive(false);//_glow.Stop();
+            Glow.gameObject.SetActive(false);//_glow.Stop();
             _myCard.SwitchTypeAura(false); //turn off Type Aura
         }
         else if (_myCard.Engine != null && !_myCard.Purchasable)
         {
-            _glow.transform.DOScale(_glowScale*0.37f, 0.2f);
-            _glow.gameObject.SetActive(true);
-            if (!_glow.isPlaying)
-                _glow.Play();
+            if (_myCard.Engine._highlighted) setParticleGlowSize(0.45f);
+            else setParticleGlowSize(0.37f);//make glow in engine normal size
+            
+            if (!Glow.gameObject.activeSelf) Glow.gameObject.SetActive(true); //if particle is off, turn it fucking on
+            if (!Glow.isPlaying) Glow.Play(); //if its not playing, make it play
         }
     }
     #endregion
@@ -289,7 +334,7 @@ public class CardEventManager : EventTrigger
     #region Collision Event
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (_myCard.InActive)
+        if (_myCard.InActive && !_myCard.Purchasable)
         {
             if (other.gameObject.CompareTag("CardPos"))
             {
@@ -305,12 +350,46 @@ public class CardEventManager : EventTrigger
                     _myCard._inSlot = true;
                 }
             }
+
+            //when touch with engine
+            if (_myCard.Dragging && other.gameObject.CompareTag("Engine"))
+            {
+                Engine thisEngine = other.GetComponent<Engine>();
+                
+                if (_myCard.pendingEngine == null) //if there no engine in pending before, turn it on
+                {
+                    _myCard.pendingEngine = thisEngine;
+                    _myCard.pendingEngine.highlightedOn();
+                    _myCard.pendingEngine.attackOnPositionPreviewOn();
+                }
+                else if (thisEngine != _myCard.pendingEngine) //if there was an engine in pending but it's different one
+                {
+                    //turn off old engine
+                    _myCard.pendingEngine.highlightedOff();
+                    _myCard.pendingEngine.attackOnPositionPreviewOff();
+                    if (_myCard.Engine == _myCard.pendingEngine) _myCard.pendingEngine.RemoveCard(_myCard, false); //remove if was in the engine
+                    
+                    //turn on new engine
+                    _myCard.pendingEngine = thisEngine;
+                    _myCard.pendingEngine.highlightedOn();
+                    _myCard.pendingEngine.attackOnPositionPreviewOn();
+                    
+                    //show available engine
+                    if (BattleManager.Instance.BattleState != BattleStates.ChoosingAction && _myCard.pendingEngine == null)
+                    {
+                        for (int i = 0; i < BattleManager.Instance.Engines.Length; i++)
+                        {
+                            if (BattleManager.Instance.Engines[i].PendingCount < 3) BattleManager.Instance.Engines[i].selectGear();
+                        }
+                    }
+                }
+            }
         }
     }
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (_myCard.InActive)
+        if (_myCard.InActive && !_myCard.Purchasable)
         {
             if (other.gameObject.CompareTag("TabZone"))
             {
@@ -323,19 +402,60 @@ public class CardEventManager : EventTrigger
                     _event_inSlot = true;
                 }
             }
+
+            if (_myCard.Dragging && other.gameObject.CompareTag("Engine"))
+            {
+                if (_myCard.pendingEngine == null) //if just gert out of other engine but still stay in the old one for some reason
+                {
+                    _myCard.pendingEngine = other.GetComponent<Engine>();
+                    _myCard.pendingEngine.highlightedOn();
+                    _myCard.pendingEngine.attackOnPositionPreviewOn();
+                }
+            }
         }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (_myCard.InActive)
+        if (_myCard.InActive && !_myCard.Purchasable)
         {
             if (other.gameObject.CompareTag("TabZone"))
             {
                 _myCard._inSlot = false;
                 _event_inSlot = false;
             }
+            
+            if (_myCard.Dragging && other.gameObject.CompareTag("Engine"))
+            {
+                Engine thisEngine = other.GetComponent<Engine>();
+                
+                if (thisEngine == _myCard.pendingEngine) //if get out of the one being pended
+                {
+                    _myCard.pendingEngine.highlightedOff();
+                    _myCard.pendingEngine.attackOnPositionPreviewOff();
+                    
+                    _myCard.pendingEngine = null; //then get rid of it
+                }
+
+                //show available engine
+                if (BattleManager.Instance.BattleState != BattleStates.ChoosingAction && _myCard.pendingEngine == null)
+                {
+                    for (int i = 0; i < BattleManager.Instance.Engines.Length; i++)
+                    {
+                        if (BattleManager.Instance.Engines[i].PendingCount < 3) BattleManager.Instance.Engines[i].selectGear();
+                    }
+                }
+            }
         }
     }
+    #endregion
+
+    #region referenceFunctions
+
+    public void setParticleGlowSize(float scaler)
+    {
+        Glow.transform.DOScale(GlowScale * scaler , 0.2f);
+    }
+
     #endregion
 }

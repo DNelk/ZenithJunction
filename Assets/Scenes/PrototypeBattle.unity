@@ -149,6 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9795e9fcdbbd24c658ec5eb6d7c73471, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isMouseDragging: 0
   CurrentEnemy: {fileID: 0}
   Player: {fileID: 0}
   CurrentAether: 0

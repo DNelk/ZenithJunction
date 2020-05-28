@@ -15,6 +15,7 @@ TagManager:
   - CardPos
   - TabZone
   - Tooltip
+  - Engine
   layers:
   - Default
   - TransparentFX

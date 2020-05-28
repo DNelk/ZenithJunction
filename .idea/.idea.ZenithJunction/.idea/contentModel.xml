@@ -1119,6 +1119,12 @@
             <e p="RotateTexture.shader" t="Include" />
           </e>
         </e>
+        <e p="Scenes" t="Include">
+          <e p="PalmmyScene" t="Include">
+            <e p="testMakingRat.cs" t="Include" />
+            <e p="testRayCast.cs" t="Include" />
+          </e>
+        </e>
         <e p="ScriptCalculator" t="Include">
           <e p="Editor" t="Include">
             <e p="ScriptCalculator.cs" t="Include" />
@@ -1228,6 +1234,7 @@
               <e p="ConfirmButtonEventManager.cs" t="Include" />
               <e p="DummyIntention.cs" t="Include" />
               <e p="EnemyPosition.cs" t="Include" />
+              <e p="EngineCheatForRayCast.cs" t="Include" />
               <e p="EngineEventManager.cs" t="Include" />
               <e p="LockAuraAnim.cs" t="Include" />
               <e p="Map_Hovering.cs" t="Include" />

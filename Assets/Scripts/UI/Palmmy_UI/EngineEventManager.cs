@@ -39,23 +39,41 @@ public class EngineEventManager : EventTrigger
     
     public override void OnPointerEnter(PointerEventData eventData)
     {
-        transform.DOScale(_myEngine._baseScale * 1.2f, 0.2f);
-        _myEngine.playAuraAnim();
-        _myEngine.selectGear();
-        _inAnim = true;
-        
-        _myEngine.attackOnPositionPreviewOn();
+        if (!BattleManager.Instance.isMouseDragging)
+        {
+            _myEngine.highlightedOn();
+            _myEngine.playAuraAnim();
+            _myEngine.selectGear();
+            _inAnim = true;
+
+            _myEngine.attackOnPositionPreviewOn();
+
+            Engine[] BMEngines = BattleManager.Instance.Engines;
+            
+            for (int i = 0; i < BMEngines.Length ; i++)
+            {
+                if (BMEngines[i] != _myEngine && !BMEngines[i]._selected)
+                {
+                    BMEngines[i].transform.DOScale(_myEngine._baseScale, 0.2f);
+                    BMEngines[i].disselectGear();
+                    BMEngines[i].attackOnPositionPreviewOff();
+                }
+            }
+        }
     }
 
     public override void OnPointerExit(PointerEventData eventData)
     {
-        if (!_myEngine._selected)
+        if (!BattleManager.Instance.isMouseDragging)
         {
-            transform.DOScale(_myEngine._baseScale, 0.2f);
-            _myEngine.disselectGear();
-        }
+            if (!_myEngine._selected)
+            {
+                _myEngine.highlightedOff();
+                _myEngine.disselectGear();
+            }
         
-        _myEngine.attackOnPositionPreviewOff();
+            _myEngine.attackOnPositionPreviewOff();
+        }
     }
     
     #endregion
