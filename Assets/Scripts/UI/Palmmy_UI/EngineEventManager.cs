@@ -43,6 +43,8 @@ public class EngineEventManager : EventTrigger
         _myEngine.playAuraAnim();
         _myEngine.selectGear();
         _inAnim = true;
+        
+        _myEngine.attackOnPositionPreviewOn();
     }
 
     public override void OnPointerExit(PointerEventData eventData)
@@ -53,6 +55,7 @@ public class EngineEventManager : EventTrigger
             _myEngine.disselectGear();
         }
         
+        _myEngine.attackOnPositionPreviewOff();
     }
     
     #endregion

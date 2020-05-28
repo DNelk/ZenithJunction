@@ -66,11 +66,16 @@ public class MovePlayerDialog : MonoBehaviour
     private void OnEnable()
     {
         AssignMoveNumber();
+        _currentMoves = 0;
+        _lastDirection = 0;
         posAura.animate();
     }
 
     private void OnDisable()
     {
+        _currentMoves = 0;
+        MoveTotal = 0;
+        _lastDirection = 0;
         posAura.stopAnimate();
     }
 

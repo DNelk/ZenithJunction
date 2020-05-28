@@ -411,6 +411,8 @@ public class BattleManager : MonoBehaviour
         _confirmButtonText.sprite = _confirmButtonSprite[0]; 
         _confirmEvent.setTrigger();
         ConfirmButton.onClick.AddListener(ConfirmAction);
+        
+        Debug.Log(Player.Position);
     }
     
     private void ConfirmAction()
