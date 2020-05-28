@@ -229,7 +229,7 @@ public class Enemy : MonoBehaviour
             //Long range attacks are only good far away
             case AttackRange.Long:
                 if (distance == 0)
-                    damageMod = 0.5f;
+                    damageMod = 0f;
                 break;
             default:
                 damageMod = 1;

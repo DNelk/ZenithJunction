@@ -719,7 +719,8 @@ MonoBehaviour:
   - {fileID: -8221920736037997004, guid: a7ec8c84fe01a46b4a5e665b4e4e1996, type: 3}
   _description: 
   CurrentAttack: {fileID: 0}
-  _moveInRange: {fileID: 0}
+  _moveInRange: {fileID: 225158989940204696, guid: 386dd4541516c4fe38a4a79697b4adad,
+    type: 3}
   ExtraInfo: next to this enemy, you'll deal half damage.eal half damage.
   _maxHP: 50
   DesiredRange: 3

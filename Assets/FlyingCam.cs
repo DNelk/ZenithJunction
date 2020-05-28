@@ -17,18 +17,18 @@ public class FlyingCam : MonoBehaviour
     void Update()
     {
         if(Input.GetKey(KeyCode.T))
-            transform.position += Vector3.forward * Speed;
+            transform.position += transform.forward * Speed;
         if(Input.GetKey(KeyCode.F))
-            transform.position += Vector3.left * Speed;
+            transform.position += transform.right * -1 * Speed;
         if(Input.GetKey(KeyCode.G))
-            transform.position += Vector3.forward * -1 * Speed;
+            transform.position += transform.forward * -1 * Speed;
         if(Input.GetKey(KeyCode.H))
-            transform.position += Vector3.right * Speed;
+            transform.position += transform.right * Speed;
         
         ///Read Mouse input
         rotationX += Input.GetAxis("Mouse X") * sensitivityX * Time.deltaTime;
-        rotationY += Input.GetAxis("Mouse Y") * sensitivityY* Time.deltaTime;
-        transform.eulerAngles = new Vector3(rotationX, rotationY, 0);
+        rotationY -= Input.GetAxis("Mouse Y") * sensitivityY* Time.deltaTime;
+        transform.eulerAngles = new Vector3(rotationY, rotationX, 0);
     }
     
     public static float ClampAngle(float angle, float min, float max)

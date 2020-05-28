@@ -2623,7 +2623,7 @@ GameObject:
   - component: {fileID: 1350691243}
   - component: {fileID: 1350691246}
   m_Layer: 0
-  m_Name: Slime
+  m_Name: 2
   m_TagString: OverworldInteractable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2659,7 +2659,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Node: {fileID: 1011451540}
   AllowPass: 0
-  MyScene: SlimeBattle
+  MyScene: LegionnaireBattle
 --- !u!61 &1350691244
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3413,7 +3413,7 @@ GameObject:
   - component: {fileID: 1765410063}
   - component: {fileID: 1765410062}
   m_Layer: 0
-  m_Name: Garlic2
+  m_Name: 3
   m_TagString: OverworldInteractable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3449,7 +3449,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Node: {fileID: 1190868598}
   AllowPass: 0
-  MyScene: GarlicBattle
+  MyScene: SlimeBattle
 --- !u!61 &1765410063
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3933,7 +3933,7 @@ PrefabInstance:
     - target: {fileID: 5334284269272677900, guid: cb2568df64b184071a348fbad7168cab,
         type: 3}
       propertyPath: m_Name
-      value: Garlic
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5334284269272677903, guid: cb2568df64b184071a348fbad7168cab,
         type: 3}

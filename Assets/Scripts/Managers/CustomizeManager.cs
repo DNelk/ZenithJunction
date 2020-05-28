@@ -43,6 +43,7 @@ public class CustomizeManager : MonoBehaviour
         PlayerCollection collection = Utils.Load<PlayerCollection>("playercollection");
         
 
+        //Create cards
         foreach (string c in collection.Cards)
         {
             GameObject go = Instantiate(Utils.LoadCard(c), _content);

@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour
         pc.Equipped.Add("manaboil");
         pc.Equipped.Add("manaboil");
         pc.Equipped.Add("manaboil");
-            
+        
         Utils.Save(pc, "playercollection");
     }
     

@@ -18,7 +18,7 @@ MonoBehaviour:
   _cardImage: {fileID: 0}
   _buyCost: 3
   _aetherCost: 0
-  _cardText: 
+  _cardText: Your next engine has +5 power if it's long range.
   _aetherValue: 0
   _powerValue: 0
   _range: 3
@@ -30,11 +30,16 @@ MonoBehaviour:
   EnemyStatModifer: 0
   XValue: 0
   TrashThis: 0
+  _inSlot: 0
   _priority: 2
   _purchasable: 0
   Tweening: 0
   IsPreview: 0
   Dragging: 0
+  MyIndex: 0
+  InActive: 0
+  MyCol: {fileID: 0}
+  MyCheatImg: {fileID: 0}
   _fullSize: 0
 --- !u!1001 &9212714235353582711
 PrefabInstance:

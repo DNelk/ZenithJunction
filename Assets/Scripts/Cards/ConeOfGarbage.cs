@@ -12,7 +12,7 @@ public class ConeOfGarbage : Card
         PowerTotal = GarbageNum();
     }
 
-    private void Start()
+    private void Update()
     {
         if(_fullSize) u_bodyText.text = "+" + GarbageNum() + " power. Increases based on how many cards you have.";
     }

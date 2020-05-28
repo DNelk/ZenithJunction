@@ -16,12 +16,12 @@ MonoBehaviour:
   _cardType: 0
   _cardRarities: 2
   _cardImage: {fileID: 21300000, guid: d6482dde7a06d074197078d31c5c27e4, type: 3}
-  _buyCost: 0
-  _aetherCost: 0
-  _cardText: 
+  _buyCost: 3
+  _aetherCost: 1
+  _cardText: +7 power. Exhaust this.
   _aetherValue: 0
-  _powerValue: 0
-  _range: 3
+  _powerValue: 7
+  _range: 2
   _moveValue: 0
   PowerTotal: 0
   AetherTotal: 0
@@ -30,11 +30,16 @@ MonoBehaviour:
   EnemyStatModifer: 0
   XValue: 0
   TrashThis: 0
-  _priority: 0
+  _inSlot: 0
+  _priority: 2
   _purchasable: 0
   Tweening: 0
   IsPreview: 0
   Dragging: 0
+  MyIndex: 0
+  InActive: 0
+  MyCol: {fileID: 0}
+  MyCheatImg: {fileID: 0}
   _fullSize: 0
 --- !u!1001 &7084622940055359621
 PrefabInstance:
@@ -47,6 +52,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: HiSpeedBeam_RR
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _buyCost
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _aetherCost
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _cardText
+      value: +7 Power. Exhaust.
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _fullSize
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1178716853317580715, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
@@ -152,26 +177,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _buyCost
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _aetherCost
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _cardText
-      value: +7 Power. Exhaust.
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _fullSize
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf, type: 3}
