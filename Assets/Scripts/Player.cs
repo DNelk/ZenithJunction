@@ -68,6 +68,18 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        //Defense Stat check!
+        if (ActiveStats.ContainsKey(StatType.DefenseUP))
+        {
+            if(!ActiveStats[StatType.DefenseUP].IsNew)
+                damage -= ActiveStats[StatType.DefenseUP].Value;
+        }
+        if (ActiveStats.ContainsKey(StatType.DefenseDOWN))
+        {
+            if(!ActiveStats[StatType.DefenseDOWN].IsNew)
+                damage += ActiveStats[StatType.DefenseDOWN].Value;
+        }
+        
         _currentHP -= damage;
         //_mr.material.DOColor(Color.red, 0.2f).OnComplete(()=>_mr.material.DOColor(Color.white, 0.5f));
         UpdateHealth();

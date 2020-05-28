@@ -3,13 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CamSceneController : MonoBehaviour
 {
     public GameObject[] Cameras;
     public GameObject Sparks;
     public int CurrentCam  = 0;
-    
+
+    private void Start()
+    {
+        foreach (var c in Cameras)
+        {
+            c.SetActive(false);
+        }
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -23,23 +32,30 @@ public class CamSceneController : MonoBehaviour
             else
                 Sparks.SetActive(true);
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+            SceneManager.LoadScene("StartScreen");
     }
 
     private void NextCam()
     {
-        Cameras[CurrentCam].SetActive(false);
+        if(CurrentCam >= 0)
+            Cameras[CurrentCam].SetActive(false);
         CurrentCam++;
-        if (CurrentCam > Cameras.Length - 1)
-            CurrentCam = 0;
-        Cameras[CurrentCam].SetActive(true);
+        if (CurrentCam == Cameras.Length)
+            CurrentCam = -1;
+        else
+            Cameras[CurrentCam].SetActive(true);
     }
     
     private void PrevCam()
     {
-        Cameras[CurrentCam].SetActive(false);
+        if(CurrentCam >= 0)
+            Cameras[CurrentCam].SetActive(false);
         CurrentCam--;
-        if (CurrentCam < 0)
-            CurrentCam = Cameras.Length-1;
-        Cameras[CurrentCam].SetActive(true);
+        if (CurrentCam < -1)
+            CurrentCam = Cameras.Length - 1;
+        if (CurrentCam != -1)
+            Cameras[CurrentCam].SetActive(true);
     }
 }

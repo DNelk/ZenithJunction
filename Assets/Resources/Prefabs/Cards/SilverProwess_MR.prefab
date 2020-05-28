@@ -15,7 +15,7 @@ MonoBehaviour:
   _cardName: Silver Prowess
   _cardType: 0
   _cardRarities: 2
-  _cardImage: {fileID: 0}
+  _cardImage: {fileID: 21300000, guid: d802ba607af14e740a189f0f9d9f668b, type: 3}
   _buyCost: 4
   _aetherCost: 0
   _cardText: +1 Power. If this engine also has "Golden Physique", +10 Power and Exhaust.
@@ -30,11 +30,16 @@ MonoBehaviour:
   EnemyStatModifer: 0
   XValue: 0
   TrashThis: 0
+  _inSlot: 0
   _priority: 2
   _purchasable: 0
   Tweening: 0
   IsPreview: 0
   Dragging: 0
+  MyIndex: 0
+  InActive: 0
+  MyCol: {fileID: 0}
+  MyCheatImg: {fileID: 0}
   _fullSize: 0
 --- !u!1001 &884534822242979105
 PrefabInstance:
