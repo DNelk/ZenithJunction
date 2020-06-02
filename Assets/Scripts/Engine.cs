@@ -43,6 +43,7 @@ public class Engine : MonoBehaviour
     //for state change event
     [HideInInspector] public Vector3 _baseScale;
     private GameObject _myCheatImage;
+    private GameObject _myCheatImageForNewRayCastCheck;
     [Range(1, 3)] public int engineNumber = 1;
     [HideInInspector] public List<Transform> _statePos;
 
@@ -51,10 +52,12 @@ public class Engine : MonoBehaviour
     private BoxCollider2D _collider;
 
     [HideInInspector] public bool _selected;
+    [HideInInspector] public bool _highlighted;
 
     //for pointer event
     private GameObject _gear;
     private Animator _gearAnim;
+    private bool blockAura;
 
     //Game Vars
     //Total attack this round
@@ -145,13 +148,14 @@ public class Engine : MonoBehaviour
         //set up images and cheatImg for state change
         _baseScale = transform.localScale;
         _myCheatImage = transform.Find("CheatImg").gameObject;
-        
+        _myCheatImageForNewRayCastCheck = transform.parent.transform.Find("BackCheatImage").gameObject;
+
         //anim
         slotAuraAnim = transform.Find("SlotAura").GetComponent<Animator>();
         _gear = transform.Find("Gear").gameObject;
-        _gearAnim = _gear.GetComponent<Animator>();
+        _gearAnim = GetComponent<Animator>();
         //set Gear Sprite 
-        Image engineNumGear = _gearAnim.transform.Find("EngineNumber").GetComponent<Image>();
+        Image engineNumGear = _gear.transform.Find("EngineNumber").GetComponent<Image>();
         engineNumGear.sprite = Resources.Load<Sprite>("Sprites/Engine" + engineNumber);
 
         //set up number and Icon for total engine power
@@ -169,15 +173,19 @@ public class Engine : MonoBehaviour
     {
         if(c.Engine == this)
             return;
-        
-        if(PendingCount >= 3)
+
+        if (PendingCount >= 3)
+        {
+            DeckManager.Instance.moveCardToTray(c.MyIndex, 0.5f);
             return;
-        
+        }
+
         if (c.Engine != null)
             c.Engine.RemoveCard(c, false);
 
         c.Engine = this;
-        c.SetEngine(_cardPositons[0].parent.transform, CurrentCardPos(_pending.Count), 0.7f);
+        c.SetEngine(_cardPositons[0].parent.transform, CurrentCardPos(_pending.Count));
+        c.MyEngineIndex = _pending.Count;
         _pending.Add(c);
         DeckManager.Instance.CardsToBeSorted.Remove(c);
         UpdateUICounts();
@@ -200,28 +208,28 @@ public class Engine : MonoBehaviour
         DeckManager.Instance.CardsToBeSorted.Add(c);
         
         UpdateUICounts();
-        c.OffEngine(DeckManager.Instance.transform.parent, 1/0.7f);
+        c.OffEngine(DeckManager.Instance.transform.parent);
         c.Engine = null;
         if (isClick)
-        {
-            DeckManager.Instance.moveCardsToTray(c.MyIndex,0.5f);
-        }
-        
+            DeckManager.Instance.moveCardToTray(c.MyIndex,0.5f);
+
         //turn off magic circle
         MagicCircle();
         //update slot light
         updateSlotFilled();
         
-        if(cInd == _pending.Count)
+        if(cInd == _pending.Count) //if this is the last card
             return;
-        if(_pending.Count == 0)
+        if(_pending.Count == 0) //if there is no card left
             return;
-        nextC.transform.position = CurrentCardPos(cInd);
+        
+        nextC.transform.localPosition = CurrentCardPos(cInd);
+        nextC.MyEngineIndex = cInd;
         while (cInd < _pending.Count-1)
         {
             cInd++;
             nextC = _pending[cInd];
-            nextC.transform.DOMove(CurrentCardPos(cInd), 0.1f);
+            nextC.transform.DOLocalMove(CurrentCardPos(cInd), 0.1f);
         }
     }
 
@@ -272,7 +280,7 @@ public class Engine : MonoBehaviour
         Card currentCard = _pending[indexToStack];
         
         currentCard.transform.SetSiblingIndex(Stack.Count);
-        currentCard.transform.position = CurrentCardPos(Stack.Count);
+        //currentCard.transform.localPosition = CurrentCardPos(Stack.Count);
         Stack.Push(currentCard);
         _pending.RemoveAt(indexToStack);
         
@@ -491,10 +499,13 @@ public class Engine : MonoBehaviour
     //Collisions
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.CompareTag("Card") || EngineState != EngineState.Stacking)
+        if (!other.CompareTag("Card"))
             return;
         Card c = other.gameObject.GetComponent<Card>();
-        if(c.Engine != null  && c.Engine.EngineState == EngineState.Stacked|| c.Purchasable || c.Dragging || c.Tweening || c.IsPreview)
+        if (EngineState != EngineState.Stacking)
+            return;
+
+        if (c.Engine != null && c.Engine.EngineState == EngineState.Stacked || c.Purchasable || c.Dragging || c.Tweening || c.IsPreview || c.pendingEngine != this)
             return;
         AddCard(c);
     }
@@ -505,14 +516,17 @@ public class Engine : MonoBehaviour
         OnTriggerEnter2D(other);
     }
 
-   /* private void OnTriggerExit2D(Collider2D other)
+    private void OnTriggerExit2D(Collider2D other)
     {
         if (!other.CompareTag("Card"))
             return;
         Card c = other.gameObject.GetComponent<Card>();
-        RemoveCard(c);
-        c.SetEngine(Color.clear, transform.parent);
-    }*/
+        
+        if (c.Engine != this || !c.Dragging) //if the card that gets out is not the belong to this engine, do no shit
+            return;
+        
+        RemoveCard(c, false);
+    }
 
     public int PendingCount
     {
@@ -686,7 +700,7 @@ public class Engine : MonoBehaviour
 
     private Vector3 CurrentCardPos(int count)
     {
-        return _cardPositons[count].position;
+        return _cardPositons[count].localPosition;
     }
 
     private void MagicCircle()
@@ -698,6 +712,7 @@ public class Engine : MonoBehaviour
         }
     }
 
+    #region Transition
     private void turnedEngineOff()
     {
         _myCheatImage.SetActive(false);
@@ -722,6 +737,8 @@ public class Engine : MonoBehaviour
         transform.DOScale(_baseScale, 0.2f);
         u_Circle.SetActive(true); //delete later
     }
+    
+    #endregion
 
     public void playAuraAnim()
     {
@@ -732,8 +749,9 @@ public class Engine : MonoBehaviour
     {
         if (_gearAnim.GetBool("TurnOn") == false) _gearAnim.SetBool("TurnOn", true); //pop desc. window
         //transform.DOScale(_baseScale * 1.2f, 0.2f); //change size
-        slotAuraAnim.Play("EngineAura_On", -1 , 0f); //play anim
+        if (!BattleManager.Instance.isMouseDragging && !blockAura) slotAuraAnim.Play("EngineAura_On", -1 , 0f); //play anim
         u_selectedAura.color = Color.white; //turn on Aura for selected
+        blockAura = true;
     }
 
     public void disselectGear()
@@ -791,6 +809,72 @@ public class Engine : MonoBehaviour
             if (u_AttackOnPosition[i].GetComponent<Animator>().GetBool("TurnOn")) u_AttackOnPosition[i].GetComponent<Animator>().SetBool("TurnOn", false);
         }
     }
+
+    // UI interaction
+    #region card UI interaction Functions
+
+    public void moveCardToEngineSlot(int cardEngineIndex, float duration)
+    {
+        if (cardEngineIndex >= _pending.Count || cardEngineIndex >= _cardPositons.Length)
+            return;
+
+            Card thisCard = _pending[cardEngineIndex];
+        Transform cardEngineSlot = _cardPositons[0].parent.transform;
+        
+        thisCard.turnCheatImageRaycast(false); //start with turning off the raycast target to prevent interaction with mouse wile its moving back to position
+        
+        thisCard.MyCol.enabled = false; //turn off the raycast first so it wont do stuff twice if pointer got out die to moving cursor too fast
+
+        thisCard.transform.SetParent(cardEngineSlot); //change parent first
+
+        //check if it is not in the place already, then move
+        if (thisCard.Dragging == false && thisCard.transform.localPosition != CurrentCardPos(cardEngineIndex) && thisCard.Engine != null)
+        {
+            thisCard.transform.DOLocalMove(CurrentCardPos(cardEngineIndex), duration, false).OnComplete(() => DeckManager.Instance.turnOnRaycast()); //turn it back on after its done
+        }
+        else
+        {
+            DeckManager.Instance.turnOnRaycast();
+        }
+    }
+
+    public void highlightedOn()
+    {
+        transform.DOScale(_baseScale * 1.2f, 0.2f);
+        
+        //change card particle size
+        for (int i = 0; i < _pending.Count; i++)
+        {
+            if (_pending[i] != null && !_pending[i].Dragging) _pending[i]._eventManager.setParticleGlowSize(0.5f);
+        }
+
+        _highlighted = true;
+    }
+
+    public void highlightedOff()
+    {
+        transform.DOScale(_baseScale, 0.2f);
+        
+        //change card particle size
+        for (int i = 0; i < _pending.Count; i++)
+        {
+            if (_pending[i] != null && !_pending[i].Dragging) _pending[i]._eventManager.setParticleGlowSize(0.41f);
+        }
+
+        _highlighted = false;
+    }
+
+    public void turnMyCheatImageForRayCastCheck(bool turn)
+    {
+        //if (_myCheatImageForNewRayCastCheck != turn) 
+            _myCheatImageForNewRayCastCheck.SetActive(turn);
+    }
+
+    private void blockEngineAuraOff()
+    {
+        blockAura = false;
+    }
+    #endregion
 }
 
 public enum EngineState

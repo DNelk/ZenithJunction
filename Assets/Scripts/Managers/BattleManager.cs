@@ -11,6 +11,9 @@ using UnityEngine.UI;
 public class BattleManager : MonoBehaviour
 {
     public static BattleManager Instance;
+    
+    //for check Mouse Drag
+    public bool isMouseDragging = false;
 
     private Engine _playerAttack; public Engine PlayerAttack => _playerAttack;
     private EnemyAttack _enemyAttack;
@@ -411,8 +414,6 @@ public class BattleManager : MonoBehaviour
         _confirmButtonText.sprite = _confirmButtonSprite[0]; 
         _confirmEvent.setTrigger();
         ConfirmButton.onClick.AddListener(ConfirmAction);
-        
-        Debug.Log(Player.Position);
     }
     
     private void ConfirmAction()

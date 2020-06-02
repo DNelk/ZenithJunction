@@ -123,7 +123,7 @@ public class DeckManager : MonoBehaviour
     //Deal 9 to player
     private IEnumerator DealActive()
     {
-        //Palmmy
+        //*/Palmmy
         unlockTab();
         yield return new WaitForSeconds(0.5f);
         
@@ -160,11 +160,9 @@ public class DeckManager : MonoBehaviour
             //_cardPositions[i].GetComponent<BoxCollider2D>().enabled = true;
 
             activeCardGO.transform.localScale = _cardPositions[i].localScale*0.975f;
-            yield return dealTween.WaitForCompletion();
+            yield return new WaitForSeconds(0.1f);
         }
 
-        yield return new WaitForSeconds(0.1f);
-        
         playUnlockTabParticle();
         turnOnRaycast();
 
@@ -253,13 +251,15 @@ public class DeckManager : MonoBehaviour
         StartCoroutine(DealActive());
     }
 
-    public void moveCardsToTray(int cardIndex, float duration)
+    public void moveCardToTray(int cardIndex, float duration)
     {
-        _activeCards[cardIndex].MyCol.enabled = false;
+        Card thisCard = _activeCards[cardIndex];
+        thisCard.MyCol.enabled = false;
+        thisCard.turnCheatImageRaycast(false); // turn raycast off so that no mouse input can interupot anything
 
-        if (_activeCards[cardIndex].Dragging != true && _activeCards[cardIndex].transform.position != _cardPositions[cardIndex].position && _activeCards[cardIndex].Engine == null)
+        if (thisCard.Dragging != true && thisCard.transform.position != _cardPositions[cardIndex].position && thisCard.Engine == null)
         { 
-            _activeCards[cardIndex].transform.DOMove(_cardPositions[cardIndex].position, duration, false);
+            thisCard.transform.DOMove(_cardPositions[cardIndex].position, duration, false).OnComplete(() => turnOnRaycast()); //after done with animation, turn it on again
         }
         
         //make sure that after it move to tray, it declare to be in slot
@@ -277,7 +277,7 @@ public class DeckManager : MonoBehaviour
                 _activeCards[i] = _activeCards[i + 1];
                 _activeCards[i].MyIndex = i;
                 _activeCards[i + 1] = null;
-                if (_activeCards[i]._inSlot == true) moveCardsToTray(i, 0.1f);
+                if (_activeCards[i]._inSlot == true) moveCardToTray(i, 0.1f);
             }
         }
         else if (newIndex < currentIndex)
@@ -287,7 +287,7 @@ public class DeckManager : MonoBehaviour
                 _activeCards[i] = _activeCards[i - 1];
                 _activeCards[i].MyIndex = i;
                 _activeCards[i - 1] = null;
-                if (_activeCards[i]._inSlot == true) moveCardsToTray(i, 0.1f);
+                if (_activeCards[i]._inSlot == true) moveCardToTray(i, 0.1f);
             }
         }
         
