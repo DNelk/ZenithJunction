@@ -176,7 +176,7 @@ public class Engine : MonoBehaviour
 
         if (PendingCount >= 3)
         {
-            DeckManager.Instance.moveCardsToTray(c.MyIndex, 0.5f);
+            DeckManager.Instance.moveCardToTray(c.MyIndex, 0.5f);
             return;
         }
 
@@ -211,10 +211,8 @@ public class Engine : MonoBehaviour
         c.OffEngine(DeckManager.Instance.transform.parent);
         c.Engine = null;
         if (isClick)
-        {
-            DeckManager.Instance.moveCardsToTray(c.MyIndex,0.5f);
-        }
-        
+            DeckManager.Instance.moveCardToTray(c.MyIndex,0.5f);
+
         //turn off magic circle
         MagicCircle();
         //update slot light
@@ -815,13 +813,15 @@ public class Engine : MonoBehaviour
     // UI interaction
     #region card UI interaction Functions
 
-    public IEnumerator moveCardToEngineSlot(int cardEngineIndex, float duration)
+    public void moveCardToEngineSlot(int cardEngineIndex, float duration)
     {
         if (cardEngineIndex >= _pending.Count || cardEngineIndex >= _cardPositons.Length)
-            yield break;
-        
-        Card thisCard = _pending[cardEngineIndex];
+            return;
+
+            Card thisCard = _pending[cardEngineIndex];
         Transform cardEngineSlot = _cardPositons[0].parent.transform;
+        
+        thisCard.turnCheatImageRaycast(false); //start with turning off the raycast target to prevent interaction with mouse wile its moving back to position
         
         thisCard.MyCol.enabled = false; //turn off the raycast first so it wont do stuff twice if pointer got out die to moving cursor too fast
 
@@ -830,11 +830,12 @@ public class Engine : MonoBehaviour
         //check if it is not in the place already, then move
         if (thisCard.Dragging == false && thisCard.transform.localPosition != CurrentCardPos(cardEngineIndex) && thisCard.Engine != null)
         {
-            Tween moveToEngine = thisCard.transform.DOLocalMove(CurrentCardPos(cardEngineIndex), duration, false);
-            yield return moveToEngine.WaitForCompletion();
+            thisCard.transform.DOLocalMove(CurrentCardPos(cardEngineIndex), duration, false).OnComplete(() => DeckManager.Instance.turnOnRaycast()); //turn it back on after its done
         }
-        
-        thisCard.turnCheatImageRaycast(true);
+        else
+        {
+            DeckManager.Instance.turnOnRaycast();
+        }
     }
 
     public void highlightedOn()
@@ -844,7 +845,7 @@ public class Engine : MonoBehaviour
         //change card particle size
         for (int i = 0; i < _pending.Count; i++)
         {
-            if (_pending[i] != null && !_pending[i].Dragging) _pending[i]._eventManager.setParticleGlowSize(0.45f);
+            if (_pending[i] != null && !_pending[i].Dragging) _pending[i]._eventManager.setParticleGlowSize(0.5f);
         }
 
         _highlighted = true;
@@ -857,7 +858,7 @@ public class Engine : MonoBehaviour
         //change card particle size
         for (int i = 0; i < _pending.Count; i++)
         {
-            if (_pending[i] != null && !_pending[i].Dragging) _pending[i]._eventManager.setParticleGlowSize(0.37f);
+            if (_pending[i] != null && !_pending[i].Dragging) _pending[i]._eventManager.setParticleGlowSize(0.41f);
         }
 
         _highlighted = false;

@@ -1103,6 +1103,7 @@
         <e p="Emitter.cs" t="Include" />
         <e p="FlyingCam.cs" t="Include" />
         <e p="IKController.cs" t="Include" />
+        <e p="Logo.cs" t="Include" />
         <e p="Materials" t="Include">
           <e p="Shaders" t="Include">
             <e p="BasicAnime.shader" t="Include" />
@@ -1110,6 +1111,7 @@
             <e p="Glow.shader" t="Include" />
             <e p="KeijiroTriplanar.shader" t="Include" />
             <e p="MATriplanarOutline.shader" t="Include" />
+            <e p="MinionsArtFog.shader" t="Include" />
             <e p="MinionsArtSkybox.shader" t="Include" />
             <e p="MinionsArtTriplanar.shader" t="Include" />
             <e p="PalmmyUIShader" t="Include">
@@ -1186,6 +1188,10 @@
               <e p="StickySpit.cs" t="Include" />
             </e>
             <e p="Enemy.cs" t="Include" />
+            <e p="Legionnaire" t="Include">
+              <e p="CowardlyRetreat.cs" t="Include" />
+              <e p="HeartlessBeam.cs" t="Include" />
+            </e>
             <e p="PrototypeEnemy.cs" t="Include" />
           </e>
           <e p="EnemyMapObstacle.cs" t="Include" />

@@ -973,6 +973,7 @@ MonoBehaviour:
   _inSlot: 0
   _priority: 0
   _purchasable: 0
+  _eventManager: {fileID: 0}
   Tweening: 0
   IsPreview: 0
   Dragging: 0
@@ -1044,6 +1045,10 @@ MonoBehaviour:
   m_Delegates: []
   hovering: 0
   BaseScale: {x: 0, y: 0, z: 0}
+  OutEngineScale: {x: 0, y: 0, z: 0}
+  InEngineScale: {x: 0, y: 0, z: 0}
+  Glow: {fileID: 0}
+  GlowScale: {x: 0, y: 0, z: 0}
 --- !u!225 &3736888068461158887
 CanvasGroup:
   m_ObjectHideFlags: 0

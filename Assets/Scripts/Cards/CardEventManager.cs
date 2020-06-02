@@ -73,6 +73,22 @@ public class CardEventManager : EventTrigger
                 BattleManager.Instance.Engines[2].AddCard(_myCard);
             }
         }
+        else
+        {
+            if (BaseScale != Vector3.zero)
+            {
+                if (!_myCard.Dragging && _myCard.Engine == null && transform.localScale != OutEngineScale) //recheck if card suoppose to be outside of engine size with aura off
+                {
+                    transform.DOScale(OutEngineScale, 0.2f);
+                    _myCard.SwitchTypeAura(false);
+                }
+                else if (!_myCard.Dragging && _myCard.Engine != null && transform.localScale != InEngineScale) //recheck if the card suppose to be in engine size with aura on
+                {
+                    transform.DOScale(InEngineScale, 0.2f);
+                    _myCard.SwitchTypeAura(true);
+                }   
+            }
+        }
 
         /*if (transform.localScale.x == 0)
         {
@@ -139,22 +155,24 @@ public class CardEventManager : EventTrigger
                 return; //if this is choosing action state, dont do any shit;
             
             _myCard.Dragging = false;
-            if (_myCard.Engine == null && _myCard._inSlot == true)
+            if (_myCard.Engine == null && _myCard._inSlot)
             {
-                DeckManager.Instance.moveCardsToTray(_myCard.MyIndex, 0.2f);
+                DeckManager.Instance.moveCardToTray(_myCard.MyIndex, 0.2f);
+                if (_myCard.InActive) DeckManager.Instance.turnOnRaycast(); //turn on raycast other card raycast
             }
             else if (_myCard.Engine != null)
             {
                 //move card back to Enigne Slot
+                Debug.Log("Im doing this");
                 transform.DOScale(BaseScale * 1.5f, 0.1f);
-                _myCard.turnCheatImageRaycast(false);
-                StartCoroutine(_myCard.Engine.moveCardToEngineSlot(_myCard.MyEngineIndex, 0.2f));
-                setParticleGlowSize(0.37f);
+                _myCard.Engine.moveCardToEngineSlot(_myCard.MyEngineIndex, 0.2f);
+                setParticleGlowSize(0.41f);
             }
+            else
+            {
+                if (_myCard.InActive) DeckManager.Instance.turnOnRaycast(); //turn on raycast other card raycast
+            }    
 
-            //turn on raycast other card raycast
-            if (_myCard.InActive) DeckManager.Instance.turnOnRaycast();
-        
             //change size of card in case of fast hovering
             if (!_isMouseOver && hovering)
             {
@@ -270,7 +288,7 @@ public class CardEventManager : EventTrigger
         }
         else if (_myCard.Engine != null && !_myCard.Purchasable)
         {
-            setParticleGlowSize(0.65f); //make hovering glow size
+            setParticleGlowSize(0.73f); //make hovering glow size
         }
 
         //change hovering
@@ -322,8 +340,8 @@ public class CardEventManager : EventTrigger
         }
         else if (_myCard.Engine != null && !_myCard.Purchasable)
         {
-            if (_myCard.Engine._highlighted) setParticleGlowSize(0.45f);
-            else setParticleGlowSize(0.37f);//make glow in engine normal size
+            if (_myCard.Engine._highlighted) setParticleGlowSize(0.5f);
+            else setParticleGlowSize(0.41f);//make glow in engine normal size
             
             if (!Glow.gameObject.activeSelf) Glow.gameObject.SetActive(true); //if particle is off, turn it fucking on
             if (!Glow.isPlaying) Glow.Play(); //if its not playing, make it play
@@ -393,12 +411,13 @@ public class CardEventManager : EventTrigger
         {
             if (other.gameObject.CompareTag("TabZone"))
             {
-                if (_myCard.Engine == null) _myCard._inSlot = true;
+                if (_myCard.Engine == null && _myCard.pendingEngine == null) _myCard._inSlot = true;
                 
                 //use this to make sure the card will back to its place
                 if (!_event_inSlot && _myCard._inSlot && _myCard.Engine == null && !_myCard.Dragging)
                 {
-                    DeckManager.Instance.moveCardsToTray(_myCard.MyIndex, 0.3f);
+                    DeckManager.Instance.moveCardToTray(_myCard.MyIndex, 0.3f);
+                    transform.DOScale(OutEngineScale, 0.2f);
                     _event_inSlot = true;
                 }
             }

@@ -456,6 +456,7 @@ public class Card : MonoBehaviour
     public void SetEngine(Transform parent, Vector3 position)
     {
         ParticleSystem cardGlow = _eventManager.Glow;
+        turnCheatImageRaycast(false); //make it unable to perform any mouse event until the process is done
         
         //state of card
         transform.SetParent(parent); //change parent
@@ -470,16 +471,15 @@ public class Card : MonoBehaviour
         if (_eventManager.hovering)
         {
             transform.DOScale( _eventManager.InEngineScale * 1.5f, 0.2f); //change card size
-            _eventManager.setParticleGlowSize(0.65f); //set particle size
+            _eventManager.setParticleGlowSize(0.72f); //set particle size
         }
         else
         {
             transform.DOScale( _eventManager.InEngineScale, 0.2f); //change card size
-            _eventManager.setParticleGlowSize(0.37f); //set particle size
+            _eventManager.setParticleGlowSize(0.41f); //set particle size
         }
-
-        Tweening = true;
-        transform.DOLocalMove(position, 0.5f).OnComplete(() => Tweening = false);
+        
+        transform.DOLocalMove(position, 0.5f).OnComplete(() => turnCheatImageRaycast(true));
         _eventManager.BaseScale = _eventManager.InEngineScale;
 
         //set other available engine off
@@ -584,12 +584,12 @@ public class Card : MonoBehaviour
 
     public void SwitchTypeAura(bool turn)
     {
-        if (!_fullSize) u_TypeAura.gameObject.SetActive(turn);
+        if (!_fullSize && u_TypeAura.gameObject.activeSelf != turn) u_TypeAura.gameObject.SetActive(turn);
     }
 
     public void turnCheatImageRaycast(bool turn)
     {
-        MyCheatImg.GetComponent<Image>().raycastTarget = turn;
+        MyCheatImg.SetActive(turn);
     }
 }
 
