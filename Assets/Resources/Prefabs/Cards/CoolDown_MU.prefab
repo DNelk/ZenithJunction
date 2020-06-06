@@ -119,6 +119,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
+      propertyPath: StatMods.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
       propertyPath: _cardName
       value: Cool Down
       objectReference: {fileID: 0}
@@ -150,6 +155,41 @@ PrefabInstance:
     - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
       propertyPath: StatModifer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: StatMods.Array.data[0].TurnsLeft
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: StatMods.Array.data[0].Value
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: StatMods.Array.data[0].StatType
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: StatMods.Array.data[1].TurnsLeft
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: StatMods.Array.data[1].Value
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: StatMods.Array.data[0].IsNew
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: StatMods.Array.data[1].IsNew
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
