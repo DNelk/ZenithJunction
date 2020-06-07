@@ -18,7 +18,7 @@ MonoBehaviour:
   _cardImage: {fileID: 0}
   _buyCost: 2
   _aetherCost: 0
-  _cardText: +10 Aether. You can't buy cards this turn.
+  _cardText: +10 Aether. You can't buy cards with this engine.
   _aetherValue: 10
   _powerValue: 0
   _range: 3
@@ -26,13 +26,23 @@ MonoBehaviour:
   PowerTotal: 0
   AetherTotal: 0
   MoveTotal: 0
+  StatMods: []
+  EnemyStatMods: []
   XValue: 0
   TrashThis: 0
+  pendingEngine: {fileID: 0}
+  _inSlot: 0
   _priority: 3
   _purchasable: 0
+  _eventManager: {fileID: 0}
   Tweening: 0
   IsPreview: 0
   Dragging: 0
+  MyIndex: 0
+  InActive: 0
+  MyCol: {fileID: 0}
+  MyCheatImg: {fileID: 0}
+  MyEngineIndex: 0
   _fullSize: 0
 --- !u!1001 &915658048161696733
 PrefabInstance:
@@ -44,7 +54,7 @@ PrefabInstance:
     - target: {fileID: 1176058906799001468, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
       propertyPath: m_Name
-      value: Turbocharge
+      value: Turbocharge_AM
       objectReference: {fileID: 0}
     - target: {fileID: 1178716853317580715, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}

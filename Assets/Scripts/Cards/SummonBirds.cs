@@ -9,6 +9,6 @@ public class SummonBirds : Card
         base.Execute();
         if(BattleManager.Instance.BattleState != BattleStates.Battle)
             return;
-       BattleDelegateHandler.EnemyEffect  += () => BattleManager.Instance.CurrentEnemy.AtkDebuff = 2;
+       BattleDelegateHandler.EnemyEffect  += () => BattleManager.Instance.CurrentEnemy.AtkDebuff += 2;
     }
 }
