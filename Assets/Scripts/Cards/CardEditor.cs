@@ -5,13 +5,13 @@ using UnityEngine.UI;
 
 #if UNITY_EDITOR
 [CustomEditor(typeof(Card))]
-public class RandomScript_Editor : Editor
+public class CardEditor : Editor
 {
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector(); // for other non-HideInInspector fields
  
-        Card script = (Card)target;
+       /* Card script = (Card)target;
  
         // draw checkbox for the bool
         script.StatModifer = EditorGUILayout.Toggle("Modifies Stats?", script.StatModifer);
@@ -67,7 +67,7 @@ public class RandomScript_Editor : Editor
         {
             if(script.EnemyStatMods.Count >= 1)
                 script.EnemyStatMods.Clear(); 
-        }
+        }*/
     }
 }
 #endif
