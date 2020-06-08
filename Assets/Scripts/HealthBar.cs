@@ -36,7 +36,7 @@ public class HealthBar : MonoBehaviour
     private void Update()
     {
         //for debug purpose
-        if (Target == "Player")
+        /*if (Target == "Player")
         {
             if (Input.GetKeyDown(KeyCode.A))
             {
@@ -72,8 +72,8 @@ public class HealthBar : MonoBehaviour
                 BattleManager.Instance.CurrentEnemy.ModifyStat(StatType.MovesDOWN, 0, 1, false);
                 updateStatusChanges();
             }
-        }
-    }
+        }*/
+    } //for debug purpose only
 
     public void updateStatusChanges()
     {
