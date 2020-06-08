@@ -9,19 +9,28 @@ public class HealthBar : MonoBehaviour
     public string Target = "";
     public Tooltip _tooltip;
 
-    private GameObject attackUp, attackDown, moveUp, moveDown, defUp, defDown;
-
-    private Transform _myStatChanges;
+    private GameObject _attackUp, _attackDown, _moveUp, _moveDown, _defUp, _defDown;
+    private Animator _atkAnim, _moveAnim, _defAnim;
+    private int _atkValue, _moveValue, _defValue;
 
     private void Awake()
     {
-        _myStatChanges = transform.Find("StatChanges");
-        attackUp = _myStatChanges.transform.Find("Attack_Up").gameObject;
-        attackDown = _myStatChanges.transform.Find("Attack_Down").gameObject;
-        moveUp = _myStatChanges.transform.Find("Move_Up").gameObject;
-        moveDown = _myStatChanges.transform.Find("Move_Down").gameObject;
-        defUp = _myStatChanges.transform.Find("Def_Up").gameObject;
-        defDown = _myStatChanges.transform.Find("Def_Down").gameObject;
+        //set all the stat changes object
+        Transform myStatChanges = transform.Find("StatChanges");
+        
+        _attackUp = myStatChanges.transform.Find("Attack_Up").gameObject;
+        _attackDown = myStatChanges.transform.Find("Attack_Down").gameObject;
+        _moveUp = myStatChanges.transform.Find("Move_Up").gameObject;
+        _moveDown = myStatChanges.transform.Find("Move_Down").gameObject;
+        _defUp = myStatChanges.transform.Find("Def_Up").gameObject;
+        _defDown = myStatChanges.transform.Find("Def_Down").gameObject;
+
+        //Set anim
+        Transform myAnimStat = transform.Find("StatChangesAnimation");
+
+        _atkAnim = myAnimStat.transform.Find("AttackChange").GetComponent<Animator>();
+        _moveAnim = myAnimStat.transform.Find("MoveChange").GetComponent<Animator>();
+        _defAnim = myAnimStat.transform.Find("DefChange").GetComponent<Animator>();
     }
 
     private void Update()
@@ -95,39 +104,52 @@ public class HealthBar : MonoBehaviour
         }
         
         //attack changes
+        if (value < _atkValue)
+        {
+            _atkAnim.gameObject.SetActive(true);
+            _atkAnim.Play("StatDown_Play");
+        }
+        else if (value > _atkValue)
+        {
+            _atkAnim.gameObject.SetActive(true);
+            _atkAnim.Play("StatUp_Play");
+        }
+        
         if (value != 0)
         {
             if (value < 0)
             {
-                statNumber = attackDown.transform.GetComponentInChildren<TMP_Text>();
-                if (!attackDown.activeSelf)
+                statNumber = _attackDown.transform.GetComponentInChildren<TMP_Text>();
+                if (!_attackDown.activeSelf)
                 {   
-                    attackDown.SetActive(true);
+                    _attackDown.SetActive(true);
                     statNumber.text = value.ToString();
                 }
                 else statNumber.text = value.ToString();
 
-                if (attackUp.activeSelf) attackUp.SetActive(false);
+                if (_attackUp.activeSelf) _attackUp.SetActive(false);
             }
             else if (value > 0)
             {
-                statNumber = attackUp.transform.GetComponentInChildren<TMP_Text>();
-                if (!attackUp.activeSelf)
+                statNumber = _attackUp.transform.GetComponentInChildren<TMP_Text>();
+                if (!_attackUp.activeSelf)
                 {   
-                    attackUp.SetActive(true);
+                    _attackUp.SetActive(true);
                     statNumber.text = value.ToString();
                 }
                 else statNumber.text = value.ToString();
                 
-                if (attackDown.activeSelf) attackDown.SetActive(false);
+                if (_attackDown.activeSelf) _attackDown.SetActive(false);
             }
-            value = 0;
         }
         else
         {
-            if (attackUp.activeSelf) attackUp.SetActive(false);
-            if (attackDown.activeSelf) attackDown.SetActive(false);
+            if (_attackUp.activeSelf) _attackUp.SetActive(false);
+            if (_attackDown.activeSelf) _attackDown.SetActive(false);
         }
+
+        _atkValue = value;
+        value = 0;
         
         //def
         if (stats.TryGetValue(StatType.DefenseUP, out currentStat))
@@ -140,39 +162,52 @@ public class HealthBar : MonoBehaviour
         }
         
         //def changes
+        if (value < _defValue)
+        {
+            _defAnim.gameObject.SetActive(true);
+            _defAnim.Play("StatDown_Play");
+        }
+        else if (value > _moveValue)
+        {
+            _defAnim.gameObject.SetActive(true);
+            _defAnim.Play("StatUp_Play");
+        }
+        
         if (value != 0)
         {
             if (value < 0)
             {
-                statNumber = defDown.transform.GetComponentInChildren<TMP_Text>();
-                if (!defDown.activeSelf)
+                statNumber = _defDown.transform.GetComponentInChildren<TMP_Text>();
+                if (!_defDown.activeSelf)
                 {   
-                    defDown.SetActive(true);
+                    _defDown.SetActive(true);
                     statNumber.text = value.ToString();
                 }
                 else statNumber.text = value.ToString();
 
-                if (defUp.activeSelf) defUp.SetActive(false);
+                if (_defUp.activeSelf) _defUp.SetActive(false);
             }
             else if (value > 0)
             {
-                statNumber = defUp.transform.GetComponentInChildren<TMP_Text>();
-                if (!defUp.activeSelf)
+                statNumber = _defUp.transform.GetComponentInChildren<TMP_Text>();
+                if (!_defUp.activeSelf)
                 {   
-                    defUp.SetActive(true);
+                    _defUp.SetActive(true);
                     statNumber.text = value.ToString();
                 }
                 else statNumber.text = value.ToString();
                 
-                if (defDown.activeSelf) defDown.SetActive(false);
+                if (_defDown.activeSelf) _defDown.SetActive(false);
             }
-            value = 0;
         }
         else
         {
-            if (defUp.activeSelf) defUp.SetActive(false);
-            if (defDown.activeSelf) defDown.SetActive(false);
+            if (_defUp.activeSelf) _defUp.SetActive(false);
+            if (_defDown.activeSelf) _defDown.SetActive(false);
         }
+        
+        _defValue = value;
+        value = 0;
         
         //move
         if (stats.TryGetValue(StatType.MovesUP, out currentStat))
@@ -185,39 +220,52 @@ public class HealthBar : MonoBehaviour
         }
         
         //move changes
+        if (value < _moveValue)
+        {
+            _moveAnim.gameObject.SetActive(true);
+            _moveAnim.Play("StatDown_Play");
+        }
+        else if (value > _moveValue)
+        {
+            _moveAnim.gameObject.SetActive(true);
+            _moveAnim.Play("StatUp_Play");
+        }
+        
         if (value != 0)
         {
             if (value < 0)
             {
-                statNumber = moveDown.transform.GetComponentInChildren<TMP_Text>();
-                if (!moveDown.activeSelf)
+                statNumber = _moveDown.transform.GetComponentInChildren<TMP_Text>();
+                if (!_moveDown.activeSelf)
                 {   
-                    moveDown.SetActive(true);
+                    _moveDown.SetActive(true);
                     statNumber.text = value.ToString();
                 }
                 else statNumber.text = value.ToString();
 
-                if (moveDown.activeSelf) moveUp.SetActive(false);
+                if (_moveDown.activeSelf) _moveUp.SetActive(false);
             }
             else if (value > 0)
             {
-                statNumber = moveUp.transform.GetComponentInChildren<TMP_Text>();
-                if (!moveUp.activeSelf)
+                statNumber = _moveUp.transform.GetComponentInChildren<TMP_Text>();
+                if (!_moveUp.activeSelf)
                 {   
-                    moveUp.SetActive(true);
+                    _moveUp.SetActive(true);
                     statNumber.text = value.ToString();
                 }
                 else statNumber.text = value.ToString();
                 
-                if (moveDown.activeSelf) moveDown.SetActive(false);
+                if (_moveDown.activeSelf) _moveDown.SetActive(false);
             }
-            value = 0;
         }
         else
         {
-            if (moveUp.activeSelf) moveUp.SetActive(false);
-            if (moveDown.activeSelf) moveDown.SetActive(false);
+            if (_moveUp.activeSelf) _moveUp.SetActive(false);
+            if (_moveDown.activeSelf) _moveDown.SetActive(false);
         }
+
+        _moveValue = value;
+        value = 0;
     }
     
     public void ShowPreview()

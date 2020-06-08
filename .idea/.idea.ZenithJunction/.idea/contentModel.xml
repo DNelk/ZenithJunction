@@ -1249,6 +1249,7 @@
               <e p="PositionAura.cs" t="Include" />
               <e p="Rotating_Around.cs" t="Include" />
               <e p="Rotating_Self.cs" t="Include" />
+              <e p="SetActiveFunction.cs" t="Include" />
               <e p="UI_enemyInfo.cs" t="Include" />
               <e p="UI_EnemyMoveTag.cs" t="Include" />
             </e>
