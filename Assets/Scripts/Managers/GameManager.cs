@@ -5,7 +5,10 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+
+
+
+public class GameManager : MonoBehaviour, ISerializationCallbackReceiver
 {
     public static GameManager Instance;
     public GameState State;
@@ -13,6 +16,11 @@ public class GameManager : MonoBehaviour
     //Map Stuff
     public string BattlingNode;
 
+    //Player save
+    [HideInInspector] public List<string> StartingCards = new List<string>(){"strike", "strike", "strike", "manaboil", "manaboil", "manaboil", "strike", "allaboard", "railcharge"};
+    [HideInInspector] [SerializeField] public int[] StartingIndices;
+    public static int[] StaticIndices = {51,51,51,51,40,1,31,31,31};
+    
     private void Awake()
     {
         if (Instance == null)
@@ -35,7 +43,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        
     }
 
     private int capnum = 0;
@@ -81,30 +88,27 @@ public class GameManager : MonoBehaviour
     public void ResetPlayerSave()
     {
         PlayerCollection pc = new PlayerCollection();
-        pc.Cards.Add("strike");
-        pc.Cards.Add("strike");
-        pc.Cards.Add("strike");
-        pc.Cards.Add("strike");
-        pc.Cards.Add("railcharge");
-        pc.Cards.Add("allaboard");
-        pc.Cards.Add("manaboil");
-        pc.Cards.Add("manaboil");
-        pc.Cards.Add("manaboil");
-        //pc.Cards.Add("DevRage");
-            
-        pc.Equipped.Add("strike");
-        pc.Equipped.Add("strike");
-        pc.Equipped.Add("strike");
-        pc.Equipped.Add("strike");
-        pc.Equipped.Add("railcharge");
-        pc.Equipped.Add("allaboard");
-        pc.Equipped.Add("manaboil");
-        pc.Equipped.Add("manaboil");
-        pc.Equipped.Add("manaboil");
-        
+        foreach (var c in StartingCards)
+        {
+           pc.Cards.Add(c);
+        }
+
+        for (int i = 0; i < 9; i++)
+        {
+            pc.Equipped.Add(StartingCards[i]);
+        }
         Utils.Save(pc, "playercollection");
     }
-    
+
+    public void OnAfterDeserialize()
+    {
+        StartingIndices = StaticIndices;
+    }
+
+    public void OnBeforeSerialize()
+    {
+        StaticIndices = StartingIndices;
+    }
 }
 
 public enum GameState

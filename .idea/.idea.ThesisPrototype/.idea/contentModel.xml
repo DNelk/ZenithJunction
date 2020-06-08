@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\stink\.Rider2019.2\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\stink\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_ThesisPrototype.-1993333385.00" t="ExcludeRecursive" />
-    <e p="D:\Documents\Unity Projects\ThesisPrototype" t="IncludeRecursive">
+    <e p="$PROJECT_DIR$" t="IncludeRecursive">
       <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
@@ -1117,8 +1115,15 @@
             <e p="PalmmyUIShader" t="Include">
               <e p="CardGlowEffect.shader" t="Include" />
               <e p="CoreAura.shader" t="Include" />
+              <e p="StatChange.shader" t="Include" />
             </e>
             <e p="RotateTexture.shader" t="Include" />
+          </e>
+        </e>
+        <e p="Scenes" t="Include">
+          <e p="PalmmyScene" t="Include">
+            <e p="testMakingRat.cs" t="Include" />
+            <e p="testRayCast.cs" t="Include" />
           </e>
         </e>
         <e p="ScriptCalculator" t="Include">
@@ -1234,6 +1239,7 @@
               <e p="ConfirmButtonEventManager.cs" t="Include" />
               <e p="DummyIntention.cs" t="Include" />
               <e p="EnemyPosition.cs" t="Include" />
+              <e p="EngineCheatForRayCast.cs" t="Include" />
               <e p="EngineEventManager.cs" t="Include" />
               <e p="LockAuraAnim.cs" t="Include" />
               <e p="Map_Hovering.cs" t="Include" />
@@ -1369,8 +1375,10 @@
       <e p="Coffee.UIParticle.Editor.csproj" t="IncludeRecursive" />
       <e p="obj" t="ExcludeRecursive" />
       <e p="Packages" t="ExcludeRecursive" />
-      <e p="Temp\bin" t="ExcludeRecursive" />
+      <e p="Temp/bin" t="ExcludeRecursive" />
       <e p="ThesisPrototype.sln" t="IncludeFlat" />
     </e>
+    <e p="$USER_HOME$/Library/Caches/Rider2019.1/extResources" t="IncludeRecursive" />
+    <e p="$USER_HOME$/Library/Caches/Rider2019.1/resharper-host/local/Transient/ReSharperHost/v191/SolutionCaches/_ThesisPrototype.-1662901472.00" t="ExcludeRecursive" />
   </component>
 </project>
