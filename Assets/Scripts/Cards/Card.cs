@@ -45,10 +45,9 @@ public class Card : MonoBehaviour
     [HideInInspector] public int PowerTotal; //Modified attack value
     [HideInInspector] public int AetherTotal; //Modified aether value
     [HideInInspector] public int MoveTotal; //Totalified aether value
-    [HideInInspector] public bool StatModifer = false;
-    [HideInInspector] public List<Stat> StatBoosts = new List<Stat>();
-    [HideInInspector] public bool EnemyStatModifer = false;
-    [HideInInspector] public List<Stat> EnemyStatMods = new List<Stat>();
+    
+    public List<Stat> StatMods = new List<Stat>();
+    public List<Stat> EnemyStatMods = new List<Stat>();
 
 
 
@@ -209,7 +208,7 @@ public class Card : MonoBehaviour
         //Apply Some Stats
         if (BattleManager.Instance != null && BattleManager.Instance.BattleState == BattleStates.Battle)
         {
-            foreach (var stat in StatBoosts)
+            foreach (var stat in StatMods)
             {
                 BattleManager.Instance.Player.ModifyStat(stat.StatType, stat.TurnsLeft, stat.Value, !stat.IsNew);
             }

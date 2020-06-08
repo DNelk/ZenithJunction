@@ -19,6 +19,7 @@ public class BuyManager : MonoBehaviour
     private Button _leaveButton;
     private Button _showShopButton;
     private TMP_Text _aetherText;
+    private TMP_Text _freeBuysText;
     private Transform _cardParent;
     private RectTransform[] _positions;
     public bool Previewing;
@@ -75,6 +76,7 @@ public class BuyManager : MonoBehaviour
         _cg = GetComponent<CanvasGroup>();
         _leaveButton = bg.Find("LeaveShop").GetComponent<Button>();
         _aetherText = bg.Find("AetherCount").transform.Find("AetherText").GetComponent<TMP_Text>();
+        _freeBuysText = bg.Find("AetherCount").transform.Find("FreeBuys").GetComponent<TMP_Text>();
         _cardParent = bg.Find("CardPositions");
 
         _magicCircle[0] = transform.Find("MagicCircle_Back").gameObject;
@@ -219,6 +221,7 @@ public class BuyManager : MonoBehaviour
        
         BuysRemaining = -1; //By default you have infinite buys
         FreeBuysRemaining = 0;
+        _freeBuysText.text = "";
         Previewing = false;
 
         Utils.DestroyCardPreview();
@@ -287,12 +290,13 @@ public class BuyManager : MonoBehaviour
     private void Update()
     {
         _aetherText.text = BattleManager.Instance.CurrentAether.ToString();
-        
+
         if (BuysRemaining != -1)
-            _aetherText.text += "\nBuys Remaining: " + BuysRemaining;
+            _freeBuysText.text += "\nBuys Remaining: " + BuysRemaining;
 
         if (FreeBuysRemaining != 0)
-            _aetherText.text += "\nFree buys Remaining: " + FreeBuysRemaining;
+            _freeBuysText.text += "\nFree buys Remaining: " + FreeBuysRemaining;
+        
     }
 
     public void RemoveCard(Card c)

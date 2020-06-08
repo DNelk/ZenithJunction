@@ -1117,6 +1117,7 @@
             <e p="PalmmyUIShader" t="Include">
               <e p="CardGlowEffect.shader" t="Include" />
               <e p="CoreAura.shader" t="Include" />
+              <e p="StatChange.shader" t="Include" />
             </e>
             <e p="RotateTexture.shader" t="Include" />
           </e>

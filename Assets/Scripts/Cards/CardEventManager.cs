@@ -100,10 +100,10 @@ public class CardEventManager : EventTrigger
     #region Mouse Click Event
     public override void OnPointerDown(PointerEventData eventData)
     {
-        BattleManager.Instance.isMouseDragging = true; //make mouseDagFalse
-        
         if(GameManager.Instance.State == GameState.Battle)
         {
+            BattleManager.Instance.isMouseDragging = true; //make mouseDagFalse
+
             if (_myCard.Engine != null && _myCard.Engine.EngineState == EngineState.Stacked && BattleManager.Instance.BattleState == BattleStates.ChoosingAction)
                 return; //if this is choosing action state, dont do any shit;
             
@@ -147,10 +147,11 @@ public class CardEventManager : EventTrigger
 
     public override void OnPointerUp(PointerEventData eventData)
     {
-        BattleManager.Instance.isMouseDragging = false; //make mnouseDrag false
 
         if (GameManager.Instance.State == GameState.Battle)
         {
+            BattleManager.Instance.isMouseDragging = false; //make mnouseDrag false
+            
             if (_myCard.Engine != null && _myCard.Engine.EngineState == EngineState.Stacked && BattleManager.Instance.BattleState == BattleStates.ChoosingAction)
                 return; //if this is choosing action state, dont do any shit;
             
