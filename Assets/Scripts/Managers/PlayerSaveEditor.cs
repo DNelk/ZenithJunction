@@ -41,7 +41,7 @@ public class PlayerSaveEditor : Editor
         if (GUILayout.Button("Generate Card Directory"))
         {
             CardDirectory.SaveDirectory();
-            _options = CardDirectory.CardsByName.Values.ToArray();
+            _options = CardDirectory.CardsByName.Keys.ToArray();
         }
 
         serializedObject.ApplyModifiedProperties();
