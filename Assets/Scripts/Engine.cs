@@ -123,7 +123,6 @@ public class Engine : MonoBehaviour
         u_AttackOnPosNumber[1] = u_AttackOnPosition[1].GetComponentInChildren<TMP_Text>();
         u_AttackOnPosition[2] = posPanel.transform.Find("Range_3");
         u_AttackOnPosNumber[2] = u_AttackOnPosition[2].GetComponentInChildren<TMP_Text>();
-        
 
         //u_EngineImg = transform.Find("EngineImg").gameObject;
         //u_EngineImgAnim = u_EngineImg.GetComponent<Animator>();
@@ -431,6 +430,9 @@ public class Engine : MonoBehaviour
             if (!c.IsAttackInRange() && _inRange)
                 _inRange = false;
         }
+        
+        //add buff and debuff
+        
 
         if (EngineState == EngineState.Stacking)
         {
@@ -785,7 +787,6 @@ public class Engine : MonoBehaviour
             {
                 case 0 :
                     if (_attackPower[0] > 0) u_AttackOnPosition[i].GetComponent<Animator>().SetBool("TurnOn", true);
-
                     u_AttackOnPosNumber[i].text = _attackPower[0].ToString();
                     break;
                 case 1 :
@@ -843,9 +844,19 @@ public class Engine : MonoBehaviour
         transform.DOScale(_baseScale * 1.2f, 0.2f);
         
         //change card particle size
-        for (int i = 0; i < _pending.Count; i++)
+        if (BattleManager.Instance.BattleState == BattleStates.ChoosingAction)
         {
-            if (_pending[i] != null && !_pending[i].Dragging) _pending[i]._eventManager.setParticleGlowSize(0.5f);
+            foreach (Card C in Stack)
+            {
+                if (!C.Dragging) C._eventManager.setParticleGlowSize(0.5f);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < _pending.Count; i++)
+            {
+                if (_pending[i] != null && !_pending[i].Dragging) _pending[i]._eventManager.setParticleGlowSize(0.5f);
+            }   
         }
 
         _highlighted = true;
@@ -856,9 +867,19 @@ public class Engine : MonoBehaviour
         transform.DOScale(_baseScale, 0.2f);
         
         //change card particle size
-        for (int i = 0; i < _pending.Count; i++)
+        if (BattleManager.Instance.BattleState == BattleStates.ChoosingAction)
         {
-            if (_pending[i] != null && !_pending[i].Dragging) _pending[i]._eventManager.setParticleGlowSize(0.41f);
+            foreach (Card C in Stack)
+            {
+                if (!C.Dragging) C._eventManager.setParticleGlowSize(0.41f);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < _pending.Count; i++)
+            {
+                if (_pending[i] != null && !_pending[i].Dragging) _pending[i]._eventManager.setParticleGlowSize(0.41f);
+            }   
         }
 
         _highlighted = false;

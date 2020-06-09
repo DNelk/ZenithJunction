@@ -33,6 +33,9 @@ public class BattleManager : MonoBehaviour
     private Image _confirmCore;
 
     private Animator _commenceAnim;
+
+    public HealthBar playerHealthBar; //for player health bar ref
+    public HealthBar enemyHealthBar; //for enemy health bar ref
     //private UIPopIn _playerText;
     //private UIPopIn _enemyText;
     //private UIPopIn _resultText;
@@ -75,6 +78,9 @@ public class BattleManager : MonoBehaviour
         _commenceAnim = ConfirmButton.transform.parent.GetComponent<Animator>();
         _confirmButtonSprite[0] = Resources.Load<Sprite>("Sprites/Core/Gear");
         _confirmButtonSprite[1] = Resources.Load<Sprite>("Sprites/Core/Gear2");
+
+        playerHealthBar = GameObject.Find("PlayerHealth").GetComponent<HealthBar>();
+        enemyHealthBar = GameObject.Find("EnemyHealth").GetComponent<HealthBar>();
 
         //_playerText = GameObject.Find("PlayerText").GetComponent<UIPopIn>();
         //_enemyText = GameObject.Find("EnemyText").GetComponent<UIPopIn>();
