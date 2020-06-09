@@ -353,16 +353,14 @@ public class Engine : MonoBehaviour
             _moveTotal = OverrideMove;
         
         //Stat Check! -only move implemented
-        Player player = BattleManager.Instance.Player;
-        if (player.ActiveStats.ContainsKey(StatType.MovesUP))
+        if (_moveTotal > 0)
         {
-            if(!player.ActiveStats[StatType.MovesUP].IsNew)
-                _moveTotal += player.ActiveStats[StatType.MovesUP].Value;
-        }
-        if (player.ActiveStats.ContainsKey(StatType.MovesDOWN))
-        {
-            if(!player.ActiveStats[StatType.MovesDOWN].IsNew)
-                _moveTotal -= player.ActiveStats[StatType.MovesDOWN].Value;
+            var playerStats = BattleManager.Instance.Player.ActiveStats;
+            Stat s;
+            if (playerStats.TryGetValue(StatType.MovesUP, out s))
+                if(!s.IsNew)_moveTotal += s.Value;
+            if (playerStats.TryGetValue(StatType.MovesDOWN, out s))
+                if(!s.IsNew)_moveTotal -= s.Value;
         }
         
         Executed = true;
@@ -385,6 +383,17 @@ public class Engine : MonoBehaviour
                 DeckManager.Instance.Discard(c);
         }
         
+        //Stat Check
+        if (_powerTotal > 0)
+        {
+            var playerStats = BattleManager.Instance.Player.ActiveStats;
+            Stat s;
+            if (playerStats.TryGetValue(StatType.AttackUP, out s))
+                if(!s.IsNew)_powerTotal += s.Value;
+            if (playerStats.TryGetValue(StatType.AttackDOWN, out s))
+                if(!s.IsNew)_powerTotal -= s.Value;
+        }
+
         MagicCircle();
     }
     private int ExecuteStackForPreview()

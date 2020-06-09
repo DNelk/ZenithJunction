@@ -13,7 +13,8 @@ public class Player : MonoBehaviour
     [SerializeField] private int _maxHP = 10;
     private int _currentHP;
     //HP UI
-    private GameObject _healthBar;
+    private HealthBar _healthBar;
+    private GameObject _healthBarFill;
     private GameObject _hpBar;
     private RectTransform _hpBarRect;
     private Vector3 _hpBarPos;
@@ -50,16 +51,17 @@ public class Player : MonoBehaviour
         _currentHP = _maxHP;
         _mr = GetComponentInChildren<SkinnedMeshRenderer>();
             
-        _healthBar = GameObject.Find("PlayerHealth").transform.Find("Fill Area").gameObject;
-        _hpBar = _healthBar.transform.Find("HP").gameObject;
+        _healthBarFill = GameObject.Find("PlayerHealth").transform.Find("Fill Area").gameObject;
+        _hpBar = _healthBarFill.transform.Find("HP").gameObject;
         _hpBarRect = _hpBar.GetComponent<RectTransform>();
         _hpBarPos = _hpBarRect.localPosition;
         _hpBarWidth = _hpBarRect.rect.width;
         
-        hp_OriginLength = _healthBar.GetComponent<RectTransform>().sizeDelta.x;
-        _healthBar.transform.parent.GetComponent<HealthBar>().Target = "Player";
+        hp_OriginLength = _healthBarFill.GetComponent<RectTransform>().sizeDelta.x;
+        _healthBar = _healthBarFill.transform.parent.GetComponent<HealthBar>();
+        _healthBar.Target = "Player";
         //_healthBar.maxValue = _maxHP;
-        _hpText = _healthBar.transform.parent.transform.Find("Numbers").GetComponent<TMP_Text>();
+        _hpText = _healthBarFill.transform.parent.transform.Find("Numbers").GetComponent<TMP_Text>();
         UpdateHealth();
         _positions = new []{GameObject.Find("PlayerPos1").transform, GameObject.Find("PlayerPos2").transform, GameObject.Find("PlayerPos3").transform};
         _currentPos = 0;
@@ -69,17 +71,12 @@ public class Player : MonoBehaviour
     public void TakeDamage(int damage)
     {
         //Defense Stat check!
-        if (ActiveStats.ContainsKey(StatType.DefenseUP))
-        {
-            if(!ActiveStats[StatType.DefenseUP].IsNew)
-                damage -= ActiveStats[StatType.DefenseUP].Value;
-        }
-        if (ActiveStats.ContainsKey(StatType.DefenseDOWN))
-        {
-            if(!ActiveStats[StatType.DefenseDOWN].IsNew)
-                damage += ActiveStats[StatType.DefenseDOWN].Value;
-        }
-        
+        Stat s;
+        if (ActiveStats.TryGetValue(StatType.DefenseUP, out s))
+            if(!s.IsNew)damage -= s.Value;
+        if (ActiveStats.TryGetValue(StatType.DefenseDOWN, out s))
+            if(!s.IsNew)damage += s.Value;
+      
         _currentHP -= damage;
         //_mr.material.DOColor(Color.red, 0.2f).OnComplete(()=>_mr.material.DOColor(Color.white, 0.5f));
         UpdateHealth();
@@ -126,8 +123,10 @@ public class Player : MonoBehaviour
         }
         else
         {
-            ActiveStats.Add(type, new Stat(turnsLeft, value, applyImmidiately));
+            ActiveStats.Add(type, new Stat(turnsLeft, value, applyImmidiately, type));
         }
+        
+        _healthBar.UpdateStatusChanges();
             
     }
     public void TickDownStats()
@@ -150,6 +149,8 @@ public class Player : MonoBehaviour
                 stat.Value = 0;
             }
         }
+        
+        _healthBar.UpdateStatusChanges();
     }
     #endregion
 }

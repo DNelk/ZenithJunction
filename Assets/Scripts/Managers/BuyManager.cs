@@ -291,6 +291,8 @@ public class BuyManager : MonoBehaviour
     {
         _aetherText.text = BattleManager.Instance.CurrentAether.ToString();
 
+        _freeBuysText.text = "";
+        
         if (BuysRemaining != -1)
             _freeBuysText.text += "\nBuys Remaining: " + BuysRemaining;
 

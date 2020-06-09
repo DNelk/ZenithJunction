@@ -17,7 +17,6 @@ public class PlayerSaveEditor : Editor
             CardDirectory.LoadDirectory();
         _options = CardDirectory.CardsByName.Keys.ToArray();
         _indices = serializedObject.FindProperty("StartingIndices");
-        Debug.Log(_indices);
     }
 
     public override void OnInspectorGUI()
