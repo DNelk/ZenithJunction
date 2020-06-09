@@ -34,7 +34,7 @@ public class HealthBar : MonoBehaviour
                 BattleManager.Instance.Player.ModifyStat(StatType.AttackUP, 0, 1, false);
                 BattleManager.Instance.Player.ModifyStat(StatType.DefenseUP, 0, 1, false);
                 BattleManager.Instance.Player.ModifyStat(StatType.MovesUP, 0, 1, false);
-                updateStatusChanges();
+                UpdateStatusChanges();
             }
             
             if (Input.GetKeyDown(KeyCode.S))
@@ -42,7 +42,7 @@ public class HealthBar : MonoBehaviour
                 BattleManager.Instance.Player.ModifyStat(StatType.AttackDOWN, 0, 1, false);
                 BattleManager.Instance.Player.ModifyStat(StatType.DefenseDOWN, 0, 1, false);
                 BattleManager.Instance.Player.ModifyStat(StatType.MovesDOWN, 0, 1, false);
-                updateStatusChanges();
+                UpdateStatusChanges();
             }
         }
         
@@ -53,7 +53,7 @@ public class HealthBar : MonoBehaviour
                 BattleManager.Instance.CurrentEnemy.ModifyStat(StatType.AttackUP, 0, 1, false);
                 BattleManager.Instance.CurrentEnemy.ModifyStat(StatType.DefenseUP, 0, 1, false);
                 BattleManager.Instance.CurrentEnemy.ModifyStat(StatType.MovesUP, 0, 1, false);
-                updateStatusChanges();
+                UpdateStatusChanges();
             }
             
             if (Input.GetKeyDown(KeyCode.S))
@@ -61,12 +61,12 @@ public class HealthBar : MonoBehaviour
                 BattleManager.Instance.CurrentEnemy.ModifyStat(StatType.AttackDOWN, 0, 1, false);
                 BattleManager.Instance.CurrentEnemy.ModifyStat(StatType.DefenseDOWN, 0, 1, false);
                 BattleManager.Instance.CurrentEnemy.ModifyStat(StatType.MovesDOWN, 0, 1, false);
-                updateStatusChanges();
+                UpdateStatusChanges();
             }
         }
     }
 
-    public void updateStatusChanges()
+    public void UpdateStatusChanges()
     {
         if(Target == "") //if there is no player or enemy to get stats from, ditch it
             return;

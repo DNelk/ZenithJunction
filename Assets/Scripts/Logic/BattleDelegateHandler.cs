@@ -8,6 +8,7 @@ public class BattleDelegateHandler : MonoBehaviour
 
     public static NextEngineDelegate NextEngineEffect;
 
+    public static NextEngineDelegate NextNextEngineEffect;
     public static void ApplyEngineEffects()
     {
         if(NextEngineEffect == null)
@@ -18,6 +19,15 @@ public class BattleDelegateHandler : MonoBehaviour
             foreach (var d in NextEngineEffect.GetInvocationList())
             {
                 NextEngineEffect -= (d as NextEngineDelegate);
+            }
+        }
+
+        if (NextNextEngineEffect != null)
+        {
+            foreach (var d in NextNextEngineEffect.GetInvocationList())
+            {
+                NextEngineEffect += (d as NextEngineDelegate);
+                NextNextEngineEffect -= (d as NextEngineDelegate);
             }
         }
     }

@@ -32,7 +32,8 @@ public class Enemy : MonoBehaviour
     public Dictionary<StatType, Stat> BaseStats = new Dictionary<StatType, Stat>();
     
     //HP UI
-    private GameObject _healthBar;
+    private HealthBar _healthBar;
+    private GameObject _healthBarFill;
     private GameObject _hpBar;
     private RectTransform _hpBarRect;
     private Vector3 _hpBarPos;
@@ -45,17 +46,18 @@ public class Enemy : MonoBehaviour
         _atkIndex = -1;
         _currentHP = _maxHP;
        // _mr = GetComponent<MeshRenderer>();
-        _healthBar = GameObject.Find("EnemyHealth").transform.Find("Fill Area").gameObject;
-        _hpBar = _healthBar.transform.Find("HP").gameObject;
+        _healthBarFill = GameObject.Find("EnemyHealth").transform.Find("Fill Area").gameObject;
+        _hpBar = _healthBarFill.transform.Find("HP").gameObject;
         _hpBarRect = _hpBar.GetComponent<RectTransform>();
         _hpBarPos = _hpBarRect.localPosition;
         _hpBarWidth = _hpBarRect.rect.width;
         
-        hp_OriginLength = _healthBar.GetComponent<RectTransform>().sizeDelta.x;
+        hp_OriginLength = _healthBarFill.GetComponent<RectTransform>().sizeDelta.x;
 //        Debug.Log(hp_OriginLength);
         //_healthBar.maxValue = _maxHP;
-        _healthBar.transform.parent.GetComponent<HealthBar>().Target = "Enemy";
-        _hpText = _healthBar.transform.parent.transform.Find("Numbers").GetComponent<TMP_Text>();
+        _healthBar = _healthBarFill.transform.parent.GetComponent<HealthBar>();
+        _healthBar.Target = "Enemy";
+        _hpText = _healthBarFill.transform.parent.transform.Find("Numbers").GetComponent<TMP_Text>();
         UpdateHealth();
         _positions = new []{GameObject.Find("EnemyPos1").transform, GameObject.Find("EnemyPos2").transform, GameObject.Find("EnemyPos3").transform};
         _currentPos = 0;
@@ -136,6 +138,14 @@ public class Enemy : MonoBehaviour
         //Deal damage and execute any other effects.
         CurrentAttack.ExecuteOtherEffect();
         int dmg = CalculateAttackTotalWithPosition(CurrentAttack);
+        if (dmg > 0)
+        {
+            Stat s;
+            if (ActiveStats.TryGetValue(StatType.AttackUP, out s))
+                if(!s.IsNew)dmg += s.Value;
+            if (ActiveStats.TryGetValue(StatType.AttackDOWN, out s))
+                if(!s.IsNew)dmg -= s.Value;
+        }
         dmg -= AtkDebuff;
         AtkDebuff = 0;
         return dmg;
@@ -145,17 +155,12 @@ public class Enemy : MonoBehaviour
     {
 
         //Defense Stat check!
-        if (ActiveStats.ContainsKey(StatType.DefenseUP))
-        {
-            if(!ActiveStats[StatType.DefenseUP].IsNew)
-                damage -= ActiveStats[StatType.DefenseUP].Value;
-        }
-        if (ActiveStats.ContainsKey(StatType.DefenseDOWN))
-        {
-            if(!ActiveStats[StatType.DefenseDOWN].IsNew)
-                damage += ActiveStats[StatType.DefenseDOWN].Value;
-        }
-
+        Stat s;
+        if (ActiveStats.TryGetValue(StatType.DefenseUP, out s))
+            if(!s.IsNew)damage -= s.Value;
+        if (ActiveStats.TryGetValue(StatType.DefenseDOWN, out s))
+            if(!s.IsNew)damage += s.Value;
+      
         damage = CalculateDamageWithStatus(damage);
         
         if (damage < 0)
@@ -242,11 +247,12 @@ public class Enemy : MonoBehaviour
     public IEnumerator MoveInRange(int moves = 3)
     {
         //Stat Check
-        if (ActiveStats.ContainsKey(StatType.MovesUP))
-            moves += ActiveStats[StatType.MovesUP].Value;
-        if (ActiveStats.ContainsKey(StatType.MovesDOWN))
-            moves += ActiveStats[StatType.MovesDOWN].Value;
-        
+        Stat s;
+        if (ActiveStats.TryGetValue(StatType.MovesUP, out s))
+            if(!s.IsNew)moves += s.Value;
+        if (ActiveStats.TryGetValue(StatType.MovesDOWN, out s))
+            if(!s.IsNew)moves -= s.Value;
+
         Player player = BattleManager.Instance.Player;
         //We want to move closer
         if (DesiredRange == AttackRange.Melee || DesiredRange == AttackRange.Short)
@@ -301,7 +307,8 @@ public class Enemy : MonoBehaviour
         {
             ActiveStats.Add(type, new Stat(turnsLeft, value, applyImmidiately));
         }
-            
+        
+        _healthBar.UpdateStatusChanges();
     }
 
     public void TickDownStats()
@@ -324,6 +331,8 @@ public class Enemy : MonoBehaviour
                 stat.Value = 0;
             }
         }
+        
+        _healthBar.UpdateStatusChanges();
     }
 
     
