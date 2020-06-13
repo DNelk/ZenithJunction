@@ -124,8 +124,8 @@ public class ClashUIManager : MonoBehaviour
     {
         AnimDone = true;
         _crashBG.raycastTarget = false;
-        BattleManager.Instance.playerHealthBar.updateStatusChanges();
-        BattleManager.Instance.enemyHealthBar.updateStatusChanges();
+        BattleManager.Instance.playerHealthBar.UpdateStatusChanges();
+        BattleManager.Instance.enemyHealthBar.UpdateStatusChanges();
     }
 
     public void ClashDone()

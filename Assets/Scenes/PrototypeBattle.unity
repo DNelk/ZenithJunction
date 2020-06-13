@@ -156,6 +156,8 @@ MonoBehaviour:
   BattleState: 5
   ConfirmButton: {fileID: 0}
   NumEngines: 3
+  playerHealthBar: {fileID: 0}
+  enemyHealthBar: {fileID: 0}
   Engines: []
   enemyPos: {fileID: 0}
   DamageDealtThisTurn: 0

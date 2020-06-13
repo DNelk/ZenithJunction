@@ -53,9 +53,9 @@ public class HealthBar : MonoBehaviour
                 BattleManager.Instance.Player.ModifyStat(StatType.MovesDOWN, 0, 1, false);
                 UpdateStatusChanges();
             }
-        }
+        }*/
         
-        if (Target == "Enemy")
+        /*if (Target == "Enemy")
         {
             if (Input.GetKeyDown(KeyCode.A))
             {
@@ -266,6 +266,19 @@ public class HealthBar : MonoBehaviour
 
         _moveValue = value;
         value = 0;
+        
+        //tell engine to update its attack power
+        if (Target == "Player")
+        {
+            foreach (Engine e in BattleManager.Instance.Engines)
+            {
+                if (e.EngineState == EngineState.Stacked)
+                {
+                    //Debug.Log(e);
+                    e.UpdateUICounts();
+                }
+            }
+        }
     }
     
     public void ShowPreview()

@@ -8,4 +8,9 @@ public class SetActiveFunction : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+
+    public void DestroyGameObject()
+    {
+        Destroy(gameObject);
+    }
 }

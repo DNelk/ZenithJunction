@@ -76,7 +76,8 @@ public class Player : MonoBehaviour
             if(!s.IsNew)damage -= s.Value;
         if (ActiveStats.TryGetValue(StatType.DefenseDOWN, out s))
             if(!s.IsNew)damage += s.Value;
-      
+
+        if (damage < 0) damage = 0; //it will never heal you
         _currentHP -= damage;
         //_mr.material.DOColor(Color.red, 0.2f).OnComplete(()=>_mr.material.DOColor(Color.white, 0.5f));
         UpdateHealth();
@@ -126,7 +127,7 @@ public class Player : MonoBehaviour
             ActiveStats.Add(type, new Stat(turnsLeft, value, applyImmidiately, type));
         }
         
-        _healthBar.UpdateStatusChanges();
+        //_healthBar.UpdateStatusChanges();
             
     }
     public void TickDownStats()
@@ -150,7 +151,7 @@ public class Player : MonoBehaviour
             }
         }
         
-        _healthBar.UpdateStatusChanges();
+        //_healthBar.UpdateStatusChanges();
     }
     #endregion
 }

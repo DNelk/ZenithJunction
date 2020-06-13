@@ -279,6 +279,11 @@ public class BattleManager : MonoBehaviour
             yield return new WaitUntil(() => ClashUIManager.Instance.AnimDone);
             ClashUIManager.Instance.AnimDone = false;
         }
+        else
+        {
+            playerHealthBar.UpdateStatusChanges();
+            enemyHealthBar.UpdateStatusChanges();
+        }
 
         DisplayAttackResult(playerDamage, enemyDamage);
         

@@ -134,7 +134,6 @@ public class Enemy : MonoBehaviour
     
     public int Attack()
     {
-        
         //Deal damage and execute any other effects.
         CurrentAttack.ExecuteOtherEffect();
         int dmg = CalculateAttackTotalWithPosition(CurrentAttack);
@@ -163,8 +162,7 @@ public class Enemy : MonoBehaviour
       
         damage = CalculateDamageWithStatus(damage);
         
-        if (damage < 0)
-            damage = 0;
+        if (damage < 0) damage = 0; //it will never heal enemy
         _currentHP -= damage;
         //_mr.material.DOColor(Color.red, 0.2f).OnComplete(() => _mr.material.DOColor(Color.white, 0.5f));
         UpdateHealth();
