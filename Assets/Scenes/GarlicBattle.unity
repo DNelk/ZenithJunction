@@ -1308,6 +1308,11 @@ PrefabInstance:
       propertyPath: m_Color.b
       value: 0.8207547
       objectReference: {fileID: 0}
+    - target: {fileID: 8515852806259367112, guid: ce21d5c822300994088b0d9a8130e1d8,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6173265757729671377, guid: ce21d5c822300994088b0d9a8130e1d8,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1642,11 +1647,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: -184
-      objectReference: {fileID: 0}
-    - target: {fileID: 8515852806259367112, guid: ce21d5c822300994088b0d9a8130e1d8,
-        type: 3}
-      propertyPath: m_Layer
-      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3638548532818143618, guid: ce21d5c822300994088b0d9a8130e1d8,
         type: 3}
@@ -3408,6 +3408,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: -676.16895
+      objectReference: {fileID: 0}
+    - target: {fileID: 7912635271533206415, guid: ce21d5c822300994088b0d9a8130e1d8,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1753059905090621178, guid: ce21d5c822300994088b0d9a8130e1d8,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6271969554669920772, guid: ce21d5c822300994088b0d9a8130e1d8,
+        type: 3}
+      propertyPath: m_DeadZoneWidth
+      value: 0.91
+      objectReference: {fileID: 0}
+    - target: {fileID: 6271969554669920772, guid: ce21d5c822300994088b0d9a8130e1d8,
+        type: 3}
+      propertyPath: m_DeadZoneHeight
+      value: 0.94
+      objectReference: {fileID: 0}
+    - target: {fileID: 6271969554669920772, guid: ce21d5c822300994088b0d9a8130e1d8,
+        type: 3}
+      propertyPath: m_SoftZoneWidth
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6271969554669920772, guid: ce21d5c822300994088b0d9a8130e1d8,
+        type: 3}
+      propertyPath: m_SoftZoneHeight
+      value: 1.61
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7169713098958321484, guid: ce21d5c822300994088b0d9a8130e1d8, type: 3}
