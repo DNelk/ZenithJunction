@@ -213,6 +213,7 @@ public class Enemy : MonoBehaviour
         }
 
         ChangePosition(pos);
+        BattleManager.Instance.enemyPos.UpdatePosition();
     }
     
     public int CalculateAttackTotalWithPosition(EnemyAttack currentAttack)

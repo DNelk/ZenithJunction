@@ -18,5 +18,14 @@ public class RailCharge : Card
             }
                 
         }
+        
+        foreach (Card c in _myEngine.PoppedCards)
+        {
+            if (c.CardType == CardTypes.Attack)
+            {
+                c.PowerTotal *= 2;
+            }
+                
+        }
     }
 }
