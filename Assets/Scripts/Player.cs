@@ -24,16 +24,22 @@ public class Player : MonoBehaviour
     private Transform[] _positions;
     private int _currentPos; public int Position => _currentPos;
     private Enemy _enemy;
-
+    private Transform _takingDamageAnim;
+    private RectTransform[] _damageUnit = new RectTransform[3];
+    private float[] _damageUnitWidth = new float[3];
+    private List<GameObject> _hpGlowEffectUnit = new List<GameObject>();
+    private TMP_Text _realDamageText;
+    
     //Stats
     public Dictionary<StatType, Stat> ActiveStats = new Dictionary<StatType, Stat>();
     public Dictionary<StatType, Stat> BaseStats = new Dictionary<StatType, Stat>();
 
     private Quaternion _prevRot;
     private bool _isRotating;
+
     private void Update()
     {
-        UpdateHealth();
+        //UpdateHealth();
         
         Vector3 dir = _enemy.transform.position - transform.position;
         Quaternion rot = Quaternion.LookRotation(dir);
@@ -44,14 +50,33 @@ public class Player : MonoBehaviour
             _isRotating = true;
             transform.DORotate(rot.eulerAngles, 0.5f).OnComplete(() => _isRotating = false);
         }
+        
+        //for debug pure pose only
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            TakeDamage(6);
+        }
+        else if (Input.GetKeyDown(KeyCode.S))
+        {
+            TakeDamage(5);
+        }
+        else if (Input.GetKeyDown(KeyCode.D))
+        {
+            TakeDamage(4);
+        }
+        else if (Input.GetKeyDown(KeyCode.F))
+        {
+            TakeDamage(19);
+        }
     }
     
     private void Awake()
     {
         _currentHP = _maxHP;
         _mr = GetComponentInChildren<SkinnedMeshRenderer>();
-            
-        _healthBarFill = GameObject.Find("PlayerHealth").transform.Find("Fill Area").gameObject;
+
+        Transform hpBar = GameObject.Find("PlayerHealth").transform;
+        _healthBarFill = hpBar.Find("Fill Area").gameObject;
         _hpBar = _healthBarFill.transform.Find("HP").gameObject;
         _hpBarRect = _hpBar.GetComponent<RectTransform>();
         _hpBarPos = _hpBarRect.localPosition;
@@ -62,10 +87,27 @@ public class Player : MonoBehaviour
         _healthBar.Target = "Player";
         //_healthBar.maxValue = _maxHP;
         _hpText = _healthBarFill.transform.parent.transform.Find("Numbers").GetComponent<TMP_Text>();
-        UpdateHealth();
+        UpdateHealth(0, _maxHP);
         _positions = new []{GameObject.Find("PlayerPos1").transform, GameObject.Find("PlayerPos2").transform, GameObject.Find("PlayerPos3").transform};
         _currentPos = 0;
         _enemy = GameObject.FindGameObjectWithTag("Enemy").GetComponent<Enemy>();
+        
+        //for taking damage anim
+        _takingDamageAnim = hpBar.Find("LosingHPAnimation").GetComponent<RectTransform>();
+        Transform hpGlow = hpBar.Find("HealthGlowAnimation").transform;
+        for (int i = 0; i < 20; i++)
+        {
+            _hpGlowEffectUnit.Add(hpGlow.GetChild(i).gameObject);
+        }
+        _damageUnit[0] = _takingDamageAnim.transform.Find("Unit").GetComponent<RectTransform>();
+        _damageUnit[1] = _takingDamageAnim.transform.Find("Crack").GetComponent<RectTransform>();
+        _damageUnit[2] = _takingDamageAnim.transform.Find("Crack2").GetComponent<RectTransform>();
+        for (int i = 0; i < _damageUnit.Length ; i++)
+        {
+            _damageUnitWidth[i] = _damageUnit[i].rect.width;
+        }
+        _realDamageText = _damageUnit[0].GetComponentInChildren<TMP_Text>(); // assign damage number shown in animation 
+
     }
 
     public void TakeDamage(int damage)
@@ -77,10 +119,15 @@ public class Player : MonoBehaviour
         if (ActiveStats.TryGetValue(StatType.DefenseDOWN, out s))
             if(!s.IsNew)damage += s.Value;
 
-        if (damage < 0) damage = 0; //it will never heal you
+        if (damage <= 0)
+        {
+            return; //it will never heal you
+        }
+
+        int oldHp = _currentHP;
         _currentHP -= damage;
         //_mr.material.DOColor(Color.red, 0.2f).OnComplete(()=>_mr.material.DOColor(Color.white, 0.5f));
-        UpdateHealth();
+        UpdateHealth(damage, oldHp);
         if (_currentHP <= 0)
             Utils.DisplayGameOver("Defeat!", false);
     }
@@ -92,12 +139,61 @@ public class Player : MonoBehaviour
             _currentHP = _maxHP;
     }
     
-    private void UpdateHealth()
+    private void UpdateHealth(int damage, int oldHp)
     {
-        //_healthBar.value = _currentHP;
-        float x_pos = _hpBarPos.x - (((float)(_maxHP - _currentHP)/_maxHP)* _hpBarWidth);
-        _hpBarRect.localPosition = new Vector3(x_pos,_hpBarPos.y, _hpBarPos.z);
-        _hpText.text = _currentHP + "/" + _maxHP;
+        //change position of the fill gauge
+        float oldXpos = _hpBarRect.position.x; //set up the old xPos for HP before decreased
+        float x_pos = 0;
+
+        //see if HP 0 or not
+        if (_currentHP <= 0) x_pos = _hpBarPos.x - (_hpBarWidth * 0.975f);
+        else x_pos = _hpBarPos.x - (((float)(_maxHP - _currentHP)/_maxHP) * (_hpBarWidth * 0.975f));
+        
+        _hpBarRect.localPosition = new Vector3(x_pos,_hpBarPos.y, _hpBarPos.z); //move the bar
+        _hpText.text = _currentHP + "/" + _maxHP; //update new HP text
+        float newXpos = _hpBarRect.position.x; //remember the new xPos for HP after decreased
+
+        //taking attack animation
+        if (damage > 0)
+        {
+            float trueDamage = 0;
+            if (_currentHP <= 0) trueDamage = (float)oldHp;
+            else trueDamage = damage;
+            
+            //change takingDamageAnim position
+            Vector3 takingDamagePos = _takingDamageAnim.position; //take ref for position
+            _takingDamageAnim.position = new Vector3(((oldXpos + newXpos)/2) - 5, takingDamagePos.y, takingDamagePos.z ); //set new position
+            
+            float scaleOffset = 0;
+            float newWidth = 0;
+            
+            //for original unit
+            scaleOffset = _damageUnitWidth[0] * (((((float) trueDamage / _maxHP) * 20) - 1) * 0.5f);
+            if (scaleOffset >= 0) newWidth = _damageUnitWidth[0] + scaleOffset;
+            else newWidth = _damageUnitWidth[0];
+            _damageUnit[0].sizeDelta = new Vector2(newWidth, _damageUnit[0].rect.height);
+            
+            //for left cracked unit , offset scale multiplier is (((damage / maxHp) * 20) - 1) * 0.255f;
+            scaleOffset = _damageUnitWidth[1] * ((((((float) trueDamage / _maxHP) * 20) - 3) * 0.255f) + 0.3f);
+            if (scaleOffset >= 0) newWidth = _damageUnitWidth[1] + scaleOffset;
+            else newWidth = _damageUnitWidth[1];
+            _damageUnit[1].sizeDelta = new Vector2(newWidth, _damageUnit[1].rect.height);
+            
+            //for right cracked unit , offset scale multiplier is (((damage / maxHp) * 20) - 1) * 0.265f;
+            scaleOffset = _damageUnitWidth[2] * ((((((float) trueDamage / _maxHP) * 20) - 3) * 0.265f) + 0.27f);
+            if (scaleOffset >= 0) newWidth = _damageUnitWidth[2] + scaleOffset;
+            else newWidth = _damageUnitWidth[2];
+            _damageUnit[2].sizeDelta = new Vector2(newWidth, _damageUnit[2].rect.height);
+
+            _realDamageText.text = "-" + damage; //assign damage number
+            _takingDamageAnim.gameObject.SetActive(true); //then play the animation
+            
+            //set the glow animation to decrease number
+            for (int i = _currentHP; i < _currentHP + trueDamage; i++)
+            {
+                _hpGlowEffectUnit[i].SetActive(false);
+            }
+        }
     }
 
     public float ChangePosition(int newPos)
