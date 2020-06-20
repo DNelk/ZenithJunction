@@ -38,7 +38,7 @@ public class Card : MonoBehaviour
     public AttackRange Range
     {
         get => _range;
-        set => value = _range;
+        set => _range = value;
     }
 
     [SerializeField] protected int _moveValue; public int MoveValue => _moveValue;
@@ -118,6 +118,7 @@ public class Card : MonoBehaviour
     protected GameObject u_moveValue;
     protected Image[] u_aetherCost;
     protected Text u_aetherCost_X;
+    protected Text u_aetherCost_Overflow;
     protected Image[] u_range;
     protected TMP_Text u_bodyText;
     protected Image u_image;
@@ -190,6 +191,7 @@ public class Card : MonoBehaviour
         u_moveValue = parent.Find("Parameter").transform.Find("Parameter_Move").gameObject;
         u_aetherCost = parent.Find("Aether_Cost").GetComponentsInChildren<Image>();
         u_aetherCost_X = u_aetherCost[0].transform.Find("AetherCost_Xnumber").GetComponent<Text>();
+        u_aetherCost_Overflow = u_aetherCost[0].transform.Find("AetherCost_OverflowNumber").GetComponent<Text>();
         u_range = parent.Find("Range").GetComponentsInChildren<Image>();
         if (_fullSize) u_bodyText = parent.Find("BodyText").GetComponent<TMP_Text>();
         if (!_fullSize) u_particle = transform.Find("PuffyGlow").GetComponent<ParticleSystem>();
@@ -401,6 +403,13 @@ public class Card : MonoBehaviour
         {
             u_aetherCost[0].color = Color.white; //make the first aether cost symbol active
             u_aetherCost_X.color = Color.white; //set the X text to be active
+            u_aetherCost[0].transform.localScale *= 1.3f; //scaling them to be bigger
+        }
+        else if (_aetherCost > 6)
+        {
+            u_aetherCost[0].color = Color.white; //make the first aether cost symbol active
+            u_aetherCost_Overflow.color = Color.white; //set the X text to be active
+            u_aetherCost_Overflow.text = _aetherCost.ToString();
             u_aetherCost[0].transform.localScale *= 1.3f; //scaling them to be bigger
         }
         else if (_aetherCost > 0)

@@ -28,6 +28,7 @@ public class CardPreview : MonoBehaviour
     protected GameObject u_moveValue;
     protected Image[] u_aetherCost;
     protected Text u_aetherCost_X;
+    protected Text u_aetherCost_Overflow;
     protected Image[] u_range;
     protected TMP_Text u_bodyText;
     protected Image u_image;
@@ -55,6 +56,7 @@ public class CardPreview : MonoBehaviour
         u_moveValue = transform.Find("Parameter").transform.Find("Parameter_Move").gameObject;
         u_aetherCost = transform.Find("Aether_Cost").GetComponentsInChildren<Image>();
         u_aetherCost_X = u_aetherCost[0].transform.Find("AetherCost_Xnumber").GetComponent<Text>();
+        u_aetherCost_Overflow = u_aetherCost[0].transform.Find("AetherCost_OverflowNumber").GetComponent<Text>();
         u_range = transform.Find("Range").GetComponentsInChildren<Image>();
         u_bodyText = transform.Find("BodyText").GetComponent<TMP_Text>();
         u_image = transform.Find("CardImage").GetComponent<Image>();
@@ -152,6 +154,13 @@ public class CardPreview : MonoBehaviour
         {
             u_aetherCost[0].color = Color.white; //make the first aether cost symbol active
             u_aetherCost_X.color = Color.white; //set the X text to be active
+            u_aetherCost[0].transform.localScale *= 1.3f; //scaling them to be bigger
+        }
+        else if (c.AetherCost > 6)
+        {
+            u_aetherCost[0].color = Color.white; //make the first aether cost symbol active
+            u_aetherCost_Overflow.color = Color.white; //set the X text to be active
+            u_aetherCost_Overflow.text = c.AetherCost.ToString();
             u_aetherCost[0].transform.localScale *= 1.3f; //scaling them to be bigger
         }
         else if (c.AetherCost > 0)

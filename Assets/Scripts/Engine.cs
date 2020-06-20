@@ -205,7 +205,7 @@ public class Engine : MonoBehaviour
         
         _pending.Remove(c);
         DeckManager.Instance.CardsToBeSorted.Add(c);
-        
+        ExecuteStackForPreview();
         UpdateUICounts();
         c.OffEngine(DeckManager.Instance.transform.parent);
         c.Engine = null;
@@ -303,6 +303,9 @@ public class Engine : MonoBehaviour
                 indexToStack = i;
             }
         }
+
+        if(_pending.Count == 0)
+            return;
 
         Card currentCard = _pending[indexToStack];
         Stack.Push(currentCard);
@@ -639,7 +642,8 @@ public class Engine : MonoBehaviour
         _moveTotal = 0;
         tempInRange = _inRange;
         _inRange = true;
-
+        
+        
         if (setToZero)
         {
             tempPow = tempAet = tempMove = tempCost = 0;

@@ -22,6 +22,12 @@ public class SilverProwess : Card
         {
             PowerTotal = 10;
             TrashThis = true;
+            _myEngine.GoldOrSilverFound = false;
+        }
+        else
+        {
+            PowerTotal = 1;
+            TrashThis = false;
         }
     }
 }

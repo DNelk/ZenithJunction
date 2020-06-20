@@ -103,6 +103,8 @@ public class MovePlayerDialog : MonoBehaviour
                 //Undoing
                 _currentMoves--;
                 _moveNumber.text = MoveTotal - _currentMoves + "";
+                if (MoveTotal >= 100)
+                    _moveNumber.text = "Infinite";
                 _lastDirection = 0;
                 UpdateCarPosition(-1);
                 yield return new WaitForSeconds(player.ChangePosition(player.Position - 1));
@@ -112,6 +114,8 @@ public class MovePlayerDialog : MonoBehaviour
             {
                 _currentMoves++;
                 _moveNumber.text = (MoveTotal - _currentMoves + "");
+                if (MoveTotal >= 100)
+                    _moveNumber.text = "Infinite";
                 _lastDirection = -1;
                 UpdateCarPosition(-1);
                 yield return new WaitForSeconds(player.ChangePosition(player.Position - 1));
@@ -120,7 +124,7 @@ public class MovePlayerDialog : MonoBehaviour
         else
         {
             //Already at the back
-            if (player.Position == 3)
+            if (player.Position == 2)
             {
                 AssignListeners();
                 yield break;
@@ -132,6 +136,8 @@ public class MovePlayerDialog : MonoBehaviour
                 //Undoing
                 _currentMoves--;
                 _moveNumber.text = MoveTotal - _currentMoves + "";
+                if (MoveTotal >= 100)
+                    _moveNumber.text = "Infinite";
                 _lastDirection = 0;
                 UpdateCarPosition(1);
                 yield return new WaitForSeconds(player.ChangePosition(player.Position + 1));
@@ -141,6 +147,8 @@ public class MovePlayerDialog : MonoBehaviour
             {
                 _currentMoves++;
                 _moveNumber.text = MoveTotal - _currentMoves + "";
+                if (MoveTotal >= 100)
+                    _moveNumber.text = "Infinite";
                 _lastDirection = 1;
                 UpdateCarPosition(1);
                 yield return new WaitForSeconds(player.ChangePosition(player.Position + 1));
@@ -166,7 +174,11 @@ public class MovePlayerDialog : MonoBehaviour
     private void AssignMoveNumber()
     {
         if (_moveNumber != null)
+        {
             _moveNumber.text = MoveTotal - _currentMoves + "";
+            if (MoveTotal >= 100)
+                _moveNumber.text = "Infinite";
+        }
     }
 
     private void UpdateCarPosition(int posChange)

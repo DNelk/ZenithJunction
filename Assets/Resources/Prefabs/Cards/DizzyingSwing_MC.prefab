@@ -140,12 +140,17 @@ PrefabInstance:
     - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
       propertyPath: _powerValue
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
       propertyPath: _priority
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _aetherValue
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d479990a3bf94b66add313f61a36fdf, type: 3}
