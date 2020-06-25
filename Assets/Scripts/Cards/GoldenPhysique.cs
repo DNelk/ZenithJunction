@@ -21,6 +21,12 @@ public class GoldenPhysique : Card
         {
             PowerTotal = 10;
             TrashThis = true;
+            _myEngine.GoldOrSilverFound = false;
+        }
+        else
+        {
+            PowerTotal = 1;
+            TrashThis = false;
         }
     }
 }
