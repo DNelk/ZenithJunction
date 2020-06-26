@@ -73,7 +73,7 @@ public class Player : MonoBehaviour
     {
         //Defense Stat check!
         Stat s;
-        damage = StatManager.Instance.DefenseStatCheck(damage, ActiveStatsList);
+        damage = StatManager.Instance.StatCheck(damage, ActiveStatsList, StatType.DefenseUP, StatType.DefenseDOWN);
       
         _currentHP -= damage;
         //_mr.material.DOColor(Color.red, 0.2f).OnComplete(()=>_mr.material.DOColor(Color.white, 0.5f));

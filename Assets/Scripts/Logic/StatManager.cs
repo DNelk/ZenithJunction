@@ -48,23 +48,21 @@ public class StatManager : MonoBehaviour
         healthBar.UpdateStatusChanges();
     }
 
-    //Called from Enemy and Player when they take damage
-    //Run through the list and see if there are relevant defense values
-    public int DefenseStatCheck(int damage, List<Stat> statsList)
+    //Call whenever checking a value against stats
+    //This will run through the stat list and compare against the values therein, returning a modified int
+    public int StatCheck(int input, List<Stat> statsList, StatType upType, StatType downType)
     {
-        int modifiedDamage = damage;
-
+        int modifiedValue = input;
         foreach (var stat in statsList)
         {
             if (!stat.IsNew)
             {
-                if (stat.StatType == StatType.DefenseUP)
-                    modifiedDamage -= stat.Value;
-                else if (stat.StatType == StatType.DefenseDOWN)
-                    modifiedDamage += stat.Value;
+                if (stat.StatType == upType)
+                    modifiedValue -= stat.Value;
+                else if (stat.StatType == downType)
+                    modifiedValue += stat.Value;
             }
         }
-
-        return modifiedDamage;
+        return modifiedValue;
     }
 }
