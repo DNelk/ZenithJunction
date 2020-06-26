@@ -141,11 +141,7 @@ public class Enemy : MonoBehaviour
         int dmg = CalculateAttackTotalWithPosition(CurrentAttack);
         if (dmg > 0)
         {
-            Stat s;
-            if (ActiveStats.TryGetValue(StatType.AttackUP, out s))
-                if(!s.IsNew)dmg += s.Value;
-            if (ActiveStats.TryGetValue(StatType.AttackDOWN, out s))
-                if(!s.IsNew)dmg -= s.Value;
+            dmg = StatManager.Instance.StatCheck(dmg, ActiveStatsList, StatType.AttackUP, StatType.AttackDOWN);
         }
         dmg -= AtkDebuff;
         AtkDebuff = 0;
@@ -245,11 +241,7 @@ public class Enemy : MonoBehaviour
     public IEnumerator MoveInRange(int moves = 3)
     {
         //Stat Check
-        Stat s;
-        if (ActiveStats.TryGetValue(StatType.MovesUP, out s))
-            if(!s.IsNew)moves += s.Value;
-        if (ActiveStats.TryGetValue(StatType.MovesDOWN, out s))
-            if(!s.IsNew)moves -= s.Value;
+        moves = StatManager.Instance.StatCheck(moves, ActiveStatsList, StatType.MovesUP, StatType.MovesDOWN);
 
         Player player = BattleManager.Instance.Player;
         //We want to move closer

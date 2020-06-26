@@ -359,12 +359,8 @@ public class Engine : MonoBehaviour
         //Stat Check! -only move implemented
         if (_moveTotal > 0)
         {
-            var playerStats = BattleManager.Instance.Player.ActiveStats;
-            Stat s;
-            if (playerStats.TryGetValue(StatType.MovesUP, out s))
-                if(!s.IsNew)_moveTotal += s.Value;
-            if (playerStats.TryGetValue(StatType.MovesDOWN, out s))
-                if(!s.IsNew)_moveTotal -= s.Value;
+            var playerStats = BattleManager.Instance.Player.ActiveStatsList;
+            _moveTotal = StatManager.Instance.StatCheck(_moveTotal, playerStats, StatType.MovesUP, StatType.MovesDOWN);
         }
         
         Executed = true;
@@ -390,12 +386,9 @@ public class Engine : MonoBehaviour
         //Stat Check
         if (_powerTotal > 0)
         {
-            var playerStats = BattleManager.Instance.Player.ActiveStats;
-            Stat s;
-            if (playerStats.TryGetValue(StatType.AttackUP, out s))
-                if(!s.IsNew)_powerTotal += s.Value;
-            if (playerStats.TryGetValue(StatType.AttackDOWN, out s))
-                if(!s.IsNew)_powerTotal -= s.Value;
+            var playerStats = BattleManager.Instance.Player.ActiveStatsList;
+            _powerTotal =
+                StatManager.Instance.StatCheck(_powerTotal, playerStats, StatType.AttackUP, StatType.AttackDOWN);
         }
 
         MagicCircle();
