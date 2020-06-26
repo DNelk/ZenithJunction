@@ -28,7 +28,7 @@ public class Enemy : MonoBehaviour
     private EnemyIntentionUI _enemyIntention;
     
     //Stats
-    public Dictionary<StatType, Stat> ActiveStats = new Dictionary<StatType, Stat>();
+    //public Dictionary<StatType, Stat> ActiveStats = new Dictionary<StatType, Stat>();
     public List<Stat> ActiveStatsList = new List<Stat>();
     public Dictionary<StatType, Stat> BaseStats = new Dictionary<StatType, Stat>();
     
@@ -156,11 +156,7 @@ public class Enemy : MonoBehaviour
     {
 
         //Defense Stat check!
-        Stat s;
-        if (ActiveStats.TryGetValue(StatType.DefenseUP, out s))
-            if(!s.IsNew)damage -= s.Value;
-        if (ActiveStats.TryGetValue(StatType.DefenseDOWN, out s))
-            if(!s.IsNew)damage += s.Value;
+        damage = StatManager.Instance.DefenseStatCheck(damage, ActiveStatsList);
       
         damage = CalculateDamageWithStatus(damage);
         

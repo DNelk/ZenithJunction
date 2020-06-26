@@ -23,6 +23,7 @@ public class StatManager : MonoBehaviour
         healthBar.UpdateStatusChanges();
     }
     
+    //Called in the battle manager for both the player and enemy to count down remaining turns of a stat
     public void TickDownStats(List<Stat> statsList, HealthBar healthBar)
     {
         foreach (var stat in statsList)
@@ -45,5 +46,25 @@ public class StatManager : MonoBehaviour
         }
         
         healthBar.UpdateStatusChanges();
+    }
+
+    //Called from Enemy and Player when they take damage
+    //Run through the list and see if there are relevant defense values
+    public int DefenseStatCheck(int damage, List<Stat> statsList)
+    {
+        int modifiedDamage = damage;
+
+        foreach (var stat in statsList)
+        {
+            if (!stat.IsNew)
+            {
+                if (stat.StatType == StatType.DefenseUP)
+                    modifiedDamage -= stat.Value;
+                else if (stat.StatType == StatType.DefenseDOWN)
+                    modifiedDamage += stat.Value;
+            }
+        }
+
+        return modifiedDamage;
     }
 }
