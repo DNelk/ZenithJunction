@@ -152,7 +152,7 @@ public class Enemy : MonoBehaviour
     {
 
         //Defense Stat check!
-        damage = StatManager.Instance.StatCheck(damage, ActiveStatsList, StatType.DefenseUP, StatType.DefenseDOWN);
+        damage = StatManager.Instance.StatCheck(damage, ActiveStatsList, StatType.DefenseDOWN, StatType.DefenseUP);
       
         damage = CalculateDamageWithStatus(damage);
         

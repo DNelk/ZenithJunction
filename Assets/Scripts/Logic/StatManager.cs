@@ -50,6 +50,7 @@ public class StatManager : MonoBehaviour
 
     //Call whenever checking a value against stats
     //This will run through the stat list and compare against the values therein, returning a modified int
+    //The uptype will INCREASE the modifiedValue, while the downtype DECREASES the value
     public int StatCheck(int input, List<Stat> statsList, StatType upType, StatType downType)
     {
         int modifiedValue = input;
@@ -58,9 +59,9 @@ public class StatManager : MonoBehaviour
             if (!stat.IsNew)
             {
                 if (stat.StatType == upType)
-                    modifiedValue -= stat.Value;
-                else if (stat.StatType == downType)
                     modifiedValue += stat.Value;
+                else if (stat.StatType == downType)
+                    modifiedValue -= stat.Value;
             }
         }
         return modifiedValue;
