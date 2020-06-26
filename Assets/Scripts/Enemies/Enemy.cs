@@ -29,6 +29,7 @@ public class Enemy : MonoBehaviour
     
     //Stats
     public Dictionary<StatType, Stat> ActiveStats = new Dictionary<StatType, Stat>();
+    public List<Stat> ActiveStatsList = new List<Stat>();
     public Dictionary<StatType, Stat> BaseStats = new Dictionary<StatType, Stat>();
     
     //HP UI
@@ -297,43 +298,12 @@ public class Enemy : MonoBehaviour
 
     public void ModifyStat(StatType type, int turnsLeft, int value, bool applyImmidiately = false)
     {
-        if (ActiveStats.ContainsKey(type))
-        {
-            if (ActiveStats[type].Value == 0)
-                ActiveStats[type].IsNew = true;
-            ActiveStats[type].Value += value;
-            ActiveStats[type].TurnsLeft += turnsLeft;
-        }
-        else
-        {
-            ActiveStats.Add(type, new Stat(turnsLeft, value, applyImmidiately));
-        }
-        
-        _healthBar.UpdateStatusChanges();
+        StatManager.Instance.ModifyStat(ActiveStatsList, type, turnsLeft, value, _healthBar, applyImmidiately);
     }
 
     public void TickDownStats()
     {
-        foreach (var stat in ActiveStats.Values)
-        {
-            if (stat.IsNew)
-            {
-                stat.IsNew = false;
-                continue;
-            }
-            
-            if (stat.TurnsLeft > 0)
-            {
-                stat.TurnsLeft--;
-            }
-            
-            if(stat.TurnsLeft == 0)
-            {
-                stat.Value = 0;
-            }
-        }
-        
-        _healthBar.UpdateStatusChanges();
+        StatManager.Instance.TickDownStats(ActiveStatsList, _healthBar);
     }
 
     

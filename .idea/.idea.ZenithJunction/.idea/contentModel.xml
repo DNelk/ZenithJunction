@@ -1205,6 +1205,7 @@
           <e p="Logic" t="Include">
             <e p="BattleDelegateHandler.cs" t="Include" />
             <e p="Stat.cs" t="Include" />
+            <e p="StatManager.cs" t="Include" />
           </e>
           <e p="Managers" t="Include">
             <e p="BattleManager.cs" t="Include" />
