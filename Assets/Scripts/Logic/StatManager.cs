@@ -65,4 +65,10 @@ public class StatManager : MonoBehaviour
         }
         return modifiedValue;
     }
+
+    //Called whenever you need to remove all stat changes
+    public void ClearStats(List<Stat> statsList)
+    {
+        statsList.Clear();        
+    }
 }
