@@ -71,12 +71,12 @@ public class HealthBar : MonoBehaviour
         if(Target == "") //if there is no player or enemy to get stats from, ditch it
             return;
 
-        Dictionary<StatType, Stat> stats; //make this variable to store the stats changes
+        List<Stat> stats = new List<Stat>(); //make this variable to store the stats changes
         
         if (Target == "Player") //if it's a player, pull from player model
-            stats = BattleManager.Instance.Player.ActiveStats;
+            stats = BattleManager.Instance.Player.ActiveStatsList;
         else if (Target == "Enemy") //vice versa for enemy
-            stats = BattleManager.Instance.CurrentEnemy.ActiveStats;
+            stats = BattleManager.Instance.CurrentEnemy.ActiveStatsList;
         else //if none then ditch it again
             return;
         
@@ -85,14 +85,7 @@ public class HealthBar : MonoBehaviour
         TMP_Text statNumber = null;
         
         //Attack
-        if (stats.TryGetValue(StatType.AttackUP, out currentStat))
-        {
-            value += currentStat.Value;
-        }
-        if (stats.TryGetValue(StatType.AttackDOWN, out currentStat))
-        {
-            value -= currentStat.Value;
-        }
+        value = StatManager.Instance.StatCheck(value, stats, StatType.AttackUP, StatType.AttackDOWN);
         
         //attack changes
         if (value != 0)
@@ -130,14 +123,7 @@ public class HealthBar : MonoBehaviour
         }
         
         //def
-        if (stats.TryGetValue(StatType.DefenseUP, out currentStat))
-        {
-            value += currentStat.Value;
-        }
-        if (stats.TryGetValue(StatType.DefenseDOWN, out currentStat))
-        {
-            value -= currentStat.Value;
-        }
+        value = StatManager.Instance.StatCheck(value, stats, StatType.DefenseUP, StatType.DefenseDOWN);
         
         //def changes
         if (value != 0)
@@ -175,14 +161,7 @@ public class HealthBar : MonoBehaviour
         }
         
         //move
-        if (stats.TryGetValue(StatType.MovesUP, out currentStat))
-        {
-            value += currentStat.Value;
-        }
-        if (stats.TryGetValue(StatType.MovesDOWN, out currentStat))
-        {
-            value -= currentStat.Value;
-        }
+        value = StatManager.Instance.StatCheck(value, stats, StatType.MovesUP, StatType.MovesDOWN);
         
         //move changes
         if (value != 0)
@@ -227,12 +206,12 @@ public class HealthBar : MonoBehaviour
         
         string displayStr = "";
 
-        Dictionary<StatType, Stat> stats;
+        List<Stat> stats = new List<Stat>();
         
         if (Target == "Player")
-            stats = BattleManager.Instance.Player.ActiveStats;
+            stats = BattleManager.Instance.Player.ActiveStatsList;
         else if (Target == "Enemy")
-            stats = BattleManager.Instance.CurrentEnemy.ActiveStats;
+            stats = BattleManager.Instance.CurrentEnemy.ActiveStatsList;
         else
             return;
         
@@ -240,14 +219,7 @@ public class HealthBar : MonoBehaviour
         Stat currentStat;
         
         //Attack
-        if (stats.TryGetValue(StatType.AttackUP, out currentStat))
-        {
-            value += currentStat.Value;
-        }
-        if (stats.TryGetValue(StatType.AttackDOWN, out currentStat))
-        {
-            value -= currentStat.Value;
-        }
+        value = StatManager.Instance.StatCheck(value, stats, StatType.AttackUP, StatType.AttackDOWN);
 
         if (value != 0)
         {
@@ -260,14 +232,7 @@ public class HealthBar : MonoBehaviour
         }
 
         //Defense
-        if (stats.TryGetValue(StatType.DefenseUP, out currentStat))
-        {
-            value += currentStat.Value;
-        }
-        if (stats.TryGetValue(StatType.DefenseDOWN, out currentStat))
-        {
-            value -= currentStat.Value;
-        }
+        value = StatManager.Instance.StatCheck(value, stats, StatType.DefenseUP, StatType.DefenseDOWN);
 
         if (value != 0)
         {
@@ -280,14 +245,7 @@ public class HealthBar : MonoBehaviour
         }
         
         //Move
-        if (stats.TryGetValue(StatType.MovesUP, out currentStat))
-        {
-            value += currentStat.Value;
-        }
-        if (stats.TryGetValue(StatType.MovesDOWN, out currentStat))
-        {
-            value -= currentStat.Value;
-        }
+        value = StatManager.Instance.StatCheck(value, stats, StatType.MovesUP, StatType.MovesDOWN);
 
         if (value != 0)
         {

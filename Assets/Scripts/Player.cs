@@ -26,7 +26,8 @@ public class Player : MonoBehaviour
     private Enemy _enemy;
 
     //Stats
-    public Dictionary<StatType, Stat> ActiveStats = new Dictionary<StatType, Stat>();
+   // public Dictionary<StatType, Stat> ActiveStats = new Dictionary<StatType, Stat>();
+    public List<Stat> ActiveStatsList = new List<Stat>();
     public Dictionary<StatType, Stat> BaseStats = new Dictionary<StatType, Stat>();
 
     private Quaternion _prevRot;
@@ -72,10 +73,7 @@ public class Player : MonoBehaviour
     {
         //Defense Stat check!
         Stat s;
-        if (ActiveStats.TryGetValue(StatType.DefenseUP, out s))
-            if(!s.IsNew)damage -= s.Value;
-        if (ActiveStats.TryGetValue(StatType.DefenseDOWN, out s))
-            if(!s.IsNew)damage += s.Value;
+        damage = StatManager.Instance.StatCheck(damage, ActiveStatsList, StatType.DefenseDOWN, StatType.DefenseUP);
       
         _currentHP -= damage;
         //_mr.material.DOColor(Color.red, 0.2f).OnComplete(()=>_mr.material.DOColor(Color.white, 0.5f));
@@ -114,7 +112,10 @@ public class Player : MonoBehaviour
     #region Stats
     public void ModifyStat(StatType type, int turnsLeft, int value, bool applyImmidiately = false)
     {
-        if (ActiveStats.ContainsKey(type))
+        
+        StatManager.Instance.ModifyStat(ActiveStatsList, type, turnsLeft, value, _healthBar, applyImmidiately);
+        
+        /*if (ActiveStats.ContainsKey(type))
         {
             if (ActiveStats[type].Value == 0)
                 ActiveStats[type].IsNew = true;
@@ -126,12 +127,14 @@ public class Player : MonoBehaviour
             ActiveStats.Add(type, new Stat(turnsLeft, value, applyImmidiately, type));
         }
         
-        _healthBar.UpdateStatusChanges();
-            
+        _healthBar.UpdateStatusChanges();*/
     }
+    
     public void TickDownStats()
     {
-        foreach (var stat in ActiveStats.Values)
+        
+        StatManager.Instance.TickDownStats(ActiveStatsList, _healthBar);
+        /*foreach (var stat in ActiveStats.Values)
         {
             if (stat.IsNew)
             {
@@ -150,7 +153,7 @@ public class Player : MonoBehaviour
             }
         }
         
-        _healthBar.UpdateStatusChanges();
+        _healthBar.UpdateStatusChanges();*/
     }
     #endregion
 }
