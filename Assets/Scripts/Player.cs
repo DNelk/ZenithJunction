@@ -119,10 +119,7 @@ public class Player : MonoBehaviour
         if (ActiveStats.TryGetValue(StatType.DefenseDOWN, out s))
             if(!s.IsNew)damage += s.Value;
 
-        if (damage <= 0)
-        {
-            return; //it will never heal you
-        }
+        if (damage <= 0) return; //it will never heal you
 
         int oldHp = _currentHP;
         _currentHP -= damage;
@@ -150,7 +147,8 @@ public class Player : MonoBehaviour
         else x_pos = _hpBarPos.x - (((float)(_maxHP - _currentHP)/_maxHP) * (_hpBarWidth * 0.975f));
         
         _hpBarRect.localPosition = new Vector3(x_pos,_hpBarPos.y, _hpBarPos.z); //move the bar
-        _hpText.text = _currentHP + "/" + _maxHP; //update new HP text
+        if (_currentHP <= 0) _hpText.text = 0 + "/" + _maxHP; //update new HP text
+        else _hpText.text = _currentHP + "/" + _maxHP;
         float newXpos = _hpBarRect.position.x; //remember the new xPos for HP after decreased
 
         //taking attack animation
@@ -185,7 +183,7 @@ public class Player : MonoBehaviour
             else newWidth = _damageUnitWidth[2];
             _damageUnit[2].sizeDelta = new Vector2(newWidth, _damageUnit[2].rect.height);
 
-            _realDamageText.text = "-" + damage; //assign damage number
+            _realDamageText.text = "-" + trueDamage; //assign damage number
             _takingDamageAnim.gameObject.SetActive(true); //then play the animation
             
             //set the glow animation to decrease number
