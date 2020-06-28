@@ -206,8 +206,6 @@ public class Engine : MonoBehaviour
         
         _pending.Remove(c);
         DeckManager.Instance.CardsToBeSorted.Add(c);
-        ExecuteStackForPreview();
-        UpdateUICounts();
         c.OffEngine(DeckManager.Instance.transform.parent);
         c.Engine = null;
         if (isClick)
@@ -217,7 +215,7 @@ public class Engine : MonoBehaviour
         MagicCircle();
         //update slot light
         updateSlotFilled();
-        
+        UpdateUICounts();
         if(cInd == _pending.Count) //if this is the last card
             return;
         if(_pending.Count == 0) //if there is no card left
@@ -231,6 +229,8 @@ public class Engine : MonoBehaviour
             nextC = _pending[cInd];
             nextC.transform.DOLocalMove(CurrentCardPos(cInd), 0.1f);
         }
+        
+        
     }
 
     public void ReadyCards()
@@ -317,7 +317,6 @@ public class Engine : MonoBehaviour
     }
 
     public List<Card> PoppedCards; //Cards go here between execution steps 1 and 2
-    public bool GoldOrSilverFound = false;  //Boolean for the Golden/Silver combo cards
     public IEnumerator ExecuteStack()
     {
         BattleDelegateHandler.ApplyEngineEffects();

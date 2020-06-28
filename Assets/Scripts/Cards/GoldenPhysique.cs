@@ -7,21 +7,29 @@ public class GoldenPhysique : Card
     public override void Execute()
     {
         base.Execute();
+
+        bool found = false;
         
         foreach (Card c in _myEngine.Stack)
         {
             if (c.CardName == "Silver Prowess")
             {
-                _myEngine.GoldOrSilverFound = true;
+                found = true;
             }
-                
         }
 
-        if (_myEngine.GoldOrSilverFound)
+        foreach (Card c in _myEngine.PoppedCards)
+        {
+            if (c.CardName == "Silver Prowess")
+            {
+                found = true;
+            }
+        }
+        
+        if (found)
         {
             PowerTotal = 10;
             TrashThis = true;
-            _myEngine.GoldOrSilverFound = false;
         }
         else
         {
