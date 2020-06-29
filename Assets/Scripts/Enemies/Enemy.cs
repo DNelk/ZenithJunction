@@ -47,6 +47,9 @@ public class Enemy : MonoBehaviour
     private float[] _damageUnitWidth = new float[3];
     private List<GameObject> _hpGlowEffectUnit = new List<GameObject>();
     private TMP_Text _realDamageText;
+    
+    //InfoUI
+    public Sprite[] infoSprite = new Sprite[2];
 
     private void Awake()
     {
@@ -113,7 +116,7 @@ public class Enemy : MonoBehaviour
         }
         
         //for debug pure pose only
-        if (Input.GetKeyDown(KeyCode.A))
+        /*if (Input.GetKeyDown(KeyCode.A))
         {
             TakeDamage(6);
         }
@@ -128,7 +131,7 @@ public class Enemy : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.F))
         {
             TakeDamage(19);
-        }
+        }*/
     }
 
     public void PrepareAttack()
@@ -190,7 +193,6 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-
         //Defense Stat check!
         damage = StatManager.Instance.StatCheck(damage, ActiveStatsList, StatType.DefenseDOWN, StatType.DefenseUP);
       
@@ -203,7 +205,10 @@ public class Enemy : MonoBehaviour
         //_mr.material.DOColor(Color.red, 0.2f).OnComplete(() => _mr.material.DOColor(Color.white, 0.5f));
         UpdateHealth(damage, oldHp);
         if (_currentHP <= 0)
+        {
+            _currentHP = 0;
             Utils.DisplayGameOver("Victory!", true);
+        }
     }
     
     private void UpdateHealth(int damage, int oldHp)
@@ -228,7 +233,7 @@ public class Enemy : MonoBehaviour
             if (_currentHP <= 0) trueDamage = (float)oldHp;
             else trueDamage = damage;
             
-            //change takingDamageAnim position
+            //change takingDamageAnim position 
             Vector3 takingDamagePos = _takingDamageAnim.position; //take ref for position
             _takingDamageAnim.position = new Vector3(((oldXpos + newXpos)/2 + 5), takingDamagePos.y, takingDamagePos.z ); //set new position
             
@@ -257,9 +262,11 @@ public class Enemy : MonoBehaviour
             _takingDamageAnim.gameObject.SetActive(true); //then play the animation
             
             //set the glow animation to decrease number
-            for (int i = _currentHP; i < _currentHP + trueDamage; i++)
+            int glowNumber = Mathf.FloorToInt(((float) _currentHP / _maxHP) * 20);
+            int glowDecrease = Mathf.FloorToInt(((float) trueDamage / _maxHP) * 20);
+            for (int i = glowNumber; i < glowNumber + glowDecrease; i++)
             {
-                _hpGlowEffectUnit[i].SetActive(false);
+                if (i >= 0) _hpGlowEffectUnit[i].SetActive(false);
             }
         }
     }

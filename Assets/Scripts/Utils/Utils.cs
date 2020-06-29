@@ -20,8 +20,9 @@ public static class Utils
     public static void DisplayGameOver(string message, bool win)
     {
         BattleManager.Instance.BattleState = BattleStates.GameOver;
-        GameOverPanel go = GameObject.Instantiate(Resources.Load<GameObject>("prefabs/GameOver"), GameObject.Find("MainCanvas").transform).GetComponent<GameOverPanel>();
+        GameOverPanel go = GameObject.Instantiate(Resources.Load<GameObject>("prefabs/GameOver"), GameObject.Find("BattleTransition").transform).GetComponent<GameOverPanel>();
         go.Load(message, win);
+        go.ShowResult(win);
     }
 
     public static CardPreview CurrentPreview;

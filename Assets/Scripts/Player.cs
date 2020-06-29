@@ -53,7 +53,7 @@ public class Player : MonoBehaviour
         }
         
         //for debug pure pose only
-        if (Input.GetKeyDown(KeyCode.A))
+        /*if (Input.GetKeyDown(KeyCode.A))
         {
             TakeDamage(6);
         }
@@ -68,7 +68,7 @@ public class Player : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.F))
         {
             TakeDamage(19);
-        }
+        }*/
     }
     
     private void Awake()
@@ -113,8 +113,7 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        //Defense Stat check!
-        Stat s;
+        //Stat s;
         damage = StatManager.Instance.StatCheck(damage, ActiveStatsList, StatType.DefenseDOWN, StatType.DefenseUP);
       
         if (damage <= 0) return; //it will never heal you
@@ -124,7 +123,10 @@ public class Player : MonoBehaviour
         //_mr.material.DOColor(Color.red, 0.2f).OnComplete(()=>_mr.material.DOColor(Color.white, 0.5f));
         UpdateHealth(damage, oldHp);
         if (_currentHP <= 0)
+        {
+            _currentHP = 0;
             Utils.DisplayGameOver("Defeat!", false);
+        }
     }
 
     public void GainLife(int heal)
@@ -185,9 +187,11 @@ public class Player : MonoBehaviour
             _takingDamageAnim.gameObject.SetActive(true); //then play the animation
             
             //set the glow animation to decrease number
-            for (int i = _currentHP; i < _currentHP + trueDamage; i++)
+            int glowNumber = Mathf.FloorToInt(((float) _currentHP / _maxHP) * 20);
+            int glowDecrease = Mathf.FloorToInt(((float) trueDamage / _maxHP) * 20);
+            for (int i = glowNumber; i < glowNumber + glowDecrease; i++)
             {
-                _hpGlowEffectUnit[i].SetActive(false);
+                if (i >= 0) _hpGlowEffectUnit[i].SetActive(false);
             }
         }
     }

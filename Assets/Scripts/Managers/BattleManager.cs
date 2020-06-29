@@ -45,7 +45,7 @@ public class BattleManager : MonoBehaviour
     //Engines
     public Engine[] Engines;
     //set up canvas
-    private Transform _mainCanvas;
+    public Transform _mainCanvas;
     //set move 
     private MovePlayerDialog _moveUI;
     //set EnemyPos Ui
@@ -86,7 +86,7 @@ public class BattleManager : MonoBehaviour
         //_enemyText = GameObject.Find("EnemyText").GetComponent<UIPopIn>();
         //_resultText = GameObject.Find("ResultText").GetComponent<UIPopIn>();
         //_clashText = GameObject.Find("ClashText").GetComponent<UIPopIn>();
-        BattleState = BattleStates.MakingEngines;
+        //BattleState = BattleStates.MakingEngines;
         
         _playerAttack = null;
         
@@ -95,7 +95,7 @@ public class BattleManager : MonoBehaviour
         Engines[1] = GameObject.Find("Engine2").GetComponent<Engine>();
         Engines[2] = GameObject.Find("Engine3").GetComponent<Engine>();
         
-        GameManager.Instance.StartBattle();
+        //GameManager.Instance.StartBattle();
         
         //get move UI
         _mainCanvas = GameObject.Find("MainCanvas").transform;
@@ -458,7 +458,7 @@ public enum BattleStates
     Battle,
     GameOver,
     BattleStart,
-    Moving
+    Moving,
 }
 
 //Used for both players and enemies

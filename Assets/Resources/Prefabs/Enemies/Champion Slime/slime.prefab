@@ -725,6 +725,10 @@ MonoBehaviour:
   _maxHP: 50
   DesiredRange: 3
   AtkDebuff: 0
+  ActiveStatsList: []
+  infoSprite:
+  - {fileID: 21300000, guid: 443e390eb03def44387bdf872773599e, type: 3}
+  - {fileID: 21300000, guid: 0daffe1ec1b4ad5479445ee09d3125a1, type: 3}
 --- !u!1 &7677773667274034290
 GameObject:
   m_ObjectHideFlags: 0

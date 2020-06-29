@@ -440,24 +440,14 @@ public class Engine : MonoBehaviour
         }
 
         //add buff and debuff
-        var playerStats = BattleManager.Instance.Player.ActiveStats;
+        var playerStats = BattleManager.Instance.Player.ActiveStatsList;
         Stat s;
         
         //attack
-        if (playerStats.TryGetValue(StatType.AttackUP, out s))
-        {
-            if (_powerTotal > 0) _powerTotal += s.Value;
-            if (_attackPower[0] > 0) _attackPower[0] += s.Value;
-            if (_attackPower[1] > 0) _attackPower[1] += s.Value;
-            if (_attackPower[2] > 0) _attackPower[2] += s.Value;
-        }
-        if (playerStats.TryGetValue(StatType.AttackDOWN, out s))
-        {
-            if (_powerTotal > 0) _powerTotal -= s.Value;
-            if (_attackPower[0] > 0) _attackPower[0] -= s.Value;
-            if (_attackPower[1] > 0) _attackPower[1] -= s.Value;
-            if (_attackPower[2] > 0) _attackPower[2] -= s.Value;
-        }
+        if (_powerTotal > 0) _powerTotal = StatManager.Instance.StatCheck(_powerTotal, playerStats, StatType.AttackUP, StatType.AttackDOWN);
+        if (_attackPower[0] > 0) _attackPower[0] = StatManager.Instance.StatCheck(_attackPower[0], playerStats, StatType.AttackUP, StatType.AttackDOWN);
+        if (_attackPower[1] > 0) _attackPower[1] = StatManager.Instance.StatCheck(_attackPower[1], playerStats, StatType.AttackUP, StatType.AttackDOWN);
+        if (_attackPower[2] > 0) _attackPower[2] = StatManager.Instance.StatCheck(_attackPower[2], playerStats, StatType.AttackUP, StatType.AttackDOWN);
 
         //if attack is less than zero then set it to be zero
         if (_powerTotal < 0) _powerTotal = 0;
@@ -468,11 +458,7 @@ public class Engine : MonoBehaviour
         }
         
         //speed
-        if (_moveTotal > 0)
-        {
-            if (playerStats.TryGetValue(StatType.MovesUP, out s)) _moveTotal += s.Value;
-            if (playerStats.TryGetValue(StatType.MovesDOWN, out s)) _moveTotal -= s.Value;   
-        }
+        if (_moveTotal > 0) _moveTotal = StatManager.Instance.StatCheck(_moveTotal, playerStats, StatType.MovesUP, StatType.MovesDOWN);
 
         //make sure speed not go over 3 and under0
         if (_moveTotal > 3) _moveTotal = 3;
