@@ -3809,7 +3809,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentWP: {fileID: 7260243839261693265}
-  Speed: 700
+  Speed: 0
 --- !u!54 &3964355578305134068
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -8525,7 +8525,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentWP: {fileID: 5189603065002102529}
-  Speed: 700
+  Speed: 0
 --- !u!1 &6178485768560876429
 GameObject:
   m_ObjectHideFlags: 0
@@ -8772,7 +8772,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentWP: {fileID: 5189603065002102529}
-  Speed: 700
+  Speed: 0
 --- !u!136 &3349799379276462120
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -21348,6 +21348,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.x
       value: 53.590313
       objectReference: {fileID: 0}
+    - target: {fileID: 1380244314305979633, guid: a39a4086b6773944bac6ac58b4007782,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6119762124878097684, guid: a39a4086b6773944bac6ac58b4007782,
         type: 3}
       propertyPath: m_Size.y
@@ -21357,11 +21362,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Size.z
       value: 7.17
-      objectReference: {fileID: 0}
-    - target: {fileID: 1380244314305979633, guid: a39a4086b6773944bac6ac58b4007782,
-        type: 3}
-      propertyPath: m_CollisionDetection
-      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a39a4086b6773944bac6ac58b4007782, type: 3}
@@ -26437,17 +26437,12 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 119.10214
       objectReference: {fileID: 0}
-    - target: {fileID: 2646429718704619390, guid: 6e7ac442fcda13740b984f375afba3d2,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2989279033612769330, guid: 6e7ac442fcda13740b984f375afba3d2,
+    - target: {fileID: 8597724676738481264, guid: 6e7ac442fcda13740b984f375afba3d2,
         type: 3}
       propertyPath: m_RootOrder
       value: 20
       objectReference: {fileID: 0}
-    - target: {fileID: 8597724676738481264, guid: 6e7ac442fcda13740b984f375afba3d2,
+    - target: {fileID: 2989279033612769330, guid: 6e7ac442fcda13740b984f375afba3d2,
         type: 3}
       propertyPath: m_RootOrder
       value: 21
@@ -26461,6 +26456,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_CollisionDetection
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2646429718704619390, guid: 6e7ac442fcda13740b984f375afba3d2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6e7ac442fcda13740b984f375afba3d2, type: 3}

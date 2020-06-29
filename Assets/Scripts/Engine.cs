@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using DG.Tweening;
 using TMPro;
@@ -397,7 +398,6 @@ public class Engine : MonoBehaviour
         int totalCost = 0;
 
         List<Card> tempPending = new List<Card>(_pending);
-        
         if (EngineState == EngineState.Stacking)
             StackCardsForPreview();
         
@@ -411,7 +411,17 @@ public class Engine : MonoBehaviour
             }
 
             c.Execute();
-            
+
+            _aetherTotal += c.AetherTotal;
+            _moveTotal += c.MoveTotal;
+            totalCost += c.AetherCost;
+            if (!c.IsAttackInRange() && _inRange)
+                _inRange = false;
+        }
+
+        foreach (var c in Stack)
+        {
+            _powerTotal += c.CalculateAttackTotalWithPosition();
             switch (c.Range)
             {
                 case AttackRange.Melee:
@@ -427,13 +437,6 @@ public class Engine : MonoBehaviour
                     _attackPower[2] += c.PowerTotal;
                     break;
             }
-
-            _powerTotal += c.CalculateAttackTotalWithPosition();
-            _aetherTotal += c.AetherTotal;
-            _moveTotal += c.MoveTotal;
-            totalCost += c.AetherCost;
-            if (!c.IsAttackInRange() && _inRange)
-                _inRange = false;
         }
 
         if (EngineState == EngineState.Stacking)

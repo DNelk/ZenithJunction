@@ -9,8 +9,8 @@ public class FistOfUnity : Card
         base.Execute();
         if(BattleManager.Instance.BattleState != BattleStates.Battle)
             return;
-        BattleDelegateHandler.NextEngineEffect += () => BattleManager.Instance.PlayerAttack.AetherTotal += 4;
-        BattleDelegateHandler.NextNextEngineEffect += () =>  BattleManager.Instance.PlayerAttack.AetherTotal += 4;
+        BattleDelegateHandler.NextEngineEffect += () => BattleManager.Instance.PlayerAttack.PowerTotal += 4;
+        BattleDelegateHandler.NextNextEngineEffect += () =>  BattleManager.Instance.PlayerAttack.PowerTotal += 8;
         TrashThis = true;
     }
 }

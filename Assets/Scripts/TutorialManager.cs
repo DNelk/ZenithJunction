@@ -74,9 +74,13 @@ public class TutorialManager : MonoBehaviour
          case 5:
             StartCoroutine(Step6());
             break;
+         case 6:
+            StartCoroutine(Step7());
+            break;
       } 
    }
 
+   //Power
    private IEnumerator Step1()
    {
       List<string> tutDeck = new List<string>();
@@ -193,7 +197,7 @@ public class TutorialManager : MonoBehaviour
       TutorialStep++;
    }
 
-
+   //Aether
    private IEnumerator Step2()
    {
       List<string> tutDeck = new List<string>();
@@ -326,6 +330,7 @@ public class TutorialManager : MonoBehaviour
       TutorialStep++;
    }
 
+   //Buying cards
    private IEnumerator Step3()
    {
       List<string> tutDeck = new List<string>();
@@ -372,6 +377,7 @@ public class TutorialManager : MonoBehaviour
       TutorialStep++;
    }
 
+   //Rail charge
    private IEnumerator Step4()
    {
       List<string> tutDeck = new List<string>();
@@ -406,7 +412,74 @@ public class TutorialManager : MonoBehaviour
       TutorialStep++;
    }
    
+   //Using aether
    private IEnumerator Step5()
+   {
+      List<string> tutDeck = new List<string>();
+      tutDeck.Add("manaboil");
+      tutDeck.Add("strike");
+      tutDeck.Add("quickjolt");
+
+      DeckManager.Instance.LoadDeck(tutDeck);
+
+      DeckManager.Instance.DealAmt = 3;
+      BattleManager.Instance.Engines[1].gameObject.SetActive(false);
+      BattleManager.Instance.Engines[2].gameObject.SetActive(false);
+      BattleManager.Instance.NumEngines = 1;
+
+    
+      _currentHead = Utils.GenerateTalkingHead(GameObject.Find("MainCanvas").transform);
+
+      _currentHead.CharacterName = "Sir Wolff";
+      _currentHead.Dialogue = "Now do you see the value of <color=blue>Aether</color>" +
+                              Utils.ReplaceWithSymbols("aether ") + "transmutation?";
+
+      yield return new WaitUntil(AdvanceText);
+      
+      _currentHead.CharacterName = "Hugo";
+      _currentHead.Dialogue = "Oh yeah! Did you see how powerful I was?";
+
+      yield return new WaitUntil(AdvanceText);
+      
+      _currentHead.CharacterName = "Sir Wolff";
+      _currentHead.Dialogue = "<color=blue>Aether</color>" +
+                              Utils.ReplaceWithSymbols("aether ") + "is more than just for building your skillset. It also enables the use of far more powerful and risky techniques!";
+
+      yield return new WaitUntil(AdvanceText);
+      
+      _currentHead.CharacterName = "Hugo";
+      _currentHead.Dialogue = "Sounds dangerous! I want to try!";
+      
+      DeckManager.Instance.DealHand();
+
+      yield return new WaitUntil(() => DeckManager.Instance.CardsToBeSorted.Count == 3);
+      
+      Tween fadeTween = _currentHead.BG.DOFade(0f, 0.1f);
+      yield return fadeTween.WaitForCompletion();
+      _currentHead.BG.raycastTarget = false;
+
+      _currentHead.CharacterName = "Sir Wolff";
+      _currentHead.Dialogue = "\"Quick Jolt\" is stronger than the average attack, and it bestows bonus <color=blue>Aether</color>" +
+                              Utils.ReplaceWithSymbols("aether ") +"upon use!";
+
+      yield return new WaitUntil(AdvanceText);
+      
+      _currentHead.Dialogue = "All it takes is one <color=blue>Aether</color>" +
+                              Utils.ReplaceWithSymbols("aether ") +"to make those sparks fly. You can see how much a card costs in <color=blue>Aether</color>" +
+                              Utils.ReplaceWithSymbols("aether ")+"right by its name.";
+
+      yield return new WaitUntil(AdvanceText);
+
+      _currentHead.Dialogue = "Our common \"Mana Boil\" is enough for us right now.";
+
+      yield return new WaitUntil(AdvanceText);
+      
+      _currentHead.RollOut();
+      TutorialStep++;
+   }
+   
+   //Moving
+   private IEnumerator Step6()
    {
       List<string> tutDeck = new List<string>();
       tutDeck.Add("allaboard");
@@ -525,7 +598,8 @@ public class TutorialManager : MonoBehaviour
       TutorialStep++;
    }
 
-   private IEnumerator Step6()
+   //End
+   private IEnumerator Step7()
    {
       PlayerCollection pc = Utils.Load<PlayerCollection>("playercollection");
       BuyManager.Instance.GenerateCatalog();
