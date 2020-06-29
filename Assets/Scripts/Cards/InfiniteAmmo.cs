@@ -14,6 +14,9 @@ public class InfiniteAmmo : Card
         
         foreach (Engine e in BattleManager.Instance.Engines)
         {
+            if(e == _myEngine)
+                continue;
+            
             foreach (Card c in e.Stack)
             {
                 if (c.CardType == CardTypes.Aether)
