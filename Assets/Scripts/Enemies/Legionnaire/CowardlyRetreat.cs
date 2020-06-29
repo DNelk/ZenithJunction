@@ -10,9 +10,8 @@ public class CowardlyRetreat : EnemyAttack
         Enemy me = BattleManager.Instance.CurrentEnemy;
         int moves = 1;
         //Stat Check
-        if (me.ActiveStats.ContainsKey(StatType.MovesDOWN))
-            moves += me.ActiveStats[StatType.MovesDOWN].Value;
-        
+        moves = StatManager.Instance.StatCheck(moves, me.ActiveStatsList, StatType.MovesDOWN, StatType.NullStat);
+
         Player player = BattleManager.Instance.Player;
         if (player.Position != 2 && player.Position <= me.Position && me.Position!=2)
             me.ChangePosition(me.Position + moves);

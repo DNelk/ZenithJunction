@@ -28,7 +28,8 @@ public class Enemy : MonoBehaviour
     private EnemyIntentionUI _enemyIntention;
     
     //Stats
-    public Dictionary<StatType, Stat> ActiveStats = new Dictionary<StatType, Stat>();
+    //public Dictionary<StatType, Stat> ActiveStats = new Dictionary<StatType, Stat>();
+    public List<Stat> ActiveStatsList = new List<Stat>();
     public Dictionary<StatType, Stat> BaseStats = new Dictionary<StatType, Stat>();
     
     //HP UI
@@ -180,11 +181,7 @@ public class Enemy : MonoBehaviour
         int dmg = CalculateAttackTotalWithPosition(CurrentAttack);
         if (dmg > 0)
         {
-            Stat s;
-            if (ActiveStats.TryGetValue(StatType.AttackUP, out s))
-                if(!s.IsNew)dmg += s.Value;
-            if (ActiveStats.TryGetValue(StatType.AttackDOWN, out s))
-                if(!s.IsNew)dmg -= s.Value;
+            dmg = StatManager.Instance.StatCheck(dmg, ActiveStatsList, StatType.AttackUP, StatType.AttackDOWN);
         }
         dmg -= AtkDebuff;
         AtkDebuff = 0;
@@ -195,11 +192,7 @@ public class Enemy : MonoBehaviour
     {
 
         //Defense Stat check!
-        Stat s;
-        if (ActiveStats.TryGetValue(StatType.DefenseUP, out s))
-            if(!s.IsNew)damage -= s.Value;
-        if (ActiveStats.TryGetValue(StatType.DefenseDOWN, out s))
-            if(!s.IsNew)damage += s.Value;
+        damage = StatManager.Instance.StatCheck(damage, ActiveStatsList, StatType.DefenseDOWN, StatType.DefenseUP);
       
         damage = CalculateDamageWithStatus(damage);
         
@@ -339,11 +332,7 @@ public class Enemy : MonoBehaviour
     public IEnumerator MoveInRange(int moves = 3)
     {
         //Stat Check
-        Stat s;
-        if (ActiveStats.TryGetValue(StatType.MovesUP, out s))
-            if(!s.IsNew)moves += s.Value;
-        if (ActiveStats.TryGetValue(StatType.MovesDOWN, out s))
-            if(!s.IsNew)moves -= s.Value;
+        moves = StatManager.Instance.StatCheck(moves, ActiveStatsList, StatType.MovesUP, StatType.MovesDOWN);
 
         Player player = BattleManager.Instance.Player;
         //We want to move closer
@@ -388,43 +377,12 @@ public class Enemy : MonoBehaviour
 
     public void ModifyStat(StatType type, int turnsLeft, int value, bool applyImmidiately = false)
     {
-        if (ActiveStats.ContainsKey(type))
-        {
-            if (ActiveStats[type].Value == 0)
-                ActiveStats[type].IsNew = true;
-            ActiveStats[type].Value += value;
-            ActiveStats[type].TurnsLeft += turnsLeft;
-        }
-        else
-        {
-            ActiveStats.Add(type, new Stat(turnsLeft, value, applyImmidiately));
-        }
-        
-        _healthBar.UpdateStatusChanges();
+        StatManager.Instance.ModifyStat(ActiveStatsList, type, turnsLeft, value, _healthBar, applyImmidiately);
     }
 
     public void TickDownStats()
     {
-        foreach (var stat in ActiveStats.Values)
-        {
-            if (stat.IsNew)
-            {
-                stat.IsNew = false;
-                continue;
-            }
-            
-            if (stat.TurnsLeft > 0)
-            {
-                stat.TurnsLeft--;
-            }
-            
-            if(stat.TurnsLeft == 0)
-            {
-                stat.Value = 0;
-            }
-        }
-        
-        _healthBar.UpdateStatusChanges();
+        StatManager.Instance.TickDownStats(ActiveStatsList, _healthBar);
     }
 
     

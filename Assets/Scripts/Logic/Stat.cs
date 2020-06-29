@@ -45,5 +45,6 @@ public enum StatType
     MovesUP,
     DefenseDOWN,
     AttackDOWN,
-    MovesDOWN
+    MovesDOWN,
+    NullStat
 }

@@ -205,8 +205,6 @@ public class Engine : MonoBehaviour
         
         _pending.Remove(c);
         DeckManager.Instance.CardsToBeSorted.Add(c);
-        ExecuteStackForPreview();
-        UpdateUICounts();
         c.OffEngine(DeckManager.Instance.transform.parent);
         c.Engine = null;
         if (isClick)
@@ -216,7 +214,7 @@ public class Engine : MonoBehaviour
         MagicCircle();
         //update slot light
         updateSlotFilled();
-        
+        UpdateUICounts();
         if(cInd == _pending.Count) //if this is the last card
             return;
         if(_pending.Count == 0) //if there is no card left
@@ -230,6 +228,8 @@ public class Engine : MonoBehaviour
             nextC = _pending[cInd];
             nextC.transform.DOLocalMove(CurrentCardPos(cInd), 0.1f);
         }
+        
+        
     }
 
     public void ReadyCards()
@@ -316,7 +316,6 @@ public class Engine : MonoBehaviour
     }
 
     public List<Card> PoppedCards; //Cards go here between execution steps 1 and 2
-    public bool GoldOrSilverFound = false;  //Boolean for the Golden/Silver combo cards
     public IEnumerator ExecuteStack()
     {
         BattleDelegateHandler.ApplyEngineEffects();
@@ -358,12 +357,8 @@ public class Engine : MonoBehaviour
         //Stat Check! -only move implemented
         if (_moveTotal > 0)
         {
-            var playerStats = BattleManager.Instance.Player.ActiveStats;
-            Stat s;
-            if (playerStats.TryGetValue(StatType.MovesUP, out s))
-                if(!s.IsNew)_moveTotal += s.Value;
-            if (playerStats.TryGetValue(StatType.MovesDOWN, out s))
-                if(!s.IsNew)_moveTotal -= s.Value;
+            var playerStats = BattleManager.Instance.Player.ActiveStatsList;
+            _moveTotal = StatManager.Instance.StatCheck(_moveTotal, playerStats, StatType.MovesUP, StatType.MovesDOWN);
         }
 
         if (_moveTotal > 3) _moveTotal = 3; //make sure it never go above 3
@@ -392,12 +387,9 @@ public class Engine : MonoBehaviour
         //Stat Check
         if (_powerTotal > 0)
         {
-            var playerStats = BattleManager.Instance.Player.ActiveStats;
-            Stat s;
-            if (playerStats.TryGetValue(StatType.AttackUP, out s))
-                if(!s.IsNew)_powerTotal += s.Value;
-            if (playerStats.TryGetValue(StatType.AttackDOWN, out s))
-                if(!s.IsNew)_powerTotal -= s.Value;
+            var playerStats = BattleManager.Instance.Player.ActiveStatsList;
+            _powerTotal =
+                StatManager.Instance.StatCheck(_powerTotal, playerStats, StatType.AttackUP, StatType.AttackDOWN);
         }
         
         MagicCircle();

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\ps380\.Rider2019.2\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\ps380\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_ZenithJunction.487873066.00" t="ExcludeRecursive" />
-    <e p="C:\Users\ps380\Desktop\DeckBuildingThesis\ZenithJunction" t="IncludeRecursive">
+    <e p="C:\Users\stink\.Rider2019.2\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\stink\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_ZenithJunction.-1743155901.00" t="ExcludeRecursive" />
+    <e p="D:\Documents\Unity Projects\ZenithJunction" t="IncludeRecursive">
       <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
@@ -1205,6 +1205,7 @@
           <e p="Logic" t="Include">
             <e p="BattleDelegateHandler.cs" t="Include" />
             <e p="Stat.cs" t="Include" />
+            <e p="StatManager.cs" t="Include" />
           </e>
           <e p="Managers" t="Include">
             <e p="BattleManager.cs" t="Include" />
@@ -1238,7 +1239,6 @@
             <e p="DeselectCardPanel.cs" t="Include" />
             <e p="EnemyIntentionUI.cs" t="Include" />
             <e p="Palmmy_UI" t="Include">
-              <e p="BattleTransition.cs" t="Include" />
               <e p="BattleUI_Hover.cs" t="Include" />
               <e p="CommenceCore.cs" t="Include" />
               <e p="ConfirmButtonEventManager.cs" t="Include" />
@@ -1246,15 +1246,12 @@
               <e p="EnemyPosition.cs" t="Include" />
               <e p="EngineCheatForRayCast.cs" t="Include" />
               <e p="EngineEventManager.cs" t="Include" />
-              <e p="EngineMagicCircle.cs" t="Include" />
-              <e p="GearAnim.cs" t="Include" />
               <e p="LockAuraAnim.cs" t="Include" />
               <e p="Map_Hovering.cs" t="Include" />
               <e p="Map_nonUIHovering.cs" t="Include" />
               <e p="PositionAura.cs" t="Include" />
               <e p="Rotating_Around.cs" t="Include" />
               <e p="Rotating_Self.cs" t="Include" />
-              <e p="SetActiveFunction.cs" t="Include" />
               <e p="UI_enemyInfo.cs" t="Include" />
               <e p="UI_EnemyMoveTag.cs" t="Include" />
             </e>
