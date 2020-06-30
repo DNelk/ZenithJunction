@@ -416,8 +416,6 @@ public class Engine : MonoBehaviour
 
             //c.Execute();
 
-            c.Execute();
-
             _aetherTotal += c.AetherTotal;
             _moveTotal += c.MoveTotal;
             totalCost += c.AetherCost;

@@ -780,7 +780,6 @@ MonoBehaviour:
   EmptyStack: 0
   Executed: 0
   PoppedCards: []
-  GoldOrSilverFound: 0
 --- !u!61 &1523972745096345871
 BoxCollider2D:
   m_ObjectHideFlags: 0
