@@ -164,7 +164,6 @@ public class CardEventManager : EventTrigger
             else if (_myCard.Engine != null)
             {
                 //move card back to Enigne Slot
-                Debug.Log("Im doing this");
                 transform.DOScale(BaseScale * 1.5f, 0.1f);
                 _myCard.Engine.moveCardToEngineSlot(_myCard.MyEngineIndex, 0.2f);
                 setParticleGlowSize(0.41f);

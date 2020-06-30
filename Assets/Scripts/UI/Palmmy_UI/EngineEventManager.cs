@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -51,12 +52,12 @@ public class EngineEventManager : EventTrigger
             Engine[] BMEngines = BattleManager.Instance.Engines;
             
             for (int i = 0; i < BMEngines.Length ; i++)
-            {
+            { 
                 if (BMEngines[i] != _myEngine && !BMEngines[i]._selected)
                 {
                     BMEngines[i].transform.DOScale(_myEngine._baseScale, 0.2f);
                     BMEngines[i].disselectGear();
-                    BMEngines[i].attackOnPositionPreviewOff();
+                    //BMEngines[i].attackOnPositionPreviewOff();
                 }
             }
         }

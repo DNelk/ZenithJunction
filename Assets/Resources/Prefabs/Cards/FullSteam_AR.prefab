@@ -145,12 +145,12 @@ PrefabInstance:
     - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
       propertyPath: _aetherCost
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
       propertyPath: _cardText
-      value: +3 Attack +3 Defense +3 Speed for 3 Engines.
+      value: r 3 Engines. Defense +3 Speed for 3 Engines.
       objectReference: {fileID: 0}
     - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}

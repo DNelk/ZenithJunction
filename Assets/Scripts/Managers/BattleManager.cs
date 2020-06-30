@@ -33,6 +33,9 @@ public class BattleManager : MonoBehaviour
     private Image _confirmCore;
 
     private Animator _commenceAnim;
+
+    public HealthBar playerHealthBar; //for player health bar ref
+    public HealthBar enemyHealthBar; //for enemy health bar ref
     //private UIPopIn _playerText;
     //private UIPopIn _enemyText;
     //private UIPopIn _resultText;
@@ -42,7 +45,7 @@ public class BattleManager : MonoBehaviour
     //Engines
     public Engine[] Engines;
     //set up canvas
-    private Transform _mainCanvas;
+    public Transform _mainCanvas;
     //set move 
     private MovePlayerDialog _moveUI;
     //set EnemyPos Ui
@@ -76,11 +79,14 @@ public class BattleManager : MonoBehaviour
         _confirmButtonSprite[0] = Resources.Load<Sprite>("Sprites/Core/Gear");
         _confirmButtonSprite[1] = Resources.Load<Sprite>("Sprites/Core/Gear2");
 
+        playerHealthBar = GameObject.Find("PlayerHealth").GetComponent<HealthBar>();
+        enemyHealthBar = GameObject.Find("EnemyHealth").GetComponent<HealthBar>();
+
         //_playerText = GameObject.Find("PlayerText").GetComponent<UIPopIn>();
         //_enemyText = GameObject.Find("EnemyText").GetComponent<UIPopIn>();
         //_resultText = GameObject.Find("ResultText").GetComponent<UIPopIn>();
         //_clashText = GameObject.Find("ClashText").GetComponent<UIPopIn>();
-        BattleState = BattleStates.MakingEngines;
+        //BattleState = BattleStates.MakingEngines;
         
         _playerAttack = null;
         
@@ -89,7 +95,7 @@ public class BattleManager : MonoBehaviour
         Engines[1] = GameObject.Find("Engine2").GetComponent<Engine>();
         Engines[2] = GameObject.Find("Engine3").GetComponent<Engine>();
         
-        GameManager.Instance.StartBattle();
+        //GameManager.Instance.StartBattle();
         
         //get move UI
         _mainCanvas = GameObject.Find("MainCanvas").transform;
@@ -273,6 +279,11 @@ public class BattleManager : MonoBehaviour
             yield return new WaitUntil(() => ClashUIManager.Instance.AnimDone);
             ClashUIManager.Instance.AnimDone = false;
         }
+        else
+        {
+            playerHealthBar.UpdateStatusChanges();
+            enemyHealthBar.UpdateStatusChanges();
+        }
 
         DisplayAttackResult(playerDamage, enemyDamage);
         
@@ -447,7 +458,7 @@ public enum BattleStates
     Battle,
     GameOver,
     BattleStart,
-    Moving
+    Moving,
 }
 
 //Used for both players and enemies
