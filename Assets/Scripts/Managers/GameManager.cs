@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour, ISerializationCallbackReceiver
         
         if(CardDirectory.CardsByName.Count == 0)
             CardDirectory.LoadDirectory();
-        if (!File.Exists(Application.persistentDataPath + "/playercollection.save"))
+        if (!File.Exists(Application.persistentDataPath + "/playercollection.save") || PlayerPrefs.GetInt("restart") == 1)
         {
             ResetPlayerSave();
         }
@@ -97,6 +97,23 @@ public class GameManager : MonoBehaviour, ISerializationCallbackReceiver
         for (int i = 0; i < 9; i++)
         {
             pc.Equipped.Add(StartingCards[i]);
+        }
+        Utils.Save(pc, "playercollection");
+    }
+    
+    public void ResetPlayerSaveHard()
+    {
+        List<string> startingCards = new List<string>(){"strike", "strike", "strike", "manaboil", "manaboil", "manaboil", "strike", "allaboard", "railcharge"};
+
+        PlayerCollection pc = new PlayerCollection();
+        foreach (var c in startingCards)
+        {
+            pc.Cards.Add(c);
+        }
+
+        for (int i = 0; i < 9; i++)
+        {
+            pc.Equipped.Add(startingCards[i]);
         }
         Utils.Save(pc, "playercollection");
     }

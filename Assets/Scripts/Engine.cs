@@ -414,7 +414,7 @@ public class Engine : MonoBehaviour
                 continue;
             }
 
-            //c.Execute();
+            c.Execute();
 
             _aetherTotal += c.AetherTotal;
             _moveTotal += c.MoveTotal;

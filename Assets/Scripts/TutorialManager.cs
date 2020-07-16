@@ -183,7 +183,7 @@ public class TutorialManager : MonoBehaviour
      
       yield return new WaitUntil(AdvanceText);
       
-      _currentHead.Dialogue = "Ok, you're ready. Press confirm to lock in our engine so we can face off.";
+      _currentHead.Dialogue = "Ok, you're ready. Press confirm (the big glowy ball in the corner) to lock in our engine so we can face off.";
 
       yield return new WaitUntil(() => BattleManager.Instance.BattleState == BattleStates.ChoosingAction);
       
@@ -338,6 +338,7 @@ public class TutorialManager : MonoBehaviour
 
       BuyManager.Instance.LoadNewCatalog(tutDeck);
       BuyManager.Instance.DealAmt = 1;
+      BuyManager.Instance.LeaveButton.gameObject.SetActive(false);
 
       _currentHead = Utils.GenerateTalkingHead(GameObject.Find("BuyScreen").transform);
 
@@ -364,6 +365,7 @@ public class TutorialManager : MonoBehaviour
       
       _currentHead.Dialogue = "Please note that this is not a permanent transmutation. After this encounter you'll forget about it like you never learned it!";
 
+      yield return new WaitUntil(AdvanceText);
 
       _currentHead.Dialogue = "You have 3 <color=blue>Aether</color>" +
                               Utils.ReplaceWithSymbols("aether, ") + "so go ahead and buy that Rail Charge.";
@@ -372,6 +374,8 @@ public class TutorialManager : MonoBehaviour
       _currentHead.Dialogue = "Transmutation Complete! Now let's see that new skill in action!";
       
       yield return new WaitUntil(AdvanceText);
+
+      BuyManager.Instance.LeaveButton.gameObject.SetActive(true);
 
       _currentHead.RollOut();
       TutorialStep++;
@@ -495,14 +499,9 @@ public class TutorialManager : MonoBehaviour
 
     
       _currentHead = Utils.GenerateTalkingHead(GameObject.Find("MainCanvas").transform);
-
-      _currentHead.CharacterName = "Sir Wolff";
-      _currentHead.Dialogue = "Now do you see the value of Aether transmutation?";
-
-      yield return new WaitUntil(AdvanceText);
       
       _currentHead.CharacterName = "Hugo";
-      _currentHead.Dialogue = "Oh yeah! Did you see how powerful I was?";
+      _currentHead.Dialogue = "Whoa. That's a sick skill!";
 
       yield return new WaitUntil(AdvanceText);
       
