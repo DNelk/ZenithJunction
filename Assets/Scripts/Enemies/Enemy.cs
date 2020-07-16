@@ -41,6 +41,7 @@ public class Enemy : MonoBehaviour
     private float _hpBarWidth;
     private float hp_OriginLength;
     private TMP_Text _hpText;
+    private Transform _hpGlow;
     //taking damage UI
     private Transform _takingDamageAnim;
     private RectTransform[] _damageUnit = new RectTransform[3];
@@ -78,10 +79,10 @@ public class Enemy : MonoBehaviour
         
         //for taking damage anim
         _takingDamageAnim = hpBar.Find("LosingHPAnimation").GetComponent<RectTransform>();
-        Transform hpGlow = hpBar.Find("HealthGlowAnimation").transform;
+        _hpGlow = hpBar.Find("HealthGlowAnimation").transform;
         for (int i = 0; i < 20; i++)
         {
-            _hpGlowEffectUnit.Add(hpGlow.GetChild(i).gameObject);
+            _hpGlowEffectUnit.Add(_hpGlow.GetChild(i).gameObject);
         }
         _damageUnit[0] = _takingDamageAnim.transform.Find("Unit").GetComponent<RectTransform>();
         _damageUnit[1] = _takingDamageAnim.transform.Find("Crack").GetComponent<RectTransform>();
@@ -418,4 +419,9 @@ public class Enemy : MonoBehaviour
         return ExtraInfo;
     }
     #endregion
+
+    public void TurnONHPGlow()
+    {
+        _hpGlow.GetComponent<Animator>().SetTrigger("BattleStart");
+    }
 }

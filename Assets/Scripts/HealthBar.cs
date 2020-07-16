@@ -336,4 +336,9 @@ public class HealthBar : MonoBehaviour
         _tooltip.StartCoroutine(_tooltip.FadeOut());
         _tooltip = null;
     }
+
+    public void ActiveHPBar()
+    {
+        
+    }
 }

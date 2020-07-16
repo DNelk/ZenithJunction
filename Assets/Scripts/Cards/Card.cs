@@ -479,12 +479,12 @@ public class Card : MonoBehaviour
         if (_eventManager.hovering)
         {
             transform.DOScale( _eventManager.InEngineScale * 1.5f, 0.2f); //change card size
-            _eventManager.setParticleGlowSize(0.72f); //set particle size
+            _eventManager.setParticleGlowSize(0.65f); //set particle size
         }
         else
         {
             transform.DOScale( _eventManager.InEngineScale, 0.2f); //change card size
-            _eventManager.setParticleGlowSize(0.41f); //set particle size
+            _eventManager.setParticleGlowSize(0.37f); //set particle size
         }
         
         transform.DOLocalMove(position, 0.5f).OnComplete(() => turnCheatImageRaycast(true));

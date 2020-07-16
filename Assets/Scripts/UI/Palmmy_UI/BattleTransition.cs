@@ -75,6 +75,8 @@ public class BattleTransition : MonoBehaviour
     void turnOnCanvas()
     {
         GameManager.Instance.StartBattle();
+
+        GetComponent<CanvasGroup>().blocksRaycasts = false;
         
         mainCanvas = BattleManager.Instance._mainCanvas.GetComponent<CanvasGroup>();
         mainCanvas.DOFade(1, 0.8f);

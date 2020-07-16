@@ -40,7 +40,7 @@ public class EngineEventManager : EventTrigger
     
     public override void OnPointerEnter(PointerEventData eventData)
     {
-        if (!BattleManager.Instance.isMouseDragging)
+        if (!BattleManager.Instance.isMouseDragging && _myEngine.isActive)
         {
             _myEngine.highlightedOn();
             _myEngine.playAuraAnim();
@@ -53,7 +53,7 @@ public class EngineEventManager : EventTrigger
             
             for (int i = 0; i < BMEngines.Length ; i++)
             { 
-                if (BMEngines[i] != _myEngine && !BMEngines[i]._selected)
+                if (BMEngines[i] != _myEngine && !BMEngines[i]._selected && BMEngines[i].isActive)
                 {
                     BMEngines[i].transform.DOScale(_myEngine._baseScale, 0.2f);
                     BMEngines[i].disselectGear();
@@ -65,7 +65,7 @@ public class EngineEventManager : EventTrigger
 
     public override void OnPointerExit(PointerEventData eventData)
     {
-        if (!BattleManager.Instance.isMouseDragging)
+        if (!BattleManager.Instance.isMouseDragging && _myEngine.isActive)
         {
             if (!_myEngine._selected)
             {

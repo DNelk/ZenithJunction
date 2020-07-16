@@ -1239,6 +1239,7 @@
             <e p="DeselectCardPanel.cs" t="Include" />
             <e p="EnemyIntentionUI.cs" t="Include" />
             <e p="Palmmy_UI" t="Include">
+              <e p="Arrow.cs" t="Include" />
               <e p="BattleTransition.cs" t="Include" />
               <e p="BattleUI_Hover.cs" t="Include" />
               <e p="CommenceCore.cs" t="Include" />

@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour, ISerializationCallbackReceiver
 
     public void StartBattle()
     {
-        BattleManager.Instance.BattleState = BattleStates.MakingEngines;
+        BattleManager.Instance.InitializeBattle();
 
         if (TutorialManager.Instance != null)
             TutorialManager.Instance.Step();
