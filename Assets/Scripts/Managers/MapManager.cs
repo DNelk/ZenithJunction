@@ -24,8 +24,13 @@ public class MapManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (!File.Exists(Application.persistentDataPath + "/mapdata.save"))
+        if (!File.Exists(Application.persistentDataPath + "/mapdata.save") || PlayerPrefs.GetInt("restart") == 1)
         {
+            if (PlayerPrefs.GetInt("restart") == 1)
+            {
+                PlayerPrefs.SetInt("restart", 0);
+                GameManager.Instance.ResetPlayerSaveHard();
+            }
             SaveMap();
         }
 
