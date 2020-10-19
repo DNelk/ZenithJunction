@@ -281,7 +281,7 @@ public class CardEventManager : EventTrigger
         if (_myCard.Engine==null && !_myCard.Purchasable)
         {
             _myCard.SwitchTypeAura(true); //turn on Type Aura
-            
+
             Glow.gameObject.SetActive(true);
             setParticleGlowSize(1f);
             if (!Glow.isPlaying) Glow.Play();

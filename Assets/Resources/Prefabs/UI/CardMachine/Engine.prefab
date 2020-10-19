@@ -772,6 +772,7 @@ MonoBehaviour:
   _pending: []
   _selected: 0
   _highlighted: 0
+  isActive: 0
   OverridePower: 0
   OverrideAether: 0
   OverrideMove: -1

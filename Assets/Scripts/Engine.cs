@@ -424,9 +424,10 @@ public class Engine : MonoBehaviour
             {
                 continue;
             }
-
-            c.Execute();
-
+            
+            //will fix this later
+            if (c.StatMods.Count <= 0) c.Execute(); 
+            
             _aetherTotal += c.AetherTotal;
             _moveTotal += c.MoveTotal;
             totalCost += c.AetherCost;
