@@ -166,7 +166,7 @@ public class CardEventManager : EventTrigger
                 //move card back to Enigne Slot
                 transform.DOScale(BaseScale * 1.5f, 0.1f);
                 _myCard.Engine.moveCardToEngineSlot(_myCard.MyEngineIndex, 0.2f);
-                setParticleGlowSize(0.41f);
+                setParticleGlowSize(0.37f);
             }
             else
             {
@@ -281,14 +281,14 @@ public class CardEventManager : EventTrigger
         if (_myCard.Engine==null && !_myCard.Purchasable)
         {
             _myCard.SwitchTypeAura(true); //turn on Type Aura
-            
+
             Glow.gameObject.SetActive(true);
             setParticleGlowSize(1f);
             if (!Glow.isPlaying) Glow.Play();
         }
         else if (_myCard.Engine != null && !_myCard.Purchasable)
         {
-            setParticleGlowSize(0.73f); //make hovering glow size
+            setParticleGlowSize(0.65f); //make hovering glow size
         }
 
         //change hovering
@@ -340,8 +340,8 @@ public class CardEventManager : EventTrigger
         }
         else if (_myCard.Engine != null && !_myCard.Purchasable)
         {
-            if (_myCard.Engine._highlighted) setParticleGlowSize(0.5f);
-            else setParticleGlowSize(0.41f);//make glow in engine normal size
+            if (_myCard.Engine._highlighted) setParticleGlowSize(0.45f);
+            else setParticleGlowSize(0.37f);//make glow in engine normal size
             
             if (!Glow.gameObject.activeSelf) Glow.gameObject.SetActive(true); //if particle is off, turn it fucking on
             if (!Glow.isPlaying) Glow.Play(); //if its not playing, make it play
@@ -473,7 +473,7 @@ public class CardEventManager : EventTrigger
 
     public void setParticleGlowSize(float scaler)
     {
-        Glow.transform.DOScale(GlowScale * scaler , 0.2f);
+        Glow.transform.DOScale(GlowScale * scaler , 0.3f);
     }
 
     #endregion

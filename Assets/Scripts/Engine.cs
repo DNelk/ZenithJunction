@@ -45,6 +45,8 @@ public class Engine : MonoBehaviour
     [HideInInspector] public Vector3 _baseScale;
     private GameObject _myCheatImage;
     private GameObject _myCheatImageForNewRayCastCheck;
+    private Image _blackMask;
+    private Vector3 _originalScale;
     [Range(1, 3)] public int engineNumber = 1;
     [HideInInspector] public List<Transform> _statePos;
 
@@ -54,6 +56,8 @@ public class Engine : MonoBehaviour
 
     [HideInInspector] public bool _selected;
     [HideInInspector] public bool _highlighted;
+
+    public bool isActive;
 
     //for pointer event
     private GameObject _gear;
@@ -134,21 +138,18 @@ public class Engine : MonoBehaviour
         
         //set up the position to go in each state
         Transform[] _stateTran= transform.parent.transform.Find("EnginePos" + engineNumber).GetComponentsInChildren<Transform>();
-        Transform[] temp = new Transform[3];
         for (int i = 1; i < _stateTran.Length; i++)
         {
-            temp[i - 1] = _stateTran[i];
+            _statePos.Add(_stateTran[i]);
         }
-        _stateTran = temp;
-        foreach (var trans in _stateTran)
-        {
-            _statePos.Add(trans);
-        }
+        
 
         //set up images and cheatImg for state change
         _baseScale = transform.localScale;
         _myCheatImage = transform.Find("CheatImg").gameObject;
         _myCheatImageForNewRayCastCheck = transform.parent.transform.Find("BackCheatImage").gameObject;
+        _blackMask = transform.Find("Black_Mask").GetComponent<Image>();
+        _originalScale = transform.localScale;
 
         //anim
         slotAuraAnim = transform.Find("SlotAura").GetComponent<Animator>();
@@ -166,6 +167,12 @@ public class Engine : MonoBehaviour
         u_move = transform.Find("MoveIcon").GetComponentsInChildren<Image>();
         
         OverridePower = OverrideAether = OverrideMove = -1;
+    }
+    
+    //start
+    void Start()
+    {
+        StateChange(0);
     }
 
     //Adds a card to the pending card array
@@ -190,7 +197,10 @@ public class Engine : MonoBehaviour
         DeckManager.Instance.CardsToBeSorted.Remove(c);
         UpdateUICounts();
         
-        //turn on the circle
+        //see if all card is there 
+        if (EngineState == EngineState.Stacking && _pending.Count >= 3) StateChange(2);
+
+            //turn on the circle
         MagicCircle();
         //update slot light
         updateSlotFilled();
@@ -203,6 +213,9 @@ public class Engine : MonoBehaviour
         
         if(_pending.Count > 1 && cInd != _pending.Count - 1)
             nextC = _pending[cInd + 1];
+        
+        //see if all card is there 
+        if (EngineState == EngineState.Stacking && _pending.Count >= 3) StateChange(1);
         
         _pending.Remove(c);
         DeckManager.Instance.CardsToBeSorted.Add(c);
@@ -229,8 +242,6 @@ public class Engine : MonoBehaviour
             nextC = _pending[cInd];
             nextC.transform.DOLocalMove(CurrentCardPos(cInd), 0.1f);
         }
-        
-        
     }
 
     public void ReadyCards()
@@ -413,9 +424,10 @@ public class Engine : MonoBehaviour
             {
                 continue;
             }
-
-            c.Execute();
-
+            
+            //will fix this later
+            if (c.StatMods.Count <= 0) c.Execute(); 
+            
             _aetherTotal += c.AetherTotal;
             _moveTotal += c.MoveTotal;
             totalCost += c.AetherCost;
@@ -884,14 +896,14 @@ public class Engine : MonoBehaviour
         {
             foreach (Card C in Stack)
             {
-                if (!C.Dragging) C._eventManager.setParticleGlowSize(0.5f);
+                if (!C.Dragging) C._eventManager.setParticleGlowSize(0.45f);
             }
         }
         else
         {
             for (int i = 0; i < _pending.Count; i++)
             {
-                if (_pending[i] != null && !_pending[i].Dragging) _pending[i]._eventManager.setParticleGlowSize(0.5f);
+                if (_pending[i] != null && !_pending[i].Dragging) _pending[i]._eventManager.setParticleGlowSize(0.45f);
             }   
         }
 
@@ -907,14 +919,14 @@ public class Engine : MonoBehaviour
         {
             foreach (Card C in Stack)
             {
-                if (!C.Dragging) C._eventManager.setParticleGlowSize(0.41f);
+                if (!C.Dragging) C._eventManager.setParticleGlowSize(0.37f);
             }
         }
         else
         {
             for (int i = 0; i < _pending.Count; i++)
             {
-                if (_pending[i] != null && !_pending[i].Dragging) _pending[i]._eventManager.setParticleGlowSize(0.41f);
+                if (_pending[i] != null && !_pending[i].Dragging) _pending[i]._eventManager.setParticleGlowSize(0.37f);
             }   
         }
 
@@ -932,6 +944,23 @@ public class Engine : MonoBehaviour
         blockAura = false;
     }
     #endregion
+
+    public void StateChange(int state)
+    {
+        transform.DOMove(_statePos[state].position, 0.3f);
+
+        float brightness = 0;
+        float scale = 1f;
+
+        if (state == 0)
+        {
+            brightness = 0.8f;
+            scale = 0.8f;
+        }
+
+        _blackMask.DOFade(brightness, 0.3f);
+        transform.DOScale(_originalScale * scale, 0.3f);
+    }
 }
 
 public enum EngineState
@@ -939,3 +968,4 @@ public enum EngineState
     Stacking,
     Stacked
 }
+

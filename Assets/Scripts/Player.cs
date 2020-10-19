@@ -29,6 +29,7 @@ public class Player : MonoBehaviour
     private float[] _damageUnitWidth = new float[3];
     private List<GameObject> _hpGlowEffectUnit = new List<GameObject>();
     private TMP_Text _realDamageText;
+    private Transform _hpGlow;
     
     //Stats
    // public Dictionary<StatType, Stat> ActiveStats = new Dictionary<StatType, Stat>();
@@ -95,10 +96,10 @@ public class Player : MonoBehaviour
         
         //for taking damage anim
         _takingDamageAnim = hpBar.Find("LosingHPAnimation").GetComponent<RectTransform>();
-        Transform hpGlow = hpBar.Find("HealthGlowAnimation").transform;
+        _hpGlow = hpBar.Find("HealthGlowAnimation").transform;
         for (int i = 0; i < 20; i++)
         {
-            _hpGlowEffectUnit.Add(hpGlow.GetChild(i).gameObject);
+            _hpGlowEffectUnit.Add(_hpGlow.GetChild(i).gameObject);
         }
         _damageUnit[0] = _takingDamageAnim.transform.Find("Unit").GetComponent<RectTransform>();
         _damageUnit[1] = _takingDamageAnim.transform.Find("Crack").GetComponent<RectTransform>();
@@ -255,4 +256,9 @@ public class Player : MonoBehaviour
         _healthBar.UpdateStatusChanges();*/
     }
     #endregion
+    
+    public void TurnONHPGlow()
+    {
+        _hpGlow.GetComponent<Animator>().SetTrigger("BattleStart");
+    }
 }

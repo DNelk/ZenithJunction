@@ -48,6 +48,7 @@ public class BattleManager : MonoBehaviour
     public Transform _mainCanvas;
     //set move 
     private MovePlayerDialog _moveUI;
+    private Animator _moveUIAura;
     //set EnemyPos Ui
     public EnemyPosition enemyPos;
 
@@ -101,8 +102,9 @@ public class BattleManager : MonoBehaviour
         _mainCanvas = GameObject.Find("MainCanvas").transform;
         Transform posPanel = _mainCanvas.Find("PositionsPanel");
         //get move set
-        GameObject moveSet = posPanel.transform.Find("MoveButton").gameObject;
+        Transform moveSet = posPanel.transform.Find("MoveButton");
         _moveUI = moveSet.GetComponent<MovePlayerDialog>();
+        _moveUIAura = _moveUI.transform.parent.transform.Find("PlayerPos").GetComponentInChildren<Animator>();
         //get enemyPos
         enemyPos = posPanel.transform.Find("EnemyPos").GetComponent<EnemyPosition>();
     }
@@ -176,6 +178,7 @@ public class BattleManager : MonoBehaviour
             //_confirmEvent.turnOff();
             //_confirmEvent.reset();
             BattleState = BattleStates.MakingEngines;
+            StartCoroutine(ReadEngines());
             //_confirmButtonText.text = "Confirm Engines";
             _commenceAnim.SetBool("TurnOn", false);
             ConfirmButton.onClick.RemoveAllListeners();
@@ -242,6 +245,7 @@ public class BattleManager : MonoBehaviour
         {
             _moveUI.MoveTotal = _playerAttack.MoveTotal;
             _moveUI.gameObject.SetActive(true);
+            _moveUIAura.SetBool("isAnimate", true);
 
             BattleState = BattleStates.Moving;
             
@@ -252,6 +256,7 @@ public class BattleManager : MonoBehaviour
             BattleState = BattleStates.Battle;
 
             //new one
+            _moveUIAura.SetBool("isAnimate", false);
             _moveUI.gameObject.SetActive(false);
         }
 
@@ -293,7 +298,6 @@ public class BattleManager : MonoBehaviour
         _enemyAttack = null;
         CurrentEnemy.TickDownStats();
         
-        _playerAttack = null;
         BattleDelegateHandler.ApplyAfterDamageEffects();
         
         //_confirmButtonText.text = "Select an Engine";
@@ -312,9 +316,11 @@ public class BattleManager : MonoBehaviour
             BuyManager.Instance.RotateRow();
             BuyManager.Instance.BuysRemaining = -1;
             BuyManager.Instance.FreeBuysRemaining = 0;
-
         }
-    
+        
+        _playerAttack.StateChange(0);
+        _playerAttack.isActive = false;
+        _playerAttack = null;
     }
 
     /*Without "trampling*/
@@ -421,7 +427,6 @@ public class BattleManager : MonoBehaviour
 
     public void EngineSelected()
     {
-        //_confirmButtonText.text = "Confirm Engine";\
         _confirmButtonText.sprite = _confirmButtonSprite[0]; 
         _confirmEvent.setTrigger();
         ConfirmButton.onClick.AddListener(ConfirmAction);
@@ -447,6 +452,26 @@ public class BattleManager : MonoBehaviour
     {
         _confirmButtonText.sprite = _confirmButtonSprite[1];
         _confirmEvent.turnOn();
+    }
+
+    public void InitializeBattle()
+    {
+        BattleState = BattleStates.MakingEngines;
+        Player.TurnONHPGlow();
+        CurrentEnemy.TurnONHPGlow();
+        _moveUIAura.SetTrigger("activateMoveUI");
+
+        StartCoroutine(ReadEngines());
+    }
+
+    private IEnumerator ReadEngines()
+    {
+        for (int i = 0; i < Engines.Length; i++)
+        {
+            Engines[i].isActive = true;
+            Engines[i].StateChange(1);
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 }
 

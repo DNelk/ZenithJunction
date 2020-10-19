@@ -107,6 +107,7 @@ public class Card : MonoBehaviour
 
     //Card UI
     protected Image u_cardBackground;
+    protected Image u_cardGlow;
     protected TMP_Text u_cardName;
     protected Image u_rarity;
     protected TMP_Text u_type;
@@ -125,6 +126,8 @@ public class Card : MonoBehaviour
     protected Image u_glow;
     protected CanvasGroup u_cg;
     private ParticleSystem u_particle;
+
+    [SerializeField] private Color[] TypeBackColor;
     //private Color u_particleColor;
 
     //Fullsize
@@ -172,6 +175,7 @@ public class Card : MonoBehaviour
             parent = transform.Find("Minimized");
             transform.Find("FullSize").gameObject.SetActive(false);
             u_TypeAura = parent.Find("Aura").GetComponent<Image>();
+            u_cardGlow = parent.Find("Glow").GetComponent<Image>();
             
             //get cheat IMG
             MyCheatImg = parent.transform.Find("CheatImg").gameObject;
@@ -279,21 +283,25 @@ public class Card : MonoBehaviour
                 case CardTypes.Attack:
                     typeColor = new Color(0.752f, 0.098f, 0);
                     auraColor = new Color(0.9f,0,0);
+                    //u_cardGlow.color = TypeBackColor[0];
                     particleRend.material.mainTexture = Resources.Load<Texture>("Sprites/CardParticle/Particle_Atk");
                     break;
                 case CardTypes.Aether:
                     typeColor = new Color(0.2f, 0.18f, 0.58f);
                     auraColor = new Color(0,0.35f,1f);
+                    //u_cardGlow.color = TypeBackColor[1];
                     particleRend.material.mainTexture = Resources.Load<Texture>("Sprites/CardParticle/Particle_Mana");
                     break;
                 case CardTypes.Special:
                     typeColor = new Color(0.658f,0.282f,0.627f);
                     auraColor = new Color(0.8f,0,0.8f);
+                    //u_cardGlow.color = TypeBackColor[2];
                     particleRend.material.mainTexture = Resources.Load<Texture>("Sprites/CardParticle/Particle_Special");
                     break;
                 case CardTypes.Movement:
                     typeColor = new Color(0.956f,0.749f,0.031f);
                     auraColor = new Color(0.8f,0.7f,0);
+                    //u_cardGlow.color = TypeBackColor[3];
                     particleRend.material.mainTexture = Resources.Load<Texture>("Sprites/CardParticle/Particle_Move");
                     break;
                 default:
@@ -479,12 +487,12 @@ public class Card : MonoBehaviour
         if (_eventManager.hovering)
         {
             transform.DOScale( _eventManager.InEngineScale * 1.5f, 0.2f); //change card size
-            _eventManager.setParticleGlowSize(0.72f); //set particle size
+            _eventManager.setParticleGlowSize(0.65f); //set particle size
         }
         else
         {
             transform.DOScale( _eventManager.InEngineScale, 0.2f); //change card size
-            _eventManager.setParticleGlowSize(0.41f); //set particle size
+            _eventManager.setParticleGlowSize(0.37f); //set particle size
         }
         
         transform.DOLocalMove(position, 0.5f).OnComplete(() => turnCheatImageRaycast(true));
@@ -593,13 +601,37 @@ public class Card : MonoBehaviour
     public void SwitchTypeAura(bool turn)
     {
         if (!_fullSize && u_TypeAura.gameObject.activeSelf != turn) u_TypeAura.gameObject.SetActive(turn);
+        
+        switch (CardType)
+        {
+            case CardTypes.Attack:
+                if (turn) u_cardGlow.color = new Color(0.943f, 0.396f, 0.402f, 1);
+                else u_cardGlow.color = new Color(0.556f, 0.805f, 0.943f, 1);
+                break;
+            case CardTypes.Aether:
+                if (turn) u_cardGlow.color = new Color(0.458f, 0.736f, 0.943f, 1);
+                else u_cardGlow.color = new Color(0.556f, 0.805f, 0.943f, 1);
+                break;
+            case CardTypes.Special:
+                if (turn) u_cardGlow.color = new Color(0.943f, 0.458f, 0.929f, 1);
+                else u_cardGlow.color = new Color(0.556f, 0.805f, 0.943f, 1);
+                break;
+            case CardTypes.Movement:
+                if (turn) u_cardGlow.color = new Color(0.981f, 0.842f, 0.467f, 1);
+                else u_cardGlow.color = new Color(0.556f, 0.805f, 0.943f, 1);
+                break;
+            default:
+                break;
+        }
     }
 
     public void turnCheatImageRaycast(bool turn)
     {
         MyCheatImg.SetActive(turn);
     }
+    
 }
+
 
 public enum CardTypes
 {
