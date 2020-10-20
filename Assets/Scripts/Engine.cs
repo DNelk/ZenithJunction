@@ -613,7 +613,6 @@ public class Engine : MonoBehaviour
 
     public void UpdateUICounts(bool setToZero = false)
     {
-
         for (int i = 0; i < u_move.Length; i++)
         {
             u_move[i].color = new Color(0,0,0,0);

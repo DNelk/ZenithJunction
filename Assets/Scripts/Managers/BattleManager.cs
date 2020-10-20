@@ -318,6 +318,15 @@ public class BattleManager : MonoBehaviour
             BuyManager.Instance.FreeBuysRemaining = 0;
         }
         
+        //update UIcount if there is any stat buff0
+        foreach (Engine e in Engines)
+        {
+            if (e.EngineState == EngineState.Stacked)
+            {
+                e.UpdateUICounts();
+            }
+        }
+        
         _playerAttack.StateChange(0);
         _playerAttack.isActive = false;
         _playerAttack = null;
