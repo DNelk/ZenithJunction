@@ -4279,7 +4279,7 @@ PrefabInstance:
     - target: {fileID: 5334284269272677902, guid: cb2568df64b184071a348fbad7168cab,
         type: 3}
       propertyPath: MyScene
-      value: garlicbattle
+      value: tutorialbattle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cb2568df64b184071a348fbad7168cab, type: 3}
