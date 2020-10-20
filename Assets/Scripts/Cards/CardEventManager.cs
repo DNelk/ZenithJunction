@@ -29,6 +29,7 @@ public class CardEventManager : EventTrigger
     public ParticleSystem Glow;
     public Vector3 GlowScale = Vector3.zero;
     private Gradient _inEngineColor, _baseColor;
+    
 
     private void Start()
     {
