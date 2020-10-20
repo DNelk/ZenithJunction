@@ -125,7 +125,9 @@ public class Card : MonoBehaviour
     protected Image u_image;
     protected Image u_glow;
     protected CanvasGroup u_cg;
+    protected GameObject u_notEnoughTag;
     private ParticleSystem u_particle;
+    private  Color tintedBlack = new Color(0.4f, 0.4f, 0.4f, 1);
 
     [SerializeField] private Color[] TypeBackColor;
     //private Color u_particleColor;
@@ -169,6 +171,7 @@ public class Card : MonoBehaviour
             
             //get cheat IMG
             MyCheatImg = parent.transform.Find("CheatImg").gameObject;
+            u_notEnoughTag = parent.transform.Find("NotEnoughTag").gameObject;
         }
         else
         {
@@ -193,7 +196,7 @@ public class Card : MonoBehaviour
         u_attackValue = parent.Find("Parameter").transform.Find("Parameter_Attack").gameObject;
         u_aetherValue = parent.Find("Parameter").transform.Find("Parameter_Aether").gameObject;
         u_moveValue = parent.Find("Parameter").transform.Find("Parameter_Move").gameObject;
-        u_aetherCost = parent.Find("Aether_Cost").GetComponentsInChildren<Image>();
+        u_aetherCost = parent.Find("Aether_Cost").GetComponentsInChildren<Image>(true);
         u_aetherCost_X = u_aetherCost[0].transform.Find("AetherCost_Xnumber").GetComponent<Text>();
         u_aetherCost_Overflow = u_aetherCost[0].transform.Find("AetherCost_OverflowNumber").GetComponent<Text>();
         u_range = parent.Find("Range").GetComponentsInChildren<Image>();
@@ -385,23 +388,29 @@ public class Card : MonoBehaviour
             case AttackRange.Melee:
                 break;
             case AttackRange.Short:
-                u_range[0].color = Color.white;
+                if (_purchasable && BattleManager.Instance.CurrentAether < _buyCost)
+                {
+                    u_range[0].color = tintedBlack;
+                }
+                else
+                {
+                    u_range[0].color = Color.white;
+                }
                 break;
             case AttackRange.Long:
-                u_range[0].color = Color.white;
-                u_range[1].color = Color.white;
+                if (_purchasable && BattleManager.Instance.CurrentAether < _buyCost)
+                {
+                    u_range[0].color = tintedBlack;
+                    u_range[1].color = tintedBlack;
+                }
+                else
+                {
+                    u_range[0].color = Color.white;
+                    u_range[1].color = Color.white;
+                }
                 break;
             default:
                 break;
-        }
-
-        if (_fullSize)
-        {
-            u_buyCost.text = _buyCost.ToString();
-            if (_purchasable)
-                u_buyCost.transform.parent.gameObject.SetActive(true);
-            else
-                u_buyCost.transform.parent.gameObject.SetActive(false);
         }
 
         //Aether Cost change
@@ -409,27 +418,65 @@ public class Card : MonoBehaviour
         //if it's an X card
         if (_aetherCost == -1) //-1 is X 
         {
-            u_aetherCost[0].color = Color.white; //make the first aether cost symbol active
-            u_aetherCost_X.color = Color.white; //set the X text to be active
-            u_aetherCost[0].transform.localScale *= 1.3f; //scaling them to be bigger
+            u_aetherCost[0].gameObject.SetActive(true);
+            if (_purchasable && BattleManager.Instance.CurrentAether < _buyCost)
+            {
+                u_aetherCost[0].color = tintedBlack; //make the first aether cost symbol active
+                u_aetherCost_X.color = tintedBlack; //set the X text to be active
+            }
+            else
+            {
+                u_aetherCost[0].color = Color.white; //make the first aether cost symbol active
+                u_aetherCost_X.color = Color.white; //set the X text to be active
+            }
+            u_aetherCost[0].transform.localScale *= 1.5f; //scaling them to be bigger
         }
         else if (_aetherCost > 6)
         {
-            u_aetherCost[0].color = Color.white; //make the first aether cost symbol active
-            u_aetherCost_Overflow.color = Color.white; //set the X text to be active
+            u_aetherCost[0].gameObject.SetActive(true);
+            if (_purchasable && BattleManager.Instance.CurrentAether < _buyCost)
+            {
+                u_aetherCost[0].color = tintedBlack; //make the first aether cost symbol active
+                u_aetherCost_Overflow.color = tintedBlack; //set the X text to be active
+            }
+            else
+            {
+                u_aetherCost[0].color = Color.white; //make the first aether cost symbol active
+                u_aetherCost_Overflow.color = Color.white; //set the X text to be active
+            }
             u_aetherCost_Overflow.text = _aetherCost.ToString();
-            u_aetherCost[0].transform.localScale *= 1.3f; //scaling them to be bigger
+            u_aetherCost[0].transform.localScale *= 1.5f; //scaling them to be bigger
         }
         else if (_aetherCost > 0)
         {
             for (int i = 0; i < _aetherCost; i++)
             {
-                u_aetherCost[i].color = Color.white; //set the symbol active depend on aether cost
+                u_aetherCost[i].gameObject.SetActive(true);
+                if (_purchasable && BattleManager.Instance.CurrentAether < _buyCost)
+                {
+                    u_aetherCost[i].color = tintedBlack; //set the symbol active depend on aether cost
+                }
+                else
+                {
+                    u_aetherCost[i].color = Color.white; //set the symbol active depend on aether cost
+                }
             }
         }
         else if (_aetherCost == 0)
         {
             //nothing happen
+        }
+        
+        if (_fullSize)
+        {
+            u_buyCost.text = _buyCost.ToString();
+            if (_purchasable)
+            {
+                u_buyCost.transform.parent.gameObject.SetActive(true);
+                if (BattleManager.Instance.CurrentAether < _buyCost) notEnoughAetherToBuy(); //make it black if not enough 
+            }
+            else
+                u_buyCost.transform.parent.gameObject.SetActive(false);
         }
 
         //set Text
@@ -628,6 +675,27 @@ public class Card : MonoBehaviour
     public void turnCheatImageRaycast(bool turn)
     {
         MyCheatImg.SetActive(turn);
+    }
+
+    private void notEnoughAetherToBuy()
+    {
+        u_cardBackground.color = tintedBlack;
+        u_image.color = tintedBlack;
+        u_rarity.color = tintedBlack;
+        u_type.color = tintedBlack;
+        u_type_color.color = u_type_color.color * tintedBlack;
+        u_cardName.color = u_cardName.color * tintedBlack;
+        u_aetherValue.GetComponent<Image>().color = tintedBlack;
+        //u_aetherValue.GetComponentInChildren<TMP_Text>().color = tintedBlack;
+        u_attackValue.GetComponent<Image>().color = tintedBlack;
+        //u_attackValue.GetComponentInChildren<TMP_Text>().color = tintedBlack;
+        u_moveValue.GetComponent<Image>().color = tintedBlack;
+        //u_moveValue.GetComponentInChildren<TMP_Text>().color = tintedBlack;
+        
+        Image nameBanner = transform.Find("FullSize").Find("NameBanner").GetComponent<Image>();
+        nameBanner.color *= tintedBlack;
+        
+        u_notEnoughTag.SetActive(true);
     }
     
 }

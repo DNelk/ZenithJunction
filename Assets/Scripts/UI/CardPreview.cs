@@ -54,7 +54,7 @@ public class CardPreview : MonoBehaviour
         u_attackValue = transform.Find("Parameter").transform.Find("Parameter_Attack").gameObject;
         u_aetherValue = transform.Find("Parameter").transform.Find("Parameter_Aether").gameObject;
         u_moveValue = transform.Find("Parameter").transform.Find("Parameter_Move").gameObject;
-        u_aetherCost = transform.Find("Aether_Cost").GetComponentsInChildren<Image>();
+        u_aetherCost = transform.Find("Aether_Cost").GetComponentsInChildren<Image>(true);
         u_aetherCost_X = u_aetherCost[0].transform.Find("AetherCost_Xnumber").GetComponent<Text>();
         u_aetherCost_Overflow = u_aetherCost[0].transform.Find("AetherCost_OverflowNumber").GetComponent<Text>();
         u_range = transform.Find("Range").GetComponentsInChildren<Image>();
@@ -152,21 +152,25 @@ public class CardPreview : MonoBehaviour
         //if it's an X card
         if (c.AetherCost == -1) //-1 is X 
         {
+            u_aetherCost[0].gameObject.SetActive(true);
             u_aetherCost[0].color = Color.white; //make the first aether cost symbol active
             u_aetherCost_X.color = Color.white; //set the X text to be active
-            u_aetherCost[0].transform.localScale *= 1.3f; //scaling them to be bigger
+            u_aetherCost[0].transform.localScale *= 1.5f; //scaling them to be bigger
         }
         else if (c.AetherCost > 6)
         {
+            u_aetherCost[0].gameObject.SetActive(true);
+
             u_aetherCost[0].color = Color.white; //make the first aether cost symbol active
             u_aetherCost_Overflow.color = Color.white; //set the X text to be active
             u_aetherCost_Overflow.text = c.AetherCost.ToString();
-            u_aetherCost[0].transform.localScale *= 1.3f; //scaling them to be bigger
+            u_aetherCost[0].transform.localScale *= 1.5f; //scaling them to be bigger
         }
         else if (c.AetherCost > 0)
         {
             for (int i = 0; i < c.AetherCost; i++)
             {
+                u_aetherCost[i].gameObject.SetActive(true);
                 u_aetherCost[i].color = Color.white; //set the symbol active depend on aether cost
             }
         }
