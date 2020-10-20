@@ -305,7 +305,7 @@ public class Engine : MonoBehaviour
     {
         int lowest = Int32.MaxValue;
         int indexToStack = 0;
-        
+
         for(int i = 0; i < _pending.Count; i++)
         {
             int currentPriority = _pending[i].Priority;
@@ -418,40 +418,65 @@ public class Engine : MonoBehaviour
 
         _attackPower = new int[3];
 
-        foreach (var c in Stack)
+        foreach (var c in Stack) //first round for check if any of the card need to be cost
         {
             if (c.IsXCost) //-1 is X
             {
                 continue;
             }
-            
             //will fix this later
-            if (c.StatMods.Count <= 0) c.Execute(); 
-            
-            _aetherTotal += c.AetherTotal;
-            _moveTotal += c.MoveTotal;
-            totalCost += c.AetherCost;
-            if (!c.IsAttackInRange() && _inRange)
-                _inRange = false;
+            if (c.StatMods.Count <= 0) c.Execute();
+
+            if (c.AetherCost <= 0)
+            {
+                _aetherTotal += c.AetherTotal;
+                _moveTotal += c.MoveTotal;
+                if (!c.IsAttackInRange() && _inRange) _inRange = false;
+                _powerTotal += c.CalculateAttackTotalWithPosition();
+                switch (c.Range)
+                {
+                    case AttackRange.Melee:
+                        _attackPower[0] += c.PowerTotal;
+                        break;
+                    case AttackRange.Short:
+                        _attackPower[0] += c.PowerTotal;
+                        _attackPower[1] += c.PowerTotal;
+                        _attackPower[2] += (int) (c.PowerTotal * 0.5f);
+                        break;
+                    case AttackRange.Long:
+                        _attackPower[1] += c.PowerTotal;
+                        _attackPower[2] += c.PowerTotal;
+                        break;
+                }
+            }
         }
 
-        foreach (var c in Stack)
+        foreach (var c in Stack) //second round to see if can activat cost card
         {
-            _powerTotal += c.CalculateAttackTotalWithPosition();
-            switch (c.Range)
+            if (c.AetherCost > 0)
             {
-                case AttackRange.Melee:
-                    _attackPower[0] += c.PowerTotal;
-                    break;
-                case AttackRange.Short:
-                    _attackPower[0] += c.PowerTotal;
-                    _attackPower[1] += c.PowerTotal;
-                    _attackPower[2] += (int) (c.PowerTotal * 0.5f);
-                    break;
-                case AttackRange.Long:
-                    _attackPower[1] += c.PowerTotal;
-                    _attackPower[2] += c.PowerTotal;
-                    break;
+                if (_aetherTotal >= c.AetherCost)
+                {
+                    _aetherTotal += c.AetherTotal - c.AetherCost;
+                    _moveTotal += c.MoveTotal;
+                    if (!c.IsAttackInRange() && _inRange) _inRange = false;
+                    _powerTotal += c.CalculateAttackTotalWithPosition();
+                    switch (c.Range)
+                    {
+                        case AttackRange.Melee:
+                            _attackPower[0] += c.PowerTotal;
+                            break;
+                        case AttackRange.Short:
+                            _attackPower[0] += c.PowerTotal;
+                            _attackPower[1] += c.PowerTotal;
+                            _attackPower[2] += (int) (c.PowerTotal * 0.5f);
+                            break;
+                        case AttackRange.Long:
+                            _attackPower[1] += c.PowerTotal;
+                            _attackPower[2] += c.PowerTotal;
+                            break;
+                    }
+                }
             }
         }
 
@@ -649,7 +674,10 @@ public class Engine : MonoBehaviour
 
         //set TotalPower
         u_powerNumber.text = tempPow.ToString();
+        
+        //set total aether
         u_aetherNumber.text = tempAet.ToString();
+
         for (int i = 0; i < tempMove; i++)
         {
             u_move[i].color = Color.white;
