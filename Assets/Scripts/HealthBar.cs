@@ -96,6 +96,8 @@ public class HealthBar : MonoBehaviour
         //Attack
         value = StatManager.Instance.StatCheck(value, stats, StatType.AttackUP, StatType.AttackDOWN);
         
+        //Stat Change UI Code
+        
         //attack changes
         if (value < _atkValue)
         {

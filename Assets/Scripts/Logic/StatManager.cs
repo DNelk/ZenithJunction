@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -26,7 +27,11 @@ public class StatManager : MonoBehaviour
     //Called in the battle manager for both the player and enemy to count down remaining turns of a stat
     public void TickDownStats(List<Stat> statsList, HealthBar healthBar)
     {
-        foreach (var stat in statsList)
+        //create a temp stats list
+        //List<Stat> tempStatList = new List<Stat>();
+        //tempStatList = statsList;
+        
+        foreach (var stat in statsList.ToList())
         {
             if (stat.IsNew)
             {
@@ -41,10 +46,11 @@ public class StatManager : MonoBehaviour
             
             if(stat.TurnsLeft == 0)
             {
+                //Debug.Log("Removing a stat: " + stat);
                 statsList.Remove(stat);
             }
         }
-        
+
         healthBar.UpdateStatusChanges();
     }
 
