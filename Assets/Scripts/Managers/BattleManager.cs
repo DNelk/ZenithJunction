@@ -283,6 +283,8 @@ public class BattleManager : MonoBehaviour
             ClashUIManager.Instance.TriggerClash(playerDamage, enemyDamage);
             yield return new WaitUntil(() => ClashUIManager.Instance.AnimDone);
             ClashUIManager.Instance.AnimDone = false;
+            playerHealthBar.UpdateStatusChanges();
+            enemyHealthBar.UpdateStatusChanges();
         }
         else
         {

@@ -14,7 +14,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/PrototypeBattle.unity
     guid: 3fb9aec95514c004988ceea46403367e
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/GarlicBattle.unity
     guid: c29638f3a30b0ca45a556caafac55b0d
   - enabled: 1
