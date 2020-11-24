@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -39,7 +40,7 @@ public class EngineEventManager : EventTrigger
     
     public override void OnPointerEnter(PointerEventData eventData)
     {
-        if (!BattleManager.Instance.isMouseDragging)
+        if (!BattleManager.Instance.isMouseDragging && _myEngine.isActive)
         {
             _myEngine.highlightedOn();
             _myEngine.playAuraAnim();
@@ -51,12 +52,12 @@ public class EngineEventManager : EventTrigger
             Engine[] BMEngines = BattleManager.Instance.Engines;
             
             for (int i = 0; i < BMEngines.Length ; i++)
-            {
-                if (BMEngines[i] != _myEngine && !BMEngines[i]._selected)
+            { 
+                if (BMEngines[i] != _myEngine && !BMEngines[i]._selected && BMEngines[i].isActive)
                 {
                     BMEngines[i].transform.DOScale(_myEngine._baseScale, 0.2f);
                     BMEngines[i].disselectGear();
-                    BMEngines[i].attackOnPositionPreviewOff();
+                    //BMEngines[i].attackOnPositionPreviewOff();
                 }
             }
         }
@@ -64,7 +65,7 @@ public class EngineEventManager : EventTrigger
 
     public override void OnPointerExit(PointerEventData eventData)
     {
-        if (!BattleManager.Instance.isMouseDragging)
+        if (!BattleManager.Instance.isMouseDragging && _myEngine.isActive)
         {
             if (!_myEngine._selected)
             {

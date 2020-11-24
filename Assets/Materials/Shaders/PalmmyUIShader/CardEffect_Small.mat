@@ -27,6 +27,14 @@ Material:
         m_Texture: {fileID: 2800000, guid: 35ec55aee4918a54584278832608db85, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _AuraThin:
+        m_Texture: {fileID: 2800000, guid: 9c1cc9084fe26804faabc26dd29f76fa, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _AuraThinBack:
+        m_Texture: {fileID: 2800000, guid: accc13f295b805a4e8f0e93a655896cb, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Aura_Back:
         m_Texture: {fileID: 2800000, guid: f4fef23702ecb0946be4557f7efa889c, type: 3}
         m_Scale: {x: 1, y: 1}

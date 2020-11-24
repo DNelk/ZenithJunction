@@ -14081,6 +14081,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.1603259
       objectReference: {fileID: 0}
+    - target: {fileID: 9038621418666714800, guid: e8fce3f19694f584d91180dd1aedb54b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2544557702491066413, guid: e8fce3f19694f584d91180dd1aedb54b,
         type: 3}
       propertyPath: subBG.Array.data[0]

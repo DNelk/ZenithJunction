@@ -38,12 +38,15 @@ public class TalkingHead : MonoBehaviour
             {
                 case "Hugo":
                     Sprite = Portraits[0];
+                    _characterSprite.SetNativeSize();
                     break;
                 case "Sir John":
                     Sprite = Portraits[1];
+                    _characterSprite.SetNativeSize();
                     break;
                 case "Sir Wolff":
                     Sprite = Portraits[2];
+                    _characterSprite.SetNativeSize();
                     break;
                 default:
                     Sprite = null;

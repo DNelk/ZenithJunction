@@ -16,7 +16,7 @@ public class BuyManager : MonoBehaviour
     private CanvasGroup _cg;
     public Transform DeckPos;
     public float XInterval;
-    private Button _leaveButton;
+    [HideInInspector] public Button LeaveButton;
     private Button _showShopButton;
     private TMP_Text _aetherText;
     private TMP_Text _freeBuysText;
@@ -74,7 +74,7 @@ public class BuyManager : MonoBehaviour
         GenerateCatalog();
         ShuffleShopDeck();
         _cg = GetComponent<CanvasGroup>();
-        _leaveButton = bg.Find("LeaveShop").GetComponent<Button>();
+        LeaveButton = bg.Find("LeaveShop").GetComponent<Button>();
         _aetherText = bg.Find("AetherCount").transform.Find("AetherText").GetComponent<TMP_Text>();
         _freeBuysText = bg.Find("AetherCount").transform.Find("FreeBuys").GetComponent<TMP_Text>();
         _cardParent = bg.Find("CardPositions");
@@ -177,7 +177,7 @@ public class BuyManager : MonoBehaviour
         {
             StartCoroutine(DealNewCard());
         }
-        _leaveButton.onClick.AddListener(LeaveShop);
+        LeaveButton.onClick.AddListener(LeaveShop);
     }
 
     public void LeaveShop()
@@ -187,7 +187,7 @@ public class BuyManager : MonoBehaviour
 
     private IEnumerator LeaveBuyMenu()
     {
-        _leaveButton.onClick.RemoveListener(LeaveShop);
+        LeaveButton.onClick.RemoveListener(LeaveShop);
 
         for (int i = _activeCards.Count - 1; i >= 0; i--)
         {

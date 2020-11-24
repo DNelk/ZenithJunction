@@ -33,6 +33,9 @@ public class BattleManager : MonoBehaviour
     private Image _confirmCore;
 
     private Animator _commenceAnim;
+
+    public HealthBar playerHealthBar; //for player health bar ref
+    public HealthBar enemyHealthBar; //for enemy health bar ref
     //private UIPopIn _playerText;
     //private UIPopIn _enemyText;
     //private UIPopIn _resultText;
@@ -42,9 +45,10 @@ public class BattleManager : MonoBehaviour
     //Engines
     public Engine[] Engines;
     //set up canvas
-    private Transform _mainCanvas;
+    public Transform _mainCanvas;
     //set move 
     private MovePlayerDialog _moveUI;
+    private Animator _moveUIAura;
     //set EnemyPos Ui
     public EnemyPosition enemyPos;
 
@@ -76,11 +80,14 @@ public class BattleManager : MonoBehaviour
         _confirmButtonSprite[0] = Resources.Load<Sprite>("Sprites/Core/Gear");
         _confirmButtonSprite[1] = Resources.Load<Sprite>("Sprites/Core/Gear2");
 
+        playerHealthBar = GameObject.Find("PlayerHealth").GetComponent<HealthBar>();
+        enemyHealthBar = GameObject.Find("EnemyHealth").GetComponent<HealthBar>();
+
         //_playerText = GameObject.Find("PlayerText").GetComponent<UIPopIn>();
         //_enemyText = GameObject.Find("EnemyText").GetComponent<UIPopIn>();
         //_resultText = GameObject.Find("ResultText").GetComponent<UIPopIn>();
         //_clashText = GameObject.Find("ClashText").GetComponent<UIPopIn>();
-        BattleState = BattleStates.MakingEngines;
+        //BattleState = BattleStates.MakingEngines;
         
         _playerAttack = null;
         
@@ -89,14 +96,15 @@ public class BattleManager : MonoBehaviour
         Engines[1] = GameObject.Find("Engine2").GetComponent<Engine>();
         Engines[2] = GameObject.Find("Engine3").GetComponent<Engine>();
         
-        GameManager.Instance.StartBattle();
+        //GameManager.Instance.StartBattle();
         
         //get move UI
         _mainCanvas = GameObject.Find("MainCanvas").transform;
         Transform posPanel = _mainCanvas.Find("PositionsPanel");
         //get move set
-        GameObject moveSet = posPanel.transform.Find("MoveButton").gameObject;
+        Transform moveSet = posPanel.transform.Find("MoveButton");
         _moveUI = moveSet.GetComponent<MovePlayerDialog>();
+        _moveUIAura = _moveUI.transform.parent.transform.Find("PlayerPos").GetComponentInChildren<Animator>();
         //get enemyPos
         enemyPos = posPanel.transform.Find("EnemyPos").GetComponent<EnemyPosition>();
     }
@@ -170,6 +178,7 @@ public class BattleManager : MonoBehaviour
             //_confirmEvent.turnOff();
             //_confirmEvent.reset();
             BattleState = BattleStates.MakingEngines;
+            StartCoroutine(ReadEngines());
             //_confirmButtonText.text = "Confirm Engines";
             _commenceAnim.SetBool("TurnOn", false);
             ConfirmButton.onClick.RemoveAllListeners();
@@ -236,6 +245,7 @@ public class BattleManager : MonoBehaviour
         {
             _moveUI.MoveTotal = _playerAttack.MoveTotal;
             _moveUI.gameObject.SetActive(true);
+            _moveUIAura.SetBool("isAnimate", true);
 
             BattleState = BattleStates.Moving;
             
@@ -246,6 +256,7 @@ public class BattleManager : MonoBehaviour
             BattleState = BattleStates.Battle;
 
             //new one
+            _moveUIAura.SetBool("isAnimate", false);
             _moveUI.gameObject.SetActive(false);
         }
 
@@ -272,6 +283,13 @@ public class BattleManager : MonoBehaviour
             ClashUIManager.Instance.TriggerClash(playerDamage, enemyDamage);
             yield return new WaitUntil(() => ClashUIManager.Instance.AnimDone);
             ClashUIManager.Instance.AnimDone = false;
+            playerHealthBar.UpdateStatusChanges();
+            enemyHealthBar.UpdateStatusChanges();
+        }
+        else
+        {
+            playerHealthBar.UpdateStatusChanges();
+            enemyHealthBar.UpdateStatusChanges();
         }
 
         DisplayAttackResult(playerDamage, enemyDamage);
@@ -282,7 +300,6 @@ public class BattleManager : MonoBehaviour
         _enemyAttack = null;
         CurrentEnemy.TickDownStats();
         
-        _playerAttack = null;
         BattleDelegateHandler.ApplyAfterDamageEffects();
         
         //_confirmButtonText.text = "Select an Engine";
@@ -301,9 +318,20 @@ public class BattleManager : MonoBehaviour
             BuyManager.Instance.RotateRow();
             BuyManager.Instance.BuysRemaining = -1;
             BuyManager.Instance.FreeBuysRemaining = 0;
-
         }
-    
+        
+        //update UIcount if there is any stat buff0
+        foreach (Engine e in Engines)
+        {
+            if (e.EngineState == EngineState.Stacked)
+            {
+                e.UpdateUICounts();
+            }
+        }
+        
+        _playerAttack.StateChange(0);
+        _playerAttack.isActive = false;
+        _playerAttack = null;
     }
 
     /*Without "trampling*/
@@ -410,7 +438,6 @@ public class BattleManager : MonoBehaviour
 
     public void EngineSelected()
     {
-        //_confirmButtonText.text = "Confirm Engine";\
         _confirmButtonText.sprite = _confirmButtonSprite[0]; 
         _confirmEvent.setTrigger();
         ConfirmButton.onClick.AddListener(ConfirmAction);
@@ -437,6 +464,26 @@ public class BattleManager : MonoBehaviour
         _confirmButtonText.sprite = _confirmButtonSprite[1];
         _confirmEvent.turnOn();
     }
+
+    public void InitializeBattle()
+    {
+        BattleState = BattleStates.MakingEngines;
+        Player.TurnONHPGlow();
+        CurrentEnemy.TurnONHPGlow();
+        _moveUIAura.SetTrigger("activateMoveUI");
+
+        StartCoroutine(ReadEngines());
+    }
+
+    private IEnumerator ReadEngines()
+    {
+        for (int i = 0; i < Engines.Length; i++)
+        {
+            Engines[i].isActive = true;
+            Engines[i].StateChange(1);
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
 }
 
 public enum BattleStates
@@ -447,7 +494,7 @@ public enum BattleStates
     Battle,
     GameOver,
     BattleStart,
-    Moving
+    Moving,
 }
 
 //Used for both players and enemies

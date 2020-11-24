@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class NewCardChooser : MonoBehaviour
@@ -12,6 +13,10 @@ public class NewCardChooser : MonoBehaviour
     private Transform _cardPanel;
 
     public bool CardChosen;
+    
+    public Sprite[] chooseCardSprite = new Sprite[2];
+    public Sprite[] continueSprite = new Sprite[2];
+    private Image[] textImage = new Image[2];
     
     private void Awake()
     {
@@ -24,6 +29,9 @@ public class NewCardChooser : MonoBehaviour
         _cardPanel = transform.Find("CardPanel").transform;
         CardChosen = false;
         GameManager.Instance.State = GameState.Acquiring;
+
+        textImage[0] = transform.Find("ChooseNewCard_Text").GetComponent<Image>();
+        textImage[1] = transform.Find("Buttons").transform.GetChild(0).transform.GetChild(0).GetComponent<Image>();
     }
 
     private void Start()
@@ -36,6 +44,19 @@ public class NewCardChooser : MonoBehaviour
         {
             c.ShowFullSize = true;
         }
+    }
+
+    public void SetTextSprite(bool Win)
+    {
+        int numberOfSprite = 0;
+        if (Win) numberOfSprite = 0;
+        else numberOfSprite = 1;
+        
+        textImage[0].sprite = chooseCardSprite[numberOfSprite];
+        textImage[0].SetNativeSize();
+        textImage[1].sprite = continueSprite[numberOfSprite];
+        textImage[1].SetNativeSize();
+
     }
 
     public void ChooseCard(string name)

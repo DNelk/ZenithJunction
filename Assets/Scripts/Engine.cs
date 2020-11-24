@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using DG.Tweening;
 using TMPro;
@@ -18,7 +19,7 @@ public class Engine : MonoBehaviour
     
     //UI
     public Color GlowColor;
-    private GameObject u_Circle;
+    private Animator u_Circle;
     private Material u_CircleGlowMat; 
     private GameObject u_EngineImg;
     private Animator u_EngineImgAnim;
@@ -44,6 +45,8 @@ public class Engine : MonoBehaviour
     [HideInInspector] public Vector3 _baseScale;
     private GameObject _myCheatImage;
     private GameObject _myCheatImageForNewRayCastCheck;
+    private Image _blackMask;
+    private Vector3 _originalScale;
     [Range(1, 3)] public int engineNumber = 1;
     [HideInInspector] public List<Transform> _statePos;
 
@@ -53,6 +56,8 @@ public class Engine : MonoBehaviour
 
     [HideInInspector] public bool _selected;
     [HideInInspector] public bool _highlighted;
+
+    public bool isActive;
 
     //for pointer event
     private GameObject _gear;
@@ -110,9 +115,9 @@ public class Engine : MonoBehaviour
         Executed = false;
         _collider = GetComponent<BoxCollider2D>();
         
-        u_Circle = transform.Find("MagicCircle").gameObject;
-        u_CircleGlowMat = Instantiate(u_Circle.GetComponent<Image>().material);
-        u_Circle.GetComponent<Image>().material = u_CircleGlowMat;
+        u_Circle = GetComponent<Animator>();
+        //u_CircleGlowMat = Instantiate(u_Circle.GetComponent<Image>().material);
+        //u_Circle.GetComponent<Image>().material = u_CircleGlowMat;
         u_selectedAura = transform.Find("SelectedAura").GetComponent<Image>();
         u_slotFilledAura = transform.Find("CardSlot_FilledAura").GetComponentsInChildren<Image>();
 
@@ -123,7 +128,6 @@ public class Engine : MonoBehaviour
         u_AttackOnPosNumber[1] = u_AttackOnPosition[1].GetComponentInChildren<TMP_Text>();
         u_AttackOnPosition[2] = posPanel.transform.Find("Range_3");
         u_AttackOnPosNumber[2] = u_AttackOnPosition[2].GetComponentInChildren<TMP_Text>();
-        
 
         //u_EngineImg = transform.Find("EngineImg").gameObject;
         //u_EngineImgAnim = u_EngineImg.GetComponent<Animator>();
@@ -134,26 +138,23 @@ public class Engine : MonoBehaviour
         
         //set up the position to go in each state
         Transform[] _stateTran= transform.parent.transform.Find("EnginePos" + engineNumber).GetComponentsInChildren<Transform>();
-        Transform[] temp = new Transform[3];
         for (int i = 1; i < _stateTran.Length; i++)
         {
-            temp[i - 1] = _stateTran[i];
+            _statePos.Add(_stateTran[i]);
         }
-        _stateTran = temp;
-        foreach (var trans in _stateTran)
-        {
-            _statePos.Add(trans);
-        }
+        
 
         //set up images and cheatImg for state change
         _baseScale = transform.localScale;
         _myCheatImage = transform.Find("CheatImg").gameObject;
         _myCheatImageForNewRayCastCheck = transform.parent.transform.Find("BackCheatImage").gameObject;
+        _blackMask = transform.Find("Black_Mask").GetComponent<Image>();
+        _originalScale = transform.localScale;
 
         //anim
         slotAuraAnim = transform.Find("SlotAura").GetComponent<Animator>();
-        _gear = transform.Find("Gear").gameObject;
-        _gearAnim = GetComponent<Animator>();
+        _gear = transform.Find("GearAnim").transform.Find("Gear").gameObject;
+        _gearAnim = transform.Find("GearAnim").GetComponent<Animator>();
         //set Gear Sprite 
         Image engineNumGear = _gear.transform.Find("EngineNumber").GetComponent<Image>();
         engineNumGear.sprite = Resources.Load<Sprite>("Sprites/Engine" + engineNumber);
@@ -166,6 +167,12 @@ public class Engine : MonoBehaviour
         u_move = transform.Find("MoveIcon").GetComponentsInChildren<Image>();
         
         OverridePower = OverrideAether = OverrideMove = -1;
+    }
+    
+    //start
+    void Start()
+    {
+        StateChange(0);
     }
 
     //Adds a card to the pending card array
@@ -190,7 +197,10 @@ public class Engine : MonoBehaviour
         DeckManager.Instance.CardsToBeSorted.Remove(c);
         UpdateUICounts();
         
-        //turn on the circle
+        //see if all card is there 
+        if (EngineState == EngineState.Stacking && _pending.Count >= 3) StateChange(2);
+
+            //turn on the circle
         MagicCircle();
         //update slot light
         updateSlotFilled();
@@ -203,6 +213,9 @@ public class Engine : MonoBehaviour
         
         if(_pending.Count > 1 && cInd != _pending.Count - 1)
             nextC = _pending[cInd + 1];
+        
+        //see if all card is there 
+        if (EngineState == EngineState.Stacking && _pending.Count >= 3) StateChange(1);
         
         _pending.Remove(c);
         DeckManager.Instance.CardsToBeSorted.Add(c);
@@ -229,8 +242,6 @@ public class Engine : MonoBehaviour
             nextC = _pending[cInd];
             nextC.transform.DOLocalMove(CurrentCardPos(cInd), 0.1f);
         }
-        
-        
     }
 
     public void ReadyCards()
@@ -294,7 +305,7 @@ public class Engine : MonoBehaviour
     {
         int lowest = Int32.MaxValue;
         int indexToStack = 0;
-        
+
         for(int i = 0; i < _pending.Count; i++)
         {
             int currentPriority = _pending[i].Priority;
@@ -361,6 +372,9 @@ public class Engine : MonoBehaviour
             var playerStats = BattleManager.Instance.Player.ActiveStatsList;
             _moveTotal = StatManager.Instance.StatCheck(_moveTotal, playerStats, StatType.MovesUP, StatType.MovesDOWN);
         }
+
+        if (_moveTotal > 3) _moveTotal = 3; //make sure it never go above 3
+        if (_moveTotal < 0) _moveTotal = 0; //make i=sure it never go under 0
         
         Executed = true;
         EmptyStack = false;
@@ -389,53 +403,109 @@ public class Engine : MonoBehaviour
             _powerTotal =
                 StatManager.Instance.StatCheck(_powerTotal, playerStats, StatType.AttackUP, StatType.AttackDOWN);
         }
-
+        
         MagicCircle();
     }
+
     private int ExecuteStackForPreview()
-    { 
+    {
         int totalCost = 0;
 
         List<Card> tempPending = new List<Card>(_pending);
-        
+
         if (EngineState == EngineState.Stacking)
             StackCardsForPreview();
-        
+
         _attackPower = new int[3];
 
-        foreach (var c in Stack)
+        foreach (var c in Stack) //first round for check if any of the card need to be cost
         {
             if (c.IsXCost) //-1 is X
             {
                 continue;
             }
+            //will fix this later
+            if (c.StatMods.Count <= 0) c.Execute();
 
-            c.Execute();
-            
-            switch (c.Range)
+            if (c.AetherCost <= 0)
             {
-                case AttackRange.Melee:
-                    _attackPower[0] += c.PowerTotal;
-                    break;
-                case AttackRange.Short:
-                    _attackPower[0] += c.PowerTotal;
-                    _attackPower[1] += c.PowerTotal;
-                    _attackPower[2] += (int) (c.PowerTotal * 0.5f);
-                    break;
-                case AttackRange.Long:
-                    _attackPower[1] += c.PowerTotal;
-                    _attackPower[2] += c.PowerTotal;
-                    break;
+                _aetherTotal += c.AetherTotal;
+                _moveTotal += c.MoveTotal;
+                if (!c.IsAttackInRange() && _inRange) _inRange = false;
+                _powerTotal += c.CalculateAttackTotalWithPosition();
+                switch (c.Range)
+                {
+                    case AttackRange.Melee:
+                        _attackPower[0] += c.PowerTotal;
+                        break;
+                    case AttackRange.Short:
+                        _attackPower[0] += c.PowerTotal;
+                        _attackPower[1] += c.PowerTotal;
+                        _attackPower[2] += (int) (c.PowerTotal * 0.5f);
+                        break;
+                    case AttackRange.Long:
+                        _attackPower[1] += c.PowerTotal;
+                        _attackPower[2] += c.PowerTotal;
+                        break;
+                }
             }
-
-            _powerTotal += c.CalculateAttackTotalWithPosition();
-            _aetherTotal += c.AetherTotal;
-            _moveTotal += c.MoveTotal;
-            totalCost += c.AetherCost;
-            if (!c.IsAttackInRange() && _inRange)
-                _inRange = false;
         }
 
+        foreach (var c in Stack) //second round to see if can activat cost card
+        {
+            if (c.AetherCost > 0)
+            {
+                if (_aetherTotal >= c.AetherCost)
+                {
+                    _aetherTotal += c.AetherTotal - c.AetherCost;
+                    _moveTotal += c.MoveTotal;
+                    if (!c.IsAttackInRange() && _inRange) _inRange = false;
+                    _powerTotal += c.CalculateAttackTotalWithPosition();
+                    switch (c.Range)
+                    {
+                        case AttackRange.Melee:
+                            _attackPower[0] += c.PowerTotal;
+                            break;
+                        case AttackRange.Short:
+                            _attackPower[0] += c.PowerTotal;
+                            _attackPower[1] += c.PowerTotal;
+                            _attackPower[2] += (int) (c.PowerTotal * 0.5f);
+                            break;
+                        case AttackRange.Long:
+                            _attackPower[1] += c.PowerTotal;
+                            _attackPower[2] += c.PowerTotal;
+                            break;
+                    }
+                }
+            }
+        }
+
+        //add buff and debuff
+        var playerStats = BattleManager.Instance.Player.ActiveStatsList;
+        Stat s;
+        
+        //attack
+        if (_powerTotal > 0) _powerTotal = StatManager.Instance.StatCheck(_powerTotal, playerStats, StatType.AttackUP, StatType.AttackDOWN);
+        if (_attackPower[0] > 0) _attackPower[0] = StatManager.Instance.StatCheck(_attackPower[0], playerStats, StatType.AttackUP, StatType.AttackDOWN);
+        if (_attackPower[1] > 0) _attackPower[1] = StatManager.Instance.StatCheck(_attackPower[1], playerStats, StatType.AttackUP, StatType.AttackDOWN);
+        if (_attackPower[2] > 0) _attackPower[2] = StatManager.Instance.StatCheck(_attackPower[2], playerStats, StatType.AttackUP, StatType.AttackDOWN);
+
+        //if attack is less than zero then set it to be zero
+        if (_powerTotal < 0) _powerTotal = 0;
+        
+        for (int i = 0; i < _attackPower.Length; i++)
+        {
+            if (_attackPower[i] < 0) _attackPower[i] = 0;
+        }
+        
+        //speed
+        if (_moveTotal > 0) _moveTotal = StatManager.Instance.StatCheck(_moveTotal, playerStats, StatType.MovesUP, StatType.MovesDOWN);
+
+        //make sure speed not go over 3 and under0
+        if (_moveTotal > 3) _moveTotal = 3;
+        else if (_moveTotal < 0) _moveTotal = 0;
+
+        //check if engine state is to clear stack or not
         if (EngineState == EngineState.Stacking)
         {
             _pending = tempPending;
@@ -456,8 +526,7 @@ public class Engine : MonoBehaviour
         if (EngineState == EngineState.Stacking)
         {
             if(_pending.Count == 0)
-                return; 
-            
+                return;
         }
         
         //Clone this engine, and calculate
@@ -492,8 +561,8 @@ public class Engine : MonoBehaviour
 
     public void HidePreview()
     {
-        if(!_selected)
-            u_CircleGlowMat.SetColor("_MyColor", GlowColor);
+        //if(!_selected)
+            //u_CircleGlowMat.SetColor("_MyColor", GlowColor);
         if(_tooltip == null)
             return;
         _tooltip.StartCoroutine(_tooltip.FadeOut());
@@ -552,14 +621,14 @@ public class Engine : MonoBehaviour
             
             _wheelTurning = true;
             
-            u_Circle.GetComponent<Image>().enabled = true;
+            u_Circle.SetBool("TurnOn", true);
         }
         else if (PendingCount < 3 && _wheelTurning && EngineState != EngineState.Stacked || (EngineState == EngineState.Stacked && Stack.Count == 0))
         {
            // u_EngineImgAnim.SetBool("IsReady", false);
             //_steamParticle.Stop();
             _wheelTurning = false;
-            u_Circle.GetComponent<Image>().enabled = false;
+            u_Circle.SetBool("TurnOn", false);
         }
         
         /*if (Input.GetKeyDown(KeyCode.A)) turnedEngineOff();
@@ -569,7 +638,6 @@ public class Engine : MonoBehaviour
 
     public void UpdateUICounts(bool setToZero = false)
     {
-
         for (int i = 0; i < u_move.Length; i++)
         {
             u_move[i].color = new Color(0,0,0,0);
@@ -606,7 +674,10 @@ public class Engine : MonoBehaviour
 
         //set TotalPower
         u_powerNumber.text = tempPow.ToString();
+        
+        //set total aether
         u_aetherNumber.text = tempAet.ToString();
+
         for (int i = 0; i < tempMove; i++)
         {
             u_move[i].color = Color.white;
@@ -679,7 +750,7 @@ public class Engine : MonoBehaviour
         {
             c.SetEngine(GlowColor, u_Circles[1].transform);
         }*/
-        u_CircleGlowMat.SetColor("_MyColor", GlowColor);
+        //u_CircleGlowMat.SetColor("_MyColor", GlowColor);
         _selected = false;
         disselectGear();
     }
@@ -710,10 +781,11 @@ public class Engine : MonoBehaviour
 
     private void MagicCircle()
     {
-        if(PendingCount >= 3) u_Circle.SetActive(true);
+        if (PendingCount >= 3) u_Circle.SetBool("TurnOn", true);
         else
         {
-            u_Circle.SetActive(false);
+            u_Circle.SetBool("TurnOn", false);
+            ;
         }
     }
 
@@ -724,7 +796,7 @@ public class Engine : MonoBehaviour
 
         transform.DOMove(_statePos[0].position, 0.2f, false);
         transform.DOScale(_baseScale * 0.8f, 0.2f);
-        u_Circle.SetActive(false); //delete later
+        u_Circle.SetBool("TurnOn", false); //delete later
     }
     
     private void prepareEngine()
@@ -733,14 +805,14 @@ public class Engine : MonoBehaviour
 
         transform.DOMove(_statePos[1].position, 0.2f, false);
         transform.DOScale(_baseScale, 0.2f);
-        u_Circle.SetActive(false); //delete later
+        u_Circle.SetBool("TurnOn", false); //delete later
     }
 
     private void turnOnEngine()
     {
         transform.DOMove(_statePos[2].position, 0.2f, false);
         transform.DOScale(_baseScale, 0.2f);
-        u_Circle.SetActive(true); //delete later
+        u_Circle.SetBool("TurnOn", true); //delete later
     }
     
     #endregion
@@ -790,7 +862,6 @@ public class Engine : MonoBehaviour
             {
                 case 0 :
                     if (_attackPower[0] > 0) u_AttackOnPosition[i].GetComponent<Animator>().SetBool("TurnOn", true);
-
                     u_AttackOnPosNumber[i].text = _attackPower[0].ToString();
                     break;
                 case 1 :
@@ -848,9 +919,19 @@ public class Engine : MonoBehaviour
         transform.DOScale(_baseScale * 1.2f, 0.2f);
         
         //change card particle size
-        for (int i = 0; i < _pending.Count; i++)
+        if (BattleManager.Instance.BattleState == BattleStates.ChoosingAction)
         {
-            if (_pending[i] != null && !_pending[i].Dragging) _pending[i]._eventManager.setParticleGlowSize(0.5f);
+            foreach (Card C in Stack)
+            {
+                if (!C.Dragging) C._eventManager.setParticleGlowSize(0.45f);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < _pending.Count; i++)
+            {
+                if (_pending[i] != null && !_pending[i].Dragging) _pending[i]._eventManager.setParticleGlowSize(0.45f);
+            }   
         }
 
         _highlighted = true;
@@ -861,9 +942,19 @@ public class Engine : MonoBehaviour
         transform.DOScale(_baseScale, 0.2f);
         
         //change card particle size
-        for (int i = 0; i < _pending.Count; i++)
+        if (BattleManager.Instance.BattleState == BattleStates.ChoosingAction)
         {
-            if (_pending[i] != null && !_pending[i].Dragging) _pending[i]._eventManager.setParticleGlowSize(0.41f);
+            foreach (Card C in Stack)
+            {
+                if (!C.Dragging) C._eventManager.setParticleGlowSize(0.37f);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < _pending.Count; i++)
+            {
+                if (_pending[i] != null && !_pending[i].Dragging) _pending[i]._eventManager.setParticleGlowSize(0.37f);
+            }   
         }
 
         _highlighted = false;
@@ -875,11 +966,28 @@ public class Engine : MonoBehaviour
             _myCheatImageForNewRayCastCheck.SetActive(turn);
     }
 
-    private void blockEngineAuraOff()
+    public void blockEngineAuraOff()
     {
         blockAura = false;
     }
     #endregion
+
+    public void StateChange(int state)
+    {
+        transform.DOMove(_statePos[state].position, 0.3f);
+
+        float brightness = 0;
+        float scale = 1f;
+
+        if (state == 0)
+        {
+            brightness = 0.8f;
+            scale = 0.8f;
+        }
+
+        _blackMask.DOFade(brightness, 0.3f);
+        transform.DOScale(_originalScale * scale, 0.3f);
+    }
 }
 
 public enum EngineState
@@ -887,3 +995,4 @@ public enum EngineState
     Stacking,
     Stacked
 }
+

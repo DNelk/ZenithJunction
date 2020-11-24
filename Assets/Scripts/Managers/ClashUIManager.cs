@@ -43,7 +43,7 @@ public class ClashUIManager : MonoBehaviour
             _anim.SetTrigger("StartClash");
             _anim.SetTrigger("PlayerWinBig");
         }*/
-    }
+    } //for debug purpose only
     
     // Start is called before the first frame update
     private void Awake()
@@ -75,6 +75,7 @@ public class ClashUIManager : MonoBehaviour
     {
         int dmg = 0;
         _crashBG.DOColor(new Color(0, 0, 0, 0.8f), 0.5f);
+        _crashBG.raycastTarget = true; //call this to prevent interaction with engine and card during attack
 
         if (playerDamage == 0)
             _playerBanner.Text = "0";
@@ -122,6 +123,9 @@ public class ClashUIManager : MonoBehaviour
     public void ContinueBattle()
     {
         AnimDone = true;
+        _crashBG.raycastTarget = false;
+        BattleManager.Instance.playerHealthBar.UpdateStatusChanges();
+        BattleManager.Instance.enemyHealthBar.UpdateStatusChanges();
     }
 
     public void ClashDone()
