@@ -15,7 +15,7 @@ MonoBehaviour:
   _cardName: Feral Rage
   _cardType: 0
   _cardRarities: 1
-  _cardImage: {fileID: 21300000, guid: d6482dde7a06d074197078d31c5c27e4, type: 3}
+  _cardImage: {fileID: 21300000, guid: c74635d7d1fc48840936260ff80f05b8, type: 3}
   _buyCost: 1
   _aetherCost: 0
   _cardText: +4 Power, you can't buy cards this turn.
@@ -26,13 +26,24 @@ MonoBehaviour:
   PowerTotal: 0
   AetherTotal: 0
   MoveTotal: 0
+  StatMods: []
+  EnemyStatMods: []
   XValue: 0
   TrashThis: 0
+  pendingEngine: {fileID: 0}
+  _inSlot: 0
   _priority: 2
   _purchasable: 0
+  _eventManager: {fileID: 0}
   Tweening: 0
   IsPreview: 0
   Dragging: 0
+  MyIndex: 0
+  InActive: 0
+  MyCol: {fileID: 0}
+  MyCheatImg: {fileID: 0}
+  MyEngineIndex: 0
+  TypeBackColor: []
   _fullSize: 0
 --- !u!1001 &33781360178822536
 PrefabInstance:
@@ -45,16 +56,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: FeralRage_MU
-      objectReference: {fileID: 0}
-    - target: {fileID: 4170780471678891038, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 17
-      objectReference: {fileID: 0}
-    - target: {fileID: 4170780471678891038, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 1176058906799001469, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
@@ -110,6 +111,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4170780471678891038, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 4170780471678891038, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf, type: 3}
