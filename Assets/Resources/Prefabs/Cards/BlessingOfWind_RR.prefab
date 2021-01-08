@@ -15,7 +15,7 @@ MonoBehaviour:
   _cardName: Blessing of Wind
   _cardType: 2
   _cardRarities: 2
-  _cardImage: {fileID: 21300000, guid: 3bbe8541e51581e48bc185a08b13a788, type: 3}
+  _cardImage: {fileID: 21300000, guid: 577db7e278866df4182c16361fdc0929, type: 3}
   _buyCost: 2
   _aetherCost: 2
   _cardText: +1 Move. The next engine has +2 Move.
@@ -26,13 +26,15 @@ MonoBehaviour:
   PowerTotal: 0
   AetherTotal: 0
   MoveTotal: 0
-  StatModifer: 0
-  EnemyStatModifer: 0
+  StatMods: []
+  EnemyStatMods: []
   XValue: 0
   TrashThis: 0
+  pendingEngine: {fileID: 0}
   _inSlot: 0
   _priority: 1
   _purchasable: 0
+  _eventManager: {fileID: 0}
   Tweening: 0
   IsPreview: 0
   Dragging: 0
@@ -40,6 +42,8 @@ MonoBehaviour:
   InActive: 0
   MyCol: {fileID: 0}
   MyCheatImg: {fileID: 0}
+  MyEngineIndex: 0
+  TypeBackColor: []
   _fullSize: 0
 --- !u!1001 &8788225317625001938
 PrefabInstance:
