@@ -1769,26 +1769,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 531156141}
   m_CullTransparentMesh: 0
---- !u!1 &550407603 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5334284269272677900, guid: cb2568df64b184071a348fbad7168cab,
-    type: 3}
-  m_PrefabInstance: {fileID: 5334284268882132737}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &550407608
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 550407603}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18ad9e6d26c03428381305f69952cd21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Node: {fileID: 1408136722}
-  AllowPass: 1
 --- !u!1 &552636889
 GameObject:
   m_ObjectHideFlags: 0
@@ -2724,7 +2704,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Node: {fileID: 1011451540}
-  AllowPass: 1
+  AllowPass: 0
   MyScene: LegionnaireBattle
 --- !u!61 &1350691244
 BoxCollider2D:
@@ -2733,7 +2713,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1350691241}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -3649,7 +3629,6 @@ GameObject:
   - component: {fileID: 1765410065}
   - component: {fileID: 1765410063}
   - component: {fileID: 1765410062}
-  - component: {fileID: 1765410066}
   m_Layer: 0
   m_Name: 3
   m_TagString: OverworldInteractable
@@ -3680,13 +3659,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1765410060}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78cf5fb5c4f6a41ae879632b1630dcac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Node: {fileID: 1190868598}
-  AllowPass: 1
+  AllowPass: 0
   MyScene: SlimeBattle
 --- !u!61 &1765410063
 BoxCollider2D:
@@ -3695,7 +3674,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1765410060}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -3781,20 +3760,6 @@ MonoBehaviour:
   _mySpr:
   - {fileID: 21300000, guid: 8bd3bee87453c234a8ca4627e89e9d36, type: 3}
   - {fileID: 21300000, guid: 61bc80d57940dce4a86729e6dd977b0a, type: 3}
---- !u!114 &1765410066
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1765410060}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18ad9e6d26c03428381305f69952cd21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Node: {fileID: 1190868598}
-  AllowPass: 1
 --- !u!1 &1782459506
 GameObject:
   m_ObjectHideFlags: 0
@@ -4365,17 +4330,17 @@ PrefabInstance:
     - target: {fileID: 5334284269272677902, guid: cb2568df64b184071a348fbad7168cab,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5334284269272677902, guid: cb2568df64b184071a348fbad7168cab,
         type: 3}
       propertyPath: AllowPass
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5334284269272677905, guid: cb2568df64b184071a348fbad7168cab,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cb2568df64b184071a348fbad7168cab, type: 3}

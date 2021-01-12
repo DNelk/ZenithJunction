@@ -51,20 +51,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &6847021621556906244
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6105564509766618954}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18ad9e6d26c03428381305f69952cd21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Node: {fileID: 7161318263303072680}
-  AllowPass: 1
 --- !u!1 &2421560133438722436
 GameObject:
   m_ObjectHideFlags: 0
@@ -768,7 +754,6 @@ GameObject:
   - component: {fileID: 4209109965034718551}
   - component: {fileID: 8664873394337478222}
   - component: {fileID: 7040225375462920177}
-  - component: {fileID: 2671337978973747415}
   m_Layer: 0
   m_Name: 3
   m_TagString: OverworldInteractable
@@ -866,7 +851,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5075251343995947121}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -892,28 +877,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5075251343995947121}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78cf5fb5c4f6a41ae879632b1630dcac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Node: {fileID: 7753555379119032251}
-  AllowPass: 1
+  AllowPass: 0
   MyScene: SlimeBattle
---- !u!114 &2671337978973747415
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5075251343995947121}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18ad9e6d26c03428381305f69952cd21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Node: {fileID: 7753555379119032251}
-  AllowPass: 1
 --- !u!1 &5320944492625779991
 GameObject:
   m_ObjectHideFlags: 0
@@ -1058,6 +1029,22 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &6804446509217834931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5823245740345809299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37edf69188ee7f443bb8f7d56f583d16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Node: {fileID: 107975384658947305}
+  AllowPass: 0
+  EndMessage: {fileID: 0}
+  startingNode: {fileID: 6053094085633029590}
 --- !u!1 &6284222025160165999
 GameObject:
   m_ObjectHideFlags: 0
@@ -1427,7 +1414,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8280057933312482123}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -1459,7 +1446,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Node: {fileID: 6592594333362452591}
-  AllowPass: 1
+  AllowPass: 0
   MyScene: LegionnaireBattle
 --- !u!114 &3058543542382065545
 MonoBehaviour:
@@ -1621,22 +1608,6 @@ MonoBehaviour:
   Next:
   - {fileID: 0}
   IsFork: 0
---- !u!114 &6804446509217834931
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5823245740345809299}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37edf69188ee7f443bb8f7d56f583d16, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Node: {fileID: 107975384658947305}
-  AllowPass: 0
-  EndMessage: {fileID: 0}
-  startingNode: {fileID: 6053094085633029590}
 --- !u!1 &9131961600270937026
 GameObject:
   m_ObjectHideFlags: 0
@@ -1746,34 +1717,28 @@ PrefabInstance:
     - target: {fileID: 5334284269272677902, guid: cb2568df64b184071a348fbad7168cab,
         type: 3}
       propertyPath: MyScene
-      value: tutorialbattle
+      value: GarlicBattle
       objectReference: {fileID: 0}
     - target: {fileID: 5334284269272677902, guid: cb2568df64b184071a348fbad7168cab,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5334284269272677902, guid: cb2568df64b184071a348fbad7168cab,
         type: 3}
       propertyPath: AllowPass
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5334284269272677905, guid: cb2568df64b184071a348fbad7168cab,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cb2568df64b184071a348fbad7168cab, type: 3}
 --- !u!4 &6105564509766618953 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5334284269272677903, guid: cb2568df64b184071a348fbad7168cab,
-    type: 3}
-  m_PrefabInstance: {fileID: 2214783472506810694}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &6105564509766618954 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5334284269272677900, guid: cb2568df64b184071a348fbad7168cab,
     type: 3}
   m_PrefabInstance: {fileID: 2214783472506810694}
   m_PrefabAsset: {fileID: 0}
