@@ -17,8 +17,8 @@ public class DemoEndInteractible : MapObstacle
       {
          if (Input.GetKeyDown(KeyCode.Return))
          {
-            PlayerPrefs.SetInt("restart",1);
-            SceneManager.LoadScene("StartScreen");
+            //PlayerPrefs.SetInt("restart",1);
+            DemoManager.Instance.LoopDemo();
          }
       }
    }
