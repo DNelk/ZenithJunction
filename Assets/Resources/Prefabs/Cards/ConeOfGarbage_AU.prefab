@@ -15,7 +15,7 @@ MonoBehaviour:
   _cardName: Cone of Garbage
   _cardType: 2
   _cardRarities: 1
-  _cardImage: {fileID: 0}
+  _cardImage: {fileID: 21300000, guid: 6bd02458e99a5e341a62daaf6444d363, type: 3}
   _buyCost: 1
   _aetherCost: 1
   _cardText: xxx
@@ -26,13 +26,24 @@ MonoBehaviour:
   PowerTotal: 0
   AetherTotal: 0
   MoveTotal: 0
+  StatMods: []
+  EnemyStatMods: []
   XValue: 0
   TrashThis: 0
+  pendingEngine: {fileID: 0}
+  _inSlot: 0
   _priority: 2
   _purchasable: 0
+  _eventManager: {fileID: 0}
   Tweening: 0
   IsPreview: 0
   Dragging: 0
+  MyIndex: 0
+  InActive: 0
+  MyCol: {fileID: 0}
+  MyCheatImg: {fileID: 0}
+  MyEngineIndex: 0
+  TypeBackColor: []
   _fullSize: 0
 --- !u!1001 &3861991150080373519
 PrefabInstance:
@@ -44,7 +55,7 @@ PrefabInstance:
     - target: {fileID: 1176058906799001468, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
       propertyPath: m_Name
-      value: ConeOfGarbage
+      value: ConeOfGarbage_AU
       objectReference: {fileID: 0}
     - target: {fileID: 1176058906799001469, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}

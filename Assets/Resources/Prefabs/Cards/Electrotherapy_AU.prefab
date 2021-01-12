@@ -15,7 +15,7 @@ MonoBehaviour:
   _cardName: Electrotherapy
   _cardType: 2
   _cardRarities: 1
-  _cardImage: {fileID: 21300000, guid: 16cec77c4b03df747ba430b5332a6755, type: 3}
+  _cardImage: {fileID: 21300000, guid: 704b977edd1a1dc4c8ac2cd67d2cfe1a, type: 3}
   _buyCost: 2
   _aetherCost: -1
   _cardText: Heal X life
@@ -26,13 +26,24 @@ MonoBehaviour:
   PowerTotal: 0
   AetherTotal: 0
   MoveTotal: 0
+  StatMods: []
+  EnemyStatMods: []
   XValue: 0
   TrashThis: 0
+  pendingEngine: {fileID: 0}
+  _inSlot: 0
   _priority: 1
   _purchasable: 0
+  _eventManager: {fileID: 0}
   Tweening: 0
   IsPreview: 0
   Dragging: 0
+  MyIndex: 0
+  InActive: 0
+  MyCol: {fileID: 0}
+  MyCheatImg: {fileID: 0}
+  MyEngineIndex: 0
+  TypeBackColor: []
   _fullSize: 0
 --- !u!1001 &3418973204744126913
 PrefabInstance:

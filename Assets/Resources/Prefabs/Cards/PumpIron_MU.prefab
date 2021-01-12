@@ -136,7 +136,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _cardImage
       value: 
-      objectReference: {fileID: 21300000, guid: 257d4be260176b74cb0b093561481991,
+      objectReference: {fileID: 21300000, guid: 130972cc51cdec0458cf8a52b2bb348a,
         type: 3}
     - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
