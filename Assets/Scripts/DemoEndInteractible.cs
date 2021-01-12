@@ -10,6 +10,7 @@ public class DemoEndInteractible : MapObstacle
 {
    public GameObject EndMessage;
    private bool _triggered = false;
+   public MapNode startingNode;
 
    private void Update()
    {
@@ -18,6 +19,7 @@ public class DemoEndInteractible : MapObstacle
          if (Input.GetKeyDown(KeyCode.Return))
          {
             //PlayerPrefs.SetInt("restart",1);
+            OverworldTrain.Instance.CurrentNode = startingNode;
             DemoManager.Instance.LoopDemo();
          }
       }

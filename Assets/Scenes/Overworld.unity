@@ -475,7 +475,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28010312f6f744010b22787eb1a71749, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loopMap: {fileID: 6946862664214786746, guid: bce3a2850fe59a54c866408afbf0119e, type: 3}
+  loopMap: {fileID: 7083445383593676677, guid: bce3a2850fe59a54c866408afbf0119e, type: 3}
   currentMap: {fileID: 1284057162}
 --- !u!1 &122878571
 GameObject:
@@ -2724,7 +2724,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Node: {fileID: 1011451540}
-  AllowPass: 0
+  AllowPass: 1
   MyScene: LegionnaireBattle
 --- !u!61 &1350691244
 BoxCollider2D:
@@ -2733,7 +2733,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1350691241}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -4151,6 +4151,7 @@ MonoBehaviour:
   Node: {fileID: 934701325}
   AllowPass: 0
   EndMessage: {fileID: 1866251185}
+  startingNode: {fileID: 524527307}
 --- !u!1 &2039324633
 GameObject:
   m_ObjectHideFlags: 0
