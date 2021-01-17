@@ -2238,6 +2238,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 00f6dd3d530235e45b0e781ab88f0f24, type: 3}
+--- !u!82 &1138269523 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 5686181010954049699, guid: 00f6dd3d530235e45b0e781ab88f0f24,
+    type: 3}
+  m_PrefabInstance: {fileID: 1138269522}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1140124387
 GameObject:
   m_ObjectHideFlags: 0
@@ -4048,6 +4054,12 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: a197099d08af1f34d8b419764c99bab5, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56a294a898056024a92ece64903c034e, type: 3}
+--- !u!82 &1984459931 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 8287606614242546910, guid: 56a294a898056024a92ece64903c034e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1984459930}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2010033955
 GameObject:
   m_ObjectHideFlags: 0
@@ -4344,3 +4356,132 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cb2568df64b184071a348fbad7168cab, type: 3}
+--- !u!1001 &5554663754806360109
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5554663754718968083, guid: 9d918a5f37f5b4c4981ce22699d3db99,
+        type: 3}
+      propertyPath: m_Name
+      value: UISettingsMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 5554663754718968082, guid: 9d918a5f37f5b4c4981ce22699d3db99,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5554663754718968082, guid: 9d918a5f37f5b4c4981ce22699d3db99,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5554663754718968082, guid: 9d918a5f37f5b4c4981ce22699d3db99,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5554663754718968082, guid: 9d918a5f37f5b4c4981ce22699d3db99,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5554663754718968082, guid: 9d918a5f37f5b4c4981ce22699d3db99,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5554663754718968082, guid: 9d918a5f37f5b4c4981ce22699d3db99,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5554663754718968082, guid: 9d918a5f37f5b4c4981ce22699d3db99,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5554663754718968082, guid: 9d918a5f37f5b4c4981ce22699d3db99,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5554663754718968082, guid: 9d918a5f37f5b4c4981ce22699d3db99,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5554663754718968082, guid: 9d918a5f37f5b4c4981ce22699d3db99,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5554663754718968082, guid: 9d918a5f37f5b4c4981ce22699d3db99,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5554663754718968173, guid: 9d918a5f37f5b4c4981ce22699d3db99,
+        type: 3}
+      propertyPath: AudioManagerAudioSource
+      value: 
+      objectReference: {fileID: 1138269523}
+    - target: {fileID: 5554663754718968173, guid: 9d918a5f37f5b4c4981ce22699d3db99,
+        type: 3}
+      propertyPath: BGMAudioSource
+      value: 
+      objectReference: {fileID: 1984459931}
+    - target: {fileID: 5554663754267805461, guid: 9d918a5f37f5b4c4981ce22699d3db99,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5554663754267805461, guid: 9d918a5f37f5b4c4981ce22699d3db99,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5554663753506926034, guid: 9d918a5f37f5b4c4981ce22699d3db99,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5554663753506926034, guid: 9d918a5f37f5b4c4981ce22699d3db99,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5554663753506926034, guid: 9d918a5f37f5b4c4981ce22699d3db99,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5554663755549352213, guid: 9d918a5f37f5b4c4981ce22699d3db99,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5554663755549352213, guid: 9d918a5f37f5b4c4981ce22699d3db99,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5554663754803213303, guid: 9d918a5f37f5b4c4981ce22699d3db99,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5554663754803213303, guid: 9d918a5f37f5b4c4981ce22699d3db99,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5554663754803213303, guid: 9d918a5f37f5b4c4981ce22699d3db99,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9d918a5f37f5b4c4981ce22699d3db99, type: 3}
