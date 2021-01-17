@@ -15,7 +15,7 @@ MonoBehaviour:
   _cardName: Golden Physique
   _cardType: 0
   _cardRarities: 2
-  _cardImage: {fileID: 21300000, guid: c16a6a3444233824f8c23871b2deee31, type: 3}
+  _cardImage: {fileID: 21300000, guid: 9700e6b1330cf064e9ca9819eb671e04, type: 3}
   _buyCost: 4
   _aetherCost: 0
   _cardText: +1 Power. If this engine also has "Silver Prowess", +10 Power and Exhaust.
@@ -43,6 +43,7 @@ MonoBehaviour:
   MyCol: {fileID: 0}
   MyCheatImg: {fileID: 0}
   MyEngineIndex: 0
+  TypeBackColor: []
   _fullSize: 0
 --- !u!1001 &884534822242979105
 PrefabInstance:

@@ -15,7 +15,7 @@ MonoBehaviour:
   _cardName: Infinite Ammo
   _cardType: 2
   _cardRarities: 2
-  _cardImage: {fileID: 0}
+  _cardImage: {fileID: 21300000, guid: 217e5e08a31af3b40a58aaa77084dcfe, type: 3}
   _buyCost: 4
   _aetherCost: 2
   _cardText: All Aether Cards in all other engines are +3 Power Short Range Attacks
@@ -27,15 +27,24 @@ MonoBehaviour:
   PowerTotal: 0
   AetherTotal: 0
   MoveTotal: 0
-  StatModifer: 0
-  EnemyStatModifer: 0
+  StatMods: []
+  EnemyStatMods: []
   XValue: 0
   TrashThis: 0
+  pendingEngine: {fileID: 0}
+  _inSlot: 0
   _priority: 1
   _purchasable: 0
+  _eventManager: {fileID: 0}
   Tweening: 0
   IsPreview: 0
   Dragging: 0
+  MyIndex: 0
+  InActive: 0
+  MyCol: {fileID: 0}
+  MyCheatImg: {fileID: 0}
+  MyEngineIndex: 0
+  TypeBackColor: []
   _fullSize: 0
 --- !u!1001 &6775015703483870812
 PrefabInstance:

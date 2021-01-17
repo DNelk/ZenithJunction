@@ -15,7 +15,7 @@ MonoBehaviour:
   _cardName: Cowcatcher Crash
   _cardType: 0
   _cardRarities: 1
-  _cardImage: {fileID: 0}
+  _cardImage: {fileID: 21300000, guid: 8b5ab8d2641581b458fa62852882220c, type: 3}
   _buyCost: 4
   _aetherCost: 0
   _cardText: +5 Power. Push the enemy back one car away.
@@ -26,15 +26,24 @@ MonoBehaviour:
   PowerTotal: 0
   AetherTotal: 0
   MoveTotal: 0
-  StatModifer: 0
-  EnemyStatModifer: 0
+  StatMods: []
+  EnemyStatMods: []
   XValue: 0
   TrashThis: 0
+  pendingEngine: {fileID: 0}
+  _inSlot: 0
   _priority: 2
   _purchasable: 0
+  _eventManager: {fileID: 0}
   Tweening: 0
   IsPreview: 0
   Dragging: 0
+  MyIndex: 0
+  InActive: 0
+  MyCol: {fileID: 0}
+  MyCheatImg: {fileID: 0}
+  MyEngineIndex: 0
+  TypeBackColor: []
   _fullSize: 0
 --- !u!1001 &8021231833267481557
 PrefabInstance:
