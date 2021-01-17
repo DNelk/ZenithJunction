@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour, ISerializationCallbackReceiver
 
     private void Start()
     {
+        Debug.Log(Application.persistentDataPath);
     }
 
     private int capnum = 0;
