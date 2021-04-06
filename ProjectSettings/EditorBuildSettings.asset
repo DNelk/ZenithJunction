@@ -5,10 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/StartScreen.unity
     guid: 8f5097fe66a1842dea32d84dc45f119c
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Overworld.unity
     guid: ac8b43df3cca4483eb0e68cfa49c31a0
   - enabled: 0
@@ -17,13 +17,13 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/GarlicBattle.unity
     guid: c29638f3a30b0ca45a556caafac55b0d
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/LegionnaireBattle.unity
     guid: 54c2b7dcddb1dc242b5c69d72266aca1
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/SlimeBattle.unity
     guid: a48d6472edd932345bfe22f1d44c1235
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/TutorialBattle.unity
     guid: be277326dce290e4baeb892e11c82c36
   - enabled: 0
