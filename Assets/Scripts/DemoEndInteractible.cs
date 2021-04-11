@@ -11,6 +11,13 @@ public class DemoEndInteractible : MapObstacle
    public GameObject EndMessage;
    private bool _triggered = false;
    public MapNode startingNode;
+   public Image fadeInImage;
+   public float fadeTime;
+
+   private void Awake()
+   {
+      StartCoroutine(FadeOutScreen(0));
+   }
 
    private void Update()
    {
@@ -18,11 +25,25 @@ public class DemoEndInteractible : MapObstacle
       {
          if (Input.GetKeyDown(KeyCode.Return))
          {
-            //PlayerPrefs.SetInt("restart",1);
-            OverworldTrain.Instance.CurrentNode = startingNode;
-            DemoManager.Instance.LoopDemo();
+            StartCoroutine(FadeInScreen(1));
          }
       }
+   }
+
+   private IEnumerator FadeInScreen(float targetValue)
+   {
+      fadeInImage.gameObject.SetActive(true);
+      fadeInImage.DOFade(targetValue, fadeTime);
+      yield return new WaitForSeconds(fadeTime + 0.5f);
+      OverworldTrain.Instance.CurrentNode = startingNode;
+      DemoManager.Instance.LoopDemo();
+   }
+   
+   private IEnumerator FadeOutScreen(float targetValue)
+   {
+      fadeInImage.DOFade(targetValue, fadeTime);
+      yield return new WaitForSeconds(fadeTime + 0.5f);
+      fadeInImage.gameObject.SetActive(false);
    }
    
    private void OnTriggerStay2D(Collider2D other)
