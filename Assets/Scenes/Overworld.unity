@@ -1727,7 +1727,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 122878573}
   m_HandleRect: {fileID: 122878572}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -3315,11 +3315,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Thanks For Playing!
-
-    Follow Us on twitter @ZenithJunction For News and updates.
-
-    To do another loop of the demo, press enter.'
+  m_text: "Thanks For Playing!\nFollow Us on twitter @ZenithJunction For News and
+    updates.\n\nYou've completed a circuit of the demo content! \n\nPress enter to
+    start another loop with your current card library.\nPress escape on the map to
+    quit the game through the pause menu."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1fb5f749fc8ce964abf9284acc109ec1, type: 2}
   m_sharedMaterial: {fileID: 8074112422272571568, guid: 1fb5f749fc8ce964abf9284acc109ec1,
@@ -3348,7 +3347,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 72
+  m_fontSize: 69.65
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3386,15 +3385,15 @@ MonoBehaviour:
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 92.47905, y: 0, z: 76.39576, w: 0}
   m_textInfo:
     textComponent: {fileID: 1553933377}
-    characterCount: 123
+    characterCount: 260
     spriteCount: 0
-    spaceCount: 20
-    wordCount: 21
+    spaceCount: 46
+    wordCount: 44
     linkCount: 0
-    lineCount: 3
+    lineCount: 7
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
@@ -4368,6 +4367,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: UISettingsMenu
       objectReference: {fileID: 0}
+    - target: {fileID: 5554663754718968083, guid: 9d918a5f37f5b4c4981ce22699d3db99,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5554663754718968082, guid: 9d918a5f37f5b4c4981ce22699d3db99,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4482,6 +4486,28 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5554663755580716210, guid: 9d918a5f37f5b4c4981ce22699d3db99,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5554663754204106558, guid: 9d918a5f37f5b4c4981ce22699d3db99,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1089030036, guid: 9d918a5f37f5b4c4981ce22699d3db99, type: 3}
+      propertyPath: m_Name
+      value: Quit_button
+      objectReference: {fileID: 0}
+    - target: {fileID: 448177051, guid: 9d918a5f37f5b4c4981ce22699d3db99, type: 3}
+      propertyPath: m_text
+      value: Quit Game
+      objectReference: {fileID: 0}
+    - target: {fileID: 448177051, guid: 9d918a5f37f5b4c4981ce22699d3db99, type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d918a5f37f5b4c4981ce22699d3db99, type: 3}

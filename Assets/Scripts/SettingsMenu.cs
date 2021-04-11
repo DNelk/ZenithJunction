@@ -44,15 +44,28 @@ public class SettingsMenu : MonoBehaviour
     {
         BGMAudioSource.volume = bgmVolumeSlider.value;
     }
-    
+
+    public void ToggleMenu()
+    {
+        enabled = !enabled;
+        settingsMenuCanvas.SetActive(enabled);
+    }
+
+    public void ExitGame()
+    {
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif 
+    }
 
     void Update()
     {
         //Set the settings menu canvas to active if the escape key is pressed
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            enabled = !enabled;
-            settingsMenuCanvas.SetActive(enabled);
+            ToggleMenu();
         }
     }
 }
