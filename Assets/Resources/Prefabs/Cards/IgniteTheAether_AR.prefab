@@ -15,7 +15,7 @@ MonoBehaviour:
   _cardName: Ignite The Aether
   _cardType: 2
   _cardRarities: 2
-  _cardImage: {fileID: 21300000, guid: 40188ec3fdbfcf5469aeae0ce3fc68ea, type: 3}
+  _cardImage: {fileID: 21300000, guid: be95a766c16de5f4d89764a0c09a1340, type: 3}
   _buyCost: 3
   _aetherCost: 0
   _cardText: Your Aether cards produce 3x the amount in this engine. Trash them.
@@ -26,13 +26,15 @@ MonoBehaviour:
   PowerTotal: 0
   AetherTotal: 0
   MoveTotal: 0
-  StatModifer: 0
-  EnemyStatModifer: 0
+  StatMods: []
+  EnemyStatMods: []
   XValue: 0
   TrashThis: 0
+  pendingEngine: {fileID: 0}
   _inSlot: 0
   _priority: 4
   _purchasable: 0
+  _eventManager: {fileID: 0}
   Tweening: 0
   IsPreview: 0
   Dragging: 0
@@ -40,6 +42,8 @@ MonoBehaviour:
   InActive: 0
   MyCol: {fileID: 0}
   MyCheatImg: {fileID: 0}
+  MyEngineIndex: 0
+  TypeBackColor: []
   _fullSize: 0
 --- !u!1001 &905400556614715193
 PrefabInstance:

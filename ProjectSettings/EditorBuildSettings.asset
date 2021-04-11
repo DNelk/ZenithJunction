@@ -14,7 +14,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/PrototypeBattle.unity
     guid: 3fb9aec95514c004988ceea46403367e
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/GarlicBattle.unity
     guid: c29638f3a30b0ca45a556caafac55b0d
   - enabled: 1
@@ -29,4 +29,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/CameraScene.unity
     guid: 8cde1cf111d5af44683fde5620308de2
+  - enabled: 0
+    path: Assets/Scenes/PalmmyScene/CardShowCase.unity
+    guid: 3f9f190eb973938439ba74c8bb6494a0
   m_configObjects: {}

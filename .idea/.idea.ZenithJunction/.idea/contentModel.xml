@@ -1231,6 +1231,7 @@
             <e p="Perlin.cs" t="Include" />
           </e>
           <e p="RotateGloveOnHover.cs" t="Include" />
+          <e p="SettingsMenu.cs" t="Include" />
           <e p="ShakeCamera.cs" t="Include" />
           <e p="TalkingHead.cs" t="Include" />
           <e p="TutorialManager.cs" t="Include" />
@@ -1243,6 +1244,7 @@
               <e p="Arrow.cs" t="Include" />
               <e p="BattleTransition.cs" t="Include" />
               <e p="BattleUI_Hover.cs" t="Include" />
+              <e p="Card_ShowcaseGen.cs" t="Include" />
               <e p="CommenceCore.cs" t="Include" />
               <e p="ConfirmButtonEventManager.cs" t="Include" />
               <e p="DummyIntention.cs" t="Include" />

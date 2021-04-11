@@ -386,6 +386,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: AetherExplosion_AR
       objectReference: {fileID: 0}
+    - target: {fileID: 4821297804364225999, guid: e5c3a32825f0f4e0182831ea74ad8e5b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4819176148677354776, guid: e5c3a32825f0f4e0182831ea74ad8e5b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -511,6 +516,11 @@ PrefabInstance:
       propertyPath: _fullSize
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 72206009158533085, guid: e5c3a32825f0f4e0182831ea74ad8e5b,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7279511232073408069, guid: e5c3a32825f0f4e0182831ea74ad8e5b,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -544,6 +554,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Strike
+      objectReference: {fileID: 0}
+    - target: {fileID: 6468776323963629041, guid: b4ae994c38335474ab80c0e92ff1875e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6468776323963629039, guid: b4ae994c38335474ab80c0e92ff1875e,
+        type: 3}
+      propertyPath: _fullSize
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6470584322825770278, guid: b4ae994c38335474ab80c0e92ff1875e,
         type: 3}
@@ -665,9 +685,9 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 151.67375
       objectReference: {fileID: 0}
-    - target: {fileID: 6468776323963629039, guid: b4ae994c38335474ab80c0e92ff1875e,
+    - target: {fileID: 1886308953236033507, guid: b4ae994c38335474ab80c0e92ff1875e,
         type: 3}
-      propertyPath: _fullSize
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9091362340921454203, guid: b4ae994c38335474ab80c0e92ff1875e,
@@ -721,8 +741,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6a069f49931a463aba332a4e696aba9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  State: 0
+  State: 2
   BattlingNode: 
+  StartingCards:
+  - strike
+  - strike
+  - strike
+  - strike
+  - railcharge
+  - allaboard
+  - manaboil
+  - manaboil
+  - manaboil
+  StartingIndices: 3300000033000000330000003300000028000000010000001f0000001f0000001f000000
 --- !u!4 &294991939
 Transform:
   m_ObjectHideFlags: 0
@@ -748,6 +779,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TinyLittleLaserBeam_RC
+      objectReference: {fileID: 0}
+    - target: {fileID: 6519325298519472349, guid: adee21daf837d42099ef4477b14d309d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6516950772054917130, guid: adee21daf837d42099ef4477b14d309d,
         type: 3}
@@ -872,6 +908,11 @@ PrefabInstance:
     - target: {fileID: 6519325298519472323, guid: adee21daf837d42099ef4477b14d309d,
         type: 3}
       propertyPath: _fullSize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1842392149072714447, guid: adee21daf837d42099ef4477b14d309d,
+        type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9049983433464085335, guid: adee21daf837d42099ef4477b14d309d,
@@ -2057,47 +2098,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Card
       objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+    - target: {fileID: 1176058906799001468, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
-      propertyPath: _cardName
-      value: Friendship
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _cardType
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _cardRarities
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _cardText
-      value: Thank you for everything.
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _aetherValue
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _powerValue
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _fullSize
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
-        type: 3}
-      propertyPath: _cardImage
-      value: 
-      objectReference: {fileID: 21300000, guid: 8ff75b302243efa48a8ebab1d5c47db8,
-        type: 3}
     - target: {fileID: 1178716853317580715, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2217,6 +2222,52 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 151.67375
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _cardName
+      value: Friendship
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _cardType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _cardRarities
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _cardText
+      value: Thank you for everything.
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _aetherValue
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _powerValue
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _fullSize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176058906799001442, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: _cardImage
+      value: 
+      objectReference: {fileID: 21300000, guid: 8ff75b302243efa48a8ebab1d5c47db8,
+        type: 3}
+    - target: {fileID: 6033140614944173422, guid: 0d479990a3bf94b66add313f61a36fdf,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4016233893836606710, guid: 0d479990a3bf94b66add313f61a36fdf,
         type: 3}
@@ -2516,7 +2567,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 298.5
+  orthographic size: 539
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -2552,7 +2603,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2023590103}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 298.5, y: 168, z: -100}
+  m_LocalPosition: {x: 539, y: 303, z: -100}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2577,11 +2628,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1832480163}
     m_Modifications:
-    - target: {fileID: 4201685717112804048, guid: 6b64e6c6cadfa42a6b6b927cea558148,
-        type: 3}
-      propertyPath: m_Name
-      value: ManaBoil
-      objectReference: {fileID: 0}
     - target: {fileID: 4199313110435473927, guid: 6b64e6c6cadfa42a6b6b927cea558148,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2702,9 +2748,24 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 151.67375
       objectReference: {fileID: 0}
+    - target: {fileID: 4201685717112804048, guid: 6b64e6c6cadfa42a6b6b927cea558148,
+        type: 3}
+      propertyPath: m_Name
+      value: ManaBoil
+      objectReference: {fileID: 0}
+    - target: {fileID: 4201685717112804048, guid: 6b64e6c6cadfa42a6b6b927cea558148,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4201685717112804046, guid: 6b64e6c6cadfa42a6b6b927cea558148,
         type: 3}
       propertyPath: _fullSize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8766068458159714498, guid: 6b64e6c6cadfa42a6b6b927cea558148,
+        type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2135223884472176986, guid: 6b64e6c6cadfa42a6b6b927cea558148,

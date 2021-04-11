@@ -15,7 +15,7 @@ MonoBehaviour:
   _cardName: OverheatedPalm
   _cardType: 0
   _cardRarities: 2
-  _cardImage: {fileID: 21300000, guid: 257d4be260176b74cb0b093561481991, type: 3}
+  _cardImage: {fileID: 21300000, guid: 1b4cd71b0cbd14a4caadbb561e6c5629, type: 3}
   _buyCost: 4
   _aetherCost: 2
   _cardText: +9 Power. Exhaust all Aether cards in this engine
@@ -26,15 +26,24 @@ MonoBehaviour:
   PowerTotal: 0
   AetherTotal: 0
   MoveTotal: 0
-  StatModifer: 0
-  EnemyStatModifer: 0
+  StatMods: []
+  EnemyStatMods: []
   XValue: 0
   TrashThis: 0
+  pendingEngine: {fileID: 0}
+  _inSlot: 0
   _priority: 1
   _purchasable: 0
+  _eventManager: {fileID: 0}
   Tweening: 0
   IsPreview: 0
   Dragging: 0
+  MyIndex: 0
+  InActive: 0
+  MyCol: {fileID: 0}
+  MyCheatImg: {fileID: 0}
+  MyEngineIndex: 0
+  TypeBackColor: []
   _fullSize: 0
 --- !u!1001 &8109567955070946157
 PrefabInstance:
