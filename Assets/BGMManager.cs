@@ -5,7 +5,7 @@ using UnityEngine;
 public class BGMManager : MonoBehaviour
 {
     public static BGMManager Instance = null;
-    private AudioSource _audio;
+    public AudioSource _audio;
     // Start is called before the first frame update
     void Awake()
     {

@@ -27,7 +27,7 @@ public class SettingsMenu : MonoBehaviour
         {
             BGMAudioSource = FindObjectOfType<BGMManager>().gameObject.GetComponent<AudioSource>();
         }
-        
+
         //Default the settings menu canvas to inactive on scene start
         settingsMenuCanvas.SetActive(false);
         //Set the slider UI values to the current Audio Source values

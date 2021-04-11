@@ -34,6 +34,8 @@ public class DemoEndInteractible : MapObstacle
    {
       fadeInImage.gameObject.SetActive(true);
       fadeInImage.DOFade(targetValue, fadeTime);
+      //Fade out audio
+      BGMManager.Instance._audio.DOFade(0, fadeTime);
       yield return new WaitForSeconds(fadeTime + 0.5f);
       OverworldTrain.Instance.CurrentNode = startingNode;
       DemoManager.Instance.LoopDemo();
